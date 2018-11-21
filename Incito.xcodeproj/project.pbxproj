@@ -1,0 +1,516 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AE090AD621A2A0890009159E /* Incito+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE090AD521A2A0890009159E /* Incito+Layout.swift */; };
+		AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC47219C34570021B1FD /* JSONValue.swift */; };
+		AE0DDC4A219CC2AC0021B1FD /* UIColor+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */; };
+		AE0DDC4E219CC47E0021B1FD /* UIColor_Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC4D219CC47E0021B1FD /* UIColor_Hex.swift */; };
+		AE0DDC50219CCAFD0021B1FD /* AutoLayoutHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC4F219CCAFD0021B1FD /* AutoLayoutHelpers.swift */; };
+		AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */ = {isa = PBXBuildFile; fileRef = AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */; };
+		AE40597E21A5A3A300D029AE /* simple-incito-static.json in Resources */ = {isa = PBXBuildFile; fileRef = AE40597D21A5A3A300D029AE /* simple-incito-static.json */; };
+		AE40598021A5C6E000D029AE /* Incito+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE40597F21A5C6E000D029AE /* Incito+UIKit.swift */; };
+		AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67580F219C2592006BEA9C /* AppDelegate.swift */; };
+		AE675812219C2592006BEA9C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675811219C2592006BEA9C /* ViewController.swift */; };
+		AE675815219C2592006BEA9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675813219C2592006BEA9C /* Main.storyboard */; };
+		AE675817219C2593006BEA9C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE675816219C2593006BEA9C /* Assets.xcassets */; };
+		AE67581A219C2593006BEA9C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675818219C2593006BEA9C /* LaunchScreen.storyboard */; };
+		AE675825219C2593006BEA9C /* IncitoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675824219C2593006BEA9C /* IncitoTests.swift */; };
+		AE675830219C25CC006BEA9C /* Incito.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67582F219C25CC006BEA9C /* Incito.swift */; };
+		AE675834219C2AD5006BEA9C /* IncitoDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */; };
+		AE806C7B219D7A5100F30B2D /* superbrugsen.json in Resources */ = {isa = PBXBuildFile; fileRef = AE806C7A219D7A5000F30B2D /* superbrugsen.json */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AE675821219C2593006BEA9C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE675804219C2591006BEA9C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AE67580B219C2591006BEA9C;
+			remoteInfo = Incito;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AE090AD521A2A0890009159E /* Incito+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+Layout.swift"; sourceTree = "<group>"; };
+		AE0DDC47219C34570021B1FD /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
+		AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Debug.swift"; sourceTree = "<group>"; };
+		AE0DDC4D219CC47E0021B1FD /* UIColor_Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor_Hex.swift; sourceTree = "<group>"; };
+		AE0DDC4F219CCAFD0021B1FD /* AutoLayoutHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLayoutHelpers.swift; sourceTree = "<group>"; };
+		AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-absolute.json"; sourceTree = "<group>"; };
+		AE40597D21A5A3A300D029AE /* simple-incito-static.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-static.json"; sourceTree = "<group>"; };
+		AE40597F21A5C6E000D029AE /* Incito+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+UIKit.swift"; sourceTree = "<group>"; };
+		AE67580C219C2592006BEA9C /* Incito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Incito.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE67580F219C2592006BEA9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AE675811219C2592006BEA9C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		AE675814219C2592006BEA9C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		AE675816219C2593006BEA9C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AE675819219C2593006BEA9C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AE67581B219C2593006BEA9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE675820219C2593006BEA9C /* IncitoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IncitoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE675824219C2593006BEA9C /* IncitoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoTests.swift; sourceTree = "<group>"; };
+		AE675826219C2593006BEA9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE67582F219C25CC006BEA9C /* Incito.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Incito.swift; sourceTree = "<group>"; };
+		AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDecoder.swift; sourceTree = "<group>"; };
+		AE806C7A219D7A5000F30B2D /* superbrugsen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = superbrugsen.json; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AE675809219C2591006BEA9C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE67581D219C2593006BEA9C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AE675803219C2591006BEA9C = {
+			isa = PBXGroup;
+			children = (
+				AE67580E219C2592006BEA9C /* Incito */,
+				AE675823219C2593006BEA9C /* IncitoTests */,
+				AE67580D219C2592006BEA9C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AE67580D219C2592006BEA9C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE67580C219C2592006BEA9C /* Incito.app */,
+				AE675820219C2593006BEA9C /* IncitoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AE67580E219C2592006BEA9C /* Incito */ = {
+			isa = PBXGroup;
+			children = (
+				AE67580F219C2592006BEA9C /* AppDelegate.swift */,
+				AE675811219C2592006BEA9C /* ViewController.swift */,
+				AE67582F219C25CC006BEA9C /* Incito.swift */,
+				AE090AD521A2A0890009159E /* Incito+Layout.swift */,
+				AE40597F21A5C6E000D029AE /* Incito+UIKit.swift */,
+				AE0DDC47219C34570021B1FD /* JSONValue.swift */,
+				AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */,
+				AE0DDC4D219CC47E0021B1FD /* UIColor_Hex.swift */,
+				AE0DDC4F219CCAFD0021B1FD /* AutoLayoutHelpers.swift */,
+				AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */,
+				AE806C7A219D7A5000F30B2D /* superbrugsen.json */,
+				AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */,
+				AE40597D21A5A3A300D029AE /* simple-incito-static.json */,
+				AE675813219C2592006BEA9C /* Main.storyboard */,
+				AE675816219C2593006BEA9C /* Assets.xcassets */,
+				AE675818219C2593006BEA9C /* LaunchScreen.storyboard */,
+				AE67581B219C2593006BEA9C /* Info.plist */,
+			);
+			path = Incito;
+			sourceTree = "<group>";
+		};
+		AE675823219C2593006BEA9C /* IncitoTests */ = {
+			isa = PBXGroup;
+			children = (
+				AE675824219C2593006BEA9C /* IncitoTests.swift */,
+				AE675826219C2593006BEA9C /* Info.plist */,
+			);
+			path = IncitoTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AE67580B219C2591006BEA9C /* Incito */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE675829219C2593006BEA9C /* Build configuration list for PBXNativeTarget "Incito" */;
+			buildPhases = (
+				AE675808219C2591006BEA9C /* Sources */,
+				AE675809219C2591006BEA9C /* Frameworks */,
+				AE67580A219C2591006BEA9C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Incito;
+			productName = Incito;
+			productReference = AE67580C219C2592006BEA9C /* Incito.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AE67581F219C2593006BEA9C /* IncitoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE67582C219C2593006BEA9C /* Build configuration list for PBXNativeTarget "IncitoTests" */;
+			buildPhases = (
+				AE67581C219C2593006BEA9C /* Sources */,
+				AE67581D219C2593006BEA9C /* Frameworks */,
+				AE67581E219C2593006BEA9C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE675822219C2593006BEA9C /* PBXTargetDependency */,
+			);
+			name = IncitoTests;
+			productName = IncitoTests;
+			productReference = AE675820219C2593006BEA9C /* IncitoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AE675804219C2591006BEA9C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = ShopGun;
+				TargetAttributes = {
+					AE67580B219C2591006BEA9C = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					AE67581F219C2593006BEA9C = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = AE67580B219C2591006BEA9C;
+					};
+				};
+			};
+			buildConfigurationList = AE675807219C2591006BEA9C /* Build configuration list for PBXProject "Incito" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AE675803219C2591006BEA9C;
+			productRefGroup = AE67580D219C2592006BEA9C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AE67580B219C2591006BEA9C /* Incito */,
+				AE67581F219C2593006BEA9C /* IncitoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AE67580A219C2591006BEA9C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE67581A219C2593006BEA9C /* LaunchScreen.storyboard in Resources */,
+				AE675817219C2593006BEA9C /* Assets.xcassets in Resources */,
+				AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */,
+				AE40597E21A5A3A300D029AE /* simple-incito-static.json in Resources */,
+				AE806C7B219D7A5100F30B2D /* superbrugsen.json in Resources */,
+				AE675815219C2592006BEA9C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE67581E219C2593006BEA9C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AE675808219C2591006BEA9C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE675812219C2592006BEA9C /* ViewController.swift in Sources */,
+				AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */,
+				AE675834219C2AD5006BEA9C /* IncitoDecoder.swift in Sources */,
+				AE0DDC4A219CC2AC0021B1FD /* UIColor+Debug.swift in Sources */,
+				AE40598021A5C6E000D029AE /* Incito+UIKit.swift in Sources */,
+				AE0DDC4E219CC47E0021B1FD /* UIColor_Hex.swift in Sources */,
+				AE675830219C25CC006BEA9C /* Incito.swift in Sources */,
+				AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */,
+				AE090AD621A2A0890009159E /* Incito+Layout.swift in Sources */,
+				AE0DDC50219CCAFD0021B1FD /* AutoLayoutHelpers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE67581C219C2593006BEA9C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE675825219C2593006BEA9C /* IncitoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AE675822219C2593006BEA9C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AE67580B219C2591006BEA9C /* Incito */;
+			targetProxy = AE675821219C2593006BEA9C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AE675813219C2592006BEA9C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE675814219C2592006BEA9C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		AE675818219C2593006BEA9C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE675819219C2593006BEA9C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AE675827219C2593006BEA9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AE675828219C2593006BEA9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AE67582A219C2593006BEA9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MN86AVA6GX;
+				INFOPLIST_FILE = Incito/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.shopgun.Incito;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AE67582B219C2593006BEA9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MN86AVA6GX;
+				INFOPLIST_FILE = Incito/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.shopgun.Incito;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		AE67582D219C2593006BEA9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MN86AVA6GX;
+				INFOPLIST_FILE = IncitoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.shopgun.IncitoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Incito.app/Incito";
+			};
+			name = Debug;
+		};
+		AE67582E219C2593006BEA9C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MN86AVA6GX;
+				INFOPLIST_FILE = IncitoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.shopgun.IncitoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Incito.app/Incito";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AE675807219C2591006BEA9C /* Build configuration list for PBXProject "Incito" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE675827219C2593006BEA9C /* Debug */,
+				AE675828219C2593006BEA9C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE675829219C2593006BEA9C /* Build configuration list for PBXNativeTarget "Incito" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE67582A219C2593006BEA9C /* Debug */,
+				AE67582B219C2593006BEA9C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE67582C219C2593006BEA9C /* Build configuration list for PBXNativeTarget "IncitoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE67582D219C2593006BEA9C /* Debug */,
+				AE67582E219C2593006BEA9C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AE675804219C2591006BEA9C /* Project object */;
+}

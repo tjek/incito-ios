@@ -1,0 +1,40 @@
+{
+    "version": "1.0.0",
+    "theme": {
+        "text_color": "#000000",
+        "line_spacing_multiplier": 1.4,
+        "background_color": "#e1dabf"
+    },
+    "root_view": {
+        "view_name": "AbsoluteLayout",
+        "layout_width": 320,
+        "id": "A",
+        "padding_left": 5,
+        "child_views": [
+            {
+                "view_name": "View",
+                "id": "B",
+                "layout_margin_left": 10,
+                "layout_margin_bottom": 10,
+                "padding": 5,
+                "background_color": "#1abc9c"
+            },
+            {
+                "view_name": "View",
+                "id": "C",
+                "layout_margin_left": 5,
+                "padding": 5,
+                "background_color": "#f1c40f"
+            },
+            {
+                "view_name": "View",
+                "id": "D",
+                "layout_margin_left": 5,
+                "padding": 5,
+                "background_color": "#3498db"
+            }
+        ]
+    },
+    "locale": "da_DK",
+    "id": "76a800c4-20a0-4062-9a05-98c602012bc8",
+}
