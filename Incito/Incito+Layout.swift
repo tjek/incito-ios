@@ -327,12 +327,19 @@ func staticLayout(view: View, parentLayout: LayoutType, in parentSize: Size) -> 
         childNodes = childNodes.map {
             var childNode = $0
             
-            // TODO: different depending on gravity. Defaults to no gravity (system LtR or RtL)
-            // center
-//            childNode.rect.origin.x = (CGFloat(size.width) / 2) - (childNode.rect.width / 2)
-            
-            // left aligned
-            childNode.rect.origin.x += CGFloat(absoluteLayout.padding.left)
+            switch view.layout.gravity {
+            case .center?:
+                childNode.rect.origin.x = (CGFloat(size.width) / 2) - (childNode.rect.width / 2)
+            case .right?:
+                // TODO: padding/margins?
+                childNode.rect.origin.x = CGFloat(size.width - absoluteLayout.padding.right) - childNode.rect.size.width
+                
+            case .left?,
+                 nil:
+                // TODO: different depending on gravity. Defaults to no gravity (system LtR or RtL)
+                
+                childNode.rect.origin.x += CGFloat(absoluteLayout.padding.left)
+            }
             
             return childNode
         }
