@@ -44,11 +44,11 @@ func render(_ incito: Incito, into containerView: UIView) {
     scroll.addSubview(wrapper)
     
     // build the view hierarchy
-    let rootView = render(incito.rootView.view,
+    let rootView = render(incito.rootView,
                           in: Size(cgSize: containerView.frame.size))
     wrapper.addSubview(rootView)
     
-    print("Subviews: ", rootView.recursiveSubviewCount)
+    print("Subviews: ", rootView.recursiveSubviewCount { $0 is IncitoDebugView })
     
     wrapper.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
@@ -65,17 +65,20 @@ func render(_ incito: Incito, into containerView: UIView) {
 
 func render(_ rootView: View, in parentSize: Size) -> UIView {
     let start = Date.timeIntervalSinceReferenceDate
+    
     // build the layout
     let rootNode = layout(view: rootView, parentLayout: .static, in: parentSize)
+    
     let end = Date.timeIntervalSinceReferenceDate
     print("Building layout \(round((end - start) * 1_000))ms")
+    
     // render the layout - build the UIViews etc
-    let view = render(rootNode)
+    let view = render(rootNode, maxKids: 10)
     
     return view
 }
 
-func render(_ layout: LayoutNode) -> UIView {
+func render(_ layout: LayoutNode, maxKids: Int? = nil) -> UIView {
     
     let view = IncitoDebugView()
     
@@ -89,7 +92,12 @@ func render(_ layout: LayoutNode) -> UIView {
     }
     view.label.text = layout.view.id
     
-    for childNode in layout.children {
+    var children = layout.children
+    if let kidLimit = maxKids {
+        children = Array(children.prefix(kidLimit))
+    }
+    
+    for childNode in children {
         let childView = render(childNode)
         view.addSubview(childView)
     }
@@ -98,8 +106,14 @@ func render(_ layout: LayoutNode) -> UIView {
 }
 
 extension UIView {
-    var recursiveSubviewCount: Int {
-        return subviews.reduce(1) { $0 + $1.recursiveSubviewCount }
+    func recursiveSubviewCount(where predicate: (UIView) -> Bool = { _ in true }) -> Int {
+        return self.subviews.reduce(1) {
+            if predicate($1) {
+                return $0 + $1.recursiveSubviewCount(where: predicate)
+            } else {
+                return $0
+            }
+        }
     }
 }
 

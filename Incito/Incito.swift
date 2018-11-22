@@ -13,7 +13,7 @@ struct Incito {
     typealias Identifier = String // TODO
     var id: Identifier
     var version: String
-    var rootView: IncitoViewType
+    var rootView: View
 
     var locale: String?
     var theme: Theme?
@@ -21,238 +21,86 @@ struct Incito {
     var fontAssets: [FontFamilyName: FontAsset]
 }
 
-extension Incito: Decodable {
-    
-    enum CodingKeys: String, CodingKey {
-        case id, version
-        case rootView = "root_view"
-        case theme, locale, meta
-        case fontAssets = "font_assets"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let c = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.id = try c.decode(.id)
-        self.version = try c.decode(.version)
-        self.rootView = try c.decode(.rootView)
-        
-        self.locale = try c.decodeIfPresent(.locale)
-        self.theme = try c.decodeIfPresent(.theme)
-        self.meta = try c.decodeIfPresent(.meta) ?? [:]
-        self.fontAssets = try c.decodeIfPresent(.fontAssets) ?? [:]
-    }
-}
-
-enum IncitoViewType {
-    case absoluteLayout(properties: ViewProperties)
-    case flexLayout(flex: FlexLayoutProperties, properties: ViewProperties)
-
-    case view(properties: ViewProperties)
-    case textView(text: TextViewProperties, properties: ViewProperties)
-    case fragView(properties: ViewProperties)
-    case imageView(image: ImageViewProperties, properties: ViewProperties)
-    case videoEmbedView(src: String, properties: ViewProperties)
-    case videoView(video: VideoViewProperties, properties: ViewProperties)
-    
-    var viewProperties: ViewProperties {
-        switch self {
-        case let .absoluteLayout(properties): return properties
-        case let .flexLayout(_, properties): return properties
-            
-        case let .view(properties): return properties
-        case let .textView(_, properties): return properties
-        case let .fragView(properties): return properties
-        case let .imageView(_, properties): return properties
-        case let .videoEmbedView(_, properties): return properties
-        case let .videoView(_, properties): return properties
-        }
-    }
-}
-
-extension IncitoViewType: Decodable {
-    enum CodingKeys: CodingKey {
-        case viewName
-        /// This case defines all unknown payload keys.
-        case properties(key: String)
-        
-        var stringValue: String {
-            switch self {
-            case .viewName: return "view_name"
-            case .properties(let key): return key
-            }
-        }
-        init?(stringValue: String) {
-            if stringValue == CodingKeys.viewName.stringValue {
-                self = .viewName
-            } else {
-                self = .properties(key: stringValue)
-            }
-        }
-        
-        var intValue: Int? { return Int(stringValue) }
-        init?(intValue: Int) { self.init(stringValue: "\(intValue)") }
-    }
-    
-    init(from decoder: Decoder) throws {
-        let c = try decoder.container(keyedBy: CodingKeys.self)
-        
-        let propertiesContainer = try decoder.singleValueContainer()
-        let viewProperties = try propertiesContainer.decode(ViewProperties.self)
-        
-        let viewName: String? = try? c.decode(.viewName)
-        
-        switch viewName {
-        case "AbsoluteLayout"?:
-            self = .absoluteLayout(properties: viewProperties)
-        case "FlexLayout"?:
-            let flexProperties = try propertiesContainer.decode(FlexLayoutProperties.self)
-            self = .flexLayout(flex: flexProperties, properties: viewProperties)
-        case "FragView"?:
-            self = .fragView(properties: viewProperties)
-        case "TextView"?:
-            let textProperties = try propertiesContainer.decode(TextViewProperties.self)
-            self = .textView(text: textProperties, properties: viewProperties)
-        case "ImageView"?:
-            let imageProperties = try propertiesContainer.decode(ImageViewProperties.self)
-            self = .imageView(image: imageProperties, properties: viewProperties)
-        case "VideoEmbedView"?:
-            let src: String = try c.decode(.properties(key: "src"))
-            self = .videoEmbedView(src: src, properties: viewProperties)
-        case "VideoView"?:
-            let videoProperties = try propertiesContainer.decode(VideoViewProperties.self)
-            self = .videoView(video: videoProperties, properties: viewProperties)
-        case "View"?,
-             nil:
-            fallthrough
-        default:
-            self = .view(properties: viewProperties)
-        }
-    }
-}
-
-struct ViewProperties {
+struct View {
     typealias Identifier = String // TODO
     var id: Identifier?
+    
+    var type: ViewType
+    var style: StyleProperties
+    
+    var layout: LayoutProperties
+    var children: [View]
+}
+
+enum ViewType {
+    case view
+    case absoluteLayout
+    case text(TextViewProperties)
+    
+    case flexLayout(FlexLayoutProperties)
+    case frag
+    case image(ImageViewProperties)
+    case videoEmbed(src: String)
+    case video(VideoViewProperties)
+}
+
+struct StyleProperties {
+    
     var role: String?
     var meta: [String: JSONValue]
-    var childViews: [IncitoViewType] = []
+    
+    //    var cornerRadius: CornerRadius = .zero
+    //    var shadow: Shadow? = nil
+    //    var stroke: Stroke? = nil
+    //    var transform: Transform? = nil
+    
+    var link: String? // URI
+    var title: String?
+    var clipsChildren: Bool
+    //    var accessibility: Accessibility? = nil
+    
+    var backgroundColor: Color?
+    //    var backgroundImage: BackgroundImage? = nil
+    
+    static let empty = StyleProperties(
+        role: nil,
+        meta: [:],
+        link: nil,
+        title: nil,
+        clipsChildren: true,
+        backgroundColor: nil
+    )
+}
 
-//    var cornerRadius: CornerRadius = .zero
-//    var shadow: Shadow? = nil
-//    var stroke: Stroke? = nil
-//    var transform: Transform? = nil
-//
+struct LayoutProperties {
     var position: Edges<Unit?>
     var padding: UnitEdges
     var margins: UnitEdges
-
+    
     var height: LayoutSize?
     var width: LayoutSize?
     var minHeight: Unit?
     var minWidth: Unit?
     var maxHeight: Unit?
     var maxWidth: Unit?
-
-    var link: String? // URI
-    var title: String?
-    var clipsChildren: Bool
-//    var accessibility: Accessibility? = nil
+    
     var gravity: HorizontalGravity?
-
-    var backgroundColor: Color?
-//    var backgroundImage: BackgroundImage? = nil
+    
+    static let empty = LayoutProperties(
+        position: .init(nil),
+        padding: .zero,
+        margins: .zero,
+        height: nil,
+        width: nil,
+        minHeight: nil,
+        minWidth: nil,
+        maxHeight: nil,
+        maxWidth: nil,
+        gravity: nil
+    )
 }
 
-extension ViewProperties: Decodable {
-    
-    enum CodingKeys: String, CodingKey {
-        case id, role
-        case meta
-        case childViews = "child_views"
-        
-        case height = "layout_height"
-        case width = "layout_width"
-        case minHeight = "min_height"
-        case minWidth = "min_width"
-        case maxHeight = "max_height"
-        case maxWidth = "max_width"
-        
-        case positionTop = "layout_top"
-        case positionLeft = "layout_left"
-        case positionBottom = "layout_bottom"
-        case positionRight = "layout_right"
-        
-        case margin = "layout_margin"
-        case marginTop = "layout_margin_top"
-        case marginBottom = "layout_margin_bottom"
-        case marginLeft = "layout_margin_left"
-        case marginRight = "layout_margin_right"
-        
-        case padding = "padding"
-        case paddingTop = "padding_top"
-        case paddingBottom = "padding_bottom"
-        case paddingLeft = "padding_left"
-        case paddingRight = "padding_right"
-        
-        case link, title
-        case clipsChildren = "clip_children"
-        case gravity
-        case backgroundColor = "background_color"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let c = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.id = try c.decodeIfPresent(.id)
-        self.role = try c.decodeIfPresent(.role)
-        self.meta = (try c.decodeIfPresent(.meta)) ?? [:]
-        
-        do {
-            self.childViews = (try c.decodeIfPresent(.childViews)) ?? []
-        } catch {
-            print("Error", error)
-            self.childViews = []
-        }
-        
-        self.height = try c.decodeIfPresent(.height)
-        self.width = try c.decodeIfPresent(.width)
-        self.minHeight = try c.decodeIfPresent(.minHeight)
-        self.minWidth = try c.decodeIfPresent(.minWidth)
-        self.maxHeight = try c.decodeIfPresent(.maxHeight)
-        self.maxWidth = try c.decodeIfPresent(.maxWidth)
-        
-        self.position = .init(
-            top: try c.decodeIfPresent(.positionTop),
-            left: try c.decodeIfPresent(.positionLeft),
-            bottom: try c.decodeIfPresent(.positionBottom),
-            right: try c.decodeIfPresent(.positionRight)
-        )
-        
-        let baseMargin: Unit = try c.decodeIfPresent(.margin) ?? .pts(0)
-        self.margins = UnitEdges(
-            top: try c.decodeIfPresent(.marginTop) ?? baseMargin,
-            left: try c.decodeIfPresent(.marginLeft) ?? baseMargin,
-            bottom: try c.decodeIfPresent(.marginBottom) ?? baseMargin,
-            right: try c.decodeIfPresent(.marginRight) ?? baseMargin
-        )
-        
-        let basePadding: Unit = try c.decodeIfPresent(.padding) ?? .pts(0)
-        self.padding = UnitEdges(
-            top: try c.decodeIfPresent(.paddingTop) ?? basePadding,
-            left: try c.decodeIfPresent(.paddingLeft) ?? basePadding,
-            bottom: try c.decodeIfPresent(.paddingBottom) ?? basePadding,
-            right: try c.decodeIfPresent(.paddingRight) ?? basePadding
-        )
-        
-        // TODO: all the rest...
-        self.link = try c.decodeIfPresent(.link)
-        self.title = try c.decodeIfPresent(.title)
-        
-        self.clipsChildren = try c.decodeIfPresent(.clipsChildren) ?? true
-        self.backgroundColor = try c.decodeIfPresent(.backgroundColor)
-    }
-}
+// MARK: Subtype properties
 
 struct TextViewProperties {
     
@@ -279,42 +127,6 @@ struct TextViewProperties {
     var lineSpacingMultiplier: Double? // todo: string or number?
     var spans: [Span]
     var maxLines: Int
-    
-}
-
-extension TextViewProperties: Decodable {
-    
-    enum CodingKeys: String, CodingKey {
-        case text
-        case allCaps        = "text_all_caps"
-        case fontFamily     = "font_family"
-        case textColor      = "text_color"
-        case textAlignment  = "text_alignment"
-        case textSize       = "text_size"
-        case fontStretch    = "font_stretch"
-        case textStyle      = "text_style"
-        case preventWidow   = "text_prevent_widow"
-        case lineSpacingMultiplier = "line_spacing_multiplier"
-        case spans
-        case maxLines       = "max_lines"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let c = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.text = try c.decode(.text)
-        self.allCaps = try c.decodeIfPresent(.allCaps) ?? false
-        self.fontFamily = try c.decodeIfPresent(.fontFamily) ?? []
-        self.textColor = try c.decodeIfPresent(.textColor)
-        self.textAlignment = try c.decodeIfPresent(.textAlignment)
-        self.textSize = try c.decodeIfPresent(.textSize)
-        self.fontStretch = try c.decodeIfPresent(.fontStretch)
-        self.textStyle = try c.decodeIfPresent(.textStyle)
-        self.preventWidow = try c.decodeIfPresent(.preventWidow) ?? false
-        self.lineSpacingMultiplier = try c.decodeIfPresent(.lineSpacingMultiplier)
-        self.spans = try c.decodeIfPresent(.spans) ?? []
-        self.maxLines = try c.decodeIfPresent(.maxLines) ?? 1
-    }
 }
 
 struct FlexLayoutProperties: Decodable {
@@ -333,6 +145,7 @@ struct FlexLayoutProperties: Decodable {
         case spaceBetween   = "space-between"
         case spaceAround    = "space-around"
     }
+    
     enum ContentAlignment: String, Decodable {
         case stretch
         case center
@@ -390,70 +203,15 @@ enum Unit {
     case percent(Double)
 }
 
-extension Unit: Decodable {
-    init(from decoder: Decoder) throws {
-        let c = try decoder.singleValueContainer()
-        
-        if let num = try? c.decode(Double.self) {
-            self = .pts(num)
-        } else {
-            let scanner = Scanner(string: try c.decode(String.self))
-            
-            var number: Double = 0
-            if scanner.scanDouble(&number) {
-                if scanner.string.contains("%") {
-                    self = .percent(number / 100)
-                } else {
-                    self = .pts(number)
-                }
-            } else {
-                throw(DecodingError.valueNotFound(
-                    Unit.self,
-                    .init(codingPath: c.codingPath, debugDescription: "Unable to find valid number in Unit string '\(scanner.string)'")
-                ))
-            }
-        }
-    }
-}
-
 enum LayoutSize {
     case unit(Unit)
     case wrapContent
     case matchParent
 }
 
-extension LayoutSize: Decodable {
-    init(from decoder: Decoder) throws {
-        let c = try decoder.singleValueContainer()
-        
-        if let unit = try? c.decode(Unit.self) {
-            self = .unit(unit)
-        } else {
-            let str = try c.decode(String.self)
-            
-            switch str {
-            case "wrap_content":
-                self = .wrapContent
-            case "match_parent":
-                self = .matchParent
-            default:
-                throw(DecodingError.valueNotFound(
-                    LayoutSize.self,
-                    .init(codingPath: c.codingPath, debugDescription: "Unable to find valid LayoutSize from '\(str)'")
-                ))
-            }
-        }
-    }
-}
-
 struct Color {
+    // TODO: support rgba etc.
     var hexVal: String
-}
-extension Color: Decodable {
-    init(from decoder: Decoder) throws {
-        let c = try decoder.singleValueContainer()
-        self.hexVal = try c.decode(String.self)
-    }
 }
 
 typealias FontFamilyName = String
@@ -465,25 +223,7 @@ struct Theme {
     var bgColor: Color?
 }
 
-extension Theme: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case textColor = "text_color"
-        case lineSpacingMultiplier = "line_spacing_multiplier"
-        case fontFamily = "font_family"
-        case bgColor = "background_color"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let c = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.textColor = try c.decodeIfPresent(.textColor)
-        self.lineSpacingMultiplier = try c.decodeIfPresent(.lineSpacingMultiplier) ?? 1
-        self.fontFamily = try c.decodeIfPresent(.fontFamily) ?? []
-        self.bgColor = try c.decodeIfPresent(.bgColor)
-    }
-}
-
-struct FontAsset: Decodable {
+struct FontAsset {
     enum SourceType: String {
         case woff
         case woff2
@@ -496,29 +236,6 @@ struct FontAsset: Decodable {
     var src: [(SourceType, String)]
     var weight: String?
     var style: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case src, weight, style
-    }
-    
-    init(from decoder: Decoder) throws {
-        let c = try decoder.container(keyedBy: CodingKeys.self)
-        
-        let srcArr: [[String]] = try c.decodeIfPresent(.src) ?? []
-        self.src = srcArr.compactMap {
-            guard $0.count == 2,
-                let typeStr = $0.first,
-                let type = SourceType(rawValue: typeStr),
-                let url = $0.last else {
-                    return nil
-            }
-            
-            return (type, url)
-        }
-        
-        self.weight = try c.decodeIfPresent(.weight)
-        self.style = try c.decodeIfPresent(.style)
-    }
 }
 
 typealias CornerRadius = UnitCorners
@@ -565,21 +282,31 @@ extension Edges {
 
 typealias UnitEdges = Edges<Unit>
 extension Edges where Value == Unit {
-    static let zero = UnitEdges(.pts(0))
+    static let zero = Edges(.pts(0))
+}
+extension Edges where Value == Double {
+    static let zero = Edges(0)
 }
 
-struct UnitCorners {
-    var topLeft, topRight, bottomLeft, bottomRight: Unit
+struct Corners<Value> {
+    var topLeft, topRight, bottomLeft, bottomRight: Value
 }
-extension UnitCorners {
-    init(_ unit: Unit) {
-        self.init(topLeft: unit, topRight: unit, bottomLeft: unit, bottomRight: unit)
+
+extension Corners {
+    init(_ val: Value) {
+        self.init(topLeft: val, topRight: val, bottomLeft: val, bottomRight: val)
     }
-    
-    static let zero = UnitCorners(.pts(0))
+}
+typealias UnitCorners = Corners<Unit>
+
+extension Corners where Value == Unit {
+    static let zero = Corners(.pts(0))
+}
+extension Corners where Value == Double {
+    static let zero = Corners(0)
 }
 
-enum HorizontalGravity: String {
+enum HorizontalGravity: String, Decodable {
     case left   = "left_horizontal"
     case center = "center_horizontal"
     case right  = "right_horizontal"

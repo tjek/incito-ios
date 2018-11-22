@@ -25,6 +25,7 @@
 		AE675830219C25CC006BEA9C /* Incito.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67582F219C25CC006BEA9C /* Incito.swift */; };
 		AE675834219C2AD5006BEA9C /* IncitoDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */; };
 		AE806C7B219D7A5100F30B2D /* superbrugsen.json in Resources */ = {isa = PBXBuildFile; fileRef = AE806C7A219D7A5000F30B2D /* superbrugsen.json */; };
+		AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		AE67582F219C25CC006BEA9C /* Incito.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Incito.swift; sourceTree = "<group>"; };
 		AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDecoder.swift; sourceTree = "<group>"; };
 		AE806C7A219D7A5000F30B2D /* superbrugsen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = superbrugsen.json; sourceTree = "<group>"; };
+		AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+Decodable.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				AE67580F219C2592006BEA9C /* AppDelegate.swift */,
 				AE675811219C2592006BEA9C /* ViewController.swift */,
 				AE67582F219C25CC006BEA9C /* Incito.swift */,
+				AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */,
 				AE090AD521A2A0890009159E /* Incito+Layout.swift */,
 				AE40597F21A5C6E000D029AE /* Incito+UIKit.swift */,
 				AE0DDC47219C34570021B1FD /* JSONValue.swift */,
@@ -241,6 +244,7 @@
 				AE675834219C2AD5006BEA9C /* IncitoDecoder.swift in Sources */,
 				AE0DDC4A219CC2AC0021B1FD /* UIColor+Debug.swift in Sources */,
 				AE40598021A5C6E000D029AE /* Incito+UIKit.swift in Sources */,
+				AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */,
 				AE0DDC4E219CC47E0021B1FD /* UIColor_Hex.swift in Sources */,
 				AE675830219C25CC006BEA9C /* Incito.swift in Sources */,
 				AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */,

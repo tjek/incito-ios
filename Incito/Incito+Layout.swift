@@ -9,44 +9,6 @@
 
 import Foundation
 
-enum ViewType {
-    case view
-    case absoluteLayout
-    case text(String)
-}
-
-struct StyleProperties {
-    // ...
-    // cornerRadius etc
-    
-    var backgroundColor: Color?
-}
-
-struct LayoutProperties {
-    var position: Edges<Unit?>
-    var padding: UnitEdges
-    var margins: UnitEdges
-    
-    var height: LayoutSize?
-    var width: LayoutSize?
-    var minHeight: Unit?
-    var minWidth: Unit?
-    var maxHeight: Unit?
-    var maxWidth: Unit?
-    
-    var gravity: HorizontalGravity?
-}
-
-struct View {
-    var type: ViewType
-    var style: StyleProperties
-    
-    var id: String?
-    
-    var layout: LayoutProperties
-    var children: [View]
-}
-
 // MARK: -
 
 struct Point { var x, y: Double }
@@ -66,7 +28,7 @@ extension Rect {
     static let zero = Rect(origin: .zero, size: .zero)
 }
 
-typealias AbsEdges = Edges<Double>
+// MARK: -
 
 extension Unit {
     func absolute(in parent: Double) -> Double {
@@ -115,8 +77,8 @@ extension Edges where Value == Unit? {
 
 struct AbsoluteLayoutProperties {
     var position: Edges<Double?>
-    var margins: AbsEdges
-    var padding: AbsEdges
+    var margins: Edges<Double>
+    var padding: Edges<Double>
 
     var maxWidth: Double
     var minWidth: Double
@@ -166,7 +128,7 @@ func layout(view: View, parentLayout: LayoutType, in parentSize: Size) -> Layout
         return staticLayout(view: view, parentLayout: parentLayout, in: parentSize)
     case .absoluteLayout:
         return absoluteLayout(view: view, parentLayout: parentLayout, in: parentSize)
-    case .text(_):
+    default:
         return staticLayout(view: view, parentLayout: parentLayout, in: parentSize)
     }
 }
@@ -319,7 +281,7 @@ func staticLayout(view: View, parentLayout: LayoutType, in parentSize: Size) -> 
             var childNode = layout(view: childView, parentLayout: .static, in: fittingSize)
             childNode.rect.origin.y += originY
             
-            let childMargins: AbsEdges = childView.layout.margins.absolute(in: fittingSize)
+            let childMargins = childView.layout.margins.absolute(in: fittingSize)
             
             childNodes.append(childNode)
             
@@ -373,57 +335,4 @@ func staticLayout(view: View, parentLayout: LayoutType, in parentSize: Size) -> 
         rect: rect,
         children: childNodes
     )
-}
-
-// MARK: - Debug Mapping
-
-// Quick dummy mapping, until we change the shape of the Incito
-extension IncitoViewType {
-    var view: View {
-        
-        let viewType: ViewType = {
-            switch self {
-            case .view:
-                return .view
-            case .absoluteLayout:
-                return .absoluteLayout
-            case let .textView(textProperties, _):
-                return .text(textProperties.text)
-            default:
-                return .view //TODO
-            }
-        }()
-        
-        let style = StyleProperties(
-            backgroundColor: self.viewProperties.backgroundColor
-        ) // TODO
-        
-        let id = viewProperties.id
-        
-        let layout: LayoutProperties = {
-            let props = self.viewProperties
-            
-            return LayoutProperties(
-                position: props.position,
-                padding: props.padding,
-                margins: props.margins,
-                height: props.height,
-                width: props.width,
-                minHeight: props.minHeight,
-                minWidth: props.minWidth,
-                maxHeight: props.maxHeight,
-                maxWidth: props.minWidth,
-                gravity: props.gravity)
-        }()
-        
-        let children = self.viewProperties.childViews.map({ $0.view })
-        
-        return View(
-            type: viewType,
-            style: style,
-            id: id,
-            layout: layout,
-            children: children
-        )
-    }
 }
