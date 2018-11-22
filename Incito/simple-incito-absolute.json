@@ -8,14 +8,17 @@
     "root_view": {
         "view_name": "AbsoluteLayout",
         "layout_width": 320,
+        "layout_height": 2000,
         "id": "A",
         "padding_left": 5,
         "child_views": [
             {
                 "view_name": "View",
                 "id": "B",
-                "layout_margin_left": 10,
-                "layout_margin_bottom": 10,
+                "layout_bottom": "10%",
+                
+                "layout_height": 100,
+                "layout_width": 100,
                 "padding": 5,
                 "background_color": "#1abc9c"
             },

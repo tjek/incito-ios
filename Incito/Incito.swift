@@ -33,14 +33,14 @@ extension Incito: Decodable {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.id = try c.decode(Identifier.self, forKey: .id)
-        self.version = try c.decode(String.self, forKey: .version)
-        self.rootView = try c.decode(IncitoViewType.self, forKey: .rootView)
+        self.id = try c.decode(.id)
+        self.version = try c.decode(.version)
+        self.rootView = try c.decode(.rootView)
         
-        self.locale = try c.decodeIfPresent(String.self, forKey: .locale)
-        self.theme = try c.decodeIfPresent(Theme.self, forKey: .theme)
-        self.meta = (try c.decodeIfPresent([String: JSONValue].self, forKey: .meta)) ?? [:]
-        self.fontAssets = (try c.decodeIfPresent([FontFamilyName: FontAsset].self, forKey: .fontAssets)) ?? [:]
+        self.locale = try c.decodeIfPresent(.locale)
+        self.theme = try c.decodeIfPresent(.theme)
+        self.meta = try c.decodeIfPresent(.meta) ?? [:]
+        self.fontAssets = try c.decodeIfPresent(.fontAssets) ?? [:]
     }
 }
 
@@ -100,7 +100,7 @@ extension IncitoViewType: Decodable {
         let propertiesContainer = try decoder.singleValueContainer()
         let viewProperties = try propertiesContainer.decode(ViewProperties.self)
         
-        let viewName = try? c.decode(String.self, forKey: .viewName)
+        let viewName: String? = try? c.decode(.viewName)
         
         switch viewName {
         case "AbsoluteLayout"?:
@@ -117,7 +117,7 @@ extension IncitoViewType: Decodable {
             let imageProperties = try propertiesContainer.decode(ImageViewProperties.self)
             self = .imageView(image: imageProperties, properties: viewProperties)
         case "VideoEmbedView"?:
-            let src = try c.decode(String.self, forKey: .properties(key: "src"))
+            let src: String = try c.decode(.properties(key: "src"))
             self = .videoEmbedView(src: src, properties: viewProperties)
         case "VideoView"?:
             let videoProperties = try propertiesContainer.decode(VideoViewProperties.self)
@@ -143,7 +143,7 @@ struct ViewProperties {
 //    var stroke: Stroke? = nil
 //    var transform: Transform? = nil
 //
-    var layout: UnitEdges?
+    var position: Edges<Unit?>
     var padding: UnitEdges
     var margins: UnitEdges
 
@@ -178,6 +178,11 @@ extension ViewProperties: Decodable {
         case maxHeight = "max_height"
         case maxWidth = "max_width"
         
+        case positionTop = "layout_top"
+        case positionLeft = "layout_left"
+        case positionBottom = "layout_bottom"
+        case positionRight = "layout_right"
+        
         case margin = "layout_margin"
         case marginTop = "layout_margin_top"
         case marginBottom = "layout_margin_bottom"
@@ -198,46 +203,54 @@ extension ViewProperties: Decodable {
     
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try c.decodeIfPresent(String.self, forKey: .id)
-        self.role = try c.decodeIfPresent(String.self, forKey: .role)
-        self.meta = (try c.decodeIfPresent([String: JSONValue].self, forKey: .meta)) ?? [:]
+        
+        self.id = try c.decodeIfPresent(.id)
+        self.role = try c.decodeIfPresent(.role)
+        self.meta = (try c.decodeIfPresent(.meta)) ?? [:]
         
         do {
-            self.childViews = (try c.decodeIfPresent([IncitoViewType].self, forKey: .childViews)) ?? []
+            self.childViews = (try c.decodeIfPresent(.childViews)) ?? []
         } catch {
             print("Error", error)
             self.childViews = []
         }
         
-        self.height = try c.decodeIfPresent(LayoutSize.self, forKey: .height)
-        self.width = try c.decodeIfPresent(LayoutSize.self, forKey: .width)
-        self.minHeight = try c.decodeIfPresent(Unit.self, forKey: .minHeight)
-        self.minWidth = try c.decodeIfPresent(Unit.self, forKey: .minWidth)
-        self.maxHeight = try c.decodeIfPresent(Unit.self, forKey: .maxHeight)
-        self.maxWidth = try c.decodeIfPresent(Unit.self, forKey: .maxWidth)
+        self.height = try c.decodeIfPresent(.height)
+        self.width = try c.decodeIfPresent(.width)
+        self.minHeight = try c.decodeIfPresent(.minHeight)
+        self.minWidth = try c.decodeIfPresent(.minWidth)
+        self.maxHeight = try c.decodeIfPresent(.maxHeight)
+        self.maxWidth = try c.decodeIfPresent(.maxWidth)
         
-        let baseMargin = try c.decodeIfPresent(Unit.self, forKey: .margin) ?? .pts(0)
-        self.margins = UnitEdges(
-            top: try c.decodeIfPresent(Unit.self, forKey: .marginTop) ?? baseMargin,
-            left: try c.decodeIfPresent(Unit.self, forKey: .marginLeft) ?? baseMargin,
-            bottom: try c.decodeIfPresent(Unit.self, forKey: .marginBottom) ?? baseMargin,
-            right: try c.decodeIfPresent(Unit.self, forKey: .marginRight) ?? baseMargin
+        self.position = .init(
+            top: try c.decodeIfPresent(.positionTop),
+            left: try c.decodeIfPresent(.positionLeft),
+            bottom: try c.decodeIfPresent(.positionBottom),
+            right: try c.decodeIfPresent(.positionRight)
         )
         
-        let basePadding = try c.decodeIfPresent(Unit.self, forKey: .padding) ?? .pts(0)
+        let baseMargin: Unit = try c.decodeIfPresent(.margin) ?? .pts(0)
+        self.margins = UnitEdges(
+            top: try c.decodeIfPresent(.marginTop) ?? baseMargin,
+            left: try c.decodeIfPresent(.marginLeft) ?? baseMargin,
+            bottom: try c.decodeIfPresent(.marginBottom) ?? baseMargin,
+            right: try c.decodeIfPresent(.marginRight) ?? baseMargin
+        )
+        
+        let basePadding: Unit = try c.decodeIfPresent(.padding) ?? .pts(0)
         self.padding = UnitEdges(
-            top: try c.decodeIfPresent(Unit.self, forKey: .paddingTop) ?? basePadding,
-            left: try c.decodeIfPresent(Unit.self, forKey: .paddingLeft) ?? basePadding,
-            bottom: try c.decodeIfPresent(Unit.self, forKey: .paddingBottom) ?? basePadding,
-            right: try c.decodeIfPresent(Unit.self, forKey: .paddingRight) ?? basePadding
+            top: try c.decodeIfPresent(.paddingTop) ?? basePadding,
+            left: try c.decodeIfPresent(.paddingLeft) ?? basePadding,
+            bottom: try c.decodeIfPresent(.paddingBottom) ?? basePadding,
+            right: try c.decodeIfPresent(.paddingRight) ?? basePadding
         )
         
         // TODO: all the rest...
-        self.link = try c.decodeIfPresent(String.self, forKey: .link)
-        self.title = try c.decodeIfPresent(String.self, forKey: .title)
+        self.link = try c.decodeIfPresent(.link)
+        self.title = try c.decodeIfPresent(.title)
         
-        self.clipsChildren = try c.decodeIfPresent(Bool.self, forKey: .clipsChildren) ?? true
-        self.backgroundColor = try c.decodeIfPresent(Color.self, forKey: .backgroundColor)
+        self.clipsChildren = try c.decodeIfPresent(.clipsChildren) ?? true
+        self.backgroundColor = try c.decodeIfPresent(.backgroundColor)
     }
 }
 
@@ -289,18 +302,18 @@ extension TextViewProperties: Decodable {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.text = try c.decode(String.self, forKey: .text)
-        self.allCaps = (try c.decodeIfPresent(Bool.self, forKey: .allCaps)) ?? false
-        self.fontFamily = (try c.decodeIfPresent([FontFamilyName].self, forKey: .fontFamily)) ?? []
-        self.textColor = (try c.decodeIfPresent(Color.self, forKey: .textColor))
-        self.textAlignment = (try c.decodeIfPresent(String.self, forKey: .textAlignment))
-        self.textSize = (try c.decodeIfPresent(Double.self, forKey: .textSize))
-        self.fontStretch = (try c.decodeIfPresent(String.self, forKey: .fontStretch))
-        self.textStyle = (try c.decodeIfPresent(String.self, forKey: .textStyle))
-        self.preventWidow = (try c.decodeIfPresent(Bool.self, forKey: .preventWidow)) ?? false
-        self.lineSpacingMultiplier = (try c.decodeIfPresent(Double.self, forKey: .lineSpacingMultiplier))
-        self.spans = (try c.decodeIfPresent([Span].self, forKey: .spans)) ?? []
-        self.maxLines = (try c.decodeIfPresent(Int.self, forKey: .maxLines)) ?? 1
+        self.text = try c.decode(.text)
+        self.allCaps = try c.decodeIfPresent(.allCaps) ?? false
+        self.fontFamily = try c.decodeIfPresent(.fontFamily) ?? []
+        self.textColor = try c.decodeIfPresent(.textColor)
+        self.textAlignment = try c.decodeIfPresent(.textAlignment)
+        self.textSize = try c.decodeIfPresent(.textSize)
+        self.fontStretch = try c.decodeIfPresent(.fontStretch)
+        self.textStyle = try c.decodeIfPresent(.textStyle)
+        self.preventWidow = try c.decodeIfPresent(.preventWidow) ?? false
+        self.lineSpacingMultiplier = try c.decodeIfPresent(.lineSpacingMultiplier)
+        self.spans = try c.decodeIfPresent(.spans) ?? []
+        self.maxLines = try c.decodeIfPresent(.maxLines) ?? 1
     }
 }
 
@@ -463,10 +476,10 @@ extension Theme: Decodable {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.textColor = try c.decodeIfPresent(Color.self, forKey: .textColor)
-        self.lineSpacingMultiplier = (try c.decodeIfPresent(Double.self, forKey: .lineSpacingMultiplier)) ?? 1
-        self.fontFamily = (try c.decodeIfPresent([FontFamilyName].self, forKey: .fontFamily)) ?? []
-        self.bgColor = try c.decodeIfPresent(Color.self, forKey: .bgColor)
+        self.textColor = try c.decodeIfPresent(.textColor)
+        self.lineSpacingMultiplier = try c.decodeIfPresent(.lineSpacingMultiplier) ?? 1
+        self.fontFamily = try c.decodeIfPresent(.fontFamily) ?? []
+        self.bgColor = try c.decodeIfPresent(.bgColor)
     }
 }
 
@@ -491,7 +504,7 @@ struct FontAsset: Decodable {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
-        let srcArr = try c.decodeIfPresent([[String]].self, forKey: .src) ?? []
+        let srcArr: [[String]] = try c.decodeIfPresent(.src) ?? []
         self.src = srcArr.compactMap {
             guard $0.count == 2,
                 let typeStr = $0.first,
@@ -503,8 +516,8 @@ struct FontAsset: Decodable {
             return (type, url)
         }
         
-        self.weight = try c.decodeIfPresent(String.self, forKey: .weight)
-        self.style = try c.decodeIfPresent(String.self, forKey: .style)
+        self.weight = try c.decodeIfPresent(.weight)
+        self.style = try c.decodeIfPresent(.style)
     }
 }
 
@@ -539,14 +552,19 @@ struct Transform {
     //    let origin: [String] // seems to more be an tuple of 2 Unit strings? x & y?
 }
 
-struct UnitEdges {
-    var top, left, bottom, right: Unit
+
+struct Edges<Value> {
+    var top, left, bottom, right: Value
 }
-extension UnitEdges {
-    init(_ unit: Unit) {
-        self.init(top: unit, left: unit, bottom: unit, right: unit)
+
+extension Edges {
+    init(_ val: Value) {
+        self.init(top: val, left: val, bottom: val, right: val)
     }
-    
+}
+
+typealias UnitEdges = Edges<Unit>
+extension Edges where Value == Unit {
     static let zero = UnitEdges(.pts(0))
 }
 

@@ -10,8 +10,8 @@ import UIKit
 
 class IncitoViewController: UIViewController {
     
-//    var incito: Incito = decodeIncito("superbrugsen.json")
-    var incito: Incito = decodeIncito("simple-incito-static.json")
+    var incito: Incito = decodeIncito("superbrugsen.json")
+//    var incito: Incito = decodeIncito("simple-incito-absolute.json")
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -31,9 +31,13 @@ class IncitoViewController: UIViewController {
 //
 //
 //        let incitoView = render(incito)
-//
-        render(self.incito, into: self.view)
+        let incito = self.incito
         
+        let start = Date.timeIntervalSinceReferenceDate
+        render(incito, into: self.view)
+        let end = Date.timeIntervalSinceReferenceDate
+        print("Building Views \(round((end - start) * 1_000))ms")
+
 //        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "IncitoCell")
     }
 

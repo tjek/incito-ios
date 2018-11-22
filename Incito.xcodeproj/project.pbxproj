@@ -15,6 +15,7 @@
 		AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */ = {isa = PBXBuildFile; fileRef = AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */; };
 		AE40597E21A5A3A300D029AE /* simple-incito-static.json in Resources */ = {isa = PBXBuildFile; fileRef = AE40597D21A5A3A300D029AE /* simple-incito-static.json */; };
 		AE40598021A5C6E000D029AE /* Incito+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE40597F21A5C6E000D029AE /* Incito+UIKit.swift */; };
+		AE40598221A6A52500D029AE /* DecodingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE40598121A6A52500D029AE /* DecodingHelpers.swift */; };
 		AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67580F219C2592006BEA9C /* AppDelegate.swift */; };
 		AE675812219C2592006BEA9C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675811219C2592006BEA9C /* ViewController.swift */; };
 		AE675815219C2592006BEA9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675813219C2592006BEA9C /* Main.storyboard */; };
@@ -45,6 +46,7 @@
 		AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-absolute.json"; sourceTree = "<group>"; };
 		AE40597D21A5A3A300D029AE /* simple-incito-static.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-static.json"; sourceTree = "<group>"; };
 		AE40597F21A5C6E000D029AE /* Incito+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+UIKit.swift"; sourceTree = "<group>"; };
+		AE40598121A6A52500D029AE /* DecodingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodingHelpers.swift; sourceTree = "<group>"; };
 		AE67580C219C2592006BEA9C /* Incito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Incito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE67580F219C2592006BEA9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE675811219C2592006BEA9C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */,
 				AE0DDC4D219CC47E0021B1FD /* UIColor_Hex.swift */,
 				AE0DDC4F219CCAFD0021B1FD /* AutoLayoutHelpers.swift */,
+				AE40598121A6A52500D029AE /* DecodingHelpers.swift */,
 				AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */,
 				AE806C7A219D7A5000F30B2D /* superbrugsen.json */,
 				AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */,
@@ -243,6 +246,7 @@
 				AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */,
 				AE090AD621A2A0890009159E /* Incito+Layout.swift in Sources */,
 				AE0DDC50219CCAFD0021B1FD /* AutoLayoutHelpers.swift in Sources */,
+				AE40598221A6A52500D029AE /* DecodingHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
