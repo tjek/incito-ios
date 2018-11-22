@@ -44,8 +44,8 @@ func render(_ incito: Incito, into containerView: UIView) {
     scroll.addSubview(wrapper)
     
     // build the view hierarchy
-    let rootView = render(incito.rootView.view, in: (width: Double(containerView.frame.size.width),
-                                                     height: Double(containerView.frame.size.height)))
+    let rootView = render(incito.rootView.view,
+                          in: Size(cgSize: containerView.frame.size))
     wrapper.addSubview(rootView)
     
     print("Subviews: ", rootView.recursiveSubviewCount)
@@ -60,7 +60,7 @@ func render(_ incito: Incito, into containerView: UIView) {
         
         wrapper.heightAnchor.constraint(equalToConstant: rootView.frame.size.height),
         wrapper.widthAnchor.constraint(equalToConstant: rootView.frame.size.width)
-        ])    
+        ])
 }
 
 func render(_ rootView: View, in parentSize: Size) -> UIView {
@@ -79,7 +79,7 @@ func render(_ layout: LayoutNode) -> UIView {
     
     let view = IncitoDebugView()
     
-    view.frame = layout.rect
+    view.frame = layout.rect.cgRect
     
     // apply the layout.view properties
     view.backgroundColor = layout.view.style.backgroundColor?.uiColor // ?? UIColor.debug
@@ -106,6 +106,33 @@ extension UIView {
 extension Color {
     var uiColor: UIColor {
         return UIColor(hex: self.hexVal) ?? .clear
+    }
+}
+
+extension Point {
+    init(cgPoint: CGPoint) {
+        self.init(x: Double(cgPoint.x), y: Double(cgPoint.y))
+    }
+    var cgPoint: CGPoint {
+        return CGPoint(x: x, y: y)
+    }
+}
+
+extension Size {
+    init(cgSize: CGSize) {
+        self.init(width: Double(cgSize.width), height: Double(cgSize.height))
+    }
+    var cgSize: CGSize {
+        return CGSize(width: width, height: height)
+    }
+}
+extension Rect {
+    init(cgRect: CGRect) {
+        self.init(origin: Point(cgPoint: cgRect.origin),
+                  size: Size(cgSize: cgRect.size))
+    }
+    var cgRect: CGRect {
+        return CGRect(x: origin.x, y: origin.y, width: size.width, height: size.height)
     }
 }
 
