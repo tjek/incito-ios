@@ -179,11 +179,15 @@ extension LayoutProperties: Decodable {
 extension StyleProperties: Decodable {
 
     enum CodingKeys: String, CodingKey {
-        case role
-        case meta
-        case link, title
+        case role, meta, link, title
         case clipsChildren = "clip_children"
         case backgroundColor = "background_color"
+        
+        case cornerRadius = "corner_radius"
+        case cornerRadiusTopLeft = "corner_top_left_radius"
+        case cornerRadiusTopRight = "corner_top_right_radius"
+        case cornerRadiusBottomLeft = "corner_bottom_left_radius"
+        case cornerRadiusBottomRight = "corner_bottom_right_radius"
         // TODO: all the rest...
     }
     
@@ -198,6 +202,14 @@ extension StyleProperties: Decodable {
         
         self.clipsChildren = try c.decodeIfPresent(.clipsChildren) ?? true
         self.backgroundColor = try c.decodeIfPresent(.backgroundColor)
+        
+        let baseCornerRadius: Unit = try c.decodeIfPresent(.cornerRadius) ?? .pts(0)
+        self.cornerRadius = Corners<Unit>(
+            topLeft: try c.decodeIfPresent(.cornerRadiusTopLeft) ?? baseCornerRadius,
+            topRight: try c.decodeIfPresent(.cornerRadiusTopRight) ?? baseCornerRadius,
+            bottomLeft: try c.decodeIfPresent(.cornerRadiusBottomLeft) ?? baseCornerRadius,
+            bottomRight: try c.decodeIfPresent(.cornerRadiusBottomRight) ?? baseCornerRadius
+        )
         
         // TODO: all the rest...
     }
@@ -234,7 +246,7 @@ extension TextViewProperties: Decodable {
         self.preventWidow = try c.decodeIfPresent(.preventWidow) ?? false
         self.lineSpacingMultiplier = try c.decodeIfPresent(.lineSpacingMultiplier)
         self.spans = try c.decodeIfPresent(.spans) ?? []
-        self.maxLines = try c.decodeIfPresent(.maxLines) ?? 1
+        self.maxLines = try c.decodeIfPresent(.maxLines) ?? 0
     }
 }
 

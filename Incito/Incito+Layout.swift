@@ -75,6 +75,17 @@ extension Edges where Value == Unit? {
     }
 }
 
+extension Corners where Value == Unit {
+    func absolute(in parent: Double) -> Corners<Double> {
+        return .init(
+            topLeft: topLeft.absolute(in: parent),
+            topRight: topRight.absolute(in: parent),
+            bottomLeft: bottomLeft.absolute(in: parent),
+            bottomRight: bottomRight.absolute(in: parent)
+        )
+    }
+}
+
 struct AbsoluteLayoutProperties {
     var position: Edges<Double?>
     var margins: Edges<Double>
@@ -210,7 +221,11 @@ func staticLayout(view: View, parentLayout: LayoutType, in parentSize: Size) -> 
         // no children: get the intrinsic content size
         
         // TODO: build intrinsicSize from the view-type itself
-        let contentSize = Size.zero
+        let constraintSize = Size(
+            width: (absoluteLayout.width ?? parentSize.width) - absoluteLayout.padding.left - absoluteLayout.padding.right,
+            height: (absoluteLayout.height ?? parentSize.height) - absoluteLayout.padding.top - absoluteLayout.padding.bottom
+        )
+        let contentSize = view.type.intrinsicSize(in: constraintSize)
         
         let intrinsicSize: Size
 //        let defaultHeight: Double = 30 // the height of a view that doesnt have any intrinsic height
@@ -336,3 +351,39 @@ func staticLayout(view: View, parentLayout: LayoutType, in parentSize: Size) -> 
         children: childNodes
     )
 }
+
+extension ViewType {
+    func intrinsicSize(in constraintSize: Size) -> Size {
+        switch self {
+        case let .text(text):
+            return sizeForText(text, maxWidth: constraintSize.width)
+        default:
+            return .zero
+        }
+    }
+}
+
+#if os(iOS)
+import UIKit
+func sizeForText(_ textProperties: TextViewProperties, maxWidth: Double) -> Size {
+    
+    let font = textProperties.font()
+    
+    let string = textProperties.text
+    
+    let boundingBox = string.boundingRect(
+        with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
+        options: .usesLineFragmentOrigin,
+        attributes: [.font: font],
+        context: nil)
+    
+    return Size(
+        width: ceil(Double(boundingBox.size.width)),
+        height: ceil(Double(boundingBox.size.height))
+    )
+}
+#else
+func sizeForText(_ textProperties: TextViewProperties, maxWidth: Double) -> Size {
+    #error("sizeForText not implemented")
+}
+#endif

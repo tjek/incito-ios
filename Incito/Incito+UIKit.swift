@@ -79,18 +79,20 @@ func render(_ rootView: View, in parentSize: Size) -> UIView {
 }
 
 func render(_ layout: LayoutNode, maxKids: Int? = nil) -> UIView {
+    let view: UIView
     
-    let view = IncitoDebugView()
+    switch layout.view.type {
+    case let .text(textProperties):
+        view = renderTextView(textProperties, styleProperties: layout.view.style)
+    default:
+        let dbgView = IncitoDebugView()
+        dbgView.label.text = layout.view.id
+        view = dbgView
+    }
     
     view.frame = layout.rect.cgRect
     
-    // apply the layout.view properties
-    view.backgroundColor = layout.view.style.backgroundColor?.uiColor // ?? UIColor.debug
-    if view.backgroundColor == nil {
-        view.layer.borderColor = UIColor.debug.cgColor
-        view.layer.borderWidth = 1
-    }
-    view.label.text = layout.view.id
+    view.apply(styleProperties: layout.view.style)
     
     var children = layout.children
     if let kidLimit = maxKids {
@@ -167,5 +169,49 @@ class IncitoDebugView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+func renderTextView(_ textProperties: TextViewProperties, styleProperties: StyleProperties) -> UIView {
+    let label = UILabel()
+    
+    var string = textProperties.text
+    if textProperties.allCaps {
+        string = string.uppercased()
+    }
+    
+    label.text = string
+    label.numberOfLines = textProperties.maxLines
+    label.textColor = textProperties.textColor?.uiColor ?? .black
+    label.font = textProperties.font()
+    label.textAlignment = .center
+    return label
+}
+
+extension TextViewProperties {
+    func font() -> UIFont {
+        // TODO: a font-provider (the using the webfont loader), from which a font can be selected using the fontFamilyName.
+
+        // TODO: what is the default fontSize?
+        let fontSize = CGFloat(ceil(self.textSize ?? 16))
+        return UIFont.boldSystemFont(ofSize: fontSize)
+    }
+}
+
+extension UIView {
+    func apply(styleProperties style: StyleProperties) {
+        
+        // apply the layout.view properties
+        backgroundColor = style.backgroundColor?.uiColor ?? .clear
+        clipsToBounds = style.clipsChildren
+        
+        // Use the smallest dimension when calculating relative corners.
+        let cornerRadius = style.cornerRadius.absolute(in: Double(min(frame.size.width, frame.size.height) / 2))
+        roundCorners(
+            topLeft: CGFloat(cornerRadius.topLeft),
+            topRight: CGFloat(cornerRadius.topRight),
+            bottomLeft: CGFloat(cornerRadius.bottomLeft),
+            bottomRight: CGFloat(cornerRadius.bottomRight)
+        )
     }
 }

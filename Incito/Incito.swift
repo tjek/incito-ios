@@ -36,7 +36,6 @@ enum ViewType {
     case view
     case absoluteLayout
     case text(TextViewProperties)
-    
     case flexLayout(FlexLayoutProperties)
     case frag
     case image(ImageViewProperties)
@@ -49,7 +48,7 @@ struct StyleProperties {
     var role: String?
     var meta: [String: JSONValue]
     
-    //    var cornerRadius: CornerRadius = .zero
+    var cornerRadius: Corners<Unit>
     //    var shadow: Shadow? = nil
     //    var stroke: Stroke? = nil
     //    var transform: Transform? = nil
@@ -65,6 +64,7 @@ struct StyleProperties {
     static let empty = StyleProperties(
         role: nil,
         meta: [:],
+        cornerRadius: .zero,
         link: nil,
         title: nil,
         clipsChildren: true,
@@ -237,8 +237,6 @@ struct FontAsset {
     var weight: String?
     var style: String?
 }
-
-typealias CornerRadius = UnitCorners
 
 struct Shadow {
     var color: Color
