@@ -9,21 +9,6 @@
 
 import UIKit
 
-class IncitoWrapper: UIView {
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//
-//        guard let root = self.subviews.first else { return }
-//
-//        var frm = root.frame
-//
-//        // center
-//        frm.origin.x = bounds.midX - (frm.width / 2)
-//
-//        root.frame = frm
-//    }
-}
-
 func render(_ incito: Incito, into containerView: UIView) {
     
     let scroll = UIScrollView()
@@ -39,16 +24,17 @@ func render(_ incito: Incito, into containerView: UIView) {
     
     
     // put inside a wrapper
-    let wrapper = IncitoWrapper()
-    
+    let wrapper = UIView()
     scroll.addSubview(wrapper)
+    
+    scroll.backgroundColor = incito.theme?.bgColor?.uiColor ?? .white
     
     // build the view hierarchy
     let rootView = render(incito.rootView,
                           in: Size(cgSize: containerView.frame.size))
     wrapper.addSubview(rootView)
     
-    print("Subviews: ", rootView.recursiveSubviewCount { $0 is IncitoDebugView })
+    print("Subviews: ", rootView.recursiveSubviewCount())
     
     wrapper.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
@@ -73,7 +59,7 @@ func render(_ rootView: View, in parentSize: Size) -> UIView {
     print("Building layout \(round((end - start) * 1_000))ms")
     
     // render the layout - build the UIViews etc
-    let view = render(rootNode, maxKids: 10)
+    let view = render(rootNode, maxKids: 2)
     
     return view
 }
