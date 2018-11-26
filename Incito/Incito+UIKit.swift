@@ -28,6 +28,7 @@ func render(_ incito: Incito, into containerView: UIView) {
     scroll.addSubview(wrapper)
     
     scroll.backgroundColor = incito.theme?.bgColor?.uiColor ?? .white
+    wrapper.backgroundColor = incito.theme?.bgColor?.uiColor ?? .white
     
     // build the view hierarchy
     let rootView = render(incito.rootView,
@@ -78,7 +79,8 @@ func render(_ layout: LayoutNode, maxKids: Int? = nil) -> UIView {
     
     view.frame = layout.rect.cgRect
     
-    view.apply(styleProperties: layout.view.style)
+    // must be called after frame otherwise round-rect clipping path is not sized properly
+    view.apply(styleProperties: layout.view.style, in: layout.rect)
     
     var children = layout.children
     if let kidLimit = maxKids {
@@ -144,13 +146,13 @@ class IncitoDebugView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(label)
-        
-        label.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-            ])
+//        addSubview(label)
+//
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+//            label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+//            ])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -185,19 +187,22 @@ extension TextViewProperties {
 }
 
 extension UIView {
-    func apply(styleProperties style: StyleProperties) {
+    func apply(styleProperties style: StyleProperties, in rect: Rect) {
         
         // apply the layout.view properties
         backgroundColor = style.backgroundColor?.uiColor ?? .clear
         clipsToBounds = style.clipsChildren
         
         // Use the smallest dimension when calculating relative corners.
-        let cornerRadius = style.cornerRadius.absolute(in: Double(min(frame.size.width, frame.size.height) / 2))
-        roundCorners(
-            topLeft: CGFloat(cornerRadius.topLeft),
-            topRight: CGFloat(cornerRadius.topRight),
-            bottomLeft: CGFloat(cornerRadius.bottomLeft),
-            bottomRight: CGFloat(cornerRadius.bottomRight)
-        )
+        let cornerRadius = style.cornerRadius.absolute(in: min(rect.size.width, rect.size.height) / 2)
+        
+        if cornerRadius != Corners<Double>.zero {
+            roundCorners(
+                topLeft: CGFloat(cornerRadius.topLeft),
+                topRight: CGFloat(cornerRadius.topRight),
+                bottomLeft: CGFloat(cornerRadius.bottomLeft),
+                bottomRight: CGFloat(cornerRadius.bottomRight)
+            )
+        }
     }
 }
