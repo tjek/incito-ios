@@ -333,11 +333,12 @@ extension FontAsset: Decodable {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         let srcArr: [[String]] = try c.decodeIfPresent(.src) ?? []
-        self.src = srcArr.compactMap {
+        self.sources = srcArr.compactMap {
             guard $0.count == 2,
                 let typeStr = $0.first,
                 let type = SourceType(rawValue: typeStr),
-                let url = $0.last else {
+                let urlStr = $0.last,
+                let url = URL(string: urlStr) else {
                     return nil
             }
             
@@ -345,6 +346,26 @@ extension FontAsset: Decodable {
         }
         
         self.weight = try c.decodeIfPresent(.weight)
-        self.style = try c.decodeIfPresent(.style)
+        
+        self.style = try c.decodeIfPresent(.style) ?? .normal
+    }
+}
+
+extension TextStyle: Decodable {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.singleValueContainer()
+        
+        let name = (try? c.decode(String.self)) ?? ""
+        
+        if let type = TextStyle.init(rawValue: name) {
+            self = type
+        } else {
+            let names = name.split(separator: "|")
+            if Set(names) == Set(["bold", "italic"]) {
+                self = .boldItalic
+            } else {
+                self = .normal
+            }
+        }
     }
 }

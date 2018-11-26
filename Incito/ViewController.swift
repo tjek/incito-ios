@@ -10,7 +10,8 @@ import UIKit
 
 class IncitoViewController: UIViewController {
     
-    var incito: Incito = decodeIncito("superbrugsen.json")
+    var incito: Incito = decodeIncito("incito-fakta.json")
+//    var incito: Incito = decodeIncito("incito-superbrugsen.json")
 //    var incito: Incito = decodeIncito("simple-incito-absolute.json")
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,12 +32,36 @@ class IncitoViewController: UIViewController {
 //
 //
 //        let incitoView = render(incito)
+        
         let incito = self.incito
         
-        let start = Date.timeIntervalSinceReferenceDate
-        render(incito, into: self.view)
-        let end = Date.timeIntervalSinceReferenceDate
-        print("Building Views \(round((end - start) * 1_000))ms")
+        let startFontLoad = Date.timeIntervalSinceReferenceDate
+
+        FontAssetLoader.fontAssetLoader()
+            .loadAndRegisterFontAssets(incito.fontAssets) { (loadedAssets) in
+                let endFontLoad = Date.timeIntervalSinceReferenceDate
+                print("\(loadedAssets.count) Fonts Loaded \(round((endFontLoad - startFontLoad) * 1_000))ms")
+
+                loadedAssets.forEach { asset in
+                    print("✅ \(asset.assetName): \(asset.fontName)")
+                    print(" -> ", asset.font(size: 100)!)
+                }
+                
+                let startRender = Date.timeIntervalSinceReferenceDate
+                render(
+                    incito,
+                    fontLoader: {
+                        loadedAssets.font(
+                            forFamily: $0 + (incito.theme?.fontFamily ?? []),
+                            size: $1)
+                },
+                    into: self.view
+                )
+                let endRender = Date.timeIntervalSinceReferenceDate
+                print("Building Views \(round((endRender - startRender) * 1_000))ms")
+        }
+        
+        
 
 //        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "IncitoCell")
     }

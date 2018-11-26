@@ -18,7 +18,7 @@ struct Incito {
     var locale: String?
     var theme: Theme?
     var meta: [String: JSONValue]
-    var fontAssets: [FontFamilyName: FontAsset]
+    var fontAssets: [FontAssetName: FontAsset]
 }
 
 struct View {
@@ -116,12 +116,12 @@ struct TextViewProperties {
     var text: String
     
     var allCaps: Bool
-    var fontFamily: [FontFamilyName]
+    var fontFamily: FontFamily
     var textColor: Color?
     var textAlignment: String? // todo: what?
     var textSize: Double?
     var fontStretch: String? // todo: what?
-    var textStyle: String? // todo: what?
+    var textStyle: TextStyle?
     var preventWidow: Bool
     var lineSpacingMultiplier: Double? // todo: string or number?
     var spans: [Span]
@@ -197,6 +197,9 @@ struct VideoViewProperties: Decodable {
 // Definitions //
 /////////////////
 
+typealias FontAssetName = String
+typealias FontFamily = [FontAssetName]
+
 enum Unit {
     case pts(Double)
     case percent(Double)
@@ -213,28 +216,36 @@ struct Color {
     var hexVal: String
 }
 
-typealias FontFamilyName = String
-
 struct Theme {
     var textColor: Color?
     var lineSpacingMultiplier: Double
-    var fontFamily: [FontFamilyName]
+    var fontFamily: FontFamily
+    
     var bgColor: Color?
 }
 
 struct FontAsset {
+    typealias FontSource = (SourceType, URL)
+    
     enum SourceType: String {
-        case woff
         case woff2
+        case woff
         case truetype
-        case svg
         case opentype
+        case svg
         case embeddedOpentype = "embedded-opentype"
     }
     
-    var src: [(SourceType, String)]
+    var sources: [FontSource]
     var weight: String?
-    var style: String?
+    var style: TextStyle
+}
+
+enum TextStyle: String {
+    case normal
+    case bold
+    case italic
+    case boldItalic
 }
 
 struct Shadow {
@@ -271,6 +282,14 @@ struct Edges<Value> {
     var top, left, bottom, right: Value
 }
 
+extension Edges: Equatable where Value: Equatable {
+    static func == (lhs: Edges<Value>, rhs: Edges<Value>) -> Bool {
+        return lhs.top == rhs.top
+            && lhs.left == rhs.left
+            && lhs.bottom == rhs.bottom
+            && lhs.right == rhs.right
+    }
+}
 extension Edges {
     init(_ val: Value) {
         self.init(top: val, left: val, bottom: val, right: val)
@@ -287,6 +306,15 @@ extension Edges where Value == Double {
 
 struct Corners<Value> {
     var topLeft, topRight, bottomLeft, bottomRight: Value
+}
+
+extension Corners: Equatable where Value: Equatable {
+    static func == (lhs: Corners<Value>, rhs: Corners<Value>) -> Bool {
+        return lhs.topLeft == rhs.topLeft
+            && lhs.topRight == rhs.topRight
+            && lhs.bottomLeft == rhs.bottomLeft
+            && lhs.bottomRight == rhs.bottomRight
+    }
 }
 
 extension Corners {

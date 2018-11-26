@@ -9,7 +9,14 @@
 
 import UIKit
 
-func render(_ incito: Incito, into containerView: UIView) {
+
+
+//struct IncitoRenderer {
+//    // given a font family and a size it returns a UIFont
+//    var fontProvider: (FontFamily, CGFloat) -> UIFont
+//}
+
+func render(_ incito: Incito, fontLoader: (FontFamily, CGFloat) -> UIFont, into containerView: UIView) {
     
     let scroll = UIScrollView()
     
@@ -32,6 +39,7 @@ func render(_ incito: Incito, into containerView: UIView) {
     
     // build the view hierarchy
     let rootView = render(incito.rootView,
+                          fontLoader: fontLoader,
                           in: Size(cgSize: containerView.frame.size))
     wrapper.addSubview(rootView)
     
@@ -50,7 +58,7 @@ func render(_ incito: Incito, into containerView: UIView) {
         ])
 }
 
-func render(_ rootView: View, in parentSize: Size) -> UIView {
+func render(_ rootView: View, fontLoader: (FontFamily, CGFloat) -> UIFont, in parentSize: Size) -> UIView {
     let start = Date.timeIntervalSinceReferenceDate
     
     // build the layout
@@ -60,20 +68,27 @@ func render(_ rootView: View, in parentSize: Size) -> UIView {
     print("Building layout \(round((end - start) * 1_000))ms")
     
     // render the layout - build the UIViews etc
-    let view = render(rootNode, maxKids: 2)
+    let view = render(rootNode, fontLoader: fontLoader, maxKids: nil)
     
     return view
 }
 
-func render(_ layout: LayoutNode, maxKids: Int? = nil) -> UIView {
+func render(_ layout: LayoutNode, fontLoader: (FontFamily, CGFloat) -> UIFont, maxKids: Int? = nil) -> UIView {
     let view: UIView
     
     switch layout.view.type {
     case let .text(textProperties):
-        view = renderTextView(textProperties, styleProperties: layout.view.style)
+        view = renderTextView(textProperties, styleProperties: layout.view.style, fontLoader: fontLoader, in: layout.rect)
+    case .view:
+        view = renderPassthruView(styleProperties: layout.view.style, in: layout.rect)
+    case .absoluteLayout:
+        view = renderPassthruView(styleProperties: layout.view.style, in: layout.rect)
+    case .flexLayout:
+        view = renderPassthruView(styleProperties: layout.view.style, in: layout.rect)
     default:
         let dbgView = IncitoDebugView()
-        dbgView.label.text = layout.view.id
+        dbgView.isHidden = true
+//        dbgView.label.text = layout.view.id
         view = dbgView
     }
     
@@ -88,7 +103,7 @@ func render(_ layout: LayoutNode, maxKids: Int? = nil) -> UIView {
     }
     
     for childNode in children {
-        let childView = render(childNode)
+        let childView = render(childNode, fontLoader: fontLoader)
         view.addSubview(childView)
     }
     
@@ -159,8 +174,14 @@ class IncitoDebugView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+func renderPassthruView(styleProperties: StyleProperties, in rect: Rect) -> UIView {
+    let view = UIView()
+    
+    
+    return view
+}
 
-func renderTextView(_ textProperties: TextViewProperties, styleProperties: StyleProperties) -> UIView {
+func renderTextView(_ textProperties: TextViewProperties, styleProperties: StyleProperties, fontLoader: (FontFamily, CGFloat) -> UIFont, in rect: Rect) -> UIView {
     let label = UILabel()
     
     var string = textProperties.text
@@ -171,8 +192,11 @@ func renderTextView(_ textProperties: TextViewProperties, styleProperties: Style
     label.text = string
     label.numberOfLines = textProperties.maxLines
     label.textColor = textProperties.textColor?.uiColor ?? .black
-    label.font = textProperties.font()
+    label.font = fontLoader(textProperties.fontFamily, CGFloat(ceil(textProperties.textSize ?? 16)))
     label.textAlignment = .center
+    
+    label.backgroundColor = .clear
+    
     return label
 }
 
