@@ -10,9 +10,9 @@ import UIKit
 
 class IncitoViewController: UIViewController {
     
-    var incito: Incito = decodeIncito("incito-fakta-375.json")
+//    var incito: Incito = decodeIncito("incito-fakta-375.json")
 //    var incito: Incito = decodeIncito("incito-fakta-1200.json")
-//    var incito: Incito = decodeIncito("incito-superbrugsen-375.json")
+    var incito: Incito = decodeIncito("incito-superbrugsen-375.json")
 //    var incito: Incito = decodeIncito("incito-superbrugsen-1200.json")
     
     override func viewDidLoad() {
@@ -36,6 +36,7 @@ class IncitoViewController: UIViewController {
                 
                 let renderer = IncitoRenderer(
                     fontProvider: loadedAssets.font(forFamily:size:),
+                    imageLoader: loadImage(url:completion:),
                     theme: incito.theme
                 )
                 

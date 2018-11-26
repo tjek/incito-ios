@@ -113,12 +113,18 @@ struct TextViewProperties {
         var end: Int
     }
     
+    enum TextAlignment: String, Decodable {
+        case left
+        case right
+        case center
+    }
+    
     var text: String
     
     var allCaps: Bool
     var fontFamily: FontFamily
     var textColor: Color?
-    var textAlignment: String? // todo: what?
+    var textAlignment: TextAlignment?
     var textSize: Double?
     var fontStretch: String? // todo: what?
     var textStyle: TextStyle?
@@ -177,7 +183,7 @@ struct FlexLayoutProperties: Decodable {
 }
 
 struct ImageViewProperties: Decodable {
-    var source: String // URI
+    var source: URL // URI
     var caption: String?
     
     enum CodingKeys: String, CodingKey {

@@ -32,6 +32,7 @@
 		AE94AD8D21AC36EF00876ED6 /* incito-superbrugsen-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen-375.json */; };
 		AE94AD8F21AC889A00876ED6 /* incito-superbrugsen-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */; };
 		AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */; };
+		AE94AD9321AC97AE00876ED6 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-375.json"; sourceTree = "<group>"; };
 		AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-1200.json"; sourceTree = "<group>"; };
 		AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-1200.json"; sourceTree = "<group>"; };
+		AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */,
 				AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */,
 				AE40597F21A5C6E000D029AE /* Incito+UIKit.swift */,
+				AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */,
 				AE0DDC47219C34570021B1FD /* JSONValue.swift */,
 				AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */,
 				AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */,
@@ -266,6 +269,7 @@
 				AE94AD8321AC12CF00876ED6 /* FontAssetLoader.swift in Sources */,
 				AE675834219C2AD5006BEA9C /* IncitoDecoder.swift in Sources */,
 				AE0DDC4A219CC2AC0021B1FD /* UIColor+Debug.swift in Sources */,
+				AE94AD9321AC97AE00876ED6 /* ImageLoader.swift in Sources */,
 				AE40598021A5C6E000D029AE /* Incito+UIKit.swift in Sources */,
 				AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */,
 				AE0DDC4E219CC47E0021B1FD /* UIColor_Hex.swift in Sources */,

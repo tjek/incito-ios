@@ -11,17 +11,24 @@ import UIKit
 
 #if os(iOS)
 typealias Font = UIFont
+typealias Image = UIImage
 #else
 //typealias Font = NSFont
 #endif
 
 /// Given a FontFamily and a size, it will return a font
 typealias FontProvider = (FontFamily, Double) -> Font
+typealias ImageLoader = (URL, @escaping (Image?) -> Void) -> Void
 
 // The context of the renderer
 struct IncitoRenderer {
-    // given a font family and a size it returns a UIFont
+    /// given a font family and a size it returns a Font
     var fontProvider: FontProvider
+    /// given an image URL it returns the image in a completion handler.
+    // TODO: way to cancel image loads?
+    var imageLoader: ImageLoader
+    
+    // TODO: not like this.
     var theme: Theme?
 }
 
@@ -87,6 +94,8 @@ func render(_ layout: LayoutNode, renderer: IncitoRenderer, maxKids: Int? = nil)
     switch layout.view.type {
     case let .text(textProperties):
         view = renderTextView(textProperties, styleProperties: layout.view.style, renderer: renderer, in: layout.rect)
+    case let .image(imageProperties):
+        view = renderImageView(imageProperties, styleProperties: layout.view.style, renderer: renderer, in: layout.rect)
     case .view:
         view = renderPassthruView(styleProperties: layout.view.style, in: layout.rect)
     case .absoluteLayout:
@@ -200,22 +209,33 @@ func renderTextView(_ textProperties: TextViewProperties, styleProperties: Style
     
     label.attributedText = attributedString
     label.numberOfLines = textProperties.maxLines
-    label.textAlignment = .center
+    
+    
+    label.textAlignment = {
+        switch (textProperties.textAlignment ?? .left) {
+        case .left: return .left
+        case .right: return .right
+        case .center: return .center
+        }
+    }()
     
     label.backgroundColor = .clear
     
     return label
 }
 
-//extension TextViewProperties {
-//    func font() -> UIFont {
-//        // TODO: a font-provider (the using the webfont loader), from which a font can be selected using the fontFamilyName.
-//
-//        // TODO: what is the default fontSize?
-//        let fontSize = CGFloat(ceil(self.textSize ?? 16))
-//        return UIFont.boldSystemFont(ofSize: fontSize)
-//    }
-//}
+func renderImageView(_ imageProperties: ImageViewProperties, styleProperties: StyleProperties, renderer: IncitoRenderer, in rect: Rect) -> UIView {
+    
+    let imageView = UIImageView()
+    
+    renderer.imageLoader(imageProperties.source) { loadedImage in
+        DispatchQueue.main.async {
+            imageView.image = loadedImage
+        }
+    }
+    
+    return imageView
+}
 
 extension UIView {
     func apply(styleProperties style: StyleProperties, in rect: Rect) {
