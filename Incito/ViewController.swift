@@ -13,26 +13,11 @@ class IncitoViewController: UIViewController {
     var incito: Incito = decodeIncito("incito-fakta.json")
 //    var incito: Incito = decodeIncito("incito-superbrugsen.json")
 //    var incito: Incito = decodeIncito("simple-incito-absolute.json")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
 
-//        let scrollView = UIScrollView()
-//        view.addSubview(scrollView)
-//
-//        scrollView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-//            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-//            ])
-        
-//        layoutRelative(incito.rootView, prevSiblingRect: nil, padding: .zero, parentWidth: .px(view.frame.size.width))
-//
-//
-//        let incitoView = render(incito)
-        
         let incito = self.incito
         
         let startFontLoad = Date.timeIntervalSinceReferenceDate
@@ -43,8 +28,7 @@ class IncitoViewController: UIViewController {
                 print("\(loadedAssets.count) Fonts Loaded \(round((endFontLoad - startFontLoad) * 1_000))ms")
 
                 loadedAssets.forEach { asset in
-                    print("✅ \(asset.assetName): \(asset.fontName)")
-                    print(" -> ", asset.font(size: 100)!)
+                    print(" -> '\(asset.assetName)': \(asset.fontName)")
                 }
                 
                 let startRender = Date.timeIntervalSinceReferenceDate
@@ -59,6 +43,8 @@ class IncitoViewController: UIViewController {
                 )
                 let endRender = Date.timeIntervalSinceReferenceDate
                 print("Building Views \(round((endRender - startRender) * 1_000))ms")
+                
+                print(" -> Subviews: ", self.view.subviews.first(where: { $0 is UIScrollView })?.subviews.first?.recursiveSubviewCount() ?? 0)
         }
         
         
@@ -82,121 +68,3 @@ class IncitoViewController: UIViewController {
 //        return self.rootView.viewProperties.childViews.count
 //    }
 //}
-
-// parse(JSON) -> Incito
-// render(Incito, Config) -> IncitoUIView + fontloader + datasource + eventHandler
-
-
-//func render(_ incito: Incito) -> UIView {
-//
-//    // Depending on the rootView type, we might need different ViewController types. (always linear layout?)
-//
-//    let containerView = UIView()
-//    containerView.backgroundColor = incito.theme?.bgColor?.uiColor
-//
-//    render(incito.rootView, into: containerView)
-//
-//    return containerView
-//}
-//
-//func render(_ view: IncitoViewType, into parentView: UIView) {
-//
-//    // TODO: pass font-assets further. or just rebuild properties+theme+assets+... into something the renderer can use (to be passed to the children)
-//    switch view {
-//    case let .absoluteLayout(properties): renderAbsoluteLayout(properties, into: parentView)
-//    case let .flexLayout(flex, properties): renderFlexLayout(flex, properties: properties, into: parentView)
-//
-//    case let .view(properties): renderView(properties, into: parentView)
-//    case let .textView(text, properties): renderTextView(text, properties: properties, into: parentView)
-//    case let .fragView(properties): renderFragView(properties, into: parentView)
-//    case let .imageView(image, properties): renderImageView(image, properties: properties, into: parentView)
-//    case let .videoEmbedView(src, properties): renderVideoEmbedView(src, properties: properties, into: parentView)
-//    case let .videoView(video, properties): renderVideoView(video, properties: properties, into: parentView)
-//    }
-//}
-//
-//func renderAbsoluteLayout(_ properties: ViewProperties, into parentView: UIView) {
-//
-//    let view = UIView()
-//    parentView.addSubview(view)
-//
-//    // build 'tap' payload
-//
-//    properties.apply(to: view)
-//    parentView.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor).isActive = true
-//}
-//
-//func renderFlexLayout(_ flex: FlexLayoutProperties, properties: ViewProperties, into parentView: UIView) {
-//    let view = UIView()
-//    parentView.addSubview(view)
-//
-//    // build 'tap' payload
-//
-//    properties.apply(to: view)
-//    parentView.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor).isActive = true
-//
-//}
-//
-//func renderView(_ properties: ViewProperties, into parentView: UIView) {
-//    let view = UIView()
-//    parentView.addSubview(view)
-//
-//    // build 'tap' payload
-//
-//    properties.apply(to: view)
-//    parentView.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor).isActive = true
-//}
-//
-//func renderFragView(_ properties: ViewProperties, into parentView: UIView) {
-//    let view = UIView()
-//    parentView.addSubview(view)
-//
-//    // build 'tap' payload
-//
-//    properties.apply(to: view)
-//    parentView.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor).isActive = true
-//
-//}
-//
-//func renderTextView(_ text: TextViewProperties, properties: ViewProperties, into parentView: UIView) {
-//    let view = UIView()
-//    parentView.addSubview(view)
-//
-//    // build 'tap' payload
-//
-//    properties.apply(to: view)
-//    parentView.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor).isActive = true
-//}
-//
-//func renderImageView(_ image: ImageViewProperties, properties: ViewProperties, into parentView: UIView) {
-//    let view = UIView()
-//    parentView.addSubview(view)
-//
-//    // build 'tap' payload
-//
-//    properties.apply(to: view)
-//    parentView.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor).isActive = true
-//}
-//
-//func renderVideoView(_ video: VideoViewProperties, properties: ViewProperties, into parentView: UIView) {
-//    let view = UIView()
-//    parentView.addSubview(view)
-//
-//    // build 'tap' payload
-//
-//    properties.apply(to: view)
-//    parentView.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor).isActive = true
-//
-//}
-//
-//func renderVideoEmbedView(_ src: String, properties: ViewProperties, into parentView: UIView) {
-//    let view = UIView()
-//    parentView.addSubview(view)
-//
-//    // build 'tap' payload
-//
-//    properties.apply(to: view)
-//    parentView.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor).isActive = true
-//
-//}
-

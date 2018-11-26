@@ -9,8 +9,6 @@
 
 import UIKit
 
-
-
 //struct IncitoRenderer {
 //    // given a font family and a size it returns a UIFont
 //    var fontProvider: (FontFamily, CGFloat) -> UIFont
@@ -42,8 +40,6 @@ func render(_ incito: Incito, fontLoader: (FontFamily, CGFloat) -> UIFont, into 
                           fontLoader: fontLoader,
                           in: Size(cgSize: containerView.frame.size))
     wrapper.addSubview(rootView)
-    
-    print("Subviews: ", rootView.recursiveSubviewCount())
     
     wrapper.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
@@ -221,12 +217,18 @@ extension UIView {
         let cornerRadius = style.cornerRadius.absolute(in: min(rect.size.width, rect.size.height) / 2)
         
         if cornerRadius != Corners<Double>.zero {
-            roundCorners(
-                topLeft: CGFloat(cornerRadius.topLeft),
-                topRight: CGFloat(cornerRadius.topRight),
-                bottomLeft: CGFloat(cornerRadius.bottomLeft),
-                bottomRight: CGFloat(cornerRadius.bottomRight)
-            )
+            if cornerRadius.topLeft == cornerRadius.topRight && cornerRadius.bottomLeft == cornerRadius.bottomRight &&
+                cornerRadius.topLeft == cornerRadius.bottomLeft {
+                
+                layer.cornerRadius = CGFloat(cornerRadius.topLeft)
+            } else {
+                roundCorners(
+                    topLeft: CGFloat(cornerRadius.topLeft),
+                    topRight: CGFloat(cornerRadius.topRight),
+                    bottomLeft: CGFloat(cornerRadius.bottomLeft),
+                    bottomRight: CGFloat(cornerRadius.bottomRight)
+                )
+            }
         }
     }
 }
