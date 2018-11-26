@@ -35,6 +35,9 @@ struct IncitoRenderer {
 func render(_ incito: Incito, with renderer: IncitoRenderer, into containerView: UIView) {
     
     let scroll = UIScrollView()
+    if #available(iOS 11.0, *) {
+        scroll.contentInsetAdjustmentBehavior = .always
+    }
     
     containerView.addSubview(scroll)
     scroll.translatesAutoresizingMaskIntoConstraints = false

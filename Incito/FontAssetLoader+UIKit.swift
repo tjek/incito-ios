@@ -54,13 +54,16 @@ extension UIFont {
                 throw(FontLoadingError.invalidData)
         }
         
-        var error: Unmanaged<CFError>?
-        guard CTFontManagerRegisterGraphicsFont(cgFont, &error) else {
-            throw(FontLoadingError.registrationFailed)
-        }
-        
         guard let fontName = cgFont.postScriptName else {
             throw(FontLoadingError.postscriptNameUnavailable)
+        }
+        
+        // try to register the font. if it fails _but_ the font is still available (eg. it was already registered), then success!
+        var error: Unmanaged<CFError>?
+        if CTFontManagerRegisterGraphicsFont(cgFont, &error) == false,
+            UIFont(name: String(fontName), size: 0) == nil {
+
+            throw(FontLoadingError.registrationFailed)
         }
         
         return String(fontName)

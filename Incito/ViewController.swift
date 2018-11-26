@@ -10,26 +10,41 @@ import UIKit
 
 class IncitoViewController: UIViewController {
     
+    var selectedIndex: Int = 0
+    let availableIncitos = [
+        "incito-fakta-375.json",
+        "incito-superbrugsen-375.json"
+    ]
 //    var incito: Incito = decodeIncito("incito-fakta-375.json")
 //    var incito: Incito = decodeIncito("incito-fakta-1200.json")
-    var incito: Incito = decodeIncito("incito-superbrugsen-375.json")
+//    var incito: Incito = decodeIncito("incito-superbrugsen-375.json")
 //    var incito: Incito = decodeIncito("incito-superbrugsen-1200.json")
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationController?.isNavigationBarHidden = true
+    @objc
+    func loadNextIncito() {
+        selectedIndex += 1
+        if selectedIndex >= availableIncitos.count {
+            selectedIndex = 0
+        }
         
-        view.backgroundColor = .white
+        loadIncito(named: availableIncitos[selectedIndex])
+    }
+    
+    func loadIncito(named filename: String) {
+        self.view.subviews.forEach { $0.removeFromSuperview() }
         
-        let incito = self.incito
+        print("\n-----------------")
+        print("🌈 Loading '\(filename)'…")
         
-        let startFontLoad = Date.timeIntervalSinceReferenceDate
+        let incito: Incito = decodeIncito(filename)
 
+        let startFontLoad = Date.timeIntervalSinceReferenceDate
+        
         FontAssetLoader.fontAssetLoader()
             .loadAndRegisterFontAssets(incito.fontAssets) { (loadedAssets) in
                 let endFontLoad = Date.timeIntervalSinceReferenceDate
                 print("\(loadedAssets.count) Fonts Loaded \(round((endFontLoad - startFontLoad) * 1_000))ms")
-
+                
                 loadedAssets.forEach { asset in
                     print(" -> '\(asset.assetName)': \(asset.fontName)")
                 }
@@ -51,14 +66,26 @@ class IncitoViewController: UIViewController {
                 
                 print(" -> Subviews: ", self.view.subviews.first(where: { $0 is UIScrollView })?.subviews.first?.recursiveSubviewCount() ?? 0)
                 
-                self.addBlurredStatusBar()
+                self.title = filename
+//                self.addBlurredStatusBar()
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = .orange
+        view.backgroundColor = .white
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonItem.SystemItem.fastForward, target: self, action: #selector(loadNextIncito))
+        
+        self.loadIncito(named: availableIncitos[selectedIndex])
         
 
 //        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "IncitoCell")
     }
 
+    
+    
     func addBlurredStatusBar() {
         
         let blur = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
