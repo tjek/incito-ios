@@ -28,8 +28,10 @@
 		AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */; };
 		AE94AD8321AC12CF00876ED6 /* FontAssetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */; };
 		AE94AD8521AC136A00876ED6 /* FontAssetLoader+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */; };
-		AE94AD8B21AC349100876ED6 /* incito-fakta.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8A21AC349100876ED6 /* incito-fakta.json */; };
-		AE94AD8D21AC36EF00876ED6 /* incito-superbrugsen.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen.json */; };
+		AE94AD8B21AC349100876ED6 /* incito-fakta-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8A21AC349100876ED6 /* incito-fakta-375.json */; };
+		AE94AD8D21AC36EF00876ED6 /* incito-superbrugsen-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen-375.json */; };
+		AE94AD8F21AC889A00876ED6 /* incito-superbrugsen-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */; };
+		AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,8 +70,10 @@
 		AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundedCorners.swift"; sourceTree = "<group>"; };
 		AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontAssetLoader.swift; sourceTree = "<group>"; };
 		AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FontAssetLoader+UIKit.swift"; sourceTree = "<group>"; };
-		AE94AD8A21AC349100876ED6 /* incito-fakta.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta.json"; sourceTree = "<group>"; };
-		AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen.json"; sourceTree = "<group>"; };
+		AE94AD8A21AC349100876ED6 /* incito-fakta-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-375.json"; sourceTree = "<group>"; };
+		AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-375.json"; sourceTree = "<group>"; };
+		AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-1200.json"; sourceTree = "<group>"; };
+		AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-1200.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,8 +130,10 @@
 				AE0DDC4F219CCAFD0021B1FD /* AutoLayoutHelpers.swift */,
 				AE40598121A6A52500D029AE /* DecodingHelpers.swift */,
 				AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */,
-				AE94AD8A21AC349100876ED6 /* incito-fakta.json */,
-				AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen.json */,
+				AE94AD8A21AC349100876ED6 /* incito-fakta-375.json */,
+				AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */,
+				AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen-375.json */,
+				AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */,
 				AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */,
 				AE40597D21A5A3A300D029AE /* simple-incito-static.json */,
 				AE675813219C2592006BEA9C /* Main.storyboard */,
@@ -229,12 +235,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE67581A219C2593006BEA9C /* LaunchScreen.storyboard in Resources */,
+				AE94AD8F21AC889A00876ED6 /* incito-superbrugsen-1200.json in Resources */,
 				AE675817219C2593006BEA9C /* Assets.xcassets in Resources */,
 				AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */,
-				AE94AD8B21AC349100876ED6 /* incito-fakta.json in Resources */,
+				AE94AD8B21AC349100876ED6 /* incito-fakta-375.json in Resources */,
+				AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */,
 				AE40597E21A5A3A300D029AE /* simple-incito-static.json in Resources */,
 				AE675815219C2592006BEA9C /* Main.storyboard in Resources */,
-				AE94AD8D21AC36EF00876ED6 /* incito-superbrugsen.json in Resources */,
+				AE94AD8D21AC36EF00876ED6 /* incito-superbrugsen-375.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

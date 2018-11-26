@@ -10,14 +10,16 @@ import UIKit
 
 class IncitoViewController: UIViewController {
     
-    var incito: Incito = decodeIncito("incito-fakta.json")
-//    var incito: Incito = decodeIncito("incito-superbrugsen.json")
-//    var incito: Incito = decodeIncito("simple-incito-absolute.json")
+    var incito: Incito = decodeIncito("incito-fakta-375.json")
+//    var incito: Incito = decodeIncito("incito-fakta-1200.json")
+//    var incito: Incito = decodeIncito("incito-superbrugsen-375.json")
+//    var incito: Incito = decodeIncito("incito-superbrugsen-1200.json")
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .white
-
+        
         let incito = self.incito
         
         let startFontLoad = Date.timeIntervalSinceReferenceDate
@@ -31,14 +33,15 @@ class IncitoViewController: UIViewController {
                     print(" -> '\(asset.assetName)': \(asset.fontName)")
                 }
                 
+                let renderer = IncitoRenderer(
+                    fontProvider: loadedAssets.font(forFamily:size:),
+                    theme: incito.theme
+                )
+                
                 let startRender = Date.timeIntervalSinceReferenceDate
                 render(
                     incito,
-                    fontLoader: {
-                        loadedAssets.font(
-                            forFamily: $0 + (incito.theme?.fontFamily ?? []),
-                            size: $1)
-                },
+                    with: renderer,
                     into: self.view
                 )
                 let endRender = Date.timeIntervalSinceReferenceDate

@@ -16,7 +16,8 @@ extension LoadedFontAsset {
 }
 
 extension Collection where Element == LoadedFontAsset {
-    func font(forFamily family: FontFamily, size: CGFloat) -> UIFont {
+    func font(forFamily family: FontFamily, size: Double) -> UIFont {
+        let size = CGFloat(size)
         
         for familyName in family {
             // try to get the asset with the family name

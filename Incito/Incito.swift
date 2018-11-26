@@ -217,11 +217,25 @@ struct Color {
 }
 
 struct Theme {
-    var textColor: Color?
+    var textDefaults: TextViewDefaultProperties
+    var bgColor: Color?
+}
+
+struct TextViewDefaultProperties {
+    var textColor: Color
     var lineSpacingMultiplier: Double
     var fontFamily: FontFamily
     
-    var bgColor: Color?
+    // Currently not provided by server
+    var textSize: Double { return 16 }
+}
+
+extension TextViewDefaultProperties {
+    static var empty = TextViewDefaultProperties(
+        textColor: Color(hexVal: "#000000"),
+        lineSpacingMultiplier: 1,
+        fontFamily: []
+    )
 }
 
 struct FontAsset {

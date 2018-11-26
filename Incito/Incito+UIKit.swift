@@ -9,12 +9,23 @@
 
 import UIKit
 
-//struct IncitoRenderer {
-//    // given a font family and a size it returns a UIFont
-//    var fontProvider: (FontFamily, CGFloat) -> UIFont
-//}
+#if os(iOS)
+typealias Font = UIFont
+#else
+//typealias Font = NSFont
+#endif
 
-func render(_ incito: Incito, fontLoader: (FontFamily, CGFloat) -> UIFont, into containerView: UIView) {
+/// Given a FontFamily and a size, it will return a font
+typealias FontProvider = (FontFamily, Double) -> Font
+
+// The context of the renderer
+struct IncitoRenderer {
+    // given a font family and a size it returns a UIFont
+    var fontProvider: FontProvider
+    var theme: Theme?
+}
+
+func render(_ incito: Incito, with renderer: IncitoRenderer, into containerView: UIView) {
     
     let scroll = UIScrollView()
     
@@ -37,7 +48,8 @@ func render(_ incito: Incito, fontLoader: (FontFamily, CGFloat) -> UIFont, into 
     
     // build the view hierarchy
     let rootView = render(incito.rootView,
-                          fontLoader: fontLoader,
+                          renderer: renderer,
+                          theme: incito.theme,
                           in: Size(cgSize: containerView.frame.size))
     wrapper.addSubview(rootView)
     
@@ -54,27 +66,27 @@ func render(_ incito: Incito, fontLoader: (FontFamily, CGFloat) -> UIFont, into 
         ])
 }
 
-func render(_ rootView: View, fontLoader: (FontFamily, CGFloat) -> UIFont, in parentSize: Size) -> UIView {
+func render(_ rootView: View, renderer: IncitoRenderer, theme: Theme?, in parentSize: Size) -> UIView {
     let start = Date.timeIntervalSinceReferenceDate
     
     // build the layout
-    let rootNode = layout(view: rootView, parentLayout: .static, in: parentSize)
+    let rootNode = layout(view: rootView, parentLayout: .static, with: renderer, in: parentSize)
     
     let end = Date.timeIntervalSinceReferenceDate
     print("Building layout \(round((end - start) * 1_000))ms")
     
     // render the layout - build the UIViews etc
-    let view = render(rootNode, fontLoader: fontLoader, maxKids: nil)
+    let view = render(rootNode, renderer: renderer, maxKids: nil)
     
     return view
 }
 
-func render(_ layout: LayoutNode, fontLoader: (FontFamily, CGFloat) -> UIFont, maxKids: Int? = nil) -> UIView {
+func render(_ layout: LayoutNode, renderer: IncitoRenderer, maxKids: Int? = nil) -> UIView {
     let view: UIView
     
     switch layout.view.type {
     case let .text(textProperties):
-        view = renderTextView(textProperties, styleProperties: layout.view.style, fontLoader: fontLoader, in: layout.rect)
+        view = renderTextView(textProperties, styleProperties: layout.view.style, renderer: renderer, in: layout.rect)
     case .view:
         view = renderPassthruView(styleProperties: layout.view.style, in: layout.rect)
     case .absoluteLayout:
@@ -99,7 +111,7 @@ func render(_ layout: LayoutNode, fontLoader: (FontFamily, CGFloat) -> UIFont, m
     }
     
     for childNode in children {
-        let childView = render(childNode, fontLoader: fontLoader)
+        let childView = render(childNode, renderer: renderer)
         view.addSubview(childView)
     }
     
@@ -177,18 +189,17 @@ func renderPassthruView(styleProperties: StyleProperties, in rect: Rect) -> UIVi
     return view
 }
 
-func renderTextView(_ textProperties: TextViewProperties, styleProperties: StyleProperties, fontLoader: (FontFamily, CGFloat) -> UIFont, in rect: Rect) -> UIView {
+func renderTextView(_ textProperties: TextViewProperties, styleProperties: StyleProperties, renderer: IncitoRenderer, in rect: Rect) -> UIView {
+    
     let label = UILabel()
     
-    var string = textProperties.text
-    if textProperties.allCaps {
-        string = string.uppercased()
-    }
+    let attributedString = textProperties.attributedString(
+        fontProvider: renderer.fontProvider,
+        defaults: renderer.theme?.textDefaults ?? .empty
+    )
     
-    label.text = string
+    label.attributedText = attributedString
     label.numberOfLines = textProperties.maxLines
-    label.textColor = textProperties.textColor?.uiColor ?? .black
-    label.font = fontLoader(textProperties.fontFamily, CGFloat(ceil(textProperties.textSize ?? 16)))
     label.textAlignment = .center
     
     label.backgroundColor = .clear
@@ -196,15 +207,15 @@ func renderTextView(_ textProperties: TextViewProperties, styleProperties: Style
     return label
 }
 
-extension TextViewProperties {
-    func font() -> UIFont {
-        // TODO: a font-provider (the using the webfont loader), from which a font can be selected using the fontFamilyName.
-
-        // TODO: what is the default fontSize?
-        let fontSize = CGFloat(ceil(self.textSize ?? 16))
-        return UIFont.boldSystemFont(ofSize: fontSize)
-    }
-}
+//extension TextViewProperties {
+//    func font() -> UIFont {
+//        // TODO: a font-provider (the using the webfont loader), from which a font can be selected using the fontFamilyName.
+//
+//        // TODO: what is the default fontSize?
+//        let fontSize = CGFloat(ceil(self.textSize ?? 16))
+//        return UIFont.boldSystemFont(ofSize: fontSize)
+//    }
+//}
 
 extension UIView {
     func apply(styleProperties style: StyleProperties, in rect: Rect) {

@@ -316,9 +316,17 @@ extension Theme: Decodable {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.textColor = try c.decodeIfPresent(.textColor)
-        self.lineSpacingMultiplier = try c.decodeIfPresent(.lineSpacingMultiplier) ?? 1
-        self.fontFamily = try c.decodeIfPresent(.fontFamily) ?? []
+        self.textDefaults = .empty
+        if let textColor: Color = try c.decodeIfPresent(.textColor) {
+            self.textDefaults.textColor = textColor
+        }
+        if let lineSpacingMultiplier: Double = try c.decodeIfPresent(.lineSpacingMultiplier) {
+            self.textDefaults.lineSpacingMultiplier = lineSpacingMultiplier
+        }
+        if let fontFamily: FontFamily = try c.decodeIfPresent(.fontFamily) {
+            self.textDefaults.fontFamily = fontFamily
+        }
+        
         self.bgColor = try c.decodeIfPresent(.bgColor)
     }
 }
