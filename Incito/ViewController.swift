@@ -17,6 +17,7 @@ class IncitoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.isNavigationBarHidden = true
         
         view.backgroundColor = .white
         
@@ -48,6 +49,8 @@ class IncitoViewController: UIViewController {
                 print("Building Views \(round((endRender - startRender) * 1_000))ms")
                 
                 print(" -> Subviews: ", self.view.subviews.first(where: { $0 is UIScrollView })?.subviews.first?.recursiveSubviewCount() ?? 0)
+                
+                self.addBlurredStatusBar()
         }
         
         
@@ -55,6 +58,21 @@ class IncitoViewController: UIViewController {
 //        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "IncitoCell")
     }
 
+    func addBlurredStatusBar() {
+        
+        let blur = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+        
+        view.addSubview(blur)
+        
+        blur.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blur.topAnchor.constraint(equalTo: view.topAnchor),
+            blur.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blur.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blur.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor)
+            ])
+    }
+    
 //    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        return 10
 //    }
