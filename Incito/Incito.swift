@@ -37,7 +37,6 @@ enum ViewType {
     case absoluteLayout
     case text(TextViewProperties)
     case flexLayout(FlexLayoutProperties)
-    case frag
     case image(ImageViewProperties)
     case videoEmbed(src: String)
     case video(VideoViewProperties)

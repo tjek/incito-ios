@@ -75,8 +75,6 @@ extension View: Decodable {
         case "FlexLayout"?:
             let flexProperties = (try? propertiesContainer.decode(FlexLayoutProperties.self)) ?? FlexLayoutProperties()
             self.type = .flexLayout(flexProperties)
-        case "FragView"?:
-            self.type = .frag
         case "TextView"?:
             let textProperties = try propertiesContainer.decode(TextViewProperties.self)
             self.type = .text(textProperties)

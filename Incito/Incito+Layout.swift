@@ -139,6 +139,7 @@ func layout(view: View, parentLayout: LayoutType, in parentSize: Size) -> Layout
         return staticLayout(view: view, parentLayout: parentLayout, in: parentSize)
     case .absoluteLayout:
         return absoluteLayout(view: view, parentLayout: parentLayout, in: parentSize)
+        
     default:
         return staticLayout(view: view, parentLayout: parentLayout, in: parentSize)
     }
