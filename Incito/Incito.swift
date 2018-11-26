@@ -58,7 +58,7 @@ struct StyleProperties {
     //    var accessibility: Accessibility? = nil
     
     var backgroundColor: Color?
-    //    var backgroundImage: BackgroundImage? = nil
+    var backgroundImage: BackgroundImage?
     
     static let empty = StyleProperties(
         role: nil,
@@ -67,7 +67,8 @@ struct StyleProperties {
         link: nil,
         title: nil,
         clipsChildren: true,
-        backgroundColor: nil
+        backgroundColor: nil,
+        backgroundImage: nil
     )
 }
 
@@ -363,20 +364,20 @@ struct Accessibility {
 }
 
 struct BackgroundImage {
-    enum ScaleType {
-        case centerCrop
-        case centerInside
+    enum ScaleType: String, Decodable {
+        case centerCrop = "center_crop"
+        case centerInside = "center_inside"
     }
     
-    enum TileMode {
+    enum TileMode: String, Decodable {
         case none
-        case repeatX
-        case repeatY
-        case repeatXY
+        case repeatX = "repeat_x"
+        case repeatY = "repeat_y"
+        case repeatXY = "repeat"
     }
     
-    var image: String? // URI
-    var scale: ScaleType = .centerCrop
-    var imagePosition: String? // TODO: what?
-    var tileMode: TileMode = .none
+    var source: URL
+    var scale: ScaleType
+    var position: String? // TODO: what? "center_center" /
+    var tileMode: TileMode
 }

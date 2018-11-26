@@ -186,7 +186,11 @@ extension StyleProperties: Decodable {
         case cornerRadiusTopRight = "corner_top_right_radius"
         case cornerRadiusBottomLeft = "corner_bottom_left_radius"
         case cornerRadiusBottomRight = "corner_bottom_right_radius"
-        // TODO: all the rest...
+        
+        case backgroundImage = "background_image"
+        case backgroundImageTileMode = "background_tile_mode"
+        case backgroundImagePosition = "background_image_position"
+        case backgroundImageScaleType = "background_image_scale_type"
     }
     
     init(from decoder: Decoder) throws {
@@ -208,6 +212,24 @@ extension StyleProperties: Decodable {
             bottomLeft: try c.decodeIfPresent(.cornerRadiusBottomLeft) ?? baseCornerRadius,
             bottomRight: try c.decodeIfPresent(.cornerRadiusBottomRight) ?? baseCornerRadius
         )
+        
+        if let bgImageSrc: URL = try c.decodeIfPresent(.backgroundImage) {
+            
+            let scaleType: BackgroundImage.ScaleType = try c.decodeIfPresent(.backgroundImageScaleType) ?? .centerCrop
+
+            let tileMode: BackgroundImage.TileMode = try c.decodeIfPresent(.backgroundImageTileMode) ?? .none
+
+            let position: String? = try c.decodeIfPresent(.backgroundImagePosition)
+            
+            self.backgroundImage = BackgroundImage(
+                source: bgImageSrc,
+                scale: scaleType,
+                position: position,
+                tileMode: tileMode
+            )
+        } else {
+            self.backgroundImage = nil
+        }
         
         // TODO: all the rest...
     }

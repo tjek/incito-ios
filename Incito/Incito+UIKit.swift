@@ -112,7 +112,7 @@ func render(_ layout: LayoutNode, renderer: IncitoRenderer, maxKids: Int? = nil)
     view.frame = layout.rect.cgRect
     
     // must be called after frame otherwise round-rect clipping path is not sized properly
-    view.apply(styleProperties: layout.view.style, in: layout.rect)
+    view.apply(styleProperties: layout.view.style, renderer: renderer, in: layout.rect)
     
     var children = layout.children
     if let kidLimit = maxKids {
@@ -229,20 +229,29 @@ func renderImageView(_ imageProperties: ImageViewProperties, styleProperties: St
     let imageView = UIImageView()
     
     renderer.imageLoader(imageProperties.source) { loadedImage in
-        DispatchQueue.main.async {
-            imageView.image = loadedImage
-        }
+        imageView.image = loadedImage
     }
     
     return imageView
 }
 
 extension UIView {
-    func apply(styleProperties style: StyleProperties, in rect: Rect) {
+    func apply(styleProperties style: StyleProperties, renderer: IncitoRenderer, in rect: Rect) {
         
         // apply the layout.view properties
         backgroundColor = style.backgroundColor?.uiColor ?? .clear
         clipsToBounds = style.clipsChildren
+        
+        if let bgImage = style.backgroundImage {
+            let imageView = UIImageView()
+            imageView.frame = self.bounds
+            imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            self.addSubview(imageView)
+            
+            renderer.imageLoader(bgImage.source) { loadedImage in
+                imageView.image = loadedImage
+            }
+        }
         
         // Use the smallest dimension when calculating relative corners.
         let cornerRadius = style.cornerRadius.absolute(in: min(rect.size.width, rect.size.height) / 2)
