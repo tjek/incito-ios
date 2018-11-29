@@ -11,81 +11,6 @@ import Foundation
 
 // MARK: -
 
-struct Point { var x, y: Double }
-struct Size { var width, height: Double }
-struct Rect {
-    var origin: Point
-    var size: Size
-}
-
-extension Point {
-    static let zero = Point(x: 0, y: 0)
-}
-extension Size {
-    static let zero = Size(width: 0, height: 0)
-}
-extension Rect {
-    static let zero = Rect(origin: .zero, size: .zero)
-}
-
-// MARK: -
-
-extension Unit {
-    func absolute(in parent: Double) -> Double {
-        switch self {
-        case let .pts(pts):
-            return pts
-        case let .percent(pct):
-            return parent * pct
-        }
-    }
-}
-
-extension LayoutSize {
-    func absolute(in parentSize: Double) -> Double? {
-        switch self {
-        case .wrapContent:
-            return nil
-        case .matchParent:
-            return parentSize
-        case let .unit(unit):
-            return unit.absolute(in: parentSize)
-        }
-    }
-}
-
-extension Edges where Value == Unit {
-    func absolute(in parent: Size) -> Edges<Double> {
-        return .init(
-            top: self.top.absolute(in: parent.height),
-            left: self.left.absolute(in: parent.width),
-            bottom: self.bottom.absolute(in: parent.height),
-            right: self.right.absolute(in: parent.width)
-        )
-    }
-}
-extension Edges where Value == Unit? {
-    func absolute(in parent: Size) -> Edges<Double?> {
-        return .init(
-            top: self.top?.absolute(in: parent.height),
-            left: self.left?.absolute(in: parent.width),
-            bottom: self.bottom?.absolute(in: parent.height),
-            right: self.right?.absolute(in: parent.width)
-        )
-    }
-}
-
-extension Corners where Value == Unit {
-    func absolute(in parent: Double) -> Corners<Double> {
-        return .init(
-            topLeft: topLeft.absolute(in: parent),
-            topRight: topRight.absolute(in: parent),
-            bottomLeft: bottomLeft.absolute(in: parent),
-            bottomRight: bottomRight.absolute(in: parent)
-        )
-    }
-}
-
 struct AbsoluteLayoutProperties {
     var position: Edges<Double?>
     var margins: Edges<Double>
@@ -133,21 +58,34 @@ enum LayoutType {
     case absolute
 }
 
-func layout(view: View, parentLayout: LayoutType, with renderer: IncitoRenderer, in parentSize: Size) -> LayoutNode {
-    switch view.type {
-    case .view:
-        return staticLayout(view: view, parentLayout: parentLayout, with: renderer, in: parentSize)
-    case .absoluteLayout:
-        return absoluteLayout(view: view, parentLayout: parentLayout, with: renderer, in: parentSize)
-    // TODO: flex layout type
-    default:
-        return staticLayout(view: view, parentLayout: parentLayout, with: renderer, in: parentSize)
+typealias ViewSizer = (View, Size) -> Size
+
+extension LayoutNode {
+    static func build(for view: View, intrinsicSize: ViewSizer, parentLayout: LayoutType, in parentSize: Size) -> LayoutNode {
+        
+        let node: LayoutNode
+        
+        switch view.type {
+        case .view:
+            node = staticLayout(view: view, intrinsicSize: intrinsicSize, parentLayout: parentLayout, in: parentSize)
+        case .absoluteLayout:
+            node = absoluteLayout(view: view, intrinsicSize: intrinsicSize, parentLayout: parentLayout, in: parentSize)
+        // TODO: flex layout type
+        default:
+            node = staticLayout(view: view, intrinsicSize: intrinsicSize, parentLayout: parentLayout, in: parentSize)
+        }
+        
+        return node
+    }
+    
+    static func build(rootView: View, intrinsicSize: ViewSizer, in parentSize: Size) -> LayoutNode {
+        return .build(for: rootView, intrinsicSize: intrinsicSize, parentLayout: .static, in: parentSize)
     }
 }
 
 // MARK: - Absolute Layout
 
-func absoluteLayout(view: View, parentLayout: LayoutType, with renderer: IncitoRenderer, in parentSize: Size) -> LayoutNode {
+func absoluteLayout(view: View, intrinsicSize: ViewSizer, parentLayout: LayoutType, in parentSize: Size) -> LayoutNode {
     
     // make absolute versions of the layout properties based on the parentSize
     let absoluteLayout = AbsoluteLayoutProperties(view.layout, in: parentSize)
@@ -170,7 +108,12 @@ func absoluteLayout(view: View, parentLayout: LayoutType, with renderer: IncitoR
     var childNodes: [LayoutNode] = []
     for childView in view.children {
         
-        var childNode = layout(view: childView, parentLayout: .absolute, with: renderer, in: size)
+        var childNode = LayoutNode.build(
+            for: childView,
+            intrinsicSize: intrinsicSize,
+            parentLayout: .absolute,
+            in: size
+        )
         
         let childLayout = AbsoluteLayoutProperties(childView.layout, in: size)
 
@@ -210,7 +153,7 @@ func absoluteLayout(view: View, parentLayout: LayoutType, with renderer: IncitoR
 
 /// Generate a LayoutNode for a View and it's children, fitting inside parentSize.
 /// The LayoutNode's rect is sized, and it's children positioned, but it's origin is not modified eg. it's margin is not taken into account (that is the job of the parent node's layout method)
-func staticLayout(view: View, parentLayout: LayoutType, with renderer: IncitoRenderer, in parentSize: Size) -> LayoutNode {
+func staticLayout(view: View, intrinsicSize: ViewSizer, parentLayout: LayoutType, in parentSize: Size) -> LayoutNode {
     
     // make absolute versions of the layout properties based on the parentSize
     let absoluteLayout = AbsoluteLayoutProperties(view.layout, in: parentSize)
@@ -226,7 +169,7 @@ func staticLayout(view: View, parentLayout: LayoutType, with renderer: IncitoRen
             width: (absoluteLayout.width ?? parentSize.width) - absoluteLayout.padding.left - absoluteLayout.padding.right,
             height: (absoluteLayout.height ?? parentSize.height) - absoluteLayout.padding.top - absoluteLayout.padding.bottom
         )
-        let contentSize = view.type.intrinsicSize(in: constraintSize, with: renderer)
+        let contentSize = intrinsicSize(view, constraintSize)
         
         let intrinsicSize: Size
 //        let defaultHeight: Double = 30 // the height of a view that doesnt have any intrinsic height
@@ -234,7 +177,6 @@ func staticLayout(view: View, parentLayout: LayoutType, with renderer: IncitoRen
 //            width: (absoluteLayout.width ?? parentSize.width).clamped(min: absoluteLayout.minWidth, max: absoluteLayout.maxWidth),
 //            height: (absoluteLayout.height ?? defaultHeight).clamped(min: absoluteLayout.minHeight, max: absoluteLayout.maxHeight)
 //        )
-        
         
         switch parentLayout {
         case .absolute:
@@ -294,7 +236,13 @@ func staticLayout(view: View, parentLayout: LayoutType, with renderer: IncitoRen
         var maxChildWidth: Double = 0
         for childView in view.children {
             
-            var childNode = layout(view: childView, parentLayout: .static, with: renderer, in: fittingSize)
+            var childNode = LayoutNode.build(
+                for: childView,
+                intrinsicSize: intrinsicSize,
+                parentLayout: .static,
+                in: fittingSize
+            )
+
             childNode.rect.origin.y += originY
             
             let childMargins = childView.layout.margins.absolute(in: fittingSize)
@@ -352,88 +300,3 @@ func staticLayout(view: View, parentLayout: LayoutType, with renderer: IncitoRen
         children: childNodes
     )
 }
-
-extension ViewType {
-    func intrinsicSize(in constraintSize: Size, with renderer: IncitoRenderer) -> Size {
-        switch self {
-        case let .text(text):
-            return sizeForText(
-                text,
-                maxWidth: constraintSize.width,
-                fontProvider: renderer.fontProvider,
-                defaults: renderer.theme?.textDefaults ?? .empty
-            )
-        default:
-            return .zero
-        }
-    }
-}
-
-#if os(iOS)
-import UIKit
-
-extension TextViewProperties {
-    func attributedString(fontProvider: FontProvider, defaults: TextViewDefaultProperties) -> NSAttributedString {
-        
-        let fontFamily = self.fontFamily + defaults.fontFamily
-        let textSize = ceil(self.textSize ?? defaults.textSize)
-        let textColor = self.textColor ?? defaults.textColor
-        
-        var string = self.text
-        if self.allCaps {
-            string = string.uppercased()
-        }
-        
-        let font = fontProvider(fontFamily, textSize)
-        
-        let attrStr = NSMutableAttributedString(
-            string: string,
-            attributes: [.foregroundColor: textColor.uiColor,
-                         .font: font
-            ]
-        )
-        
-        for span in self.spans {
-            
-            let spanAttrs: [NSAttributedString.Key: Any] = {
-                switch span.name {
-                case .superscript:
-                    return [
-                        .baselineOffset: floor(textSize * 0.3),
-                        .font: fontProvider(fontFamily, ceil(textSize * 0.6))
-                    ]
-                }
-            }()
-            
-            attrStr.addAttributes(
-                spanAttrs,
-                range: NSRange(location: span.start,
-                               length: span.end - span.start)
-            )
-        }
-        
-        return attrStr
-    }
-}
-
-func sizeForText(_ textProperties: TextViewProperties, maxWidth: Double, fontProvider: FontProvider, defaults: TextViewDefaultProperties) -> Size {
-    
-    let attrString = textProperties.attributedString(
-        fontProvider: fontProvider,
-        defaults: defaults)
-    
-    let boundingBox = attrString.boundingRect(
-        with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
-        options: .usesLineFragmentOrigin,
-        context: nil)
-    
-    return Size(
-        width: ceil(Double(boundingBox.size.width)),
-        height: ceil(Double(boundingBox.size.height))
-    )
-}
-#else
-func sizeForText(_ textProperties: TextViewProperties, maxWidth: Double) -> Size {
-    #error("sizeForText not implemented")
-}
-#endif

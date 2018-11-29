@@ -204,25 +204,6 @@ struct VideoViewProperties: Decodable {
 // Definitions //
 /////////////////
 
-typealias FontAssetName = String
-typealias FontFamily = [FontAssetName]
-
-enum Unit {
-    case pts(Double)
-    case percent(Double)
-}
-
-enum LayoutSize {
-    case unit(Unit)
-    case wrapContent
-    case matchParent
-}
-
-struct Color {
-    // TODO: support rgba etc.
-    var hexVal: String
-}
-
 struct Theme {
     var textDefaults: TextViewDefaultProperties
     var bgColor: Color?
@@ -275,6 +256,7 @@ struct Shadow {
     var offsetY: Double
     var radius: Double
 }
+
 struct Stroke {
     enum Style {
         case solid
@@ -296,60 +278,6 @@ struct Transform {
     var translateY: Unit?
     var rotate: Double? // -360 -> 360
     //    let origin: [String] // seems to more be an tuple of 2 Unit strings? x & y?
-}
-
-
-struct Edges<Value> {
-    var top, left, bottom, right: Value
-}
-
-extension Edges: Equatable where Value: Equatable {
-    static func == (lhs: Edges<Value>, rhs: Edges<Value>) -> Bool {
-        return lhs.top == rhs.top
-            && lhs.left == rhs.left
-            && lhs.bottom == rhs.bottom
-            && lhs.right == rhs.right
-    }
-}
-extension Edges {
-    init(_ val: Value) {
-        self.init(top: val, left: val, bottom: val, right: val)
-    }
-}
-
-typealias UnitEdges = Edges<Unit>
-extension Edges where Value == Unit {
-    static let zero = Edges(.pts(0))
-}
-extension Edges where Value == Double {
-    static let zero = Edges(0)
-}
-
-struct Corners<Value> {
-    var topLeft, topRight, bottomLeft, bottomRight: Value
-}
-
-extension Corners: Equatable where Value: Equatable {
-    static func == (lhs: Corners<Value>, rhs: Corners<Value>) -> Bool {
-        return lhs.topLeft == rhs.topLeft
-            && lhs.topRight == rhs.topRight
-            && lhs.bottomLeft == rhs.bottomLeft
-            && lhs.bottomRight == rhs.bottomRight
-    }
-}
-
-extension Corners {
-    init(_ val: Value) {
-        self.init(topLeft: val, topRight: val, bottomLeft: val, bottomRight: val)
-    }
-}
-typealias UnitCorners = Corners<Unit>
-
-extension Corners where Value == Unit {
-    static let zero = Corners(.pts(0))
-}
-extension Corners where Value == Double {
-    static let zero = Corners(0)
 }
 
 enum HorizontalGravity: String, Decodable {

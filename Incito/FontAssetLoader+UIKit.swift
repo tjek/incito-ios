@@ -15,6 +15,23 @@ extension LoadedFontAsset {
     }
 }
 
+extension UIFont {
+    static func systemFont(forFamily family: FontFamily, size: Double) -> UIFont {
+    
+        let size = CGFloat(size)
+        
+        for familyName in family {
+            if let systemFont = UIFont(name: familyName, size: size) {
+                // try to use the family name to load a system font.
+                return systemFont
+            }
+        }
+        
+        // nothing loadable, just use base system font (maybe take weight/style into account?)
+        return UIFont.systemFont(ofSize: size)
+    }
+}
+
 extension Collection where Element == LoadedFontAsset {
     func font(forFamily family: FontFamily, size: Double) -> UIFont {
         let size = CGFloat(size)
@@ -29,7 +46,7 @@ extension Collection where Element == LoadedFontAsset {
                 return font
             }
             else if let systemFont = UIFont(name: familyName, size: size) {
-                // try to use the famnily name to load a system font.
+                // try to use the family name to load a system font.
                 return systemFont
             }
         }
@@ -72,7 +89,7 @@ extension UIFont {
 
 extension FontAssetLoader {
     // TODO: allow for different urlSession/cache properties
-    static func fontAssetLoader() -> FontAssetLoader {
+    static func uiKitFontAssetLoader() -> FontAssetLoader {
       
         let fontCache = FontAssetLoader.Cache(
             get: { _, completion in completion(nil) },

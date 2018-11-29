@@ -18,7 +18,7 @@ func decodeIncito(_ filename: String) -> Incito {
         let start = Date.timeIntervalSinceReferenceDate
         let incito = try JSONDecoder().decode(Incito.self, from: jsonData)
         let end = Date.timeIntervalSinceReferenceDate
-        print("Decoding \(Double(jsonData.count) / 1024 / 1024)mb json in \(round((end - start) * 1000))ms")
+        print(" ⇢ 🤖 Decoded JSON document: \(String(format:"%.2f", Double(jsonData.count) / 1024 / 1024)) Mb in \(round((end - start) * 1000))ms")
         return incito
     } catch {
         print(error)
