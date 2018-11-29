@@ -58,8 +58,11 @@ class IncitoDebugView: UIView {
 
 extension UIView {
     // build a UIView based on a layoutNode and it's children
-    static func build(_ layout: LayoutNode, renderer: IncitoRenderer, depth: Int = 0, maxDepth: Int? = nil) -> UIView {
+    static func build(_ layout: LayoutNode, renderer: IncitoRenderer, depth: Int = 0, maxDepth: Int? = nil) -> (UIView, [ImageLoadRequest]) {
+        
         let view: UIView
+        // if the view needs to do an image load it populates this property
+        var imageLoadRequests: [ImageLoadRequest] = []
         
         switch layout.view.type {
         case let .text(textProperties):
@@ -71,12 +74,13 @@ extension UIView {
                 in: layout.rect
             )
         case let .image(imageProperties):
-            view = .buildImageView(
+            let (imgView, imgReq) = UIView.buildImageView(
                 imageProperties,
                 styleProperties: layout.view.style,
-                imageLoader: renderer.imageLoader,
                 in: layout.rect
             )
+            imageLoadRequests.append(imgReq)
+            view = imgView
         case .view,
              .absoluteLayout,
              .flexLayout:
@@ -94,22 +98,28 @@ extension UIView {
         view.frame = layout.rect.cgRect
         
         // must be called after frame otherwise round-rect clipping path is not sized properly
-        view.apply(styleProperties: layout.view.style, renderer: renderer, in: layout.rect)
+        let bgImageReq = view.apply(styleProperties: layout.view.style, renderer: renderer, in: layout.rect)
+        
+        if let bgReq = bgImageReq {
+            imageLoadRequests.append(bgReq)
+        }
         
         // skip children if reached the max depth
         if depth < maxDepth ?? .max {
             for childNode in layout.children {
-                let childView = UIView.build(
+                let (childView, childImgReqs) = UIView.build(
                     childNode,
                     renderer: renderer,
                     depth: depth + 1,
                     maxDepth: maxDepth
                 )
                 view.addSubview(childView)
+                
+                imageLoadRequests += childImgReqs
             }
         }
         
-        return view
+        return (view, imageLoadRequests)
     }
     
     static func buildTextView(_ textProperties: TextViewProperties, textDefaults: TextViewDefaultProperties, styleProperties: StyleProperties, fontProvider: FontProvider, in rect: Rect) -> UIView {
@@ -137,16 +147,29 @@ extension UIView {
         return label
     }
     
-    static func buildImageView(_ imageProperties: ImageViewProperties, styleProperties: StyleProperties, imageLoader: ImageLoader, in rect: Rect) -> UIView {
+    static func buildImageView(_ imageProperties: ImageViewProperties, styleProperties: StyleProperties, in rect: Rect) -> (UIView, ImageLoadRequest) {
         
         let imageView = UIImageView()
         
-        // TODO: not like this
-        imageLoader(imageProperties.source) { loadedImage in
-            imageView.image = loadedImage
+        let imageLoadReq = ImageLoadRequest(url: imageProperties.source) { [weak imageView] loadedImage in
+            
+            guard let imgView = imageView else { return }
+            
+            UIView.transition(
+                with: imgView,
+                duration: 0.2,
+                options: .transitionCrossDissolve,
+                animations: {
+                    if let img = loadedImage {
+                        imgView.image = img
+                    } else {
+                        imgView.backgroundColor = .red
+                    }            },
+                completion: nil
+            )
         }
         
-        return imageView
+        return (imageView, imageLoadReq)
     }
     
     static func buildPassthruView(styleProperties: StyleProperties, in rect: Rect) -> UIView {
@@ -155,21 +178,31 @@ extension UIView {
     }
 }
 
+struct ImageLoadRequest {
+    let url: URL
+    let completion: (Image?) -> Void
+}
+
 extension UIView {
-    func apply(styleProperties style: StyleProperties, renderer: IncitoRenderer, in rect: Rect) {
+    func apply(styleProperties style: StyleProperties, renderer: IncitoRenderer, in rect: Rect) -> ImageLoadRequest? {
         
         // apply the layout.view properties
         backgroundColor = style.backgroundColor?.uiColor ?? .clear
         clipsToBounds = style.clipsChildren
         
+        var imgReq: ImageLoadRequest? = nil
         if let bgImage = style.backgroundImage {
             let imageView = UIImageView()
             imageView.frame = self.bounds
             imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             self.addSubview(imageView)
             
-            renderer.imageLoader(bgImage.source) { loadedImage in
-                imageView.image = loadedImage
+            imgReq = ImageLoadRequest(url: bgImage.source) { [weak imageView] loadedImage in
+                if let img = loadedImage {
+                    imageView?.image = img
+                } else {
+                    imageView?.backgroundColor = .red
+                }
             }
         }
         
@@ -190,6 +223,8 @@ extension UIView {
                 )
             }
         }
+        
+        return imgReq
     }
 }
 

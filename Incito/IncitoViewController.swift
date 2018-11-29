@@ -33,8 +33,6 @@ class IncitoViewController: UIViewController {
             theme: incitoDocument.theme
         )
         
-        self.renderer.imageLoader = { _, _ in }
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -68,6 +66,13 @@ class IncitoViewController: UIViewController {
             self?.loadFonts(fontAssets: fontAssets)
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        renderVisibleSections()
+    }
+    
     
     let queue = DispatchQueue(label: "IncitoViewControllerQueue")
     
@@ -119,17 +124,14 @@ class IncitoViewController: UIViewController {
         }
     }
     
-    func renderVisibleNodes() {
-        
-    }
-    
     func initializeRootView(rootLayoutNode: LayoutNode) {
         
         
         self.rootLayoutNode = rootLayoutNode
         
+        // TODO: Load the imageReqs
         // build (just) the rootView
-        let rootView = UIView.build(rootLayoutNode,
+        let (rootView, imageReqs) = UIView.build(rootLayoutNode,
                                     renderer: self.renderer,
                                     maxDepth: 0)
         
@@ -137,7 +139,13 @@ class IncitoViewController: UIViewController {
 
         let viewBuilder = viewHierarchyBuilder(self.renderer)
         
-        self.renderableSections = rootLayoutNode.children.map { RenderableSection(layoutNode: $0, viewBuilder: viewBuilder) }
+        self.renderableSections = rootLayoutNode.children.map {
+            RenderableSection(
+                layoutNode: $0,
+                viewBuilder: viewBuilder,
+                imageLoader: renderer.imageLoader
+            )
+        }
         
         let wrapper = UIView()
         wrapper.addSubview(rootView)
@@ -154,11 +162,21 @@ class IncitoViewController: UIViewController {
             wrapper.heightAnchor.constraint(equalToConstant: rootView.frame.size.height),
             wrapper.widthAnchor.constraint(equalToConstant: rootView.frame.size.width)
             ])
+        
+        renderVisibleSections()
     }
     
-}
-extension IncitoViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        // `unrender` all the rendered RenderableSections (prioritizing those above)
+        
+        
+    }
+    
+    var lastRenderedWindow: CGRect?
+    
+    func renderVisibleSections() {
         
         guard let rootView = self.rootView else {
             return
@@ -166,39 +184,57 @@ extension IncitoViewController: UIScrollViewDelegate {
         
         // TODO: this is DEBUG to make lazy loading obvious
         let scrollVisibleWindow = scrollView.bounds
-            .inset(by: UIEdgeInsets(top: 200, left: 0, bottom: 200, right: 0))
-
-        let convertedVisibleRect = scrollView.convert(scrollVisibleWindow, to: rootView)
-
+//            .inset(by: UIEdgeInsets(top: 200, left: 0, bottom: 200, right: 0))
+            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
+        
+        let renderWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
+        
+        // dont do rendercheck until we've scrolled a certain amount
+        if let lastRendered = self.lastRenderedWindow,
+            abs(lastRendered.origin.y - renderWindow.origin.y) < 50 {
+            return
+        }
+        
+        self.lastRenderedWindow = renderWindow
+        
         for renderableSection in renderableSections {
-            // just render all of them!
-//            renderableSection.render(into: rootView)
+            // just render all of them
+            //            renderableSection.render(into: rootView)
             
-            if convertedVisibleRect.intersects(renderableSection.layoutNode.rect.cgRect) {
+            if renderWindow.intersects(renderableSection.layoutNode.rect.cgRect) {
                 renderableSection.render(into: rootView)
             } else {
+                // TODO: only unrender on memory pressure or if rendered section count gets large
                 renderableSection.unrender()
             }
         }
     }
 }
+extension IncitoViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        renderVisibleSections()
+    }
+}
 
 /// Given a renderer it will return a ViewBuilder that builds the entire view hierarchy.
-let viewHierarchyBuilder: (IncitoRenderer) -> (LayoutNode) -> UIView = { renderer in
+let viewHierarchyBuilder: (IncitoRenderer) -> (LayoutNode) -> (UIView, [ImageLoadRequest]) = { renderer in
     return { layoutNode in
-        return .build(layoutNode, renderer: renderer, depth: 0, maxDepth: nil)
+        return UIView.build(layoutNode, renderer: renderer, depth: 0, maxDepth: nil)
     }
 }
 
 class RenderableSection {
     let layoutNode: LayoutNode
-    let viewBuilder: (LayoutNode) -> UIView
+    let viewBuilder: (LayoutNode) -> (UIView, [ImageLoadRequest])
+    let imageLoader: ImageLoader
     
     var renderedView: UIView? = nil
+//    var pendingImageLoadRequests: [ImageLoadRequest] = []
     
-    init(layoutNode: LayoutNode, viewBuilder: @escaping (LayoutNode) -> UIView) {
+    init(layoutNode: LayoutNode, viewBuilder: @escaping (LayoutNode) -> (UIView, [ImageLoadRequest]), imageLoader: @escaping ImageLoader) {
         self.layoutNode = layoutNode
         self.viewBuilder = viewBuilder
+        self.imageLoader = imageLoader
     }
     
     func unrender() {
@@ -212,11 +248,38 @@ class RenderableSection {
             return
         }
         
-        print(" ⇢ 🎨 Lazily Rendering Section", self.layoutNode.rect.origin)
-        
-        let view = self.viewBuilder(self.layoutNode)
+        let (view, imgReqs) = self.viewBuilder(self.layoutNode)
         self.renderedView = view
         
         parentView.addSubview(view)
+        
+        print(" ⇢ 🎨 Lazily Rendering Section (\(imgReqs.count) images)", self.layoutNode.rect.origin)
+        
+        // TODO: some kind of cancellation strategy
+//        self.pendingImageLoadRequests = imgReqs
+        
+        let start = Date.timeIntervalSinceReferenceDate
+        
+        let pendingReqCount = imgReqs.count
+        var completedReqs: (success: Int, err: Int) = (0, 0)
+        for req in imgReqs {
+            self.imageLoader(req.url) {
+                req.completion($0)
+                
+                if $0 == nil {
+                    completedReqs.err += 1
+                } else {
+                    completedReqs.success += 1
+                }
+                
+                if (completedReqs.err + completedReqs.success) == pendingReqCount {
+                    
+                    
+                    let end = Date.timeIntervalSinceReferenceDate
+                    
+                    print("    ‣ Images loaded: \(pendingReqCount) images in \(round((end - start) * 1_000))ms (\(completedReqs.success)x ✅,  \(completedReqs.err)x ❌)")
+                }
+            }
+        }
     }
 }
