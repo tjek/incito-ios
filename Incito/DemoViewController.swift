@@ -10,16 +10,17 @@
 import UIKit
 
 class DemoViewController: UIViewController {
-    var selectedIndex: Int = 0
-    let availableIncitos = [
-        "incito-fakta-375.json",
-        "incito-superbrugsen-375.json",
+    var selectedIndex: Int = 999
+    let availableIncitos: [(json: String, refImg: String?)] = [
+        ("incito-fakta-375.json", "fakta-incito-375-reference"),
+        ("incito-superbrugsen-375.json", nil),
         
         //"incito-fakta-1200.json",
         //"incito-superbrugsen-1200.json",
     ]
     
     var incitoController: IncitoViewController?
+    var refImageView = UIImageView()
     
     @objc
     func loadNextIncito() {
@@ -28,10 +29,17 @@ class DemoViewController: UIViewController {
             selectedIndex = 0
         }
         
-        loadIncito(named: availableIncitos[selectedIndex])
+        let incitoInfo = availableIncitos[selectedIndex]
+        
+        var image: UIImage? = nil
+        if let imgName = incitoInfo.refImg {
+            image = UIImage(named: imgName)
+        }
+        
+        loadIncito(named: availableIncitos[selectedIndex].json, refImage: image)
     }
     
-    func loadIncito(named filename: String) {
+    func loadIncito(named filename: String, refImage: UIImage?) {
         
         print("\n-----------------")
         print("🌈 Loading '\(filename)'…")
@@ -45,6 +53,20 @@ class DemoViewController: UIViewController {
             DispatchQueue.main.async {
                 let oldIncitoVC = self.incitoController
                 let newIncitoVC = IncitoViewController(incito: incito)
+                
+                self.refImageView.removeFromSuperview()
+                newIncitoVC.scrollView.addSubview(self.refImageView)
+                
+                self.refImageView.image = refImage
+                self.refImageView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    self.refImageView.centerXAnchor.constraint(equalTo: newIncitoVC.scrollView.centerXAnchor),
+                    self.refImageView.topAnchor.constraint(equalTo: newIncitoVC.scrollView.topAnchor)
+                    ])
+                self.refImageView.alpha = 0
+                self.navigationItem.leftBarButtonItem?.tintColor = UIColor.orange.withAlphaComponent(0.75)
+                self.navigationItem.leftBarButtonItem?.isEnabled = (refImage != nil)
+                
                 self.incitoController = newIncitoVC
                 
                 self.cycleFromViewController(
@@ -124,9 +146,25 @@ class DemoViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = .orange
         view.backgroundColor = .white
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonItem.SystemItem.fastForward, target: self, action: #selector(loadNextIncito))
-        
-        self.loadIncito(named: availableIncitos[selectedIndex])
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .camera, target: self, action: #selector(toggleReferenceImage))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .fastForward, target: self, action: #selector(loadNextIncito))
+
+        loadNextIncito()
+    }
+    
+    @objc
+    func toggleReferenceImage() {
+        switch refImageView.alpha {
+        case 0:
+            refImageView.alpha = 0.5
+            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.orange.withAlphaComponent(1)
+        case 0.5:
+            refImageView.alpha = 1
+            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.orange.withAlphaComponent(0.3)
+        default:
+            refImageView.alpha = 0
+            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.orange.withAlphaComponent(0.75)
+        }
     }
     
     //    func addBlurredStatusBar() {

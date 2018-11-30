@@ -129,7 +129,7 @@ class IncitoViewController: UIViewController {
         
         self.rootLayoutNode = rootLayoutNode
         
-        // TODO: Load the imageReqs
+        // TODO: Load the imageReqs for the rootview
         // build (just) the rootView
         let (rootView, imageReqs) = UIView.build(rootLayoutNode,
                                     renderer: self.renderer,
@@ -149,7 +149,7 @@ class IncitoViewController: UIViewController {
         
         let wrapper = UIView()
         wrapper.addSubview(rootView)
-        scrollView.addSubview(wrapper)
+        scrollView.insertSubview(wrapper, at: 0)
         
         wrapper.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
