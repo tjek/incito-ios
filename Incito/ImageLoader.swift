@@ -13,7 +13,7 @@ import UIKit
 func loadImage(url: URL, completion: @escaping (UIImage?) -> Void) {
     DispatchQueue.global().async {
         let urlSession = URLSession.shared
-        let urlReq = URLRequest(url: url, timeoutInterval: 2)
+        let urlReq = URLRequest(url: url, timeoutInterval: 10)
         let task = urlSession.dataTask(with: urlReq) { data, response, error in
             
             let result: UIImage?

@@ -133,6 +133,10 @@ func absoluteLayout(view: View, intrinsicSize: ViewSizer, parentLayout: LayoutTy
             childNode.rect.origin.y = absoluteLayout.padding.top
         }
 
+        // apply the transform to the nodes
+        childNode.rect.origin.x += childNode.view.style.transform.translateX.absolute(in: size.width)
+        childNode.rect.origin.y += childNode.view.style.transform.translateY.absolute(in: size.height)
+        
         // TODO: apply margins & padding
         childNodes.append(childNode)
     }

@@ -191,6 +191,12 @@ extension StyleProperties: Decodable {
         case backgroundImageTileMode = "background_tile_mode"
         case backgroundImagePosition = "background_image_position"
         case backgroundImageScaleType = "background_image_scale_type"
+        
+        case transformScale = "transform_scale"
+        case transformTranslateX = "transform_translate_x"
+        case transformTranslateY = "transform_translate_y"
+        case transformRotate = "transform_rotate"
+        case transformOrigin = "transform_origin"
     }
     
     init(from decoder: Decoder) throws {
@@ -231,7 +237,20 @@ extension StyleProperties: Decodable {
             self.backgroundImage = nil
         }
         
-        // TODO: all the rest...
+        var transform = Transform.identity
+        if let scale: Double = try c.decodeIfPresent(.transformScale) {
+            transform.scale = scale
+        }
+        if let translateX: Unit = try c.decodeIfPresent(.transformTranslateX) {
+            transform.translateX = translateX
+        }
+        if let translateY: Unit = try c.decodeIfPresent(.transformTranslateY) {
+            transform.translateY = translateY
+        }
+        if let rotateDegs: Double = try c.decodeIfPresent(.transformRotate) {
+            transform.rotate = rotateDegs * .pi / 180
+        }
+        self.transform = transform
     }
 }
 

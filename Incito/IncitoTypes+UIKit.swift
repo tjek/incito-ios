@@ -42,3 +42,13 @@ extension Rect {
         return CGRect(x: origin.x, y: origin.y, width: size.width, height: size.height)
     }
 }
+
+extension TextViewProperties.TextAlignment {
+    var nsTextAlignment: NSTextAlignment {
+        switch self {
+        case .left: return .left
+        case .right: return .right
+        case .center: return .center
+        }
+    }
+}

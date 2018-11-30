@@ -134,13 +134,7 @@ extension UIView {
         label.attributedText = attributedString
         label.numberOfLines = textProperties.maxLines
         
-        label.textAlignment = {
-            switch (textProperties.textAlignment ?? .left) {
-            case .left: return .left
-            case .right: return .right
-            case .center: return .center
-            }
-        }()
+        label.textAlignment = (textProperties.textAlignment ?? .left).nsTextAlignment
         
         label.backgroundColor = .clear
         
@@ -150,6 +144,7 @@ extension UIView {
     static func buildImageView(_ imageProperties: ImageViewProperties, styleProperties: StyleProperties, in rect: Rect) -> (UIView, ImageLoadRequest) {
         
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
         
         let imageLoadReq = ImageLoadRequest(url: imageProperties.source) { [weak imageView] loadedImage in
             
@@ -193,6 +188,7 @@ extension UIView {
         var imgReq: ImageLoadRequest? = nil
         if let bgImage = style.backgroundImage {
             let imageView = UIImageView()
+            imageView.contentMode = .scaleAspectFill
             imageView.frame = self.bounds
             imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             self.addSubview(imageView)
@@ -224,6 +220,12 @@ extension UIView {
             }
         }
         
+        self.transform = self.transform
+            .rotated(by: CGFloat(style.transform.rotate))
+            .scaledBy(x: CGFloat(style.transform.scale), y: CGFloat(style.transform.scale))
+        //        transform.translatedBy(x: style.transform.translateX,
+        //                               y: style.transform.translateY)
+
         return imgReq
     }
 }
@@ -250,8 +252,10 @@ extension TextViewProperties {
     func attributedString(fontProvider: FontProvider, defaults: TextViewDefaultProperties) -> NSAttributedString {
         
         let fontFamily = self.fontFamily + defaults.fontFamily
-        let textSize = ceil(self.textSize ?? defaults.textSize)
+        let textSize = self.textSize ?? defaults.textSize
         let textColor = self.textColor ?? defaults.textColor
+        let lineSpacingMultiplier = self.lineSpacingMultiplier ?? defaults.lineSpacingMultiplier
+        let alignment = (self.textAlignment ?? .left).nsTextAlignment
         
         var string = self.text
         if self.allCaps {
@@ -260,10 +264,18 @@ extension TextViewProperties {
         
         let font = fontProvider(fontFamily, textSize)
         
+        // TODO: why this magic number?!
+        let scaleFactor: CGFloat = 3
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = (CGFloat(lineSpacingMultiplier) - 1) / scaleFactor + 1
+        paragraphStyle.alignment = alignment
+        
         let attrStr = NSMutableAttributedString(
             string: string,
             attributes: [.foregroundColor: textColor.uiColor,
-                         .font: font
+                         .font: font,
+                         .paragraphStyle: paragraphStyle
             ]
         )
         

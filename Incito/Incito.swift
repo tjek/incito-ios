@@ -50,7 +50,7 @@ struct StyleProperties {
     var cornerRadius: Corners<Unit>
     //    var shadow: Shadow? = nil
     //    var stroke: Stroke? = nil
-    //    var transform: Transform? = nil
+    var transform: Transform
     
     var link: String? // URI
     var title: String?
@@ -64,6 +64,7 @@ struct StyleProperties {
         role: nil,
         meta: [:],
         cornerRadius: .zero,
+        transform: .identity,
         link: nil,
         title: nil,
         clipsChildren: true,
@@ -273,11 +274,21 @@ struct Stroke {
 }
 
 struct Transform {
-    var scale: Double?
-    var translateX: Unit?
-    var translateY: Unit?
-    var rotate: Double? // -360 -> 360
+    var scale: Double
+    var translateX: Unit
+    var translateY: Unit
+    var rotate: Double // radians
+    // TODO: how is this represented?
     //    let origin: [String] // seems to more be an tuple of 2 Unit strings? x & y?
+}
+
+extension Transform {
+    static var identity = Transform(
+        scale: 1,
+        translateX: .pts(0),
+        translateY: .pts(0),
+        rotate: 0
+    )
 }
 
 enum HorizontalGravity: String, Decodable {
