@@ -1,0 +1,22 @@
+PODS:
+  - RRFPSBar (0.0.2)
+
+DEPENDENCIES:
+  - RRFPSBar (from `https://github.com/RolandasRazma/RRFPSBar.git`, tag `0.0.2`)
+
+EXTERNAL SOURCES:
+  RRFPSBar:
+    :git: https://github.com/RolandasRazma/RRFPSBar.git
+    :tag: 0.0.2
+
+CHECKOUT OPTIONS:
+  RRFPSBar:
+    :git: https://github.com/RolandasRazma/RRFPSBar.git
+    :tag: 0.0.2
+
+SPEC CHECKSUMS:
+  RRFPSBar: d2cc510813aa7377af23fd011d144e7770d4bc18
+
+PODFILE CHECKSUM: 3acecb389628946e01d910c24e9bd7230260ae84
+
+COCOAPODS: 1.5.3

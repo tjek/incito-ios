@@ -8,6 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import UIKit
+import RRFPSBar
 
 class DemoViewController: UIViewController {
     var selectedIndex: Int = 999
@@ -146,7 +147,10 @@ class DemoViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = .orange
         view.backgroundColor = .white
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .camera, target: self, action: #selector(toggleReferenceImage))
+        navigationItem.leftBarButtonItems = [
+            UIBarButtonItem(title: "fps", style: .plain, target: self, action: #selector(toggleFPS)),
+            UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(toggleReferenceImage)),
+            ]
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .fastForward, target: self, action: #selector(loadNextIncito))
 
         loadNextIncito()
@@ -165,6 +169,11 @@ class DemoViewController: UIViewController {
             refImageView.alpha = 0
             self.navigationItem.leftBarButtonItem?.tintColor = UIColor.orange.withAlphaComponent(0.75)
         }
+    }
+    
+    @objc
+    func toggleFPS() {
+        RRFPSBar.sharedInstance()?.isHidden.toggle()
     }
     
     //    func addBlurredStatusBar() {

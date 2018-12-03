@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		86A7E23B220F57C7001FB56F /* Pods_Incito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A489C6669186ACDA3F0D6DC /* Pods_Incito.framework */; };
 		AE090AD621A2A0890009159E /* Incito+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE090AD521A2A0890009159E /* Incito+Layout.swift */; };
 		AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC47219C34570021B1FD /* JSONValue.swift */; };
 		AE0DDC4A219CC2AC0021B1FD /* UIColor+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */; };
@@ -50,6 +51,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		46807A9FD9EF7017F3537723 /* Pods_IncitoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IncitoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A489C6669186ACDA3F0D6DC /* Pods_Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CD366430FE97E1D0DF87BDA /* Pods-Incito.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.release.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.release.xcconfig"; sourceTree = "<group>"; };
 		AE090AD521A2A0890009159E /* Incito+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+Layout.swift"; sourceTree = "<group>"; };
 		AE0DDC47219C34570021B1FD /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Debug.swift"; sourceTree = "<group>"; };
@@ -86,6 +90,7 @@
 		AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-1200.json"; sourceTree = "<group>"; };
 		AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-1200.json"; sourceTree = "<group>"; };
 		AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86A7E23B220F57C7001FB56F /* Pods_Incito.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,12 +112,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		092C31812CF72413F8E4A303 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */,
+				7CD366430FE97E1D0DF87BDA /* Pods-Incito.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		57D77BE1AFC591B3CD7C3BAD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7A489C6669186ACDA3F0D6DC /* Pods_Incito.framework */,
+				46807A9FD9EF7017F3537723 /* Pods_IncitoTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		AE675803219C2591006BEA9C = {
 			isa = PBXGroup;
 			children = (
 				AE67580E219C2592006BEA9C /* Incito */,
 				AE675823219C2593006BEA9C /* IncitoTests */,
 				AE67580D219C2592006BEA9C /* Products */,
+				092C31812CF72413F8E4A303 /* Pods */,
+				57D77BE1AFC591B3CD7C3BAD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -179,9 +205,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AE675829219C2593006BEA9C /* Build configuration list for PBXNativeTarget "Incito" */;
 			buildPhases = (
+				52B84ECA38E727C79AEC3D82 /* [CP] Check Pods Manifest.lock */,
 				AE675808219C2591006BEA9C /* Sources */,
 				AE675809219C2591006BEA9C /* Frameworks */,
 				AE67580A219C2591006BEA9C /* Resources */,
+				7A4E961BB1AE4B5668E0A314 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -273,6 +301,53 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		52B84ECA38E727C79AEC3D82 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Incito-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A4E961BB1AE4B5668E0A314 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Incito/Pods-Incito-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RRFPSBar/RRFPSBar.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RRFPSBar.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Incito/Pods-Incito-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AE675808219C2591006BEA9C /* Sources */ = {
@@ -458,6 +533,7 @@
 		};
 		AE67582A219C2593006BEA9C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -477,6 +553,7 @@
 		};
 		AE67582B219C2593006BEA9C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7CD366430FE97E1D0DF87BDA /* Pods-Incito.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
