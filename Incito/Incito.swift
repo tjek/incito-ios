@@ -35,8 +35,8 @@ struct View {
 enum ViewType {
     case view
     case absoluteLayout
-    case text(TextViewProperties)
     case flexLayout(FlexLayoutProperties)
+    case text(TextViewProperties)
     case image(ImageViewProperties)
     case videoEmbed(src: String)
     case video(VideoViewProperties)
@@ -221,7 +221,7 @@ struct TextViewDefaultProperties {
 
 extension TextViewDefaultProperties {
     static var empty = TextViewDefaultProperties(
-        textColor: Color(hexVal: "#000000"),
+        textColor: Color(r: 0, g: 0, b: 0, a: 0),
         lineSpacingMultiplier: 1,
         fontFamily: []
     )

@@ -10,7 +10,6 @@
 		AE090AD621A2A0890009159E /* Incito+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE090AD521A2A0890009159E /* Incito+Layout.swift */; };
 		AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC47219C34570021B1FD /* JSONValue.swift */; };
 		AE0DDC4A219CC2AC0021B1FD /* UIColor+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */; };
-		AE0DDC4E219CC47E0021B1FD /* UIColor_Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC4D219CC47E0021B1FD /* UIColor_Hex.swift */; };
 		AE0DDC50219CCAFD0021B1FD /* AutoLayoutHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC4F219CCAFD0021B1FD /* AutoLayoutHelpers.swift */; };
 		AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */ = {isa = PBXBuildFile; fileRef = AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */; };
 		AE40597E21A5A3A300D029AE /* simple-incito-static.json in Resources */ = {isa = PBXBuildFile; fileRef = AE40597D21A5A3A300D029AE /* simple-incito-static.json */; };
@@ -20,6 +19,7 @@
 		AE4C57E421AFF7300004976D /* IncitoTypes+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57E321AFF7300004976D /* IncitoTypes+UIKit.swift */; };
 		AE4C57E621AFF79C0004976D /* UIView+RecursiveSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57E521AFF79C0004976D /* UIView+RecursiveSubviews.swift */; };
 		AE4C57E821AFF8280004976D /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57E721AFF8280004976D /* DemoViewController.swift */; };
+		AE4C57ED21B538CC0004976D /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57EC21B538CC0004976D /* DecodableTests.swift */; };
 		AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67580F219C2592006BEA9C /* AppDelegate.swift */; };
 		AE675812219C2592006BEA9C /* IncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675811219C2592006BEA9C /* IncitoViewController.swift */; };
 		AE675815219C2592006BEA9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675813219C2592006BEA9C /* Main.storyboard */; };
@@ -63,6 +63,8 @@
 		AE4C57E321AFF7300004976D /* IncitoTypes+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoTypes+UIKit.swift"; sourceTree = "<group>"; };
 		AE4C57E521AFF79C0004976D /* UIView+RecursiveSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RecursiveSubviews.swift"; sourceTree = "<group>"; };
 		AE4C57E721AFF8280004976D /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
+		AE4C57E921B176A50004976D /* Scratchpad.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Scratchpad.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		AE4C57EC21B538CC0004976D /* DecodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
 		AE67580C219C2592006BEA9C /* Incito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Incito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE67580F219C2592006BEA9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE675811219C2592006BEA9C /* IncitoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				AE675816219C2593006BEA9C /* Assets.xcassets */,
 				AE675818219C2593006BEA9C /* LaunchScreen.storyboard */,
 				AE67581B219C2593006BEA9C /* Info.plist */,
+				AE4C57E921B176A50004976D /* Scratchpad.playground */,
 			);
 			path = Incito;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				AE675824219C2593006BEA9C /* IncitoTests.swift */,
+				AE4C57EC21B538CC0004976D /* DecodableTests.swift */,
 				AE675826219C2593006BEA9C /* Info.plist */,
 			);
 			path = IncitoTests;
@@ -286,7 +290,6 @@
 				AE4C57E621AFF79C0004976D /* UIView+RecursiveSubviews.swift in Sources */,
 				AE4C57E421AFF7300004976D /* IncitoTypes+UIKit.swift in Sources */,
 				AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */,
-				AE0DDC4E219CC47E0021B1FD /* UIColor_Hex.swift in Sources */,
 				AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */,
 				AE675830219C25CC006BEA9C /* Incito.swift in Sources */,
 				AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */,
@@ -303,6 +306,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE675825219C2593006BEA9C /* IncitoTests.swift in Sources */,
+				AE4C57ED21B538CC0004976D /* DecodableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

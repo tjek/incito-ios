@@ -11,7 +11,7 @@ import UIKit
 
 extension Color {
     var uiColor: UIColor {
-        return UIColor(hex: self.hexVal) ?? .clear
+        return UIColor(red: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a))
     }
 }
 

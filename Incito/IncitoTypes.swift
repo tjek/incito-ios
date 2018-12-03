@@ -10,9 +10,9 @@
 typealias FontAssetName = String
 typealias FontFamily = [FontAssetName]
 
-struct Color {
-    // TODO: support rgba etc.
-    var hexVal: String
+struct Color: Equatable {
+    // 0-1 Doubles
+    var r, g, b, a: Double
 }
 
 // MARK: - Dimensions
