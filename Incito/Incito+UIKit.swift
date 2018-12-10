@@ -220,16 +220,42 @@ extension UIView {
             }
         }
         
+        // TODO: Not like this
+        let parentSize = superview?.bounds.size ?? frame.size
+        
+        // TODO: use real anchor point
+        setAnchorPoint(anchorPoint: CGPoint.zero)
+        
         self.transform = self.transform
-            .rotated(by: CGFloat(style.transform.rotate))
+            .translatedBy(x: CGFloat(style.transform.translateX.absolute(in: Double(parentSize.width))),
+                          y: CGFloat(style.transform.translateY.absolute(in: Double(parentSize.height))))
             .scaledBy(x: CGFloat(style.transform.scale), y: CGFloat(style.transform.scale))
-        //        transform.translatedBy(x: style.transform.translateX,
-        //                               y: style.transform.translateY)
-
+            .rotated(by: CGFloat(style.transform.rotate))
+        
         return imgReq
     }
 }
-
+extension UIView{
+    func setAnchorPoint(anchorPoint: CGPoint) {
+        
+        var newPoint = CGPoint(x: self.bounds.size.width * anchorPoint.x, y: self.bounds.size.height * anchorPoint.y)
+        var oldPoint = CGPoint(x: self.bounds.size.width * self.layer.anchorPoint.x, y: self.bounds.size.height * self.layer.anchorPoint.y)
+        
+        newPoint = newPoint.applying(self.transform)
+        oldPoint = oldPoint.applying(self.transform)
+        
+        var position : CGPoint = self.layer.position
+        
+        position.x -= oldPoint.x
+        position.x += newPoint.x;
+        
+        position.y -= oldPoint.y;
+        position.y += newPoint.y;
+        
+        self.layer.position = position;
+        self.layer.anchorPoint = anchorPoint;
+    }
+}
 // MARK: - Sizing
 
 let uiKitViewSizer: (@escaping FontProvider, TextViewDefaultProperties) -> ViewSizer = { fontProvider, textDefaults in
@@ -243,7 +269,7 @@ let uiKitViewSizer: (@escaping FontProvider, TextViewDefaultProperties) -> ViewS
                 defaults: textDefaults
             )
         default:
-            return .zero
+            return nil
         }
     }
 }
@@ -265,6 +291,7 @@ extension TextViewProperties {
         let font = fontProvider(fontFamily, textSize)
         
         // TODO: why this magic number?!
+        // Should instead be fontsize * lineSpacingMultiplier
         let scaleFactor: CGFloat = 3
         
         let paragraphStyle = NSMutableParagraphStyle()

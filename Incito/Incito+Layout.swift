@@ -32,8 +32,8 @@ extension AbsoluteLayoutProperties {
         self.maxHeight = properties.maxHeight?.absolute(in: parentSize.height) ?? .infinity
         self.minHeight = properties.minHeight?.absolute(in: parentSize.height) ?? 0
         
-        self.height = (properties.height ?? .wrapContent).absolute(in: parentSize.height)
-        self.width = (properties.width ?? .matchParent).absolute(in: parentSize.width)
+        self.height = properties.height?.absolute(in: parentSize.height)
+        self.width = properties.width?.absolute(in: parentSize.width)
         
         self.position = properties.position.absolute(in: parentSize)
         self.margins = properties.margins.absolute(in: parentSize)
@@ -54,11 +54,11 @@ struct LayoutNode {
 }
 
 enum LayoutType {
-    case `static`
-    case absolute
+    case block      // Will fill the parent, and it's intrinsic size is not used. Views are stacked vertically.
+    case absolute   // Uses the intrinsic size of the view, and positioned relative to the origin.
 }
 
-typealias ViewSizer = (View, Size) -> Size
+typealias ViewSizer = (View, Size) -> Size?
 
 extension LayoutNode {
     static func build(for view: View, intrinsicSize: ViewSizer, parentLayout: LayoutType, in parentSize: Size) -> LayoutNode {
@@ -79,7 +79,7 @@ extension LayoutNode {
     }
     
     static func build(rootView: View, intrinsicSize: ViewSizer, in parentSize: Size) -> LayoutNode {
-        return .build(for: rootView, intrinsicSize: intrinsicSize, parentLayout: .static, in: parentSize)
+        return .build(for: rootView, intrinsicSize: intrinsicSize, parentLayout: .block, in: parentSize)
     }
 }
 
@@ -132,10 +132,6 @@ func absoluteLayout(view: View, intrinsicSize: ViewSizer, parentLayout: LayoutTy
         } else {
             childNode.rect.origin.y = absoluteLayout.padding.top
         }
-
-        // apply the transform to the nodes
-        childNode.rect.origin.x += childNode.view.style.transform.translateX.absolute(in: size.width)
-        childNode.rect.origin.y += childNode.view.style.transform.translateY.absolute(in: size.height)
         
         // TODO: apply margins & padding
         childNodes.append(childNode)
@@ -155,6 +151,74 @@ func absoluteLayout(view: View, intrinsicSize: ViewSizer, parentLayout: LayoutTy
 
 // MARK: - Static Layout
 
+/// Get the size of a leaf view. If the parent was positioned Absolutely then the
+func leafViewSize(view: View, sizer: ViewSizer, containerSize: Size, parentLayoutType: LayoutType) -> Size {
+    
+    // make absolute versions of the layout properties based on the parentSize.
+    let absoluteLayout = AbsoluteLayoutProperties(view.layout, in: containerSize)
+
+    // how much room we have to fit the view into.
+    let constraintSize = Size(
+        width: (absoluteLayout.width ?? containerSize.width) - absoluteLayout.padding.left - absoluteLayout.padding.right,
+        height: (absoluteLayout.height ?? containerSize.height) - absoluteLayout.padding.top - absoluteLayout.padding.bottom
+    )
+    
+    // use the sizer to find the preferred contentSize of the View
+    let contentSize = sizer(view, constraintSize)
+    
+    switch parentLayoutType {
+    case .absolute:
+        // if the parent is absolute, then dont make 100% wide by default. Instead use the left/right etc properties if available
+        
+        // TODO: padding?
+        let width: Double = {
+            if let w = absoluteLayout.width {
+                // if a specific width is provided, just use that.
+                return w
+            } else if let left = absoluteLayout.position.left,
+                let right = absoluteLayout.position.right {
+                // if there are specific left & right then subtract them from parent width
+                return containerSize.width - left - right
+            } else {
+                // otherwise just use the content's size
+                return contentSize?.width ?? 0
+            }
+        }()
+        
+        let height: Double = {
+            if let h = absoluteLayout.height {
+                // if a specific height is provided, just use that.
+                return h
+            } else if let top = absoluteLayout.position.top,
+                let bottom = absoluteLayout.position.bottom {
+                // if there are specific top & bottom then subtract them from parent height
+                return containerSize.height - top - bottom
+            } else {
+                // otherwise just use the content's size
+                return contentSize?.height ?? 0
+            }
+        }()
+        
+        let size = Size(
+            width: width.clamped(min: absoluteLayout.minWidth, max: absoluteLayout.maxWidth),
+            height: height.clamped(min: absoluteLayout.minHeight, max: absoluteLayout.maxHeight)
+        )
+        print("Abs:", view.id ?? "--", size)
+        return size
+    case .block:
+        
+        // parent is static. Try to use the specified width. Otherwise use the containerWidth
+        let size = Size(
+            width: (absoluteLayout.width ?? containerSize.width).clamped(min: absoluteLayout.minWidth, max: absoluteLayout.maxWidth),
+            height: (absoluteLayout.height ?? contentSize?.height ?? 0).clamped(min: absoluteLayout.minHeight, max: absoluteLayout.maxHeight)
+        )
+        
+        print("Block:", view.id ?? "--", size)
+        
+        return size
+    }
+}
+
 /// Generate a LayoutNode for a View and it's children, fitting inside parentSize.
 /// The LayoutNode's rect is sized, and it's children positioned, but it's origin is not modified eg. it's margin is not taken into account (that is the job of the parent node's layout method)
 func staticLayout(view: View, intrinsicSize: ViewSizer, parentLayout: LayoutType, in parentSize: Size) -> LayoutNode {
@@ -166,67 +230,12 @@ func staticLayout(view: View, intrinsicSize: ViewSizer, parentLayout: LayoutType
     let size: Size
     
     if view.children.isEmpty {
-        // no children: get the intrinsic content size
-        
-        // TODO: build intrinsicSize from the view-type itself
-        let constraintSize = Size(
-            width: (absoluteLayout.width ?? parentSize.width) - absoluteLayout.padding.left - absoluteLayout.padding.right,
-            height: (absoluteLayout.height ?? parentSize.height) - absoluteLayout.padding.top - absoluteLayout.padding.bottom
+        size = leafViewSize(
+            view: view,
+            sizer: intrinsicSize,
+            containerSize: parentSize,
+            parentLayoutType: parentLayout
         )
-        let contentSize = intrinsicSize(view, constraintSize)
-        
-        let intrinsicSize: Size
-//        let defaultHeight: Double = 30 // the height of a view that doesnt have any intrinsic height
-//        let intrinsicSize: Size = (
-//            width: (absoluteLayout.width ?? parentSize.width).clamped(min: absoluteLayout.minWidth, max: absoluteLayout.maxWidth),
-//            height: (absoluteLayout.height ?? defaultHeight).clamped(min: absoluteLayout.minHeight, max: absoluteLayout.maxHeight)
-//        )
-        
-        switch parentLayout {
-        case .absolute:
-            // if the parent is absolute, then dont make 100% wide by default. Instead use the left/right etc properties if available
-
-            // TODO: padding?
-            let width: Double = {
-                if view.layout.width != nil, let w = absoluteLayout.width {
-                    // if a specific width is provided, just use that.
-                    return w
-                } else if let left = absoluteLayout.position.left,
-                    let right = absoluteLayout.position.right {
-                    // if there are specific left & right then subtract them from parent width
-                    return parentSize.width - left - right
-                } else {
-                    // otherwise just use the content's size
-                    return contentSize.width
-                }
-            }()
-            
-            let height: Double = {
-                if let h = absoluteLayout.height {
-                    // if a specific height is provided, just use that.
-                    return h
-                } else if let top = absoluteLayout.position.top,
-                    let bottom = absoluteLayout.position.bottom {
-                    // if there are specific top & bottom then subtract them from parent height
-                    return parentSize.height - top - bottom
-                } else {
-                    // otherwise just use the content's size
-                    return contentSize.height
-                }
-            }()
-            
-            intrinsicSize = Size(
-                width: width.clamped(min: absoluteLayout.minWidth, max: absoluteLayout.maxWidth),
-                height: height.clamped(min: absoluteLayout.minHeight, max: absoluteLayout.maxHeight)
-            )
-        case .static:
-            intrinsicSize = Size(
-                width: (absoluteLayout.width ?? parentSize.width).clamped(min: absoluteLayout.minWidth, max: absoluteLayout.maxWidth),
-                height: (absoluteLayout.height ?? contentSize.height).clamped(min: absoluteLayout.minHeight, max: absoluteLayout.maxHeight)
-            )
-        }
-        
-        size = intrinsicSize
     } else {
         // the size into which the children will try to fit.
         // subtracts the padding so they fit into a smaller space
@@ -243,7 +252,7 @@ func staticLayout(view: View, intrinsicSize: ViewSizer, parentLayout: LayoutType
             var childNode = LayoutNode.build(
                 for: childView,
                 intrinsicSize: intrinsicSize,
-                parentLayout: .static,
+                parentLayout: parentLayout,
                 in: fittingSize
             )
 
@@ -254,7 +263,7 @@ func staticLayout(view: View, intrinsicSize: ViewSizer, parentLayout: LayoutType
             childNodes.append(childNode)
             
             originY = childNode.rect.origin.y + childNode.rect.size.height + childMargins.bottom
-            maxChildWidth = max(maxChildWidth, Double(childNode.rect.size.width) + childMargins.left + childMargins.right)
+            maxChildWidth = max(maxChildWidth, childNode.rect.size.width + childMargins.left + childMargins.right + absoluteLayout.padding.left + absoluteLayout.padding.right)
         }
         
         let totalChildHeight = originY + absoluteLayout.padding.bottom
@@ -270,17 +279,17 @@ func staticLayout(view: View, intrinsicSize: ViewSizer, parentLayout: LayoutType
             var childNode = $0
             
             switch view.layout.gravity {
-            case .center?:
-                childNode.rect.origin.x = (size.width / 2) - (childNode.rect.size.width / 2)
             case .right?:
                 // TODO: padding/margins?
                 childNode.rect.origin.x = size.width - absoluteLayout.padding.right - childNode.rect.size.width
                 
-            case .left?,
-                 nil:
+            case .left?:
                 // TODO: different depending on gravity. Defaults to no gravity (system LtR or RtL)
-                
                 childNode.rect.origin.x += absoluteLayout.padding.left
+                
+            case .center?,
+                 nil:
+                childNode.rect.origin.x = (size.width / 2) - (childNode.rect.size.width / 2)
             }
             
             return childNode

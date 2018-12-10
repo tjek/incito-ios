@@ -22,6 +22,7 @@ class DemoViewController: UIViewController {
     
     var incitoController: IncitoViewController?
     var refImageView = UIImageView()
+    var refImageButton: UIBarButtonItem!
     
     @objc
     func loadNextIncito() {
@@ -65,8 +66,8 @@ class DemoViewController: UIViewController {
                     self.refImageView.topAnchor.constraint(equalTo: newIncitoVC.scrollView.topAnchor)
                     ])
                 self.refImageView.alpha = 0
-                self.navigationItem.leftBarButtonItem?.tintColor = UIColor.orange.withAlphaComponent(0.75)
-                self.navigationItem.leftBarButtonItem?.isEnabled = (refImage != nil)
+                self.refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
+                self.refImageButton.isEnabled = (refImage != nil)
                 
                 self.incitoController = newIncitoVC
                 
@@ -147,9 +148,11 @@ class DemoViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = .orange
         view.backgroundColor = .white
         
+        refImageButton = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(toggleReferenceImage))
+        
         navigationItem.leftBarButtonItems = [
             UIBarButtonItem(title: "fps", style: .plain, target: self, action: #selector(toggleFPS)),
-            UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(toggleReferenceImage)),
+            refImageButton,
             ]
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .fastForward, target: self, action: #selector(loadNextIncito))
 
@@ -161,13 +164,13 @@ class DemoViewController: UIViewController {
         switch refImageView.alpha {
         case 0:
             refImageView.alpha = 0.5
-            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.orange.withAlphaComponent(1)
+            refImageButton.tintColor = UIColor.orange.withAlphaComponent(1)
         case 0.5:
             refImageView.alpha = 1
-            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.orange.withAlphaComponent(0.3)
+            refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.3)
         default:
             refImageView.alpha = 0
-            self.navigationItem.leftBarButtonItem?.tintColor = UIColor.orange.withAlphaComponent(0.75)
+            refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
         }
     }
     
