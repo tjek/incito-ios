@@ -2,7 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "fakta-incito-375-reference.jpg"
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "fakta-incito-375-reference@2x.jpg",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

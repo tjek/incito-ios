@@ -203,7 +203,6 @@ func leafViewSize(view: View, sizer: ViewSizer, containerSize: Size, parentLayou
             width: width.clamped(min: absoluteLayout.minWidth, max: absoluteLayout.maxWidth),
             height: height.clamped(min: absoluteLayout.minHeight, max: absoluteLayout.maxHeight)
         )
-        print("Abs:", view.id ?? "--", size)
         return size
     case .block:
         
@@ -212,9 +211,6 @@ func leafViewSize(view: View, sizer: ViewSizer, containerSize: Size, parentLayou
             width: (absoluteLayout.width ?? containerSize.width).clamped(min: absoluteLayout.minWidth, max: absoluteLayout.maxWidth),
             height: (absoluteLayout.height ?? contentSize?.height ?? 0).clamped(min: absoluteLayout.minHeight, max: absoluteLayout.maxHeight)
         )
-        
-        print("Block:", view.id ?? "--", size)
-        
         return size
     }
 }

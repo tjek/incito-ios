@@ -280,7 +280,7 @@ extension TextViewProperties {
         let fontFamily = self.fontFamily + defaults.fontFamily
         let textSize = self.textSize ?? defaults.textSize
         let textColor = self.textColor ?? defaults.textColor
-        let lineSpacingMultiplier = self.lineSpacingMultiplier ?? defaults.lineSpacingMultiplier
+        let lineSpacingMultiplier = CGFloat(self.lineSpacingMultiplier ?? defaults.lineSpacingMultiplier)
         let alignment = (self.textAlignment ?? .left).nsTextAlignment
         
         var string = self.text
@@ -289,13 +289,10 @@ extension TextViewProperties {
         }
         
         let font = fontProvider(fontFamily, textSize)
-        
-        // TODO: why this magic number?!
-        // Should instead be fontsize * lineSpacingMultiplier
-        let scaleFactor: CGFloat = 3
-        
+
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = (CGFloat(lineSpacingMultiplier) - 1) / scaleFactor + 1
+        paragraphStyle.lineHeightMultiple = lineSpacingMultiplier
+        paragraphStyle.lineSpacing = 0
         paragraphStyle.alignment = alignment
         
         let attrStr = NSMutableAttributedString(
