@@ -126,6 +126,7 @@ extension UIView {
         
         let label = UILabel()
         
+        // TODO: cache these values from when doing the layout phase
         let attributedString = textProperties.attributedString(
             fontProvider: fontProvider,
             defaults: textDefaults
@@ -138,13 +139,25 @@ extension UIView {
         
         label.backgroundColor = .clear
         
-        return label
+        // labels are vertically aligned in incito, so add to a container view
+        let container = UIView()
+        container.frame = rect.cgRect
+        
+        container.addSubview(label)
+        
+        let textHeight = label.sizeThatFits(container.bounds.size).height
+        label.frame = CGRect(origin: .zero,
+                             size: CGSize(width: container.bounds.size.width,
+                                          height: textHeight))
+        label.autoresizingMask = [.flexibleBottomMargin, .flexibleWidth]
+
+        return container
     }
     
     static func buildImageView(_ imageProperties: ImageViewProperties, styleProperties: StyleProperties, in rect: Rect) -> (UIView, ImageLoadRequest) {
         
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleToFill
         
         let imageLoadReq = ImageLoadRequest(url: imageProperties.source) { [weak imageView] loadedImage in
             
