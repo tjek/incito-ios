@@ -136,12 +136,12 @@ struct TextViewProperties {
     var maxLines: Int
 }
 
-struct FlexLayoutProperties: Decodable {
+struct FlexLayoutProperties {
     enum ItemAlignment: String, Decodable {
         case stretch
         case center
         case flexStart  = "flex-start"
-        case flextEnd   = "flex-end"
+        case flexEnd   = "flex-end"
         case baseline
     }
     
@@ -167,21 +167,12 @@ struct FlexLayoutProperties: Decodable {
         case column
     }
     
-    var itemAlignment: ItemAlignment?
-    var contentJustification: ContentJustification?
-    var contentAlignment: ContentAlignment?
-    var direction: Direction?
-    var shrink: Double? // todo: what?
-    var grow: Double? // todo: what?
-    
-    enum CodingKeys: String, CodingKey {
-        case itemAlignment      = "layout_flex_align_items"
-        case contentJustification = "layout_flex_justify_content"
-        case contentAlignment   = "layout_flex_align_content"
-        case direction          = "layout_flex_direction"
-        case shrink             = "layout_flex_shrink"
-        case grow               = "layout_flex_grow"
-    }
+    var direction: Direction = .row
+    var itemAlignment: ItemAlignment = .stretch
+    var contentAlignment: ContentAlignment = .stretch
+    var contentJustification: ContentJustification = .flexStart
+//    var shrink: Double? // todo: what?
+//    var grow: Double? // todo: what?    
 }
 
 struct ImageViewProperties: Decodable {

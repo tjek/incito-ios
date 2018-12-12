@@ -506,3 +506,32 @@ extension TextStyle: Decodable {
         }
     }
 }
+
+extension FlexLayoutProperties: Decodable {
+    
+    enum CodingKeys: String, CodingKey {
+        case itemAlignment      = "layout_flex_align_items"
+        case contentJustification = "layout_flex_justify_content"
+        case contentAlignment   = "layout_flex_align_content"
+        case direction          = "layout_flex_direction"
+        case shrink             = "layout_flex_shrink"
+        case grow               = "layout_flex_grow"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if let dir: Direction = try c.decodeIfPresent(.direction) {
+            self.direction = dir
+        }
+        if let itemAlign: ItemAlignment = try c.decodeIfPresent(.itemAlignment) {
+            self.itemAlignment = itemAlign
+        }
+        if let contentAlign: ContentAlignment = try c.decodeIfPresent(.contentAlignment) {
+            self.contentAlignment = contentAlign
+        }
+        if let contentJustification: ContentJustification = try c.decodeIfPresent(.contentAlignment) {
+            self.contentJustification = contentJustification
+        }
+    }
+}
