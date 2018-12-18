@@ -13,7 +13,7 @@ struct Incito {
     typealias Identifier = String // TODO
     var id: Identifier
     var version: String
-    var rootView: View
+    var rootView: ViewNode
 
     var locale: String?
     var theme: Theme?
@@ -21,7 +21,9 @@ struct Incito {
     var fontAssets: [FontAssetName: FontAsset]
 }
 
-struct View {
+typealias ViewNode = TreeNode<ViewProperties>
+
+struct ViewProperties {
     typealias Identifier = String // TODO
     var id: Identifier?
     
@@ -29,7 +31,6 @@ struct View {
     var style: StyleProperties
     
     var layout: LayoutProperties
-    var children: [View]
 }
 
 enum ViewType {

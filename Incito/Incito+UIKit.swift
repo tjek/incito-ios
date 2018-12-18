@@ -122,7 +122,7 @@ extension UIView {
         return (view, imageLoadRequests)
     }
     
-    static func buildTextView(_ textProperties: TextViewProperties, textDefaults: TextViewDefaultProperties, styleProperties: StyleProperties, fontProvider: FontProvider, in rect: Rect) -> UIView {
+    static func buildTextView(_ textProperties: TextViewProperties, textDefaults: TextViewDefaultProperties, styleProperties: StyleProperties, fontProvider: FontProvider, in rect: Rect<Double>) -> UIView {
         
         let label = UILabel()
         
@@ -154,7 +154,7 @@ extension UIView {
         return container
     }
     
-    static func buildImageView(_ imageProperties: ImageViewProperties, styleProperties: StyleProperties, in rect: Rect) -> (UIView, ImageLoadRequest) {
+    static func buildImageView(_ imageProperties: ImageViewProperties, styleProperties: StyleProperties, in rect: Rect<Double>) -> (UIView, ImageLoadRequest) {
         
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
@@ -180,7 +180,7 @@ extension UIView {
         return (imageView, imageLoadReq)
     }
     
-    static func buildPassthruView(styleProperties: StyleProperties, in rect: Rect) -> UIView {
+    static func buildPassthruView(styleProperties: StyleProperties, in rect: Rect<Double>) -> UIView {
         let view = UIView()
         return view
     }
@@ -192,7 +192,7 @@ struct ImageLoadRequest {
 }
 
 extension UIView {
-    func apply(styleProperties style: StyleProperties, renderer: IncitoRenderer, in rect: Rect) -> ImageLoadRequest? {
+    func apply(styleProperties style: StyleProperties, renderer: IncitoRenderer, in rect: Rect<Double>) -> ImageLoadRequest? {
         
         // apply the layout.view properties
         backgroundColor = style.backgroundColor?.uiColor ?? .clear
@@ -271,18 +271,21 @@ extension UIView{
 }
 // MARK: - Sizing
 
-let uiKitViewSizer: (@escaping FontProvider, TextViewDefaultProperties) -> ViewSizer = { fontProvider, textDefaults in
-    return { view, constraintSize in
-        switch view.type {
-        case let .text(text):
-            return sizeForText(
-                text,
-                maxWidth: constraintSize.width,
-                fontProvider: fontProvider,
-                defaults: textDefaults
-            )
-        default:
-            return nil
+let uiKitViewSizer: (@escaping FontProvider, TextViewDefaultProperties) -> (ViewProperties) -> IntrinsicSizer = { fontProvider, textDefaults in
+    return { view in
+        return { constraintSize in
+            switch view.type {
+            case let .text(text):
+                let size = sizeForText(
+                    text,
+                    constraintSize: constraintSize,
+                    fontProvider: fontProvider,
+                    defaults: textDefaults
+                )
+                return Size(width: size.width, height: size.height)
+            default:
+                return Size(width: nil, height: nil)
+            }
         }
     }
 }
@@ -339,14 +342,17 @@ extension TextViewProperties {
     }
 }
 
-func sizeForText(_ textProperties: TextViewProperties, maxWidth: Double, fontProvider: FontProvider, defaults: TextViewDefaultProperties) -> Size {
+func sizeForText(_ textProperties: TextViewProperties, constraintSize: Size<Double?>, fontProvider: FontProvider, defaults: TextViewDefaultProperties) -> Size<Double> {
     
     let attrString = textProperties.attributedString(
         fontProvider: fontProvider,
         defaults: defaults)
     
     let boundingBox = attrString.boundingRect(
-        with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
+        with: CGSize(
+            width: constraintSize.width ?? .greatestFiniteMagnitude,
+            height: constraintSize.height ?? .greatestFiniteMagnitude
+        ),
         options: .usesLineFragmentOrigin,
         context: nil)
     

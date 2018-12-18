@@ -83,22 +83,24 @@ extension Corners where Value == Double {
 
 // MARK: - Layout
 
-struct Point { var x, y: Double }
-
-struct Size { var width, height: Double }
-
-struct Rect {
-    var origin: Point
-    var size: Size
+struct Point<Value> {
+    var x, y: Value
+}
+struct Size<Value> {
+    var width, height: Value
+}
+struct Rect<Value> {
+    var origin: Point<Value>
+    var size: Size<Value>
 }
 
-extension Point {
+extension Point where Value == Double {
     static let zero = Point(x: 0, y: 0)
 }
-extension Size {
+extension Size where Value == Double {
     static let zero = Size(width: 0, height: 0)
 }
-extension Rect {
+extension Rect where Value == Double {
     static let zero = Rect(origin: .zero, size: .zero)
 }
 
@@ -129,7 +131,7 @@ extension LayoutSize {
 }
 
 extension Edges where Value == Unit {
-    func absolute(in parent: Size) -> Edges<Double> {
+    func absolute(in parent: Size<Double>) -> Edges<Double> {
         return .init(
             top: self.top.absolute(in: parent.height),
             left: self.left.absolute(in: parent.width),
@@ -139,7 +141,7 @@ extension Edges where Value == Unit {
     }
 }
 extension Edges where Value == Unit? {
-    func absolute(in parent: Size) -> Edges<Double?> {
+    func absolute(in parent: Size<Double>) -> Edges<Double?> {
         return .init(
             top: self.top?.absolute(in: parent.height),
             left: self.left?.absolute(in: parent.width),
@@ -157,5 +159,29 @@ extension Corners where Value == Unit {
             bottomLeft: bottomLeft.absolute(in: parent),
             bottomRight: bottomRight.absolute(in: parent)
         )
+    }
+}
+
+// MARK: Debug printing
+
+extension Edges: CustomDebugStringConvertible where Value: Equatable {
+    var debugDescription: String {
+        if top == left && left == bottom && bottom == right {
+            return "{ \(top) }"
+        } else {
+            return "{ t: \(top), l: \(left), b: \(bottom), r: \(right) }"
+        }
+    }
+}
+
+extension Size: CustomDebugStringConvertible {
+    var debugDescription: String {
+        return "{ w:\(width), h:\(height) }"
+    }
+}
+
+extension Point: CustomDebugStringConvertible {
+    var debugDescription: String {
+        return "{ x:\(x), y:\(y) }"
     }
 }

@@ -103,25 +103,65 @@ class IncitoViewController: UIViewController {
     // must call from main
     func buildLayout() {
         
-        let rootIncitoView: View = incitoDocument.rootView
+        let rootIncitoView: ViewNode = incitoDocument.rootView
         let fontProvider = self.renderer.fontProvider
         let defaultTextProperties = incitoDocument.theme?.textDefaults ?? .empty
         let parentSize = Size(cgSize: self.view.frame.size)
 
         let start = Date.timeIntervalSinceReferenceDate
-        // build the layout
-        let rootLayoutNode = LayoutNode.build(
-            rootView: rootIncitoView,
-            intrinsicSize: uiKitViewSizer(fontProvider, defaultTextProperties),
-            in: parentSize
+        
+        let layouterTree = generateLayouters(
+            rootNode: rootIncitoView,
+            layoutType: .block,
+            intrinsicViewSizer: uiKitViewSizer(fontProvider, defaultTextProperties)
         )
+        
+        let dimensionsTree = resolveLayouters(
+            rootNode: layouterTree,
+            rootSize: parentSize
+        )
+        
+        let debugTree = dimensionsTree.mapValues { value, _ in
+            "\(value.view.id ?? "?"): [ size \(value.dimensions.size), pos \(value.position), margins \(value.dimensions.layout.margins), padding \(value.dimensions.layout.padding) ]"
+        }
+        
+        print("\(debugTree)")
+        
+        // build the layout
+//        let rootLayoutNode = LayoutNode.build(
+//            rootView: rootIncitoView,
+//            intrinsicSize: uiKitViewSizer(fontProvider, defaultTextProperties),
+//            in: parentSize
+//        )
         
         let end = Date.timeIntervalSinceReferenceDate
         print(" ⇢ 🚧 Built layout graph: \(round((end - start) * 1_000))ms")
         
         DispatchQueue.main.async { [weak self] in
-            self?.initializeRootView(rootLayoutNode: rootLayoutNode)
+            self?.initializeRootView(dimensionsTree: dimensionsTree, in: parentSize)
+//            self?.initializeRootView(rootLayoutNode: rootLayoutNode)
         }
+    }
+    
+    func initializeRootView(dimensionsTree: TreeNode<(view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>)>, in parentSize: Size<Double>) {
+        
+        let rootView = dimensionsTree.buildViews(textViewDefaults: incitoDocument.theme?.textDefaults ?? .empty, fontProvider: self.renderer.fontProvider)
+
+        let wrapper = UIView()
+        wrapper.addSubview(rootView)
+        scrollView.insertSubview(wrapper, at: 0)
+        
+        wrapper.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            wrapper.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            wrapper.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            wrapper.leftAnchor.constraint(greaterThanOrEqualTo: scrollView.leftAnchor),
+            wrapper.rightAnchor.constraint(lessThanOrEqualTo: scrollView.rightAnchor),
+            wrapper.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            
+            wrapper.heightAnchor.constraint(equalToConstant: CGFloat(parentSize.height)),
+            wrapper.widthAnchor.constraint(equalToConstant: CGFloat(parentSize.width))
+            ])
     }
     
     func initializeRootView(rootLayoutNode: LayoutNode) {
@@ -177,7 +217,7 @@ class IncitoViewController: UIViewController {
     var lastRenderedWindow: CGRect?
     
     func renderVisibleSections() {
-        
+        return
         guard let rootView = self.rootView else {
             return
         }
@@ -281,5 +321,74 @@ class RenderableSection {
                 }
             }
         }
+    }
+}
+
+extension TreeNode where T == (view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>) {
+    func buildViews(textViewDefaults: TextViewDefaultProperties, fontProvider: FontProvider) -> UIView {
+        
+        let view: UIView
+        
+        switch value.view.type {
+        case .text(let textProperties):
+            view = UIView.buildTextView(
+                textProperties,
+                textDefaults: textViewDefaults,
+                styleProperties: value.view.style,
+                fontProvider: fontProvider,
+                position: value.position,
+                dimensions: value.dimensions)
+        default:
+            view = UIView()
+        }
+        view.frame = CGRect(origin: value.position.cgPoint, size: value.dimensions.size.cgSize)
+        view.backgroundColor = value.view.style.backgroundColor?.uiColor
+        view.clipsToBounds = true
+        
+        for child in children {
+            let childView = child.buildViews(textViewDefaults: textViewDefaults, fontProvider: fontProvider )
+            view.addSubview(childView)
+        }
+        
+        return view
+    }
+}
+
+extension UIView {
+    
+    static func buildTextView(_ textProperties: TextViewProperties, textDefaults: TextViewDefaultProperties, styleProperties: StyleProperties, fontProvider: FontProvider, position: Point<Double>, dimensions: AbsoluteViewDimensions) -> UIView {
+        
+        let label = UILabel()
+        
+        // TODO: cache these values from when doing the layout phase
+        let attributedString = textProperties.attributedString(
+            fontProvider: fontProvider,
+            defaults: textDefaults
+        )
+        
+        label.attributedText = attributedString
+        
+        label.numberOfLines = textProperties.maxLines
+        
+        label.textAlignment = (textProperties.textAlignment ?? .left).nsTextAlignment
+        
+        label.backgroundColor = .clear
+        
+        // labels are vertically aligned in incito, so add to a container view
+        let container = UIView()
+        container.frame = CGRect(origin: .zero,
+                                 size: dimensions.size.cgSize)
+        
+        container.addSubview(label)
+        
+        let textHeight = label.sizeThatFits(container.bounds.size).height
+        label.frame = CGRect(origin: CGPoint(x: dimensions.layout.padding.left, y: dimensions.layout.padding.top),
+                             size: CGSize(width: CGFloat(dimensions.innerSize.width),
+                                          height: textHeight))
+        label.autoresizingMask = [.flexibleBottomMargin, .flexibleWidth]
+        
+        label.textColor = .black
+        
+        return container
     }
 }

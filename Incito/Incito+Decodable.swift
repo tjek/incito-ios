@@ -23,6 +23,7 @@ extension Incito: Decodable {
         
         self.id = try c.decode(.id)
         self.version = try c.decode(.version)
+        
         self.rootView = try c.decode(.rootView)
         
         self.locale = try c.decodeIfPresent(.locale)
@@ -32,7 +33,8 @@ extension Incito: Decodable {
     }
 }
 
-extension View: Decodable {
+extension TreeNode: Decodable where T == ViewProperties {
+    
     enum CodingKeys: CodingKey {
         case viewName, id, children
         /// This case defines all unknown payload keys.
@@ -61,51 +63,134 @@ extension View: Decodable {
         init?(intValue: Int) { self.init(stringValue: "\(intValue)") }
         
     }
-
-    init(from decoder: Decoder) throws {
+    
+    convenience init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         let propertiesContainer = try decoder.singleValueContainer()
         
-        // Decode the type and type-specific properties
-        let viewName: String? = try? c.decode(.viewName)
-        switch viewName {
-        case "AbsoluteLayout"?:
-            self.type = .absoluteLayout
-        case "FlexLayout"?:
-            let flexProperties = (try? propertiesContainer.decode(FlexLayoutProperties.self)) ?? FlexLayoutProperties()
-            self.type = .flexLayout(flexProperties)
-        case "TextView"?:
-            let textProperties = try propertiesContainer.decode(TextViewProperties.self)
-            self.type = .text(textProperties)
-        case "ImageView"?:
-            let imageProperties = try propertiesContainer.decode(ImageViewProperties.self)
-            self.type = .image(imageProperties)
-        case "VideoEmbedView"?:
-            let src: String = try c.decode(.properties(key: "src"))
-            self.type = .videoEmbed(src: src)
-        case "VideoView"?:
-            let videoProperties = try propertiesContainer.decode(VideoViewProperties.self)
-            self.type = .video(videoProperties)
-        case "View"?,
-             nil:
-            fallthrough
-        default:
-            self.type = .view
-        }
+        let viewType: ViewType = try {
+            // Decode the type and type-specific properties
+            let viewName: String? = try? c.decode(.viewName)
+            switch viewName {
+            case "AbsoluteLayout"?:
+                return .absoluteLayout
+            case "FlexLayout"?:
+                let flexProperties = (try? propertiesContainer.decode(FlexLayoutProperties.self)) ?? FlexLayoutProperties()
+                return .flexLayout(flexProperties)
+            case "TextView"?:
+                let textProperties = try propertiesContainer.decode(TextViewProperties.self)
+                return .text(textProperties)
+            case "ImageView"?:
+                let imageProperties = try propertiesContainer.decode(ImageViewProperties.self)
+                return .image(imageProperties)
+            case "VideoEmbedView"?:
+                let src: String = try c.decode(.properties(key: "src"))
+                return .videoEmbed(src: src)
+            case "VideoView"?:
+                let videoProperties = try propertiesContainer.decode(VideoViewProperties.self)
+                return .video(videoProperties)
+            case "View"?,
+                 nil:
+                fallthrough
+            default:
+                return .view
+            }
+        }()
         
-        self.style = (try? propertiesContainer.decode()) ?? .empty
-        self.id = try c.decodeIfPresent(.id)
-        self.layout = (try? propertiesContainer.decode()) ?? .empty
-
+        self.init(value: ViewProperties(
+            id: try c.decodeIfPresent(.id),
+            type: viewType,
+            style: (try? propertiesContainer.decode()) ?? .empty,
+            layout: (try? propertiesContainer.decode()) ?? .empty
+        ))
+        
+        let childNodes: [ViewNode]
         do {
-            self.children = try c.decodeIfPresent(.children) ?? []
+            childNodes = try c.decodeIfPresent(.children) ?? []
         } catch {
             print("Unable to decode children", error)
-            self.children = []
+            childNodes = []
         }
+        
+        childNodes.forEach { self.add(child: $0) }
     }
 }
+
+//extension ViewProperties: Decodable {
+//    enum CodingKeys: CodingKey {
+//        case viewName, id, children
+//        /// This case defines all unknown payload keys.
+//        case properties(key: String)
+//
+//        private static let knownKeys: [CodingKeys] = [.viewName, .id, .children]
+//
+//        var stringValue: String {
+//            switch self {
+//            case .viewName: return "view_name"
+//            case .id: return "id"
+////            case .children: return "child_views"
+//            case .properties(let key): return key
+//            }
+//        }
+//
+//        init?(stringValue: String) {
+//            if let key = CodingKeys.knownKeys.first(where: { stringValue == $0.stringValue }) {
+//                self = key
+//            } else {
+//                self = .properties(key: stringValue)
+//            }
+//        }
+//
+//        var intValue: Int? { return Int(stringValue) }
+//        init?(intValue: Int) { self.init(stringValue: "\(intValue)") }
+//
+//    }
+//
+//    init(from decoder: Decoder) throws {
+//        let c = try decoder.container(keyedBy: CodingKeys.self)
+//
+//        let propertiesContainer = try decoder.singleValueContainer()
+//
+//        // Decode the type and type-specific properties
+//        let viewName: String? = try? c.decode(.viewName)
+//        switch viewName {
+//        case "AbsoluteLayout"?:
+//            self.type = .absoluteLayout
+//        case "FlexLayout"?:
+//            let flexProperties = (try? propertiesContainer.decode(FlexLayoutProperties.self)) ?? FlexLayoutProperties()
+//            self.type = .flexLayout(flexProperties)
+//        case "TextView"?:
+//            let textProperties = try propertiesContainer.decode(TextViewProperties.self)
+//            self.type = .text(textProperties)
+//        case "ImageView"?:
+//            let imageProperties = try propertiesContainer.decode(ImageViewProperties.self)
+//            self.type = .image(imageProperties)
+//        case "VideoEmbedView"?:
+//            let src: String = try c.decode(.properties(key: "src"))
+//            self.type = .videoEmbed(src: src)
+//        case "VideoView"?:
+//            let videoProperties = try propertiesContainer.decode(VideoViewProperties.self)
+//            self.type = .video(videoProperties)
+//        case "View"?,
+//             nil:
+//            fallthrough
+//        default:
+//            self.type = .view
+//        }
+//
+//        self.style = (try? propertiesContainer.decode()) ?? .empty
+//        self.id = try c.decodeIfPresent(.id)
+//        self.layout = (try? propertiesContainer.decode()) ?? .empty
+//
+//        do {
+//            self.children = try c.decodeIfPresent(.children) ?? []
+//        } catch {
+//            print("Unable to decode children", error)
+//            self.children = []
+//        }
+//    }
+//}
 
 extension LayoutProperties: Decodable {
     

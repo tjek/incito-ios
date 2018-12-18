@@ -1,0 +1,1261 @@
+{
+    "version": "1.0.0",
+    "theme": {
+        "text_color": "#000000",
+        "line_spacing_multiplier": 1.4,
+        "font_family": [
+            "incito-fakta-bold",
+            "HelveticaNeue-CondensedBold",
+            "HelveticaNeueBoldCondensed",
+            "HelveticaNeue-Bold-Condensed",
+            "Helvetica Neue Bold Condensed",
+            "HelveticaNeueBold",
+            "HelveticaNeue-Bold",
+            "Helvetica Neue Bold",
+            "HelveticaNeue",
+            "Helvetica Neue",
+            "TeXGyreHerosCnBold",
+            "Helvetica",
+            "Tahoma",
+            "Geneva",
+            "Arial Narrow",
+            "Arial",
+            "sans-serif"
+        ],
+        "background_color": "#5c5c5c"
+    },
+    "root_view": {
+        "layout_width": 375,
+        "gravity": "center_horizontal",
+        "child_views": [
+            {
+                "role": "section",
+                "id": "bb-date-intro",
+                "child_views": [
+                    {
+                        "padding": 30,
+                        "child_views": [
+                            {
+                                "view_name": "TextView",
+                                "text_size": 21.599999999999998,
+                                "text_color": "#ffffff",
+                                "text_alignment": "center",
+                                "text": "Tilbuddene gælder fra torsdag den 22. november til onsdag den 28. november 2018"
+                            }
+                        ],
+                        "background_color": "#cf0131"
+                    }
+                ]
+            },
+            {
+                "role": "section",
+                "layout_margin_bottom": 8,
+                "id": "bb-offers-1",
+                "child_views": [
+                    {
+                        "view_name": "ImageView",
+                        "src": "https://bumblebee.imgix.net/feed-images/0ba2671f4468c441ec5edaf2fe31d813?w=375&h=234.375&auto=compress%2Cformat&dpr=2&s=1ad4d2be6a106f65ab617c806aa2b447",
+                        "layout_width": 375,
+                        "layout_height": 234.375,
+                        "background_color": "#ffffff"
+                    },
+                    {
+                        "layout_height": 1,
+                        "background_color": "#E7E5E3"
+                    },
+                    {
+                        "view_name": "AbsoluteLayout",
+                        "layout_width": 375,
+                        "layout_height": 900,
+                        "child_views": [
+                            {
+                                "view_name": "AbsoluteLayout",
+                                "role": "offer",
+                                "meta": {
+                                    "title": "Buko smøreost*",
+                                    "products": [
+                                        {
+                                            "title": "BUKO REJE 250G"
+                                        },
+                                        {
+                                            "title": "BUKO SKINKE 250G"
+                                        },
+                                        {
+                                            "title": "BUKO CHAMPIGN 250G"
+                                        }
+                                    ],
+                                    "labels": [],
+                                    "ids": [
+                                        {
+                                            "value": "1673229",
+                                            "type": "id",
+                                            "provider": "self"
+                                        },
+                                        {
+                                            "value": "3",
+                                            "type": "category",
+                                            "provider": "self"
+                                        }
+                                    ],
+                                    "description": "250 g. Kg-pris 40,00. \nVed køb af mere end 6 pr. stk. pr. kunde pr. dag er prisen 19,95 kr. pr. bæger. Frit valg"
+                                },
+                                "layout_width": 187.5,
+                                "layout_top": 0,
+                                "layout_left": 0,
+                                "layout_height": 300,
+                                "id": "1673229",
+                                "child_views": [
+                                    {
+                                        "view_name": "TextView",
+                                        "title": "Buko smøreost*",
+                                        "text_size": 19,
+                                        "text_color": "#000000",
+                                        "text": "Buko smøreost*",
+                                        "max_lines": 1,
+                                        "line_spacing_multiplier": 1.1,
+                                        "layout_width": 171.5,
+                                        "layout_top": 8,
+                                        "layout_margin": 0,
+                                        "layout_left": 8,
+                                        "layout_height": 20
+                                    },
+                                    {
+                                        "view_name": "AbsoluteLayout",
+                                        "layout_width": 171.5,
+                                        "layout_top": 36,
+                                        "layout_left": 8,
+                                        "layout_height": 176,
+                                        "clip_children": false,
+                                        "child_views": [
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 79,
+                                                "transform_translate_x": 84,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 88,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 79,
+                                                "transform_translate_x": 0,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 89,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 162,
+                                                "transform_translate_x": 42,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 89,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 2,
+                                                "transform_translate_x": 84,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/941c3079c5ea30911c2c58ea65f0795c?w=88&h=89&auto=compress%2Cformat&dpr=2&s=f8834e965a77209ecee600f8924be8ba",
+                                                "layout_width": 88,
+                                                "layout_height": 89
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 2,
+                                                "transform_translate_x": 0,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/89aa9fed3caeedd0efea1f6d8d2eb59a?w=89&h=88&auto=compress%2Cformat&dpr=2&s=283ba01d42c7aeae87177caef9fd218b",
+                                                "layout_width": 89,
+                                                "layout_height": 88
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 86,
+                                                "transform_translate_x": 42,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/d215376dc078ebab26837ce7bb6a17b1?w=89&h=88&auto=compress%2Cformat&dpr=2&s=12bfaa85e41cd718a04b7b00c4495782",
+                                                "layout_width": 89,
+                                                "layout_height": 88
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": "ABC",
+                                        "transform_scale": 0.72,
+                                        "stroke_width": 2,
+                                        "stroke_style": "solid",
+                                        "stroke_color": "#2a2a2a",
+                                        "padding": 6,
+                                        "layout_top": 36,
+                                        "layout_left": 8,
+                                        "corner_radius": 6,
+                                        "clip_children": false,
+                                        "child_views": [
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 13,
+                                                "text_color": "#000000",
+                                                "text_alignment": "center",
+                                                "text": "*Maks. 6 stk.",
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1.1,
+                                                "layout_margin": 0,
+                                                "font_family": [
+                                                    "incito-istok-regular",
+                                                    "Helvetica",
+                                                    "sans-serif"
+                                                ],
+                                                "clip_children": false
+                                            },
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 13,
+                                                "text_color": "#000000",
+                                                "text_alignment": "center",
+                                                "text": "pr. kunde",
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1.1,
+                                                "layout_margin": 0,
+                                                "font_family": [
+                                                    "incito-istok-regular",
+                                                    "Helvetica",
+                                                    "sans-serif"
+                                                ],
+                                                "clip_children": false
+                                            }
+                                        ],
+                                        "background_color": "#ffffff",
+                                        "accessibility_label": "*Maks. 6 stk. pr. kunde"
+                                    },
+                                    {
+                                        "view_name": "FlexLayout",
+                                        "layout_width": 130,
+                                        "layout_left": 8,
+                                        "layout_height": 130,
+                                        "layout_flex_justify_content": "center",
+                                        "layout_flex_direction": "column",
+                                        "layout_flex_align_items": "center",
+                                        "layout_flex_align_content": "center",
+                                        "layout_bottom": 8,
+                                        "corner_radius": "100%",
+                                        "child_views": [
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 73.98843930635837,
+                                                "text_color": "#191F28",
+                                                "text_alignment": "center",
+                                                "text": "10,-",
+                                                "spans": [],
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1,
+                                                "font_family": [
+                                                    "incito-fakta-black",
+                                                    "Helvetica",
+                                                    "Tahoma",
+                                                    "Geneva",
+                                                    "Arial Narrow",
+                                                    "Arial",
+                                                    "sans-serif"
+                                                ],
+                                                "accessibility_label": "10 kr."
+                                            }
+                                        ],
+                                        "background_color": "#ffef1e"
+                                    }
+                                ],
+                                "background_color": "#f9a550"
+                            },
+                            {
+                                "view_name": "AbsoluteLayout",
+                                "role": "offer",
+                                "meta": {
+                                    "title": "Royal Gala æbler i bakke",
+                                    "products": [
+                                        {
+                                            "title": "Æbler Gala 8 stk bk"
+                                        }
+                                    ],
+                                    "labels": [
+                                        {
+                                            "title": "Nøglehul",
+                                            "src": "https://bumblebee.imgix.net/feed-images/d93c70601e4aadf66631c9860936dbd1?s=fce7393ffd4ff6dc4cdeaf687f9a6c4a",
+                                            "link": "http://altomkost.dk/tips/paa-indkoeb/noeglehulsmaerket/"
+                                        }
+                                    ],
+                                    "ids": [
+                                        {
+                                            "value": "1673275",
+                                            "type": "id",
+                                            "provider": "self"
+                                        },
+                                        {
+                                            "value": "2",
+                                            "type": "category",
+                                            "provider": "self"
+                                        }
+                                    ],
+                                    "description": "Polen, kl. I. 8 stk. \nStk.-pris 1,25."
+                                },
+                                "layout_width": 187.5,
+                                "layout_top": 0,
+                                "layout_left": 187.5,
+                                "layout_height": 300,
+                                "id": "1673275",
+                                "child_views": [
+                                    {
+                                        "view_name": "TextView",
+                                        "title": "Royal Gala æbler i bakke",
+                                        "text_size": 19,
+                                        "text_prevent_widow": true,
+                                        "text_color": "#000000",
+                                        "text": "Royal Gala æbler i bakke",
+                                        "max_lines": 2,
+                                        "line_spacing_multiplier": 1.1,
+                                        "layout_width": 171.5,
+                                        "layout_top": 8,
+                                        "layout_margin": 0,
+                                        "layout_left": 8,
+                                        "layout_height": 40
+                                    },
+                                    {
+                                        "view_name": "AbsoluteLayout",
+                                        "layout_width": 171.5,
+                                        "layout_top": 56,
+                                        "layout_left": 8,
+                                        "layout_height": 156,
+                                        "clip_children": false,
+                                        "child_views": [
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 111,
+                                                "transform_translate_x": 0,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 172,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 33,
+                                                "transform_translate_x": 0,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/de67816a8445b127b13b69f36f964c4e?w=172&h=91&auto=compress%2Cformat&dpr=2&s=9040820aba6fe41ca3f46f644bdbfd32",
+                                                "layout_width": 172,
+                                                "layout_height": 91
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "view_name": "FlexLayout",
+                                        "layout_width": 130,
+                                        "layout_left": 8,
+                                        "layout_height": 130,
+                                        "layout_flex_justify_content": "center",
+                                        "layout_flex_direction": "column",
+                                        "layout_flex_align_items": "center",
+                                        "layout_flex_align_content": "center",
+                                        "layout_bottom": 8,
+                                        "corner_radius": "100%",
+                                        "child_views": [
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 73.98843930635837,
+                                                "text_color": "#191F28",
+                                                "text_alignment": "center",
+                                                "text": "10,-",
+                                                "spans": [],
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1,
+                                                "font_family": [
+                                                    "incito-fakta-black",
+                                                    "Helvetica",
+                                                    "Tahoma",
+                                                    "Geneva",
+                                                    "Arial Narrow",
+                                                    "Arial",
+                                                    "sans-serif"
+                                                ],
+                                                "accessibility_label": "10 kr."
+                                            }
+                                        ],
+                                        "background_color": "#ffef1e"
+                                    },
+                                    {
+                                        "layout_right": 8,
+                                        "layout_bottom": 8,
+                                        "child_views": [
+                                            {
+                                                "view_name": "ImageView",
+                                                "title": "Nøglehul",
+                                                "src": "https://bumblebee.imgix.net/feed-images/d93c70601e4aadf66631c9860936dbd1?s=fce7393ffd4ff6dc4cdeaf687f9a6c4a",
+                                                "role": "label",
+                                                "layout_width": 25,
+                                                "layout_margin_top": 4,
+                                                "layout_height": 25,
+                                                "gravity": "right_horizontal",
+                                                "accessibility_label": "Nøglehul"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "background_color": "#fdca96"
+                            },
+                            {
+                                "view_name": "AbsoluteLayout",
+                                "role": "offer",
+                                "meta": {
+                                    "title": "K-Salat lækkerier",
+                                    "products": [
+                                        {
+                                            "title": "HØNSESALAT LÆKKERIER"
+                                        },
+                                        {
+                                            "title": "SKINKESALAT LÆKKERIE"
+                                        },
+                                        {
+                                            "title": "TUNSALAT LÆKKERIER"
+                                        }
+                                    ],
+                                    "labels": [],
+                                    "ids": [
+                                        {
+                                            "value": "1673315",
+                                            "type": "id",
+                                            "provider": "self"
+                                        },
+                                        {
+                                            "value": "1",
+                                            "type": "category",
+                                            "provider": "self"
+                                        }
+                                    ],
+                                    "description": "Flere varianter. 175 g. Kg-pris 57,14. \nVed køb af mere end 6 pr. stk. pr. kunde pr. dag er prisen maks. 13,95 kr. pr. stk. Frit valg"
+                                },
+                                "layout_width": 187.5,
+                                "layout_top": 300,
+                                "layout_left": 0,
+                                "layout_height": 300,
+                                "id": "1673315",
+                                "child_views": [
+                                    {
+                                        "view_name": "TextView",
+                                        "title": "K-Salat lækkerier",
+                                        "text_size": 19,
+                                        "text_color": "#000000",
+                                        "text": "K-Salat lækkerier",
+                                        "max_lines": 1,
+                                        "line_spacing_multiplier": 1.1,
+                                        "layout_width": 171.5,
+                                        "layout_top": 8,
+                                        "layout_margin": 0,
+                                        "layout_left": 8,
+                                        "layout_height": 20
+                                    },
+                                    {
+                                        "view_name": "AbsoluteLayout",
+                                        "layout_width": 171.5,
+                                        "layout_top": 36,
+                                        "layout_left": 8,
+                                        "layout_height": 176,
+                                        "clip_children": false,
+                                        "child_views": [
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 57,
+                                                "transform_translate_x": 36,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 89,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 110,
+                                                "transform_translate_x": 59,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 89,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 164,
+                                                "transform_translate_x": 83,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 89,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 0,
+                                                "transform_translate_x": 36,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/bd2c0eadd289def8549162f25d7d025a?w=89&h=69&auto=compress%2Cformat&dpr=2&s=7581f2b82fd4f3bb621153815bccd4d1",
+                                                "layout_width": 89,
+                                                "layout_height": 69
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 54,
+                                                "transform_translate_x": 59,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/0496a7639c85060ed86b937b7e167da4?w=89&h=69&auto=compress%2Cformat&dpr=2&s=7fb874792b6bb0e87c8a4601166e8588",
+                                                "layout_width": 89,
+                                                "layout_height": 69
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 107,
+                                                "transform_translate_x": 83,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/6fcfecaf1218dc6cb9ff6c3a64e7af32?w=89&h=69&auto=compress%2Cformat&dpr=2&s=f8b99ef333fb58158fdfa177adaadea6",
+                                                "layout_width": 89,
+                                                "layout_height": 69
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "transform_scale": 0.72,
+                                        "stroke_width": 2,
+                                        "stroke_style": "solid",
+                                        "stroke_color": "#2a2a2a",
+                                        "padding": 6,
+                                        "layout_top": 36,
+                                        "layout_left": 8,
+                                        "corner_radius": 6,
+                                        "clip_children": false,
+                                        "child_views": [
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 13,
+                                                "text_color": "#000000",
+                                                "text_alignment": "center",
+                                                "text": "*Maks. 6 stk.",
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1.1,
+                                                "layout_margin": 0,
+                                                "font_family": [
+                                                    "incito-istok-regular",
+                                                    "Helvetica",
+                                                    "sans-serif"
+                                                ],
+                                                "clip_children": false
+                                            },
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 13,
+                                                "text_color": "#000000",
+                                                "text_alignment": "center",
+                                                "text": "pr. kunde",
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1.1,
+                                                "layout_margin": 0,
+                                                "font_family": [
+                                                    "incito-istok-regular",
+                                                    "Helvetica",
+                                                    "sans-serif"
+                                                ],
+                                                "clip_children": false
+                                            }
+                                        ],
+                                        "background_color": "#ffffff",
+                                        "accessibility_label": "*Maks. 6 stk. pr. kunde"
+                                    },
+                                    {
+                                        "view_name": "FlexLayout",
+                                        "layout_width": 130,
+                                        "layout_left": 8,
+                                        "layout_height": 130,
+                                        "layout_flex_justify_content": "center",
+                                        "layout_flex_direction": "column",
+                                        "layout_flex_align_items": "center",
+                                        "layout_flex_align_content": "center",
+                                        "layout_bottom": 8,
+                                        "corner_radius": "100%",
+                                        "child_views": [
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 73.98843930635837,
+                                                "text_color": "#191F28",
+                                                "text_alignment": "center",
+                                                "text": "10,-",
+                                                "spans": [],
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1,
+                                                "font_family": [
+                                                    "incito-fakta-black",
+                                                    "Helvetica",
+                                                    "Tahoma",
+                                                    "Geneva",
+                                                    "Arial Narrow",
+                                                    "Arial",
+                                                    "sans-serif"
+                                                ],
+                                                "accessibility_label": "10 kr."
+                                            }
+                                        ],
+                                        "background_color": "#ffef1e"
+                                    }
+                                ],
+                                "background_color": "#f9a550"
+                            },
+                            {
+                                "view_name": "AbsoluteLayout",
+                                "role": "offer",
+                                "meta": {
+                                    "title": "Knorr snackpot*",
+                                    "products": [
+                                        {
+                                            "title": "Knorr Snack Pot Carb"
+                                        },
+                                        {
+                                            "title": "Knorr Snackpot Mash"
+                                        },
+                                        {
+                                            "title": "Snackpot Risotto"
+                                        }
+                                    ],
+                                    "labels": [],
+                                    "ids": [
+                                        {
+                                            "value": "1673316",
+                                            "type": "id",
+                                            "provider": "self"
+                                        },
+                                        {
+                                            "value": "7",
+                                            "type": "category",
+                                            "provider": "self"
+                                        }
+                                    ],
+                                    "description": "Flere varianter. 58-87 g. \nKg-pris maks. 172,41. Frit valg"
+                                },
+                                "layout_width": 187.5,
+                                "layout_top": 300,
+                                "layout_left": 187.5,
+                                "layout_height": 300,
+                                "id": "1673316",
+                                "child_views": [
+                                    {
+                                        "view_name": "TextView",
+                                        "title": "Knorr snackpot*",
+                                        "text_size": 19,
+                                        "text_color": "#000000",
+                                        "text": "Knorr snackpot*",
+                                        "max_lines": 1,
+                                        "line_spacing_multiplier": 1.1,
+                                        "layout_width": 171.5,
+                                        "layout_top": 8,
+                                        "layout_margin": 0,
+                                        "layout_left": 8,
+                                        "layout_height": 20
+                                    },
+                                    {
+                                        "view_name": "AbsoluteLayout",
+                                        "layout_width": 171.5,
+                                        "layout_top": 36,
+                                        "layout_left": 8,
+                                        "layout_height": 176,
+                                        "clip_children": false,
+                                        "child_views": [
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 77,
+                                                "transform_translate_x": 87,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 85,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 77,
+                                                "transform_translate_x": 8,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 84,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 164,
+                                                "transform_translate_x": 48,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 83,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 0,
+                                                "transform_translate_x": 87,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/a394366d849665aff83ab227065d731a?w=85&h=89&auto=compress%2Cformat&dpr=2&s=6f1a843de0c49cef9ff91df8edb7b19e",
+                                                "layout_width": 85,
+                                                "layout_height": 89
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 0,
+                                                "transform_translate_x": 8,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/cabf26f87da4ea0fb7efa1232cc5cf4e?w=84&h=89&auto=compress%2Cformat&dpr=2&s=31c56737197ef1648a5ecace96be3b13",
+                                                "layout_width": 84,
+                                                "layout_height": 89
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 85,
+                                                "transform_translate_x": 48,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/fd0da4ad41c0fe3847f35c16b36da352?w=83&h=91&auto=compress%2Cformat&dpr=2&s=67f37310b04cf6a591b80ce543663a34",
+                                                "layout_width": 83,
+                                                "layout_height": 91
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "view_name": "FlexLayout",
+                                        "layout_width": 130,
+                                        "layout_left": 8,
+                                        "layout_height": 130,
+                                        "layout_flex_justify_content": "center",
+                                        "layout_flex_direction": "column",
+                                        "layout_flex_align_items": "center",
+                                        "layout_flex_align_content": "center",
+                                        "layout_bottom": 8,
+                                        "corner_radius": "100%",
+                                        "child_views": [
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 73.98843930635837,
+                                                "text_color": "#191F28",
+                                                "text_alignment": "center",
+                                                "text": "10,-",
+                                                "spans": [],
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1,
+                                                "font_family": [
+                                                    "incito-fakta-black",
+                                                    "Helvetica",
+                                                    "Tahoma",
+                                                    "Geneva",
+                                                    "Arial Narrow",
+                                                    "Arial",
+                                                    "sans-serif"
+                                                ],
+                                                "accessibility_label": "10 kr."
+                                            }
+                                        ],
+                                        "background_color": "#ffef1e"
+                                    }
+                                ],
+                                "background_color": "#fdca96"
+                            },
+                            {
+                                "view_name": "AbsoluteLayout",
+                                "role": "offer",
+                                "meta": {
+                                    "title": "Mou supper eller Kitchen Joy forårsruller*",
+                                    "products": [
+                                        {
+                                            "title": "Mou Oksekødsuppe"
+                                        },
+                                        {
+                                            "title": "Red Curry chicken Sp"
+                                        }
+                                    ],
+                                    "labels": [],
+                                    "ids": [
+                                        {
+                                            "value": "1673274",
+                                            "type": "id",
+                                            "provider": "self"
+                                        },
+                                        {
+                                            "value": "7",
+                                            "type": "category",
+                                            "provider": "self"
+                                        }
+                                    ],
+                                    "description": "Dybfrost. Flere varianter. \n1000 g. Kg-pris 10,00. \nVed køb af mere end 6 poser Mou suppe pr. kunde pr. dag er prisen 21,95 kr. pr. pose. Frit valg"
+                                },
+                                "layout_width": 187.5,
+                                "layout_top": 600,
+                                "layout_left": 0,
+                                "layout_height": 300,
+                                "id": "1673274",
+                                "child_views": [
+                                    {
+                                        "view_name": "TextView",
+                                        "title": "Mou supper eller Kitchen Joy forårsruller*",
+                                        "text_size": 19,
+                                        "text_prevent_widow": true,
+                                        "text_color": "#000000",
+                                        "text": "Mou supper eller Kitchen Joy forårsruller*",
+                                        "max_lines": 2,
+                                        "line_spacing_multiplier": 1.1,
+                                        "layout_width": 171.5,
+                                        "layout_top": 8,
+                                        "layout_margin": 0,
+                                        "layout_left": 8,
+                                        "layout_height": 40
+                                    },
+                                    {
+                                        "view_name": "AbsoluteLayout",
+                                        "layout_width": 171.5,
+                                        "layout_top": 56,
+                                        "layout_left": 8,
+                                        "layout_height": 156,
+                                        "clip_children": false,
+                                        "child_views": [
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 91,
+                                                "transform_translate_x": 0,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 103,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 135,
+                                                "transform_translate_x": 53,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 119,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 9,
+                                                "transform_translate_x": 0,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/b0c6489b91f9e92e9c1c1fed00a62c22?w=103&h=94&auto=compress%2Cformat&dpr=2&s=4e9ee7c05ae03564949b03dc5d8eaa14",
+                                                "layout_width": 103,
+                                                "layout_height": 94
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 64,
+                                                "transform_translate_x": 53,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/9c8181c28a40e8a8f5fd49f814197239?w=119&h=83&auto=compress%2Cformat&dpr=2&s=d1f2a2db302daf3774f447f96a2f874b",
+                                                "layout_width": 119,
+                                                "layout_height": 83
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "transform_scale": 0.72,
+                                        "stroke_width": 2,
+                                        "stroke_style": "solid",
+                                        "stroke_color": "#2a2a2a",
+                                        "padding": 6,
+                                        "layout_top": 56,
+                                        "layout_left": 8,
+                                        "corner_radius": 6,
+                                        "clip_children": false,
+                                        "child_views": [
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 13,
+                                                "text_color": "#000000",
+                                                "text_alignment": "center",
+                                                "text": "*Maks. 6 poser",
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1.1,
+                                                "layout_margin": 0,
+                                                "font_family": [
+                                                    "incito-istok-regular",
+                                                    "Helvetica",
+                                                    "sans-serif"
+                                                ],
+                                                "clip_children": false
+                                            },
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 13,
+                                                "text_color": "#000000",
+                                                "text_alignment": "center",
+                                                "text": "pr. kunde",
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1.1,
+                                                "layout_margin": 0,
+                                                "font_family": [
+                                                    "incito-istok-regular",
+                                                    "Helvetica",
+                                                    "sans-serif"
+                                                ],
+                                                "clip_children": false
+                                            }
+                                        ],
+                                        "background_color": "#ffffff",
+                                        "accessibility_label": "*Maks. 6 poser pr. kunde"
+                                    },
+                                    {
+                                        "view_name": "FlexLayout",
+                                        "layout_width": 130,
+                                        "layout_left": 8,
+                                        "layout_height": 130,
+                                        "layout_flex_justify_content": "center",
+                                        "layout_flex_direction": "column",
+                                        "layout_flex_align_items": "center",
+                                        "layout_flex_align_content": "center",
+                                        "layout_bottom": 8,
+                                        "corner_radius": "100%",
+                                        "child_views": [
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 73.98843930635837,
+                                                "text_color": "#191F28",
+                                                "text_alignment": "center",
+                                                "text": "10,-",
+                                                "spans": [],
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1,
+                                                "font_family": [
+                                                    "incito-fakta-black",
+                                                    "Helvetica",
+                                                    "Tahoma",
+                                                    "Geneva",
+                                                    "Arial Narrow",
+                                                    "Arial",
+                                                    "sans-serif"
+                                                ],
+                                                "accessibility_label": "10 kr."
+                                            }
+                                        ],
+                                        "background_color": "#ffef1e"
+                                    }
+                                ],
+                                "background_color": "#f9a550"
+                            },
+                            {
+                                "view_name": "AbsoluteLayout",
+                                "role": "offer",
+                                "meta": {
+                                    "title": "Lays Bugles eller Doritos",
+                                    "products": [
+                                        {
+                                            "title": "DORITOS NACHO CH170G"
+                                        },
+                                        {
+                                            "title": "LAYS BUGLES ORIGINAL"
+                                        },
+                                        {
+                                            "title": "LAYS BUGLES NACHO CH"
+                                        }
+                                    ],
+                                    "labels": [],
+                                    "ids": [
+                                        {
+                                            "value": "1673326",
+                                            "type": "id",
+                                            "provider": "self"
+                                        },
+                                        {
+                                            "value": "6",
+                                            "type": "category",
+                                            "provider": "self"
+                                        }
+                                    ],
+                                    "description": "Flere varianter. 125-170 g. \nKg-pris maks. 80,00. \nVed køb af mere end 6 pr. pose pr. kunde pr. dag er prisen 21,95 kr. pr. pose. Frit valg"
+                                },
+                                "layout_width": 187.5,
+                                "layout_top": 600,
+                                "layout_left": 187.5,
+                                "layout_height": 300,
+                                "id": "1673326",
+                                "child_views": [
+                                    {
+                                        "view_name": "TextView",
+                                        "title": "Lays Bugles eller Doritos",
+                                        "text_size": 19,
+                                        "text_prevent_widow": true,
+                                        "text_color": "#000000",
+                                        "text": "Lays Bugles eller Doritos",
+                                        "max_lines": 2,
+                                        "line_spacing_multiplier": 1.1,
+                                        "layout_width": 171.5,
+                                        "layout_top": 8,
+                                        "layout_margin": 0,
+                                        "layout_left": 8,
+                                        "layout_height": 40
+                                    },
+                                    {
+                                        "view_name": "AbsoluteLayout",
+                                        "layout_width": 171.5,
+                                        "layout_top": 56,
+                                        "layout_left": 8,
+                                        "layout_height": 156,
+                                        "clip_children": false,
+                                        "child_views": [
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 89,
+                                                "transform_translate_x": 110,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 62,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 110,
+                                                "transform_translate_x": 53,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 68,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 137,
+                                                "transform_translate_x": 0,
+                                                "src": "https://bumblebee.imgix.net/various/object-shadow.png?auto=format&dpr=2&s=050553f12ba9531bba81366a0166cf1f",
+                                                "layout_width": 65,
+                                                "layout_height": 20
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 7,
+                                                "transform_translate_x": 110,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/2d0a02f08de960fc634fd89694307de3?w=62&h=94&auto=compress%2Cformat&dpr=2&s=dce5011e6fb134ba0258f415ce250169",
+                                                "layout_width": 62,
+                                                "layout_height": 94
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 36,
+                                                "transform_translate_x": 53,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/889fd2b3a6d511ba5a5b78e4d31419b0?w=68&h=86&auto=compress%2Cformat&dpr=2&s=27d962b516098af8ee9947668ab9621a",
+                                                "layout_width": 68,
+                                                "layout_height": 86
+                                            },
+                                            {
+                                                "view_name": "ImageView",
+                                                "transform_translate_y": 60,
+                                                "transform_translate_x": 0,
+                                                "transform_rotate": 0,
+                                                "src": "https://bumblebee.imgix.net/feed-images/c82c1aefc5435467ed84209137331d10?w=65&h=89&auto=compress%2Cformat&dpr=2&s=7e97ea0412ac086ba5f74ff8093397b9",
+                                                "layout_width": 65,
+                                                "layout_height": 89
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "transform_scale": 0.72,
+                                        "stroke_width": 2,
+                                        "stroke_style": "solid",
+                                        "stroke_color": "#2a2a2a",
+                                        "padding": 6,
+                                        "layout_top": 56,
+                                        "layout_left": 8,
+                                        "corner_radius": 6,
+                                        "clip_children": false,
+                                        "child_views": [
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 13,
+                                                "text_color": "#000000",
+                                                "text_alignment": "center",
+                                                "text": "*Maks. 6 poser",
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1.1,
+                                                "layout_margin": 0,
+                                                "font_family": [
+                                                    "incito-istok-regular",
+                                                    "Helvetica",
+                                                    "sans-serif"
+                                                ],
+                                                "clip_children": false
+                                            },
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 13,
+                                                "text_color": "#000000",
+                                                "text_alignment": "center",
+                                                "text": "pr. kunde",
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1.1,
+                                                "layout_margin": 0,
+                                                "font_family": [
+                                                    "incito-istok-regular",
+                                                    "Helvetica",
+                                                    "sans-serif"
+                                                ],
+                                                "clip_children": false
+                                            }
+                                        ],
+                                        "background_color": "#ffffff",
+                                        "accessibility_label": "*Maks. 6 poser pr. kunde"
+                                    },
+                                    {
+                                        "view_name": "FlexLayout",
+                                        "layout_width": 130,
+                                        "layout_left": 8,
+                                        "layout_height": 130,
+                                        "layout_flex_justify_content": "center",
+                                        "layout_flex_direction": "column",
+                                        "layout_flex_align_items": "center",
+                                        "layout_flex_align_content": "center",
+                                        "layout_bottom": 8,
+                                        "corner_radius": "100%",
+                                        "child_views": [
+                                            {
+                                                "view_name": "TextView",
+                                                "text_size": 73.98843930635837,
+                                                "text_color": "#191F28",
+                                                "text_alignment": "center",
+                                                "text": "10,-",
+                                                "spans": [],
+                                                "max_lines": 1,
+                                                "line_spacing_multiplier": 1,
+                                                "font_family": [
+                                                    "incito-fakta-black",
+                                                    "Helvetica",
+                                                    "Tahoma",
+                                                    "Geneva",
+                                                    "Arial Narrow",
+                                                    "Arial",
+                                                    "sans-serif"
+                                                ],
+                                                "accessibility_label": "10 kr."
+                                            }
+                                        ],
+                                        "background_color": "#ffef1e"
+                                    }
+                                ],
+                                "background_color": "#fdca96"
+                            },
+                            {
+                                "layout_width": 1,
+                                "layout_top": 0,
+                                "layout_left": 188,
+                                "layout_height": 300,
+                                "background_color": "#E7E5E3"
+                            },
+                            {
+                                "layout_width": 188,
+                                "layout_top": 299,
+                                "layout_left": 0,
+                                "layout_height": 1,
+                                "background_color": "#E7E5E3"
+                            },
+                            {
+                                "layout_width": 188,
+                                "layout_top": 299,
+                                "layout_left": 188,
+                                "layout_height": 1,
+                                "background_color": "#E7E5E3"
+                            },
+                            {
+                                "layout_width": 1,
+                                "layout_top": 300,
+                                "layout_left": 188,
+                                "layout_height": 300,
+                                "background_color": "#E7E5E3"
+                            },
+                            {
+                                "layout_width": 188,
+                                "layout_top": 599,
+                                "layout_left": 0,
+                                "layout_height": 1,
+                                "background_color": "#E7E5E3"
+                            },
+                            {
+                                "layout_width": 188,
+                                "layout_top": 599,
+                                "layout_left": 188,
+                                "layout_height": 1,
+                                "background_color": "#E7E5E3"
+                            },
+                            {
+                                "layout_width": 1,
+                                "layout_top": 600,
+                                "layout_left": 188,
+                                "layout_height": 300,
+                                "background_color": "#E7E5E3"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "meta": {
+        "system": "bumblebee-v2.0.23",
+        "device": {
+            "versionsSupported": [
+                "1.2.3"
+            ],
+            "time": null,
+            "pointer": "fine",
+            "pixelRatio": 2,
+            "orientation": "vertical",
+            "maxWidth": 375,
+            "locale": null,
+            "geohash": "u4p5",
+            "category": "mobile"
+        },
+        "build_time": 20,
+        "author": "ShopGun <hello@shopgun.com> (https://shopgun.com/)"
+    },
+    "locale": "da_DK",
+    "id": "9dgl1hg2ba2b",
+    "font_assets": {
+        "incito-fakta-medium": {
+            "weight": "normal",
+            "style": "normal",
+            "src": [
+                [
+                    "woff",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/fakta_medium-webfont.woff"
+                ],
+                [
+                    "truetype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/fakta_medium-webfont.ttf"
+                ],
+                [
+                    "embedded-opentype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/fakta_medium-webfont.eot"
+                ]
+            ]
+        },
+        "incito-fakta-bold": {
+            "weight": "normal",
+            "style": "normal",
+            "src": [
+                [
+                    "woff",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/fakta_bold-webfont.woff"
+                ],
+                [
+                    "truetype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/fakta_bold-webfont.ttf"
+                ],
+                [
+                    "embedded-opentype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/fakta_bold-webfont.eot"
+                ]
+            ]
+        },
+        "incito-fakta-black": {
+            "weight": "normal",
+            "style": "normal",
+            "src": [
+                [
+                    "woff",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/fakta_black-webfont.woff"
+                ],
+                [
+                    "truetype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/fakta_black-webfont.ttf"
+                ],
+                [
+                    "embedded-opentype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/fakta_black-webfont.eot"
+                ],
+                [
+                    "opentype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/fakta_black.otf"
+                ]
+            ]
+        }
+    }
+}

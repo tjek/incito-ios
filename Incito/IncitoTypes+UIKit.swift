@@ -15,7 +15,7 @@ extension Color {
     }
 }
 
-extension Point {
+extension Point where Value == Double {
     init(cgPoint: CGPoint) {
         self.init(x: Double(cgPoint.x), y: Double(cgPoint.y))
     }
@@ -24,7 +24,7 @@ extension Point {
     }
 }
 
-extension Size {
+extension Size where Value == Double {
     init(cgSize: CGSize) {
         self.init(width: Double(cgSize.width), height: Double(cgSize.height))
     }
@@ -33,7 +33,7 @@ extension Size {
     }
 }
 
-extension Rect {
+extension Rect where Value == Double {
     init(cgRect: CGRect) {
         self.init(origin: Point(cgPoint: cgRect.origin),
                   size: Size(cgSize: cgRect.size))

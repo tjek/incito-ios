@@ -1,0 +1,61 @@
+{
+    "version": "1.0.0",
+    "id": "flex-test-375",
+    "theme": {
+        "background_color": "#5c5c5c"
+    },
+    "root_view": {
+        "id": "rootView",
+        "layout_width": 350,
+        "padding": 10,
+        "gravity": "center_horizontal",
+        "background_color": "#ffffff",
+        "child_views": [
+            {
+                "id": "AbsInBlock-1",
+                "view_name": "AbsoluteLayout",
+                "padding": 10,
+                "gravity": "right_horizontal",
+                "layout_width": "50%",
+                "layout_height": 130,
+                "background_color": "#f5bfb5",
+                "child_views": [
+                    {
+                        "id": "BlockInAbs-1",
+                        "padding": 10,
+                        "layout_top": 30,
+                        "layout_margin": 5,
+                        "background_color": "#9a0165",
+                        "child_views": [
+                            {
+                                "id": "BlockInBlock-1",
+                                "padding": 5,
+                                "layout_margin": 2,
+                                "layout_left": 20,
+                                "background_color": "#ff0000"
+                            },
+                            {
+                                "id": "BlockInBlock-2",
+                                "padding": 5,
+                                "layout_margin": 10,
+                                "layout_left": 20,
+                                "layout_width": 100,
+                                "background_color": "#00ff00"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "BlockInAbs-2",
+                        "view_name": "TextView",
+                        "text": "hello aaa bbb",
+                        "text_size": 20,
+                        "padding": 10,
+                        "layout_top": 80,
+                        "layout_right": 0,
+                        "background_color": "#b280cb"
+                    }
+                ]
+            }
+        ]    
+    }
+}

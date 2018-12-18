@@ -21,6 +21,8 @@
 		AE4C57E621AFF79C0004976D /* UIView+RecursiveSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57E521AFF79C0004976D /* UIView+RecursiveSubviews.swift */; };
 		AE4C57E821AFF8280004976D /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57E721AFF8280004976D /* DemoViewController.swift */; };
 		AE4C57ED21B538CC0004976D /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57EC21B538CC0004976D /* DecodableTests.swift */; };
+		AE4C57EF21B575E70004976D /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57EE21B575E70004976D /* TreeNode.swift */; };
+		AE4C57F121BE54570004976D /* incito-fakta-small-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE4C57F021BE54560004976D /* incito-fakta-small-375.json */; };
 		AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67580F219C2592006BEA9C /* AppDelegate.swift */; };
 		AE675812219C2592006BEA9C /* IncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675811219C2592006BEA9C /* IncitoViewController.swift */; };
 		AE675815219C2592006BEA9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675813219C2592006BEA9C /* Main.storyboard */; };
@@ -38,6 +40,7 @@
 		AE94AD8F21AC889A00876ED6 /* incito-superbrugsen-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */; };
 		AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */; };
 		AE94AD9321AC97AE00876ED6 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */; };
+		AEDD608B21BFE1A500C94188 /* incito-flextest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +72,8 @@
 		AE4C57E721AFF8280004976D /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		AE4C57E921B176A50004976D /* Scratchpad.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Scratchpad.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		AE4C57EC21B538CC0004976D /* DecodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
+		AE4C57EE21B575E70004976D /* TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
+		AE4C57F021BE54560004976D /* incito-fakta-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-small-375.json"; sourceTree = "<group>"; };
 		AE67580C219C2592006BEA9C /* Incito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Incito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE67580F219C2592006BEA9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE675811219C2592006BEA9C /* IncitoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoViewController.swift; sourceTree = "<group>"; };
@@ -90,6 +95,7 @@
 		AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-1200.json"; sourceTree = "<group>"; };
 		AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-1200.json"; sourceTree = "<group>"; };
 		AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-flextest-375.json"; sourceTree = "<group>"; };
 		E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -159,6 +165,7 @@
 				AE67582F219C25CC006BEA9C /* Incito.swift */,
 				AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */,
 				AE090AD521A2A0890009159E /* Incito+Layout.swift */,
+				AE4C57EE21B575E70004976D /* TreeNode.swift */,
 				AE4C57E121AFF60C0004976D /* IncitoTypes.swift */,
 				AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */,
 				AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */,
@@ -173,6 +180,8 @@
 				AE0DDC4F219CCAFD0021B1FD /* AutoLayoutHelpers.swift */,
 				AE40598121A6A52500D029AE /* DecodingHelpers.swift */,
 				AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */,
+				AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */,
+				AE4C57F021BE54560004976D /* incito-fakta-small-375.json */,
 				AE94AD8A21AC349100876ED6 /* incito-fakta-375.json */,
 				AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */,
 				AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen-375.json */,
@@ -284,8 +293,10 @@
 				AE67581A219C2593006BEA9C /* LaunchScreen.storyboard in Resources */,
 				AE94AD8F21AC889A00876ED6 /* incito-superbrugsen-1200.json in Resources */,
 				AE675817219C2593006BEA9C /* Assets.xcassets in Resources */,
+				AEDD608B21BFE1A500C94188 /* incito-flextest-375.json in Resources */,
 				AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */,
 				AE94AD8B21AC349100876ED6 /* incito-fakta-375.json in Resources */,
+				AE4C57F121BE54570004976D /* incito-fakta-small-375.json in Resources */,
 				AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */,
 				AE40597E21A5A3A300D029AE /* simple-incito-static.json in Resources */,
 				AE675815219C2592006BEA9C /* Main.storyboard in Resources */,
@@ -364,6 +375,7 @@
 				AE40598021A5C6E000D029AE /* Incito+UIKit.swift in Sources */,
 				AE4C57E621AFF79C0004976D /* UIView+RecursiveSubviews.swift in Sources */,
 				AE4C57E421AFF7300004976D /* IncitoTypes+UIKit.swift in Sources */,
+				AE4C57EF21B575E70004976D /* TreeNode.swift in Sources */,
 				AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */,
 				AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */,
 				AE675830219C25CC006BEA9C /* Incito.swift in Sources */,
