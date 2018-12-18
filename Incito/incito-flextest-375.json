@@ -5,14 +5,103 @@
         "background_color": "#5c5c5c"
     },
     "root_view": {
-        "id": "rootView",
         "layout_width": 350,
         "padding": 10,
         "gravity": "center_horizontal",
         "background_color": "#ffffff",
         "child_views": [
-            {
-                "id": "AbsInBlock-1",
+            { 
+                "view_name": "FlexLayout",
+                "padding": 10,
+                "gravity": "left_horizontal",
+                "layout_margin": 10,
+                "layout_flex_justify_content": "flex-start",
+                "layout_flex_direction": "column",
+                "layout_flex_align_items": "stretch",
+                "layout_flex_align_content": "center",
+                "background_color": "#f5bfb5",
+                "child_views": [
+                    {
+                        "layout_flex_grow": 1,
+                        "layout_height": 50,
+                        "padding": 10,
+                        "layout_right": 50,
+                        "layout_margin": 5,
+                        "background_color": "#a83f81"
+                    },
+                    { 
+                        "padding": 10,
+                        "layout_flex_grow": 1,
+                        "layout_width": "50%",
+                        "layout_margin": 2,
+                        "background_color": "#9a0165"
+                    },
+                    { 
+                        "layout_flex_grow": 1,
+                        "layout_height": 20,
+                        "padding": 20,
+                        "layout_margin": 4,
+                        "background_color": "#b280cb"
+                    }
+                ]
+            },
+            { 
+                "view_name": "View",
+                "padding_left": 10,
+                "padding_right": 0,
+                "gravity": "center_horizontal",
+                "layout_width": 200,
+                "background_color": "#f5bfb5",
+                "child_views": [
+                    {
+                        "padding": 10,
+                        "layout_width": 30,
+                        "layout_margin": 5,
+                        "background_color": "#a83f81"
+                    },
+                    { 
+                        "view_name": "View",
+                        "padding": 10,
+                        "layout_left": 20,
+                        "layout_width": 100,
+                        "gravity": "center_horizontal",
+                        "background_color": "#9a0165",
+                        "child_views": [
+                            {
+                                "padding": 5,
+                                "layout_margin": "10%",
+                                "layout_width": 20,
+                                "layout_top": 20,
+                                "background_color": "#ff0000"
+                            }
+                        ]
+                    },
+                    { 
+                        "view_name": "TextView",
+                        "text": "hello",
+                        "text_size": 20,
+                        "padding": 10,
+                        "layout_margin": 5,
+                        "background_color": "#b280cb",
+                        "child_views": [
+                            {
+                                "padding": 5,
+                                "layout_margin": 2,
+                                "layout_left": 20,
+                                "background_color": "#ff0000"
+                            },
+                            {
+                                "padding": 5,
+                                "layout_margin": 10,
+                                "layout_left": 20,
+                                "layout_width": 100,
+                                "background_color": "#00ff00"
+                            }
+                        ]
+                    }
+                ]
+            },
+            { 
                 "view_name": "AbsoluteLayout",
                 "padding": 10,
                 "gravity": "right_horizontal",
@@ -21,21 +110,25 @@
                 "background_color": "#f5bfb5",
                 "child_views": [
                     {
-                        "id": "BlockInAbs-1",
+                        "padding": 10,
+                        "layout_width": 30,
+                        "layout_margin": 5,
+                        "layout_left": 0,
+                        "background_color": "#a83f81"
+                    },
+                    { 
                         "padding": 10,
                         "layout_top": 30,
                         "layout_margin": 5,
                         "background_color": "#9a0165",
                         "child_views": [
                             {
-                                "id": "BlockInBlock-1",
                                 "padding": 5,
                                 "layout_margin": 2,
                                 "layout_left": 20,
                                 "background_color": "#ff0000"
                             },
                             {
-                                "id": "BlockInBlock-2",
                                 "padding": 5,
                                 "layout_margin": 10,
                                 "layout_left": 20,
@@ -44,14 +137,12 @@
                             }
                         ]
                     },
-                    {
-                        "id": "BlockInAbs-2",
+                    { 
                         "view_name": "TextView",
-                        "text": "hello aaa bbb",
+                        "text": "hello I am very long am i constrained?",
                         "text_size": 20,
                         "padding": 10,
                         "layout_top": 80,
-                        "layout_right": 0,
                         "background_color": "#b280cb"
                     }
                 ]

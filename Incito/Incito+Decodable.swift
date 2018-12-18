@@ -615,7 +615,7 @@ extension FlexLayoutProperties: Decodable {
         if let contentAlign: ContentAlignment = try c.decodeIfPresent(.contentAlignment) {
             self.contentAlignment = contentAlign
         }
-        if let contentJustification: ContentJustification = try c.decodeIfPresent(.contentAlignment) {
+        if let contentJustification: ContentJustification = try c.decodeIfPresent(.contentJustification) {
             self.contentJustification = contentJustification
         }
     }

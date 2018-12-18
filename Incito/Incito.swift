@@ -147,9 +147,9 @@ struct FlexLayoutProperties {
     }
     
     enum ContentJustification: String, Decodable {
-        case flexStart  = "flex-start"
-        case flexEnd    = "flex-end"
-        case center
+        case flexStart      = "flex-start"
+        case flexEnd        = "flex-end"
+        case center         = "center"
         case spaceBetween   = "space-between"
         case spaceAround    = "space-around"
     }
