@@ -154,15 +154,6 @@ struct FlexLayoutProperties {
         case spaceAround    = "space-around"
     }
     
-    enum ContentAlignment: String, Decodable {
-        case stretch
-        case center
-        case flexStart      = "flex-start"
-        case flextEnd       = "flex-end"
-        case spaceBetween   = "space-between"
-        case spaceAround    = "space-around"
-        case initial
-    }
     enum Direction: String, Decodable {
         case row
         case column
@@ -170,10 +161,7 @@ struct FlexLayoutProperties {
     
     var direction: Direction = .row
     var itemAlignment: ItemAlignment = .stretch
-    var contentAlignment: ContentAlignment = .stretch
     var contentJustification: ContentJustification = .flexStart
-//    var shrink: Double? // todo: what?
-//    var grow: Double? // todo: what?    
 }
 
 struct ImageViewProperties: Decodable {

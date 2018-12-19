@@ -117,81 +117,6 @@ extension TreeNode: Decodable where T == ViewProperties {
     }
 }
 
-//extension ViewProperties: Decodable {
-//    enum CodingKeys: CodingKey {
-//        case viewName, id, children
-//        /// This case defines all unknown payload keys.
-//        case properties(key: String)
-//
-//        private static let knownKeys: [CodingKeys] = [.viewName, .id, .children]
-//
-//        var stringValue: String {
-//            switch self {
-//            case .viewName: return "view_name"
-//            case .id: return "id"
-////            case .children: return "child_views"
-//            case .properties(let key): return key
-//            }
-//        }
-//
-//        init?(stringValue: String) {
-//            if let key = CodingKeys.knownKeys.first(where: { stringValue == $0.stringValue }) {
-//                self = key
-//            } else {
-//                self = .properties(key: stringValue)
-//            }
-//        }
-//
-//        var intValue: Int? { return Int(stringValue) }
-//        init?(intValue: Int) { self.init(stringValue: "\(intValue)") }
-//
-//    }
-//
-//    init(from decoder: Decoder) throws {
-//        let c = try decoder.container(keyedBy: CodingKeys.self)
-//
-//        let propertiesContainer = try decoder.singleValueContainer()
-//
-//        // Decode the type and type-specific properties
-//        let viewName: String? = try? c.decode(.viewName)
-//        switch viewName {
-//        case "AbsoluteLayout"?:
-//            self.type = .absoluteLayout
-//        case "FlexLayout"?:
-//            let flexProperties = (try? propertiesContainer.decode(FlexLayoutProperties.self)) ?? FlexLayoutProperties()
-//            self.type = .flexLayout(flexProperties)
-//        case "TextView"?:
-//            let textProperties = try propertiesContainer.decode(TextViewProperties.self)
-//            self.type = .text(textProperties)
-//        case "ImageView"?:
-//            let imageProperties = try propertiesContainer.decode(ImageViewProperties.self)
-//            self.type = .image(imageProperties)
-//        case "VideoEmbedView"?:
-//            let src: String = try c.decode(.properties(key: "src"))
-//            self.type = .videoEmbed(src: src)
-//        case "VideoView"?:
-//            let videoProperties = try propertiesContainer.decode(VideoViewProperties.self)
-//            self.type = .video(videoProperties)
-//        case "View"?,
-//             nil:
-//            fallthrough
-//        default:
-//            self.type = .view
-//        }
-//
-//        self.style = (try? propertiesContainer.decode()) ?? .empty
-//        self.id = try c.decodeIfPresent(.id)
-//        self.layout = (try? propertiesContainer.decode()) ?? .empty
-//
-//        do {
-//            self.children = try c.decodeIfPresent(.children) ?? []
-//        } catch {
-//            print("Unable to decode children", error)
-//            self.children = []
-//        }
-//    }
-//}
-
 extension LayoutProperties: Decodable {
     
     enum CodingKeys: String, CodingKey {
@@ -595,12 +520,9 @@ extension TextStyle: Decodable {
 extension FlexLayoutProperties: Decodable {
     
     enum CodingKeys: String, CodingKey {
+        case direction          = "layout_flex_direction"
         case itemAlignment      = "layout_flex_align_items"
         case contentJustification = "layout_flex_justify_content"
-        case contentAlignment   = "layout_flex_align_content"
-        case direction          = "layout_flex_direction"
-        case shrink             = "layout_flex_shrink"
-        case grow               = "layout_flex_grow"
     }
     
     init(from decoder: Decoder) throws {
@@ -611,9 +533,6 @@ extension FlexLayoutProperties: Decodable {
         }
         if let itemAlign: ItemAlignment = try c.decodeIfPresent(.itemAlignment) {
             self.itemAlignment = itemAlign
-        }
-        if let contentAlign: ContentAlignment = try c.decodeIfPresent(.contentAlignment) {
-            self.contentAlignment = contentAlign
         }
         if let contentJustification: ContentJustification = try c.decodeIfPresent(.contentJustification) {
             self.contentJustification = contentJustification
