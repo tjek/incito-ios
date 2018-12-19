@@ -82,7 +82,7 @@ struct AbsoluteViewDimensions {
 
 typealias ViewSizer = (_ container: AbsoluteViewDimensions) -> AbsoluteViewDimensions
 typealias ViewContentsSizer = (_ view: AbsoluteViewDimensions) -> (contents: Size<Double?>, intrinsic: Size<Double?>)
-typealias ViewPositioner = (_ view: AbsoluteViewDimensions, _ container: AbsoluteViewDimensions, _ prevSiblings: [(Point<Double>, AbsoluteViewDimensions)], _ nextSiblings: [AbsoluteViewDimensions]) -> Point<Double>
+typealias ViewPositioner = (_ view: AbsoluteViewDimensions, _ container: AbsoluteViewDimensions, _ prevSiblings: [AbsoluteViewDimensions], _ nextSiblings: [AbsoluteViewDimensions]) -> Point<Double>
 
 struct ViewLayouter {
     let sizer: ViewSizer
@@ -593,12 +593,15 @@ func blockChildPositioner(gravity: HorizontalGravity) -> ViewPositioner {
     return { viewDims, containerDims, prevSiblings, _ in
         
         let originY: Double = {
-            if let lastSibling = prevSiblings.last {
-                return lastSibling.0.y + lastSibling.1.size.height + max(viewDims.layout.margins.top, lastSibling.1.layout.margins.bottom)
-            } else {
-                // position the first child below the intrinsic contents (eg. below the text in a label)
-                return containerDims.layout.padding.top + viewDims.layout.margins.top + (containerDims.intrinsicSize.height ?? 0)
+            
+            let (totalPrevSiblingHeight, prevBottomMargin) = prevSiblings.reduce((Double(0), Double(0))) { res, prevSibling in
+                return (
+                    res.0 + prevSibling.outerSize.height - min(prevSibling.layout.margins.top, res.1),
+                    prevSibling.layout.margins.bottom
+                )
             }
+            
+            return containerDims.layout.padding.top + (containerDims.intrinsicSize.height ?? 0) + totalPrevSiblingHeight + viewDims.layout.margins.top - min(prevBottomMargin, viewDims.layout.margins.top)
         }()
         
         let originX: Double = {
@@ -622,7 +625,7 @@ func blockChildPositioner(gravity: HorizontalGravity) -> ViewPositioner {
  Generates a function that will produce the position of a view that is the child of an AbsoluteLayout view.
  */
 func absoluteChildPositioner() -> ViewPositioner {
-    return { viewDims, containerDims, prevSiblings, _ in
+    return { viewDims, containerDims, _, _ in
         
         let originX: Double = {
             if let left = viewDims.layout.position.left {
@@ -655,15 +658,15 @@ func absoluteChildPositioner() -> ViewPositioner {
  In this case, `containerDims` will be the FlexLayout view's dimensions.
  */
 func flexChildPositioner(flexProperties: FlexLayoutProperties) -> ViewPositioner {
-    return { viewDims, containerDims, prevSiblings, nextSiblingDimensions in
+    return { viewDims, containerDims, prevSiblings, nextSiblings in
         
         switch flexProperties.direction {
         case .row:
             return flexChildRowPosition(
                 viewDims: viewDims,
                 containerDims: containerDims,
-                prevSiblings: prevSiblings.map({ $0.1 }),
-                nextSiblings: nextSiblingDimensions,
+                prevSiblings: prevSiblings,
+                nextSiblings: nextSiblings,
                 justification: flexProperties.contentJustification,
                 itemAlignment: flexProperties.itemAlignment
             )
@@ -672,8 +675,8 @@ func flexChildPositioner(flexProperties: FlexLayoutProperties) -> ViewPositioner
             return flexChildColumnPosition(
                 viewDims: viewDims,
                 containerDims: containerDims,
-                prevSiblings: prevSiblings.map({ $0.1 }),
-                nextSiblings: nextSiblingDimensions,
+                prevSiblings: prevSiblings,
+                nextSiblings: nextSiblings,
                 justification: flexProperties.contentJustification,
                 itemAlignment: flexProperties.itemAlignment
             )
@@ -897,22 +900,28 @@ func resolveLayouters(rootNode: TreeNode<(ViewProperties, ViewLayouter)>, rootSi
         
         let containerDimensions = newParent?.value.dimensions ?? rootContainerDimensions
         
-        // get all the preceding siblings' positions & dimensions
-        let prevSiblingPositionedDimensions = newParent?.children.map { ($0.value.position, $0.value.dimensions) } ?? []
-        
-        // get the dimensions of the following siblings (we dont have positions yet)
-        
+        // get the dimensions of the preceding & following siblings        
         let allSizedSiblings = viewNode.parent?.children ?? []
         
-        let nextSiblingDimensions: [AbsoluteViewDimensions]
-        if let viewIndex = allSizedSiblings.index(where: { $0 === viewNode}), viewIndex != allSizedSiblings.endIndex {
-            let nextIndex = allSizedSiblings.index(after: viewIndex)
-            nextSiblingDimensions = viewNode.parent?.children[nextIndex...].map({ $0.value.dimensions }) ?? []
-        } else {
-            nextSiblingDimensions = []
+        var nextSiblings: [AbsoluteViewDimensions] = []
+        var prevSiblings: [AbsoluteViewDimensions] = []
+        
+        if let viewIndex = allSizedSiblings.index(where: { $0 === viewNode}) {
+            
+            if viewIndex != allSizedSiblings.startIndex {
+                let prevIndex = allSizedSiblings.index(before: viewIndex)
+                
+                prevSiblings = allSizedSiblings[...prevIndex].map({ $0.value.dimensions })
+            }
+            
+            if viewIndex != allSizedSiblings.endIndex {
+                let nextIndex = allSizedSiblings.index(after: viewIndex)
+                
+                nextSiblings = allSizedSiblings[nextIndex...].map({ $0.value.dimensions })
+            }
         }
         
-        let viewPosition = viewLayouter.positioner(viewDimensions, containerDimensions, prevSiblingPositionedDimensions, nextSiblingDimensions)
+        let viewPosition = viewLayouter.positioner(viewDimensions, containerDimensions, prevSiblings, nextSiblings)
         
         return (viewProperties, viewDimensions, viewPosition)
     }
