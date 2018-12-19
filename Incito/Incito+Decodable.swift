@@ -145,6 +145,9 @@ extension LayoutProperties: Decodable {
         case paddingRight = "padding_right"
         
         case gravity
+        
+        case flexShrink             = "layout_flex_shrink"
+        case flexGrow               = "layout_flex_grow"
     }
     
     init(from decoder: Decoder) throws {
@@ -181,6 +184,9 @@ extension LayoutProperties: Decodable {
         self.maxWidth = try c.decodeIfPresent(.maxWidth)
         
         self.gravity = try c.decodeIfPresent(.gravity)
+        
+        self.flexShrink = try c.decodeIfPresent(.flexShrink)
+        self.flexGrow = try c.decodeIfPresent(.flexGrow)
     }
 }
 

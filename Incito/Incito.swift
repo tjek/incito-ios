@@ -88,6 +88,9 @@ struct LayoutProperties {
     
     var gravity: HorizontalGravity?
     
+    var flexShrink: Double?
+    var flexGrow: Double?
+    
     static let empty = LayoutProperties(
         position: .init(nil),
         padding: .zero,
@@ -98,7 +101,9 @@ struct LayoutProperties {
         minWidth: nil,
         maxHeight: nil,
         maxWidth: nil,
-        gravity: nil
+        gravity: nil,
+        flexShrink: nil,
+        flexGrow: nil
     )
 }
 
