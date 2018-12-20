@@ -304,6 +304,10 @@ extension TextViewProperties {
             string = string.uppercased()
         }
         
+        if self.preventWidow {
+            string = string.withoutWidows
+        }
+        
         let font = fontProvider(fontFamily, textSize)
 
         let paragraphStyle = NSMutableParagraphStyle()

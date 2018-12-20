@@ -1,30 +1,6 @@
 import UIKit
 import PlaygroundSupport
 
-extension String {
-    private var firstValidLetter: String? {
-        guard let firstLettersRange = self.rangeOfCharacter(from: .letters), let letter = self[firstLettersRange].first else {
-            return nil
-        }
-        
-        return String(letter)
-    }
-    
-    var initials: String? {
-        
-        let allInitials = self
-            .components(separatedBy: .whitespacesAndNewlines)
-            .compactMap { $0.firstValidLetter }
-        
-        let mainInitials: [String] = [
-            allInitials.first,
-            allInitials.count > 1 ? allInitials.last : nil
-            ].compactMap { $0 }
-        
-        return mainInitials.isEmpty ? nil : mainInitials.joined(separator: "")
-    }
-}
-
 //let label1: UILabel = {
 //    let label = UILabel()
 //label.numberOfLines = 0

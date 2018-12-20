@@ -41,6 +41,7 @@
 		AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */; };
 		AE94AD9321AC97AE00876ED6 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */; };
 		AEDD608B21BFE1A500C94188 /* incito-flextest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */; };
+		AEDD608F21CBD72800C94188 /* String+PreventWidows.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,7 @@
 		AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-1200.json"; sourceTree = "<group>"; };
 		AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-flextest-375.json"; sourceTree = "<group>"; };
+		AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+PreventWidows.swift"; sourceTree = "<group>"; };
 		E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -174,6 +176,7 @@
 				AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */,
 				AE0DDC47219C34570021B1FD /* JSONValue.swift */,
 				AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */,
+				AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */,
 				AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */,
 				AE0DDC4D219CC47E0021B1FD /* UIColor_Hex.swift */,
 				AE4C57E521AFF79C0004976D /* UIView+RecursiveSubviews.swift */,
@@ -366,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE675812219C2592006BEA9C /* IncitoViewController.swift in Sources */,
+				AEDD608F21CBD72800C94188 /* String+PreventWidows.swift in Sources */,
 				AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */,
 				AE94AD8521AC136A00876ED6 /* FontAssetLoader+UIKit.swift in Sources */,
 				AE94AD8321AC12CF00876ED6 /* FontAssetLoader.swift in Sources */,
