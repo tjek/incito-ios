@@ -21,8 +21,6 @@ class IncitoViewController: UIViewController {
     let incitoDocument: Incito
     
     var rootView: UIView?
-    var renderableSections: [RenderableSection] = []
-    var rootLayoutNode: LayoutNode?
     var renderer: IncitoRenderer
     
     init(incito: Incito) {
@@ -239,9 +237,7 @@ class IncitoViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
-        // `unrender` all the rendered RenderableSections (prioritizing those above)
-        
-        
+        // TODO: `unrender` all the rendered RenderableSections (prioritizing those above)
     }
     
     var lastRenderedWindow: CGRect?
@@ -254,14 +250,24 @@ class IncitoViewController: UIViewController {
         guard let renderableRootNode = self.renderableTree else { return }
         
         let scrollVisibleWindow = scrollView.bounds
-                        .inset(by: UIEdgeInsets(top: 100, left: 0, bottom: 150, right: 0))
+                        .inset(by: UIEdgeInsets(top: 120, left: 0, bottom: 150, right: 0))
 //            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
 
-        let rootViewVisibleWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
-        updateDebugWindowViews(in: rootViewVisibleWindow)
+        // in RootView coord space
+        let renderWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
+        
+//        // dont do rendercheck until we've scrolled a certain amount
+//        if let lastRendered = self.lastRenderedWindow,
+//            abs(lastRendered.origin.y - renderWindow.origin.y) < 50 {
+//            return
+//        }
+        
+        self.lastRenderedWindow = renderWindow
+        
+        updateDebugWindowViews(in: renderWindow)
         
         renderVisibleNodes(rootNode: renderableRootNode,
-                           visibleRootViewWindow: rootViewVisibleWindow,
+                           visibleRootViewWindow: renderWindow,
                            parentView: rootView)
     }
     
@@ -327,7 +333,6 @@ class IncitoViewController: UIViewController {
 extension IncitoViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         renderVisibleViews()
-//        renderVisibleSections()
     }
 }
 
@@ -341,7 +346,7 @@ func renderVisibleNodes(rootNode: TreeNode<RenderableView>, visibleRootViewWindo
     
     let absoluteRect = rootNode.value.absoluteRect
     
-    // TODO: build from sum of all children, incase the children are larger than the node?
+    // TODO: if it doesnt clip, build from sum of all children, incase the children are larger than the node?
     
     guard visibleRootViewWindow.intersects(absoluteRect) else {
         unrenderChildNodes(rootNode: rootNode)
@@ -356,103 +361,73 @@ func renderVisibleNodes(rootNode: TreeNode<RenderableView>, visibleRootViewWindo
 }
 
 
-/// Given a renderer it will return a ViewBuilder that builds the entire view hierarchy.
-let viewHierarchyBuilder: (IncitoRenderer) -> (LayoutNode) -> (UIView, [ImageLoadRequest]) = { renderer in
-    return { layoutNode in
-        return UIView.build(layoutNode, renderer: renderer, depth: 0, maxDepth: nil)
-    }
-}
-
-class RenderableSection {
-    let layoutNode: LayoutNode
-    let viewBuilder: (LayoutNode) -> (UIView, [ImageLoadRequest])
-    let imageLoader: ImageLoader
-    
-    var renderedView: UIView? = nil
-//    var pendingImageLoadRequests: [ImageLoadRequest] = []
-    
-    init(layoutNode: LayoutNode, viewBuilder: @escaping (LayoutNode) -> (UIView, [ImageLoadRequest]), imageLoader: @escaping ImageLoader) {
-        self.layoutNode = layoutNode
-        self.viewBuilder = viewBuilder
-        self.imageLoader = imageLoader
-    }
-    
-    func unrender() {
-        self.renderedView?.removeFromSuperview()
-        self.renderedView = nil
-    }
-    
-    func render(into parentView: UIView) {
-        // TODO: a 'force' option to refresh the view?
-        guard renderedView == nil else {
-            return
-        }
-        
-        let (view, imgReqs) = self.viewBuilder(self.layoutNode)
-        self.renderedView = view
-        
-        parentView.addSubview(view)
-        
-        print(" ⇢ 🎨 Lazily Rendering Section (\(imgReqs.count) images)", self.layoutNode.rect.origin)
-        
-        // TODO: some kind of cancellation strategy
-//        self.pendingImageLoadRequests = imgReqs
-        
-        let start = Date.timeIntervalSinceReferenceDate
-        
-        let pendingReqCount = imgReqs.count
-        var completedReqs: (success: Int, err: Int) = (0, 0)
-        for req in imgReqs {
-            self.imageLoader(req.url) {
-                req.completion($0)
-                
-                if $0 == nil {
-                    completedReqs.err += 1
-                } else {
-                    completedReqs.success += 1
-                }
-                
-                if (completedReqs.err + completedReqs.success) == pendingReqCount {
-                    
-                    
-                    let end = Date.timeIntervalSinceReferenceDate
-                    
-                    print("    ‣ Images loaded: \(pendingReqCount) images in \(round((end - start) * 1_000))ms (\(completedReqs.success)x ✅,  \(completedReqs.err)x ❌)")
-                }
-            }
-        }
-    }
-}
-
-extension TreeNode where T == (view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>) {
-    func buildViews(textViewDefaults: TextViewDefaultProperties, fontProvider: FontProvider) -> UIView {
-        
-        let view: UIView
-        
-        switch value.view.type {
-        case .text(let textProperties):
-            view = UIView.buildTextView(
-                textProperties,
-                textDefaults: textViewDefaults,
-                styleProperties: value.view.style,
-                fontProvider: fontProvider,
-                position: value.position,
-                dimensions: value.dimensions)
-        default:
-            view = UIView()
-        }
-        view.frame = CGRect(origin: value.position.cgPoint, size: value.dimensions.size.cgSize)
-        view.backgroundColor = value.view.style.backgroundColor?.uiColor
-        view.clipsToBounds = true
-        
-        for child in children {
-            let childView = child.buildViews(textViewDefaults: textViewDefaults, fontProvider: fontProvider )
-            view.addSubview(childView)
-        }
-        
-        return view
-    }
-}
+///// Given a renderer it will return a ViewBuilder that builds the entire view hierarchy.
+//let viewHierarchyBuilder: (IncitoRenderer) -> (LayoutNode) -> (UIView, [ImageLoadRequest]) = { renderer in
+//    return { layoutNode in
+//        return UIView.build(layoutNode, renderer: renderer, depth: 0, maxDepth: nil)
+//    }
+//}
+//
+//class RenderableSection {
+//    let layoutNode: LayoutNode
+//    let viewBuilder: (LayoutNode) -> (UIView, [ImageLoadRequest])
+//    let imageLoader: ImageLoader
+//
+//    var renderedView: UIView? = nil
+////    var pendingImageLoadRequests: [ImageLoadRequest] = []
+//
+//    init(layoutNode: LayoutNode, viewBuilder: @escaping (LayoutNode) -> (UIView, [ImageLoadRequest]), imageLoader: @escaping ImageLoader) {
+//        self.layoutNode = layoutNode
+//        self.viewBuilder = viewBuilder
+//        self.imageLoader = imageLoader
+//    }
+//
+//    func unrender() {
+//        self.renderedView?.removeFromSuperview()
+//        self.renderedView = nil
+//    }
+//
+//    func render(into parentView: UIView) {
+//        // TODO: a 'force' option to refresh the view?
+//        guard renderedView == nil else {
+//            return
+//        }
+//
+//        let (view, imgReqs) = self.viewBuilder(self.layoutNode)
+//        self.renderedView = view
+//
+//        parentView.addSubview(view)
+//
+//        print(" ⇢ 🎨 Lazily Rendering Section (\(imgReqs.count) images)", self.layoutNode.rect.origin)
+//
+//        // TODO: some kind of cancellation strategy
+////        self.pendingImageLoadRequests = imgReqs
+//
+//        let start = Date.timeIntervalSinceReferenceDate
+//
+//        let pendingReqCount = imgReqs.count
+//        var completedReqs: (success: Int, err: Int) = (0, 0)
+//        for req in imgReqs {
+//            self.imageLoader(req.url) {
+//                req.completion($0)
+//
+//                if $0 == nil {
+//                    completedReqs.err += 1
+//                } else {
+//                    completedReqs.success += 1
+//                }
+//
+//                if (completedReqs.err + completedReqs.success) == pendingReqCount {
+//
+//
+//                    let end = Date.timeIntervalSinceReferenceDate
+//
+//                    print("    ‣ Images loaded: \(pendingReqCount) images in \(round((end - start) * 1_000))ms (\(completedReqs.success)x ✅,  \(completedReqs.err)x ❌)")
+//                }
+//            }
+//        }
+//    }
+//}
 
 extension UIView {
     
@@ -496,8 +471,8 @@ extension UIView {
 struct RenderableView {
     let viewProperties: ViewProperties
     let localPosition: Point<Double>
-    let absoluteTransform: CGAffineTransform // the sum of all the parent view's transformations. Includes the localPosition translation.
     let dimensions: AbsoluteViewDimensions
+    let absoluteTransform: CGAffineTransform // the sum of all the parent view's transformations. Includes the localPosition translation.
     
     let render: (RenderableView) -> UIView
     // TODO: add tap callback?
@@ -507,14 +482,14 @@ struct RenderableView {
     init(
         viewProperties: ViewProperties,
         localPosition: Point<Double>,
-        absoluteTransform: CGAffineTransform,
         dimensions: AbsoluteViewDimensions,
+        absoluteTransform: CGAffineTransform,
         render: @escaping (RenderableView) -> UIView
         ) {
         self.viewProperties = viewProperties
         self.localPosition = localPosition
-        self.absoluteTransform = absoluteTransform
         self.dimensions = dimensions
+        self.absoluteTransform = absoluteTransform
         self.render = render
     }
     
@@ -529,16 +504,17 @@ struct RenderableView {
         self.renderedView = view
         parent.addSubview(view)
 
-        if let rootView = parent.firstSuperview(where: { $0 is UIScrollView })?.subviews.first {
-            
-            // shows a visibility-box around the the view
-            let debugView = UIView()
-            debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
-            debugView.layer.borderWidth = 1
-            debugView.isUserInteractionEnabled = false
-            rootView.addSubview(debugView)
-            debugView.frame = absoluteRect
-        }
+//        if let rootView = parent.firstSuperview(where: { $0 is UIScrollView })?.subviews.first {
+//
+//            // shows a visibility-box around the the view
+//            let debugView = UIView()
+//            debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
+//            debugView.layer.borderWidth = 1
+//            debugView.isUserInteractionEnabled = false
+//            rootView.addSubview(debugView)
+//            debugView.frame = absoluteRect
+//        }
+        
         return view
     }
     
@@ -576,8 +552,8 @@ func buildRenderableViewTree(_ root: TreeNode<(view: ViewProperties, dimensions:
         return RenderableView(
             viewProperties: viewProperties,
             localPosition: localPosition,
-            absoluteTransform: transform,
             dimensions: dimensions,
+            absoluteTransform: transform,
             render: renderer
         )
     }
@@ -747,39 +723,8 @@ extension UIView {
         // TODO: use real anchor point
         setAnchorPoint(anchorPoint: CGPoint.zero)
         
-        
-//        let absTranslate = Point(
-//            x: style.transform.translateX.absolute(in: Double(parentSize.width)),
-//            y: style.transform.translateY.absolute(in: Double(parentSize.height))
-//        )
-        
         self.transform = self.transform
             .concatenating(dimensions.layout.transform.affineTransform)
-//        
-//        self.transform = self.transform
-//            .translatedBy(x: CGFloat(dimensions.layout.translate.x),
-//                          y: CGFloat(dimensions.layout.translate.y))
-//            .rotated(by: style.tra)
-//            .scaledBy(x: 1.5, y: 1.5)
-        
-//        .scaledBy(x: <#T##CGFloat#>, y: <#T##CGFloat#>)
-
-//        if absTranslate != .zero {
-//
-//            print(style.transform.translateX, style.transform.translateY, absTranslate)
-//        }
-        //        self.transform = self.transform
-        //            .translatedBy(x: CGFloat(style.transform.translateX.absolute(in: Double(parentSize.width))),
-        //                          y: CGFloat(style.transform.translateY.absolute(in: Double(parentSize.height))))
-        //            .scaledBy(x: CGFloat(style.transform.scale), y: CGFloat(style.transform.scale))
-        //            .rotated(by: CGFloat(style.transform.rotate))
-
-        
-//        CATransform3DTranslate(self.layer.transform, CGFloat(absTranslate.x), CGFloat(absTranslate.y), 0)
-        
-            
-//            .scaledBy(x: CGFloat(style.transform.scale), y: CGFloat(style.transform.scale))
-//            .rotated(by: CGFloat(style.transform.rotate))
     }
 }
 
