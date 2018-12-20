@@ -640,8 +640,15 @@ extension UIView {
         let container = UIView()
         container.addSubview(label)
         
-        let containerInnerSize = dimensions.innerSize
-        let textHeight = dimensions.intrinsicSize.height ?? containerInnerSize.height
+        let containerInnerSize = dimensions.innerSize.cgSize
+        let textHeight: CGFloat = {
+            if let h = dimensions.intrinsicSize.height {
+                return CGFloat(h)
+            }
+            
+            return label.sizeThatFits(CGSize(width: containerInnerSize.width, height: 0)).height
+        }()
+            
         
         label.frame = CGRect(
             origin: CGPoint(
