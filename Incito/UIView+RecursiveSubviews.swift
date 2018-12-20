@@ -19,4 +19,13 @@ extension UIView {
             }
         }
     }
+    
+    func firstSuperview(where predicate: (UIView) -> Bool) -> UIView? {
+        guard let superview = self.superview else { return nil }
+        if predicate(superview) {
+            return superview
+        } else {
+            return superview.firstSuperview(where: predicate)
+        }
+    }
 }

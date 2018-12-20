@@ -254,7 +254,7 @@ class IncitoViewController: UIViewController {
         guard let renderableRootNode = self.renderableTree else { return }
         
         let scrollVisibleWindow = scrollView.bounds
-                        .inset(by: UIEdgeInsets(top: 200, left: 0, bottom: 150, right: 0))
+                        .inset(by: UIEdgeInsets(top: 100, left: 0, bottom: 150, right: 0))
 //            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
 
         let rootViewVisibleWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
@@ -339,7 +339,7 @@ func unrenderChildNodes(rootNode: TreeNode<RenderableView>) {
 
 func renderVisibleNodes(rootNode: TreeNode<RenderableView>, visibleRootViewWindow: CGRect, parentView: UIView) {
     
-    let absoluteRect = rootNode.value.transformedAbsoluteRect
+    let absoluteRect = rootNode.value.absoluteRect
     
     // TODO: build from sum of all children, incase the children are larger than the node?
     
@@ -496,8 +496,7 @@ extension UIView {
 struct RenderableView {
     let viewProperties: ViewProperties
     let localPosition: Point<Double>
-    let absolutePosition: Point<Double>
-    let transformedAbsoluteRect: CGRect
+    let absoluteTransform: CGAffineTransform // the sum of all the parent view's transformations. Includes the localPosition translation.
     let dimensions: AbsoluteViewDimensions
     
     let render: (RenderableView) -> UIView
@@ -508,41 +507,15 @@ struct RenderableView {
     init(
         viewProperties: ViewProperties,
         localPosition: Point<Double>,
-        absolutePosition: Point<Double>,
+        absoluteTransform: CGAffineTransform,
         dimensions: AbsoluteViewDimensions,
         render: @escaping (RenderableView) -> UIView
         ) {
         self.viewProperties = viewProperties
         self.localPosition = localPosition
-        self.absolutePosition = absolutePosition
+        self.absoluteTransform = absoluteTransform
         self.dimensions = dimensions
         self.render = render
-        
-        let absRect = CGRect(origin: absolutePosition.cgPoint,
-                             size: dimensions.size.cgSize)
-        
-        let transform = CGAffineTransform.identity
-            .translatedBy(x: CGFloat(dimensions.layout.transform.translate.x),
-                          y: CGFloat(dimensions.layout.transform.translate.y))
-            .rotated(by: CGFloat(dimensions.layout.transform.rotate))
-            .scaledBy(x: CGFloat(dimensions.layout.transform.scale),
-                      y: CGFloat(dimensions.layout.transform.scale))
-
-//        if absTranslate != .zero {
-//
-//            print(style.transform.translateX, style.transform.translateY, absTranslate)
-//        }
-        
-        
-        //        CATransform3DTranslate(self.layer.transform, CGFloat(absTranslate.x), CGFloat(absTranslate.y), 0)
-        
-        
-        //            .scaledBy(x: CGFloat(style.transform.scale), y: CGFloat(style.transform.scale))
-        //            .rotated(by: CGFloat(style.transform.rotate))
-        
-        
-        self.transformedAbsoluteRect = absRect
-            .applying(transform)
     }
     
     @discardableResult
@@ -555,15 +528,28 @@ struct RenderableView {
         
         self.renderedView = view
         parent.addSubview(view)
-//        view.frame = CGRect(origin: localPosition.cgPoint,
-//                            size: dimensions.size.cgSize)
-        
+
+        if let rootView = parent.firstSuperview(where: { $0 is UIScrollView })?.subviews.first {
+            
+            // shows a visibility-box around the the view
+            let debugView = UIView()
+            debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
+            debugView.layer.borderWidth = 1
+            debugView.isUserInteractionEnabled = false
+            rootView.addSubview(debugView)
+            debugView.frame = absoluteRect
+        }
         return view
     }
     
     mutating func unrender() {
         renderedView?.removeFromSuperview()
         renderedView = nil
+    }
+    
+    var absoluteRect: CGRect {
+        return CGRect(origin: .zero, size: dimensions.size.cgSize)
+            .applying(absoluteTransform)
     }
 }
 
@@ -573,20 +559,27 @@ func buildRenderableViewTree(_ root: TreeNode<(view: ViewProperties, dimensions:
         
         let (viewProperties, dimensions, localPosition) = nodeValues
         
-        let parentAbsPosition = newParent?.value.absolutePosition ?? .zero
         let parentSize = newParent?.value.dimensions.size ?? .zero
+        let parentTransform = newParent?.value.absoluteTransform ?? .identity
         
-        let absPosition = Point(x: parentAbsPosition.x + localPosition.x,
-                                y: parentAbsPosition.y + localPosition.y)
+        let localMove = CGAffineTransform.identity
+            .translatedBy(x: CGFloat(localPosition.x),
+                          y: CGFloat(localPosition.y))
+        
+        let transform = CGAffineTransform.identity
+            .concatenating(dimensions.layout.transform.affineTransform)
+            .concatenating(localMove)
+            .concatenating(parentTransform)
         
         let renderer = buildViewRenderer(rendererProperties, viewType: viewProperties.type, parentSize: parentSize)
         
         return RenderableView(
             viewProperties: viewProperties,
             localPosition: localPosition,
-            absolutePosition: absPosition,
+            absoluteTransform: transform,
             dimensions: dimensions,
-            render: renderer)
+            render: renderer
+        )
     }
 }
 
@@ -760,15 +753,8 @@ extension UIView {
 //            y: style.transform.translateY.absolute(in: Double(parentSize.height))
 //        )
         
-        let transform = CGAffineTransform.identity
-            .translatedBy(x: CGFloat(dimensions.layout.transform.translate.x),
-                          y: CGFloat(dimensions.layout.transform.translate.y))
-            .rotated(by: CGFloat(dimensions.layout.transform.rotate))
-            .scaledBy(x: CGFloat(dimensions.layout.transform.scale),
-                      y: CGFloat(dimensions.layout.transform.scale))
-
-        
-        self.transform = self.transform.concatenating(transform)
+        self.transform = self.transform
+            .concatenating(dimensions.layout.transform.affineTransform)
 //        
 //        self.transform = self.transform
 //            .translatedBy(x: CGFloat(dimensions.layout.translate.x),
@@ -794,5 +780,14 @@ extension UIView {
             
 //            .scaledBy(x: CGFloat(style.transform.scale), y: CGFloat(style.transform.scale))
 //            .rotated(by: CGFloat(style.transform.rotate))
+    }
+}
+
+extension Transform where TranslateValue == Double {
+    var affineTransform: CGAffineTransform {
+        return CGAffineTransform.identity
+            .translatedBy(x: CGFloat(translate.x), y: CGFloat(translate.y))
+            .rotated(by: CGFloat(rotate))
+            .scaledBy(x: CGFloat(scale), y: CGFloat(scale))
     }
 }
