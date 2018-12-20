@@ -23,6 +23,8 @@ struct AbsoluteLayoutProperties {
 
     var height: Double? // nil if fitting to child
     var width: Double? // nil if fitting to child
+    
+    var transform: Transform<Double>
 }
 
 extension AbsoluteLayoutProperties {
@@ -42,6 +44,18 @@ extension AbsoluteLayoutProperties {
         let squareParentSize = Size(width: parentSize.width, height: parentSize.width)
         self.margins = properties.margins.absolute(in: squareParentSize)
         self.padding = properties.padding.absolute(in: squareParentSize)
+        
+        
+        self.transform = Transform(
+            scale: properties.transform.scale,
+            translate: Point(
+                x: properties.transform.translate.x.absolute(in: parentSize.width),
+                y: properties.transform.translate.y.absolute(in: parentSize.height)
+            ),
+            rotate: properties.transform.rotate
+        )
+//
+//        )
     }
 }
 

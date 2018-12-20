@@ -94,12 +94,34 @@ struct Rect<Value> {
     var size: Size<Value>
 }
 
+extension Point: Equatable where Value: Equatable {
+    static func == (lhs: Point<Value>, rhs: Point<Value>) -> Bool {
+        return lhs.x == rhs.x
+            && lhs.y == rhs.y
+    }
+}
 extension Point where Value == Double {
     static let zero = Point(x: 0, y: 0)
 }
+
+extension Size: Equatable where Value: Equatable {
+    static func == (lhs: Size<Value>, rhs: Size<Value>) -> Bool {
+        return lhs.width == rhs.width
+            && lhs.height == rhs.height
+    }
+}
+
 extension Size where Value == Double {
     static let zero = Size(width: 0, height: 0)
 }
+
+extension Rect: Equatable where Value: Equatable {
+    static func == (lhs: Rect<Value>, rhs: Rect<Value>) -> Bool {
+        return lhs.origin == rhs.origin
+            && lhs.size == rhs.size
+    }
+}
+
 extension Rect where Value == Double {
     static let zero = Rect(origin: .zero, size: .zero)
 }

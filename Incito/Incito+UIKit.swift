@@ -239,11 +239,11 @@ extension UIView {
         // TODO: use real anchor point
         setAnchorPoint(anchorPoint: CGPoint.zero)
         
-        self.transform = self.transform
-            .translatedBy(x: CGFloat(style.transform.translateX.absolute(in: Double(parentSize.width))),
-                          y: CGFloat(style.transform.translateY.absolute(in: Double(parentSize.height))))
-            .scaledBy(x: CGFloat(style.transform.scale), y: CGFloat(style.transform.scale))
-            .rotated(by: CGFloat(style.transform.rotate))
+//        self.transform = self.transform
+//            .translatedBy(x: CGFloat(style.transform.translateX.absolute(in: Double(parentSize.width))),
+//                          y: CGFloat(style.transform.translateY.absolute(in: Double(parentSize.height))))
+//            .scaledBy(x: CGFloat(style.transform.scale), y: CGFloat(style.transform.scale))
+//            .rotated(by: CGFloat(style.transform.rotate))
         
         return imgReq
     }

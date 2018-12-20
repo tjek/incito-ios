@@ -148,6 +148,12 @@ extension LayoutProperties: Decodable {
         
         case flexShrink             = "layout_flex_shrink"
         case flexGrow               = "layout_flex_grow"
+        
+        case transformScale = "transform_scale"
+        case transformTranslateX = "transform_translate_x"
+        case transformTranslateY = "transform_translate_y"
+        case transformRotate = "transform_rotate"
+        case transformOrigin = "transform_origin"
     }
     
     init(from decoder: Decoder) throws {
@@ -187,6 +193,21 @@ extension LayoutProperties: Decodable {
         
         self.flexShrink = try c.decodeIfPresent(.flexShrink)
         self.flexGrow = try c.decodeIfPresent(.flexGrow)
+        
+        var transform = Transform.identity
+        if let scale: Double = try c.decodeIfPresent(.transformScale) {
+            transform.scale = scale
+        }
+        if let translateX: Unit = try c.decodeIfPresent(.transformTranslateX) {
+            transform.translate.x = translateX
+        }
+        if let translateY: Unit = try c.decodeIfPresent(.transformTranslateY) {
+            transform.translate.y = translateY
+        }
+        if let rotateDegs: Double = try c.decodeIfPresent(.transformRotate) {
+            transform.rotate = rotateDegs * .pi / 180
+        }
+        self.transform = transform
     }
 }
 
@@ -207,12 +228,6 @@ extension StyleProperties: Decodable {
         case backgroundImageTileMode = "background_tile_mode"
         case backgroundImagePosition = "background_image_position"
         case backgroundImageScaleType = "background_image_scale_type"
-        
-        case transformScale = "transform_scale"
-        case transformTranslateX = "transform_translate_x"
-        case transformTranslateY = "transform_translate_y"
-        case transformRotate = "transform_rotate"
-        case transformOrigin = "transform_origin"
     }
     
     init(from decoder: Decoder) throws {
@@ -252,21 +267,6 @@ extension StyleProperties: Decodable {
         } else {
             self.backgroundImage = nil
         }
-        
-        var transform = Transform.identity
-        if let scale: Double = try c.decodeIfPresent(.transformScale) {
-            transform.scale = scale
-        }
-        if let translateX: Unit = try c.decodeIfPresent(.transformTranslateX) {
-            transform.translateX = translateX
-        }
-        if let translateY: Unit = try c.decodeIfPresent(.transformTranslateY) {
-            transform.translateY = translateY
-        }
-        if let rotateDegs: Double = try c.decodeIfPresent(.transformRotate) {
-            transform.rotate = rotateDegs * .pi / 180
-        }
-        self.transform = transform
     }
 }
 

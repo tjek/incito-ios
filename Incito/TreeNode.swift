@@ -9,7 +9,7 @@
 
 // TODO: maybe as struct - do we need a parent?
 final class TreeNode<T> {
-    let value: T
+    var value: T
     
     private(set) weak var parent: TreeNode? = nil
     private(set) var children: [TreeNode<T>] = []
@@ -120,19 +120,35 @@ extension TreeNode where T: Equatable {
 }
 
 extension TreeNode {
-    /// Walk the node and all it's children. If `rootFirst` is set to false (the default) then the closure will called on all the leaf nodes first, then their parents etc, until finally the rootNode (the object we are calling this on) is passed. if `rootFirst` is true, we start with the current node.
-    func forEachNode(rootFirst: Bool = false, _ body: (TreeNode<T>, _ depth: Int) throws -> Void) rethrows {
-        try _forEachNode(rootFirst: rootFirst, depth: 0, body)
+    /// Walk the node and all it's children. If `rootFirst` is set to false then the closure will called on all the leaf nodes first, then their parents etc, until finally the rootNode (the object we are calling this on) is passed. if `rootFirst` is true, we start with the current node.
+    func forEachNode(rootFirst: Bool = true, _ body: (TreeNode<T>, _ depth: Int, _ stopWalkingBranch: inout Bool) throws -> Void) rethrows {
+        var wasStopped: Bool = false
+        try _forEachNode(rootFirst: rootFirst, depth: 0, body, stopWalkingBranch: &wasStopped)
     }
     
-    private func _forEachNode(rootFirst: Bool, depth: Int, _ body: (TreeNode<T>, _ depth: Int) throws -> Void) rethrows {
+    /// Returns true if we should stop walking the nodes
+    private func _forEachNode(rootFirst: Bool, depth: Int, _ body: (TreeNode<T>, _ depth: Int, _ stopWalkingBranch: inout Bool) throws -> Void, stopWalkingBranch: inout Bool) rethrows {
         
         if rootFirst {
-            try body(self, depth)
-            try self.children.forEach { try $0._forEachNode(rootFirst: rootFirst, depth: depth + 1, body) }
+            try body(self, depth, &stopWalkingBranch)
+            if stopWalkingBranch == false {
+                for child in children {
+                    try child._forEachNode(rootFirst: rootFirst, depth: depth + 1, body, stopWalkingBranch: &stopWalkingBranch)
+                    if stopWalkingBranch {
+                        break
+                    }
+                }
+            }
         } else {
-            try self.children.forEach { try $0._forEachNode(rootFirst: rootFirst, depth: depth + 1, body) }
-            try body(self, depth)
+            for child in children {
+                try child._forEachNode(rootFirst: rootFirst, depth: depth + 1, body, stopWalkingBranch: &stopWalkingBranch)
+                if stopWalkingBranch {
+                    break
+                }
+            }
+            if stopWalkingBranch == false {
+                try body(self, depth, &stopWalkingBranch)
+            }
         }
     }
 }

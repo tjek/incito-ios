@@ -30,25 +30,6 @@
         "child_views": [
             {
                 "role": "section",
-                "id": "bb-date-intro",
-                "child_views": [
-                    {
-                        "padding": 30,
-                        "child_views": [
-                            {
-                                "view_name": "TextView",
-                                "text_size": 21.599999999999998,
-                                "text_color": "#ffffff",
-                                "text_alignment": "center",
-                                "text": "Tilbuddene gælder fra torsdag den 22. november til onsdag den 28. november 2018"
-                            }
-                        ],
-                        "background_color": "#cf0131"
-                    }
-                ]
-            },
-            {
-                "role": "section",
                 "layout_margin_bottom": 8,
                 "id": "bb-offers-1",
                 "child_views": [
@@ -181,7 +162,6 @@
                                         ]
                                     },
                                     {
-                                        "id": "ABC",
                                         "transform_scale": 0.72,
                                         "stroke_width": 2,
                                         "stroke_style": "solid",

@@ -51,7 +51,6 @@ struct StyleProperties {
     var cornerRadius: Corners<Unit>
     //    var shadow: Shadow? = nil
     //    var stroke: Stroke? = nil
-    var transform: Transform
     
     var link: String? // URI
     var title: String?
@@ -65,7 +64,6 @@ struct StyleProperties {
         role: nil,
         meta: [:],
         cornerRadius: .zero,
-        transform: .identity,
         link: nil,
         title: nil,
         clipsChildren: true,
@@ -91,6 +89,8 @@ struct LayoutProperties {
     var flexShrink: Double?
     var flexGrow: Double?
     
+    var transform: Transform<Unit>
+
     static let empty = LayoutProperties(
         position: .init(nil),
         padding: .zero,
@@ -103,7 +103,8 @@ struct LayoutProperties {
         maxWidth: nil,
         gravity: nil,
         flexShrink: nil,
-        flexGrow: nil
+        flexGrow: nil,
+        transform: .identity
     )
 }
 
@@ -206,7 +207,7 @@ struct TextViewDefaultProperties {
 
 extension TextViewDefaultProperties {
     static var empty = TextViewDefaultProperties(
-        textColor: Color(r: 0, g: 0, b: 0, a: 0),
+        textColor: Color(r: 0, g: 0, b: 0, a: 1),
         lineSpacingMultiplier: 1,
         fontFamily: []
     )
@@ -258,20 +259,19 @@ struct Stroke {
     var top, left, bottom, right: Properties
 }
 
-struct Transform {
+/// `TranslateValue` is the value used by the translate point property
+struct Transform<TranslateValue> {
     var scale: Double
-    var translateX: Unit
-    var translateY: Unit
+    var translate: Point<TranslateValue>
     var rotate: Double // radians
     // TODO: how is this represented?
     //    let origin: [String] // seems to more be an tuple of 2 Unit strings? x & y?
 }
 
-extension Transform {
+extension Transform where TranslateValue == Unit {
     static var identity = Transform(
         scale: 1,
-        translateX: .pts(0),
-        translateY: .pts(0),
+        translate: Point(x: .pts(0), y: .pts(0)),
         rotate: 0
     )
 }
