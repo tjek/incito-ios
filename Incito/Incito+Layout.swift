@@ -54,8 +54,6 @@ extension AbsoluteLayoutProperties {
             ),
             rotate: properties.transform.rotate
         )
-//
-//        )
     }
 }
 
@@ -252,8 +250,8 @@ func blockContentsSizer(
                 let childDims = $1(viewDimensions)
                 
                 var maxWidth = $0.2
-                if childDims.contentsSize.width != nil {
-                    maxWidth = max(maxWidth ?? 0, childDims.outerSize.width)
+                if let childContentsWidth = childDims.contentsSize.width {
+                    maxWidth = max(maxWidth ?? 0, childContentsWidth + childDims.layout.margins.left + childDims.layout.margins.right + childDims.layout.padding.left + childDims.layout.margins.right)
                 }
                 
                 // store the prev child's bottomMargin
@@ -390,34 +388,35 @@ func blockChildSizer(
             layout: AbsoluteLayoutProperties(layoutProperties, in: containerDimensions.innerSize)
         )
         
-        // if we didnt have a specific width then just fit the width to the container, ignoring the intrinsic size.
-        if let concreteWidth = viewDimensions.layout.width {
-            // there is a specific width in the layout constraints, so use it
-            viewDimensions.size.width = concreteWidth
-            viewDimensions.contentsSize.width = concreteWidth - viewDimensions.layout.padding.left - viewDimensions.layout.padding.right
-        } else {
-            viewDimensions.size.width = containerDimensions.innerSize.width - viewDimensions.layout.margins.left - viewDimensions.layout.margins.right
-        }
-    
-        if let concreteHeight = viewDimensions.layout.height {
-            // there is a specific height in the layout constraints, so use it
-            viewDimensions.size.height = concreteHeight
-            viewDimensions.contentsSize.height = concreteHeight - viewDimensions.layout.padding.top - viewDimensions.layout.padding.bottom
-        } else {
-            
-            // calculate the contents size of the view fitting within the view's width
-            var fittingDimensions = viewDimensions
-            fittingDimensions.size.height = .greatestFiniteMagnitude
-
+        let concreteWidth = viewDimensions.layout.width
+        let concreteHeight = viewDimensions.layout.height
+        
+        // set the size to be either the concrete size or the inner size of the container
+        // this is used when calculating the contentsSize
+        viewDimensions.size = Size(width: concreteWidth ?? (containerDimensions.innerSize.width - viewDimensions.layout.margins.left - viewDimensions.layout.margins.right),
+                                   height: concreteHeight ?? .greatestFiniteMagnitude)
+        
+        // we dont have absolute dimensions for both height & width - we will need to calculate the contents size
+        if concreteWidth == nil || concreteHeight == nil {
             // calculate & save the size of the contents
-            let (contentsSize, intrinsicSize) = contentsSizer(fittingDimensions)
+            let (possibleContentsSize, intrinsicSize) = contentsSizer(viewDimensions)
             
-            viewDimensions.contentsSize = Size(width: viewDimensions.contentsSize.width ?? contentsSize.width,
-                                               height: viewDimensions.contentsSize.height ?? contentsSize.height)
+            // get an concrete version of the contentsSize
+            let paddedContentsHeight = (possibleContentsSize.height ?? 0) + viewDimensions.layout.padding.top + viewDimensions.layout.padding.bottom
+            
+            
+            viewDimensions.size = Size(width: concreteWidth ?? viewDimensions.size.width,
+                                       height: concreteHeight ?? paddedContentsHeight)
             viewDimensions.intrinsicSize = intrinsicSize
-            
-            // use the contents height (or zero) to be the actual height
-            viewDimensions.size.height = (viewDimensions.contentsSize.height ?? 0) + viewDimensions.layout.padding.top + viewDimensions.layout.padding.bottom
+            viewDimensions.contentsSize = possibleContentsSize
+        }
+        
+        if let concreteHeight = concreteHeight {
+            viewDimensions.contentsSize.height = concreteHeight - viewDimensions.layout.padding.top - viewDimensions.layout.padding.bottom
+        }
+        
+        if let concreteWidth = concreteWidth {
+            viewDimensions.contentsSize.width = concreteWidth - viewDimensions.layout.padding.left - viewDimensions.layout.padding.right
         }
         
         // clamp the generated sizes using the min/max width & height
@@ -494,17 +493,23 @@ func absoluteChildSizer(
             let (possibleContentsSize, intrinsicSize) = contentsSizer(viewDimensions)
             
             // get an concrete version of the contentsSize
-            let contentsSize = Size(
+            let paddedContentsSize = Size(
                 width: (possibleContentsSize.width ?? 0) + viewDimensions.layout.padding.left + viewDimensions.layout.padding.right,
                 height: (possibleContentsSize.height ?? 0) + viewDimensions.layout.padding.top + viewDimensions.layout.padding.bottom
             )
             
-            viewDimensions.size = Size(width: concreteWidth ?? contentsSize.width,
-                                       height: concreteHeight ?? contentsSize.height)
+            viewDimensions.size = Size(width: concreteWidth ?? paddedContentsSize.width,
+                                       height: concreteHeight ?? paddedContentsSize.height)
             viewDimensions.intrinsicSize = intrinsicSize
             viewDimensions.contentsSize = possibleContentsSize
-        } else {
-            viewDimensions.contentsSize = Size(width: concreteWidth, height: concreteHeight)
+        }
+        
+        if let concreteHeight = concreteHeight {
+            viewDimensions.contentsSize.height = concreteHeight - viewDimensions.layout.padding.top - viewDimensions.layout.padding.bottom
+        }
+        
+        if let concreteWidth = concreteWidth {
+            viewDimensions.contentsSize.width = concreteWidth - viewDimensions.layout.padding.left - viewDimensions.layout.padding.right
         }
         
         // clamp the generated sizes using the min/max width & height

@@ -434,6 +434,7 @@ extension UIView {
     static func buildTextView(_ textProperties: TextViewProperties, textDefaults: TextViewDefaultProperties, styleProperties: StyleProperties, fontProvider: FontProvider, position: Point<Double>, dimensions: AbsoluteViewDimensions) -> UIView {
         
         let label = UILabel()
+        label.clipsToBounds = false
         
         // TODO: cache these values from when doing the layout phase
         let attributedString = textProperties.attributedString(
