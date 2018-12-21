@@ -10,6 +10,7 @@
 import UIKit
 
 import FLAnimatedImage
+import SVGKit
 
 // TODO: not like this.
 func loadImageView(url: URL, completion: @escaping (UIView?) -> Void) {
@@ -31,6 +32,13 @@ func loadImageView(url: URL, completion: @escaping (UIView?) -> Void) {
                             let view = FLAnimatedImageView()
                             view.animatedImage = gifImage
                             return view
+                        }
+                    }
+                case "image/svg+xml"?:
+                    if let svgImage = SVGKImage(data: imageData) {
+                        return {
+                            let view = SVGKFastImageView(svgkImage: svgImage)
+                            return view!
                         }
                     }
                 default:

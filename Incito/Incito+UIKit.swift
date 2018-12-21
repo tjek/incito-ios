@@ -234,7 +234,7 @@ extension UIView {
         }
         
         // TODO: Not like this
-        let parentSize = superview?.bounds.size ?? frame.size
+//        let parentSize = superview?.bounds.size ?? frame.size
         
         // TODO: use real anchor point
         setAnchorPoint(anchorPoint: CGPoint.zero)

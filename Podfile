@@ -8,5 +8,6 @@ target 'Incito' do
   pod 'RRFPSBar', :git => 'https://github.com/RolandasRazma/RRFPSBar.git', :tag => '0.0.2'
 
   pod 'FLAnimatedImage'
+  pod 'SVGKit', :git => 'https://github.com/SVGKit/SVGKit.git', :branch => '3.x'
   
 end

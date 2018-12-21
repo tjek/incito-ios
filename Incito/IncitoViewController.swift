@@ -581,7 +581,6 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
                 styleProperties: renderableView.viewProperties.style,
                 dimensions: renderableView.dimensions
             )
-            //        imageLoadRequests.append(imgReq)
             renderProperties.imageViewLoader(imgReq.url) {
                 imgReq.completion($0)
             }
@@ -606,7 +605,12 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
                             size: renderableView.dimensions.size.cgSize)
         
         // apply the style properties to the view
-        view.applyStyle(renderableView.viewProperties.style, dimensions: renderableView.dimensions, parentSize: parentSize)
+        let imageRequest = view.applyStyle(renderableView.viewProperties.style, dimensions: renderableView.dimensions, parentSize: parentSize)
+        if let imgReq = imageRequest {
+            renderProperties.imageViewLoader(imgReq.url) {
+                imgReq.completion($0)
+            }
+        }
         
         return view
     }
@@ -677,9 +681,6 @@ extension UIView {
         
         let container = UIView()
         
-//        let imageView = UIImageView()
-//        imageView.contentMode = .scaleToFill
-        
         let imageLoadReq = ImageViewLoadRequest(url: imageProperties.source) { [weak container] loadedImageView in
             guard let c = container else { return }
             if let imageView = loadedImageView {
@@ -687,7 +688,7 @@ extension UIView {
                 imageView.frame = c.bounds
                 imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
                 imageView.alpha = 0
-                c.addSubview(imageView)
+                c.insertSubview(imageView, at: 0)
                 
                 UIView.animate(withDuration: 0.2) {
                     imageView.alpha = 1
@@ -698,19 +699,6 @@ extension UIView {
                     c.backgroundColor = .red
                 }
             }
-//
-//            UIView.transition(
-//                with: imgView,
-//                duration: 0.2,
-//                options: .transitionCrossDissolve,
-//                animations: {
-//                    if let img = loadedImage {
-//                        imgView.image = img
-//                    } else {
-//                        imgView.backgroundColor = .red
-//                    }            },
-//                completion: nil
-//            )
         }
         
         return (container, imageLoadReq)
@@ -718,11 +706,35 @@ extension UIView {
 }
 
 extension UIView {
-    func applyStyle(_ style: StyleProperties, dimensions: AbsoluteViewDimensions, parentSize: Size<Double>) {
+    func applyStyle(_ style: StyleProperties, dimensions: AbsoluteViewDimensions, parentSize: Size<Double>) -> ImageViewLoadRequest? {
         
         // apply the layout.view properties
         backgroundColor = style.backgroundColor?.uiColor ?? .clear
         clipsToBounds = style.clipsChildren
+        
+        var imageLoadReq: ImageViewLoadRequest? = nil
+        if let bgImage = style.backgroundImage {
+            imageLoadReq = ImageViewLoadRequest(url: bgImage.source) { [weak self] loadedImageView in
+                guard let self = self else { return }
+                
+                if let imageView = loadedImageView {
+                    imageView.contentMode = .scaleToFill
+                    imageView.frame = self.bounds
+                    imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                    imageView.alpha = 0
+                    self.insertSubview(imageView, at: 0)
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        imageView.alpha = 1
+                    }
+                    
+                } else {
+                    UIView.animate(withDuration: 0.2) {
+                        self.backgroundColor = .red
+                    }
+                }
+            }
+        }
         
         // Use the smallest dimension when calculating relative corners.
         let cornerRadius = style.cornerRadius.absolute(in: min(dimensions.size.width, dimensions.size.height) / 2)
@@ -743,12 +755,13 @@ extension UIView {
             }
         }
         
-        
         // TODO: use real anchor point
         setAnchorPoint(anchorPoint: CGPoint.zero)
         
         self.transform = self.transform
             .concatenating(dimensions.layout.transform.affineTransform)
+        
+        return imageLoadReq
     }
 }
 
