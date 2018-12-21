@@ -51,15 +51,15 @@ extension TreeNode: CustomStringConvertible {
 
 extension TreeNode {
     // map root first
-    func mapValues<B>(_ transform: (T, _ parent: TreeNode<B>?) -> B) -> TreeNode<B> {
-        return _mapValues(parent: nil, transform)
+    func mapValues<B>(_ transform: (T, _ parent: TreeNode<B>?, _ index: Int) -> B) -> TreeNode<B> {
+        return _mapValues(parent: nil, index: 0, transform)
     }
     
-    private func _mapValues<B>(parent: TreeNode<B>? = nil, _ transform: (T, _ parent: TreeNode<B>?) -> B) -> TreeNode<B> {
-        let newNode = TreeNode<B>(value: transform(self.value, parent))
+    private func _mapValues<B>(parent: TreeNode<B>? = nil, index: Int = 0, _ transform: (T, _ parent: TreeNode<B>?, _ index: Int) -> B) -> TreeNode<B> {
+        let newNode = TreeNode<B>(value: transform(self.value, parent, index))
         
-        self.children.forEach {
-            newNode.add(child: $0._mapValues(parent: newNode, transform))
+        for (idx, child) in children.enumerated() {
+            newNode.add(child: child._mapValues(parent: newNode, index: idx, transform))
         }
         return newNode
     }

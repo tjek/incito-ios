@@ -132,8 +132,8 @@ class IncitoViewController: UIViewController {
         let end = Date.timeIntervalSinceReferenceDate
         print(" ⇢ 🚧 Built layout graph: \(round((end - start) * 1_000))ms")
         
-        let debugTree = dimensionsTree.mapValues { value, _ in
-            "\(value.view.id ?? "?"): [ size \(value.dimensions.size), pos \(value.position), margins \(value.dimensions.layout.margins), padding \(value.dimensions.layout.padding) ]"
+        let debugTree = dimensionsTree.mapValues { value, _, idx in
+            "\(idx)) \(value.view.id ?? "?"): [ size \(value.dimensions.size), pos \(value.position), margins \(value.dimensions.layout.margins), padding \(value.dimensions.layout.padding) ]"
         }
         
         print("\(debugTree)")
@@ -473,7 +473,7 @@ struct RenderableView {
     let localPosition: Point<Double>
     let dimensions: AbsoluteViewDimensions
     let absoluteTransform: CGAffineTransform // the sum of all the parent view's transformations. Includes the localPosition translation.
-    
+    let siblingIndex: Int // The index of this view in relation to its siblings
     let render: (RenderableView) -> UIView
     // TODO: add tap callback?
     
@@ -484,12 +484,14 @@ struct RenderableView {
         localPosition: Point<Double>,
         dimensions: AbsoluteViewDimensions,
         absoluteTransform: CGAffineTransform,
+        siblingIndex: Int,
         render: @escaping (RenderableView) -> UIView
         ) {
         self.viewProperties = viewProperties
         self.localPosition = localPosition
         self.dimensions = dimensions
         self.absoluteTransform = absoluteTransform
+        self.siblingIndex = siblingIndex
         self.render = render
     }
     
@@ -502,7 +504,18 @@ struct RenderableView {
         let view = render(self)
         
         self.renderedView = view
-        parent.addSubview(view)
+        view.tag = siblingIndex
+        
+        let prevSibling: UIView? = {
+            guard siblingIndex > 0 else { return nil }
+            return parent.subviews.last(where: { $0.tag < siblingIndex })
+        }()
+        
+        if let prev = prevSibling {
+            parent.insertSubview(view, aboveSubview: prev)
+        } else {
+            parent.insertSubview(view, at: 0)
+        }
 
 //        if let rootView = parent.firstSuperview(where: { $0 is UIScrollView })?.subviews.first {
 //
@@ -531,7 +544,7 @@ struct RenderableView {
 
 func buildRenderableViewTree(_ root: TreeNode<(view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>)>, rendererProperties: IncitoRenderer) -> TreeNode<RenderableView> {
     
-    return root.mapValues { (nodeValues, newParent) in
+    return root.mapValues { (nodeValues, newParent, index) in
         
         let (viewProperties, dimensions, localPosition) = nodeValues
         
@@ -554,6 +567,7 @@ func buildRenderableViewTree(_ root: TreeNode<(view: ViewProperties, dimensions:
             localPosition: localPosition,
             dimensions: dimensions,
             absoluteTransform: transform,
+            siblingIndex: index,
             render: renderer
         )
     }
