@@ -45,7 +45,6 @@ extension AbsoluteLayoutProperties {
         self.margins = properties.margins.absolute(in: squareParentSize)
         self.padding = properties.padding.absolute(in: squareParentSize)
         
-        
         self.transform = Transform(
             scale: properties.transform.scale,
             translate: Point(

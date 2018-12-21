@@ -228,6 +228,11 @@ extension StyleProperties: Decodable {
         case backgroundImageTileMode = "background_tile_mode"
         case backgroundImagePosition = "background_image_position"
         case backgroundImageScaleType = "background_image_scale_type"
+        
+        case shadowRadius = "shadow_radius"
+        case shadowOffsetX = "shadow_dx"
+        case shadowOffsetY = "shadow_dy"
+        case shadowColor = "shadow_color"
     }
     
     init(from decoder: Decoder) throws {
@@ -266,6 +271,21 @@ extension StyleProperties: Decodable {
             )
         } else {
             self.backgroundImage = nil
+        }
+        
+        
+        if let shadowColor: Color = try c.decodeIfPresent(.shadowColor) {
+         
+            let shadowRadius: Double? = try c.decodeIfPresent(.shadowRadius)
+            let shadowOffsetX: Double? = try c.decodeIfPresent(.shadowOffsetX)
+            let shadowOffsetY: Double? = try c.decodeIfPresent(.shadowOffsetY)
+            
+            self.shadow = Shadow(
+                color: shadowColor,
+                offset: Size(width: shadowOffsetX ?? 0,
+                             height: shadowOffsetY ?? 0),
+                radius: shadowRadius ?? 0
+            )
         }
     }
 }

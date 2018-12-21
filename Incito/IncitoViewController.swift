@@ -505,15 +505,10 @@ struct RenderableView {
         let view = render(self)
         
         self.renderedView = view
-        view.tag = siblingIndex
+        view.tag = siblingIndex + 1 // add 1 so non-sibling subviews stay at the bottom
         
-        let prevSibling: UIView? = {
-            guard siblingIndex > 0 else { return nil }
-            return parent.subviews.last(where: { $0.tag < siblingIndex })
-        }()
-        
-        if let prev = prevSibling {
-            parent.insertSubview(view, aboveSubview: prev)
+        if let prevSibling = parent.subviews.last(where: { $0.tag < view.tag }) {
+            parent.insertSubview(view, aboveSubview: prevSibling)
         } else {
             parent.insertSubview(view, at: 0)
         }

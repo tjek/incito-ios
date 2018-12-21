@@ -26,6 +26,10 @@
                 "layout_height": 200,
                 "background_color": "#019a01",
                 "transform_rotate": 30,
+                "shadow_radius": 10,
+                "shadow_dx": 2,
+                "shadow_color": "#000000",
+                "corner_radius": 10,
                 "child_views": [
                     {
                         "padding": 10,
@@ -49,6 +53,9 @@
                         "layout_width": 130,
                         "layout_height": 130,
                         "transform_rotate": -10,
+                        "shadow_radius": 10,
+                        "shadow_dx": 2,
+                        "shadow_color": "#000000",
                         "background_color": "#ffffff"
                     },
                 ]

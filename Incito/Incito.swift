@@ -49,7 +49,7 @@ struct StyleProperties {
     var meta: [String: JSONValue]
     
     var cornerRadius: Corners<Unit>
-    //    var shadow: Shadow? = nil
+    var shadow: Shadow? = nil
     //    var stroke: Stroke? = nil
     
     var link: String? // URI
@@ -64,6 +64,7 @@ struct StyleProperties {
         role: nil,
         meta: [:],
         cornerRadius: .zero,
+        shadow: nil,
         link: nil,
         title: nil,
         clipsChildren: true,
@@ -239,8 +240,7 @@ enum TextStyle: String {
 
 struct Shadow {
     var color: Color
-    var offsetX: Double
-    var offsetY: Double
+    var offset: Size<Double>
     var radius: Double
 }
 
