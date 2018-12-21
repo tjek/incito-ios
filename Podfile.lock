@@ -1,8 +1,14 @@
 PODS:
+  - FLAnimatedImage (1.0.12)
   - RRFPSBar (0.0.2)
 
 DEPENDENCIES:
+  - FLAnimatedImage
   - RRFPSBar (from `https://github.com/RolandasRazma/RRFPSBar.git`, tag `0.0.2`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - FLAnimatedImage
 
 EXTERNAL SOURCES:
   RRFPSBar:
@@ -15,8 +21,9 @@ CHECKOUT OPTIONS:
     :tag: 0.0.2
 
 SPEC CHECKSUMS:
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   RRFPSBar: d2cc510813aa7377af23fd011d144e7770d4bc18
 
-PODFILE CHECKSUM: 3acecb389628946e01d910c24e9bd7230260ae84
+PODFILE CHECKSUM: 1194bd3bee5216fd3fc3b3a15d9ef503b2b2afa4
 
 COCOAPODS: 1.5.3

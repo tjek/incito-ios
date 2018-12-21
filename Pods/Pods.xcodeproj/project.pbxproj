@@ -7,65 +7,110 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		19E7613D57DBE8C8EB1C4E46A05E4835 /* RRFPSBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EBABA0EC175FB5F5CB171161CAF1737A /* RRFPSBar.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		6C9E21ADF6AFD85371371C3263A4BA36 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
-		81DD11952E204190D0CC35E8551C1536 /* RRFPSBar-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 113F3DD5F549CE03851BB5D9B51D1C69 /* RRFPSBar-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8C6A6FCCD0406A8BF63EE64C8F121244 /* RRFPSBar-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFA91DBBBBD8C422F505729E483D4FA /* RRFPSBar-dummy.m */; };
-		C48CF5BDDE98FAB372868619710948A0 /* RRFPSBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 186D51B4F8CD0F0CD0AD841FD453A720 /* RRFPSBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C59C1235AC340AF65A06AB37BB88D155 /* Pods-Incito-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 62F7DBB43937A862F02D93BC6393B113 /* Pods-Incito-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D55CFFF830C99D6AFF8026D421087E55 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
-		EBB8C2B3E2639E832744BFF1AE625103 /* Pods-Incito-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C171844C4BA2A9E2570BD114C68762 /* Pods-Incito-dummy.m */; };
+		02809B254A34AAF610BB19AA853785FB /* RRFPSBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D65C8238031FDD1055824F16A8ED300F /* RRFPSBar.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		078DBA950AF698728E4E6F67C9730AFB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 821DDC9A947105FF647BFCF418DFA4E5 /* Foundation.framework */; };
+		12595EF47FC1C733100BC2C0B88C9093 /* FLAnimatedImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 9318E697DEC44EA2D90E0FAFEB9D8936 /* FLAnimatedImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1CBE9344966AB5E6CBEDAE6DB02E9D25 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 821DDC9A947105FF647BFCF418DFA4E5 /* Foundation.framework */; };
+		1FBFB43EC7DA59FB18CDBA03408AB86E /* FLAnimatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A72793303026AB40ABF8E0F45CFCD2 /* FLAnimatedImageView.m */; };
+		22EF4E1AA8F6720DDC2FF7410CA0621F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C9A8DE69818D7BEC145382835DC3914 /* CoreGraphics.framework */; };
+		235282DCADB2B39CB26782458FA9444E /* Pods-Incito-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 62F7DBB43937A862F02D93BC6393B113 /* Pods-Incito-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		23C60AF69E242346052EAD2765D02EC6 /* Pods-Incito-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C171844C4BA2A9E2570BD114C68762 /* Pods-Incito-dummy.m */; };
+		2F755D29F97F453EF2EDCF867A834832 /* RRFPSBar-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 09EA677368A230A0E15F376ECDA5EAE3 /* RRFPSBar-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3DCACE9BD3A7C0F831859B20DF0EABCA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF77ED83A7DD41B7343F1759EF49825 /* ImageIO.framework */; };
+		5248C17A1BBF1E73FC405D7ED1B0793B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A334906923B9630D5C5643F9BAAE491C /* QuartzCore.framework */; };
+		5D813736216B29898F89363D9F0F0185 /* RRFPSBar-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7585F0AE2A4A569BC503750DAE4858 /* RRFPSBar-dummy.m */; };
+		5DF3480D9AEF5BF93EF11586B8D0CCF2 /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A68046FA8555EE754F0910479C34C0E /* FLAnimatedImage.m */; };
+		75F292B92623AFEF61F9A19C549CCBE2 /* RRFPSBar.h in Headers */ = {isa = PBXBuildFile; fileRef = B4E96757F04D85DFA289D936535255B7 /* RRFPSBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B399633E4730A9DB94007B451B472DB /* FLAnimatedImage-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A54A287ACAD2F85C0D4FF9B79410D10 /* FLAnimatedImage-dummy.m */; };
+		917B055DED8553A042FFB8270AF6ECD7 /* FLAnimatedImage-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FA9C6A33A91A49B3FD98BCD0309FF298 /* FLAnimatedImage-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A6F325C78AFD5E791D0EFE5AE158619B /* FLAnimatedImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 205B5C46FBE26DA6F50CC4162D4385AD /* FLAnimatedImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D2282ADE3578C2E12D42E6BD37EA392A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 027CE110955D329F44F685A96304B9FA /* MobileCoreServices.framework */; };
+		E862AC58C09B9D433F0CC9088AF0E20A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 821DDC9A947105FF647BFCF418DFA4E5 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D83BA114D8DEDA5B329A58B43C5A8819 /* PBXContainerItemProxy */ = {
+		547C335A2F572362862A6C6CDB661306 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = FA9D5A6D329BA7DA9B24C3A090456E50;
+			remoteGlobalIDString = 4D7B7D274050D6277CAECA96F3CF6722;
+			remoteInfo = FLAnimatedImage;
+		};
+		C1529F54412D21BAEB89E813FEEE7C0F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9874CF0B0A5FF99624B7035BD4B9F091;
 			remoteInfo = RRFPSBar;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00A72793303026AB40ABF8E0F45CFCD2 /* FLAnimatedImageView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FLAnimatedImageView.m; path = FLAnimatedImage/FLAnimatedImageView.m; sourceTree = "<group>"; };
 		01788EF30B41982D2E32389E21015674 /* Pods-Incito-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Incito-resources.sh"; sourceTree = "<group>"; };
 		01C171844C4BA2A9E2570BD114C68762 /* Pods-Incito-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Incito-dummy.m"; sourceTree = "<group>"; };
-		113F3DD5F549CE03851BB5D9B51D1C69 /* RRFPSBar-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RRFPSBar-umbrella.h"; sourceTree = "<group>"; };
-		186D51B4F8CD0F0CD0AD841FD453A720 /* RRFPSBar.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RRFPSBar.h; path = RRFPSBar/RRFPSBar.h; sourceTree = "<group>"; };
+		027CE110955D329F44F685A96304B9FA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		088F8B40FF5EBDAFA1D93D928B573969 /* RRFPSBar.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = RRFPSBar.modulemap; sourceTree = "<group>"; };
+		09EA677368A230A0E15F376ECDA5EAE3 /* RRFPSBar-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RRFPSBar-umbrella.h"; sourceTree = "<group>"; };
+		205B5C46FBE26DA6F50CC4162D4385AD /* FLAnimatedImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FLAnimatedImage.h; path = FLAnimatedImage/FLAnimatedImage.h; sourceTree = "<group>"; };
 		21FEDB152E3A3519DC58BD02A15A977A /* Pods-Incito.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Incito.modulemap"; sourceTree = "<group>"; };
+		230519B4FD1ABBDE958C79FBA7B7B2A0 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		24218727D9B2A488D08C63516A4FA0CB /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2E113277FA556F899CDE51C0B50F664C /* RRFPSBar-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RRFPSBar-prefix.pch"; sourceTree = "<group>"; };
-		2EC22CE2936D4B7D9BB456C6BFCBB1F0 /* RRFPSBar.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = RRFPSBar.modulemap; sourceTree = "<group>"; };
-		330E9D62DA296F812FC44413FC865321 /* Pods_Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Incito.framework; path = "Pods-Incito.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31BF1C21DBB342ECAA0B47C70651B245 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3AF77ED83A7DD41B7343F1759EF49825 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/ImageIO.framework; sourceTree = DEVELOPER_DIR; };
 		3C580C052A451B8AAEC78B1051CAFA93 /* Pods-Incito.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Incito.debug.xcconfig"; sourceTree = "<group>"; };
-		5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		474C0F290C9C6660A72763F0FBFA7E6D /* RRFPSBar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = RRFPSBar.framework; path = RRFPSBar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C9A8DE69818D7BEC145382835DC3914 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		54F4752FBE06D6942D0533A79259DD86 /* RRFPSBar.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RRFPSBar.xcconfig; sourceTree = "<group>"; };
 		62F7DBB43937A862F02D93BC6393B113 /* Pods-Incito-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Incito-umbrella.h"; sourceTree = "<group>"; };
+		663291F6FC5C202DBC8F003D79C76F42 /* FLAnimatedImage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FLAnimatedImage.xcconfig; sourceTree = "<group>"; };
+		6A54A287ACAD2F85C0D4FF9B79410D10 /* FLAnimatedImage-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FLAnimatedImage-dummy.m"; sourceTree = "<group>"; };
+		6DF828FD446286844A71F7141915C00B /* FLAnimatedImage-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FLAnimatedImage-prefix.pch"; sourceTree = "<group>"; };
 		7C0C861C19DB81F929605F2660E1B945 /* Pods-Incito-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Incito-acknowledgements.markdown"; sourceTree = "<group>"; };
+		821DDC9A947105FF647BFCF418DFA4E5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		8A68046FA8555EE754F0910479C34C0E /* FLAnimatedImage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FLAnimatedImage.m; path = FLAnimatedImage/FLAnimatedImage.m; sourceTree = "<group>"; };
+		8D40AEECFF0B85D6CD7346B9F60CC09C /* FLAnimatedImage.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = FLAnimatedImage.modulemap; sourceTree = "<group>"; };
+		9318E697DEC44EA2D90E0FAFEB9D8936 /* FLAnimatedImageView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FLAnimatedImageView.h; path = FLAnimatedImage/FLAnimatedImageView.h; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9F0FC5FF983019C08694B910C8721047 /* RRFPSBar.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RRFPSBar.xcconfig; sourceTree = "<group>"; };
-		AFC0D71CABDDE626136BDBBAB4874770 /* RRFPSBar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = RRFPSBar.framework; path = RRFPSBar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A334906923B9630D5C5643F9BAAE491C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		B4E96757F04D85DFA289D936535255B7 /* RRFPSBar.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RRFPSBar.h; path = RRFPSBar/RRFPSBar.h; sourceTree = "<group>"; };
+		BA01814C2E49F87F6A5E7A743A8830CF /* RRFPSBar-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RRFPSBar-prefix.pch"; sourceTree = "<group>"; };
+		D65C8238031FDD1055824F16A8ED300F /* RRFPSBar.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RRFPSBar.m; path = RRFPSBar/RRFPSBar.m; sourceTree = "<group>"; };
+		DA7585F0AE2A4A569BC503750DAE4858 /* RRFPSBar-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RRFPSBar-dummy.m"; sourceTree = "<group>"; };
+		DE3CD3E5A5424BB6B701C3DADED4F289 /* Pods_Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Incito.framework; path = "Pods-Incito.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3647E9378884C3783FCD1488A554EA4 /* Pods-Incito-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Incito-frameworks.sh"; sourceTree = "<group>"; };
 		EA6046D2D033339D6F19E3B4C87B1FC2 /* Pods-Incito.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Incito.release.xcconfig"; sourceTree = "<group>"; };
-		EBABA0EC175FB5F5CB171161CAF1737A /* RRFPSBar.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RRFPSBar.m; path = RRFPSBar/RRFPSBar.m; sourceTree = "<group>"; };
-		F0918F424257B99787C23031C90047BE /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F8E4B9CA1F0AA00866BDD6FBB418EE23 /* FLAnimatedImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = FLAnimatedImage.framework; path = FLAnimatedImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA9C6A33A91A49B3FD98BCD0309FF298 /* FLAnimatedImage-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FLAnimatedImage-umbrella.h"; sourceTree = "<group>"; };
 		FCE1B03FEDF9577E07C599A5AA5FD35E /* Pods-Incito-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Incito-acknowledgements.plist"; sourceTree = "<group>"; };
-		FCFA91DBBBBD8C422F505729E483D4FA /* RRFPSBar-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RRFPSBar-dummy.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5394195C8FEB21A366211C2E5660E35F /* Frameworks */ = {
+		0A5E16B765F1A7EDD8B321C4919320ED /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C9E21ADF6AFD85371371C3263A4BA36 /* Foundation.framework in Frameworks */,
+				1CBE9344966AB5E6CBEDAE6DB02E9D25 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5F58156C7B1D71DAE8E63ECF9BD9DB76 /* Frameworks */ = {
+		E3E8AABE9277C746E87843CF848268D6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D55CFFF830C99D6AFF8026D421087E55 /* Foundation.framework in Frameworks */,
+				22EF4E1AA8F6720DDC2FF7410CA0621F /* CoreGraphics.framework in Frameworks */,
+				E862AC58C09B9D433F0CC9088AF0E20A /* Foundation.framework in Frameworks */,
+				3DCACE9BD3A7C0F831859B20DF0EABCA /* ImageIO.framework in Frameworks */,
+				D2282ADE3578C2E12D42E6BD37EA392A /* MobileCoreServices.framework in Frameworks */,
+				5248C17A1BBF1E73FC405D7ED1B0793B /* QuartzCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4ACFBB1152E817092F78B5A9114CABA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				078DBA950AF698728E4E6F67C9730AFB /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,46 +125,79 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		595B475CEB7EE76BCD20D4C3663B4E2C /* Products */ = {
+		1E10E3958E542C6FCC6B1087D02937FA /* RRFPSBar */ = {
 			isa = PBXGroup;
 			children = (
-				330E9D62DA296F812FC44413FC865321 /* Pods_Incito.framework */,
-				AFC0D71CABDDE626136BDBBAB4874770 /* RRFPSBar.framework */,
+				B4E96757F04D85DFA289D936535255B7 /* RRFPSBar.h */,
+				D65C8238031FDD1055824F16A8ED300F /* RRFPSBar.m */,
+				72136A0DD3B7B1D323C5EF726A60DAB1 /* Support Files */,
 			);
-			name = Products;
+			name = RRFPSBar;
+			path = RRFPSBar;
 			sourceTree = "<group>";
 		};
-		5E0D919E635D23B70123790B8308F8EF /* iOS */ = {
+		20B56609144CE204DFA8221F742B2D76 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */,
+				2D3CA716EB7E0F94DA1B6F649ECCCF28 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2D3CA716EB7E0F94DA1B6F649ECCCF28 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				4C9A8DE69818D7BEC145382835DC3914 /* CoreGraphics.framework */,
+				821DDC9A947105FF647BFCF418DFA4E5 /* Foundation.framework */,
+				3AF77ED83A7DD41B7343F1759EF49825 /* ImageIO.framework */,
+				027CE110955D329F44F685A96304B9FA /* MobileCoreServices.framework */,
+				A334906923B9630D5C5643F9BAAE491C /* QuartzCore.framework */,
 			);
 			name = iOS;
+			sourceTree = "<group>";
+		};
+		517437056468FD14DA90A7892CF90D15 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9A3577CABB3ED9313D8DA188F977B75B /* FLAnimatedImage */,
+				1E10E3958E542C6FCC6B1087D02937FA /* RRFPSBar */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		72136A0DD3B7B1D323C5EF726A60DAB1 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				230519B4FD1ABBDE958C79FBA7B7B2A0 /* Info.plist */,
+				088F8B40FF5EBDAFA1D93D928B573969 /* RRFPSBar.modulemap */,
+				54F4752FBE06D6942D0533A79259DD86 /* RRFPSBar.xcconfig */,
+				DA7585F0AE2A4A569BC503750DAE4858 /* RRFPSBar-dummy.m */,
+				BA01814C2E49F87F6A5E7A743A8830CF /* RRFPSBar-prefix.pch */,
+				09EA677368A230A0E15F376ECDA5EAE3 /* RRFPSBar-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/RRFPSBar";
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
-				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				D13416EFBD2876454EF1FD5D6C2E479E /* Pods */,
-				595B475CEB7EE76BCD20D4C3663B4E2C /* Products */,
+				20B56609144CE204DFA8221F742B2D76 /* Frameworks */,
+				517437056468FD14DA90A7892CF90D15 /* Pods */,
+				85E8C6B1BC2E6EB20EB1B6F2F2D26CC6 /* Products */,
 				07BD06CD873BF9B35FAE427EACDDE63B /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		8103DDFFC45B4FA140DB6CEE45C88FC8 /* Support Files */ = {
+		85E8C6B1BC2E6EB20EB1B6F2F2D26CC6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F0918F424257B99787C23031C90047BE /* Info.plist */,
-				2EC22CE2936D4B7D9BB456C6BFCBB1F0 /* RRFPSBar.modulemap */,
-				9F0FC5FF983019C08694B910C8721047 /* RRFPSBar.xcconfig */,
-				FCFA91DBBBBD8C422F505729E483D4FA /* RRFPSBar-dummy.m */,
-				2E113277FA556F899CDE51C0B50F664C /* RRFPSBar-prefix.pch */,
-				113F3DD5F549CE03851BB5D9B51D1C69 /* RRFPSBar-umbrella.h */,
+				F8E4B9CA1F0AA00866BDD6FBB418EE23 /* FLAnimatedImage.framework */,
+				DE3CD3E5A5424BB6B701C3DADED4F289 /* Pods_Incito.framework */,
+				474C0F290C9C6660A72763F0FBFA7E6D /* RRFPSBar.framework */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/RRFPSBar";
+			name = Products;
 			sourceTree = "<group>";
 		};
 		96BA43FAC457207DF6AAA2EADC4BE7A6 /* Pods-Incito */ = {
@@ -140,83 +218,112 @@
 			path = "Target Support Files/Pods-Incito";
 			sourceTree = "<group>";
 		};
-		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+		9A3577CABB3ED9313D8DA188F977B75B /* FLAnimatedImage */ = {
 			isa = PBXGroup;
 			children = (
-				5E0D919E635D23B70123790B8308F8EF /* iOS */,
+				205B5C46FBE26DA6F50CC4162D4385AD /* FLAnimatedImage.h */,
+				8A68046FA8555EE754F0910479C34C0E /* FLAnimatedImage.m */,
+				9318E697DEC44EA2D90E0FAFEB9D8936 /* FLAnimatedImageView.h */,
+				00A72793303026AB40ABF8E0F45CFCD2 /* FLAnimatedImageView.m */,
+				F3AD2C51785414AB614A1A289C554C17 /* Support Files */,
 			);
-			name = Frameworks;
+			name = FLAnimatedImage;
+			path = FLAnimatedImage;
 			sourceTree = "<group>";
 		};
-		D13416EFBD2876454EF1FD5D6C2E479E /* Pods */ = {
+		F3AD2C51785414AB614A1A289C554C17 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				E853A1A4B107892897528EDFE31DBA8E /* RRFPSBar */,
+				8D40AEECFF0B85D6CD7346B9F60CC09C /* FLAnimatedImage.modulemap */,
+				663291F6FC5C202DBC8F003D79C76F42 /* FLAnimatedImage.xcconfig */,
+				6A54A287ACAD2F85C0D4FF9B79410D10 /* FLAnimatedImage-dummy.m */,
+				6DF828FD446286844A71F7141915C00B /* FLAnimatedImage-prefix.pch */,
+				FA9C6A33A91A49B3FD98BCD0309FF298 /* FLAnimatedImage-umbrella.h */,
+				31BF1C21DBB342ECAA0B47C70651B245 /* Info.plist */,
 			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		E853A1A4B107892897528EDFE31DBA8E /* RRFPSBar */ = {
-			isa = PBXGroup;
-			children = (
-				186D51B4F8CD0F0CD0AD841FD453A720 /* RRFPSBar.h */,
-				EBABA0EC175FB5F5CB171161CAF1737A /* RRFPSBar.m */,
-				8103DDFFC45B4FA140DB6CEE45C88FC8 /* Support Files */,
-			);
-			name = RRFPSBar;
-			path = RRFPSBar;
+			name = "Support Files";
+			path = "../Target Support Files/FLAnimatedImage";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		1789164256F4C674E54E138E45C51B81 /* Headers */ = {
+		6CB65792F08C334FDA16932CCDDE59B8 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81DD11952E204190D0CC35E8551C1536 /* RRFPSBar-umbrella.h in Headers */,
-				C48CF5BDDE98FAB372868619710948A0 /* RRFPSBar.h in Headers */,
+				235282DCADB2B39CB26782458FA9444E /* Pods-Incito-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		462F04985E80DE9CAABEEB38B04EE283 /* Headers */ = {
+		F72D055CC7681496E57C35962E19B43A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C59C1235AC340AF65A06AB37BB88D155 /* Pods-Incito-umbrella.h in Headers */,
+				2F755D29F97F453EF2EDCF867A834832 /* RRFPSBar-umbrella.h in Headers */,
+				75F292B92623AFEF61F9A19C549CCBE2 /* RRFPSBar.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F88CF70F4B003F3D138F3C8B26BA08B6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				917B055DED8553A042FFB8270AF6ECD7 /* FLAnimatedImage-umbrella.h in Headers */,
+				A6F325C78AFD5E791D0EFE5AE158619B /* FLAnimatedImage.h in Headers */,
+				12595EF47FC1C733100BC2C0B88C9093 /* FLAnimatedImageView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D2504E3D9BCB9EFBAD912FB481A4278D /* Pods-Incito */ = {
+		4D7B7D274050D6277CAECA96F3CF6722 /* FLAnimatedImage */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4E1BFDD9B6608B630992E9DDFB39954A /* Build configuration list for PBXNativeTarget "Pods-Incito" */;
+			buildConfigurationList = E8D6D562BB609396B62E386B9203F207 /* Build configuration list for PBXNativeTarget "FLAnimatedImage" */;
 			buildPhases = (
-				462F04985E80DE9CAABEEB38B04EE283 /* Headers */,
-				C97BA8B5249F022A0027425CC1A0F925 /* Sources */,
-				5394195C8FEB21A366211C2E5660E35F /* Frameworks */,
-				DBB72235C35DD88E0F22212A87801F8A /* Resources */,
+				F88CF70F4B003F3D138F3C8B26BA08B6 /* Headers */,
+				B462C08BC2B9EBB5DD37366BDB220EB2 /* Sources */,
+				E3E8AABE9277C746E87843CF848268D6 /* Frameworks */,
+				83192590C22D6F86D62DB7E00D6473B4 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4ED226C800401C8F8F8BB47DFAE3B427 /* PBXTargetDependency */,
+			);
+			name = FLAnimatedImage;
+			productName = FLAnimatedImage;
+			productReference = F8E4B9CA1F0AA00866BDD6FBB418EE23 /* FLAnimatedImage.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		9521A901640EEBBA2AD72EB6B9A348C4 /* Pods-Incito */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4569876CC071960DF5610177FA331329 /* Build configuration list for PBXNativeTarget "Pods-Incito" */;
+			buildPhases = (
+				6CB65792F08C334FDA16932CCDDE59B8 /* Headers */,
+				EB8B11EA9B66EC718AB2A90B6013E00F /* Sources */,
+				0A5E16B765F1A7EDD8B321C4919320ED /* Frameworks */,
+				976A055EF75A19E012598F6BDD1F8DA6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6CF320BD0C75634DF96B95E443239CA7 /* PBXTargetDependency */,
+				5A19BA4A0920C7F414BF44BB447F922A /* PBXTargetDependency */,
 			);
 			name = "Pods-Incito";
 			productName = "Pods-Incito";
-			productReference = 330E9D62DA296F812FC44413FC865321 /* Pods_Incito.framework */;
+			productReference = DE3CD3E5A5424BB6B701C3DADED4F289 /* Pods_Incito.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		FA9D5A6D329BA7DA9B24C3A090456E50 /* RRFPSBar */ = {
+		9874CF0B0A5FF99624B7035BD4B9F091 /* RRFPSBar */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 480EB9C18B22AD38E8BB741B6997FD86 /* Build configuration list for PBXNativeTarget "RRFPSBar" */;
+			buildConfigurationList = 0582A8F58353C9A009CB837975AA82D6 /* Build configuration list for PBXNativeTarget "RRFPSBar" */;
 			buildPhases = (
-				1789164256F4C674E54E138E45C51B81 /* Headers */,
-				F8EAC6369CD765FB3CDF6E5D31A777A5 /* Sources */,
-				5F58156C7B1D71DAE8E63ECF9BD9DB76 /* Frameworks */,
-				C6BE14CD71FA26E4A9F2C37D87A77F6F /* Resources */,
+				F72D055CC7681496E57C35962E19B43A /* Headers */,
+				F876E1B3A25084E1EF4F1EF80FD461BF /* Sources */,
+				E4ACFBB1152E817092F78B5A9114CABA /* Frameworks */,
+				59CCC39850EF62EEF5973671879E5289 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -224,7 +331,7 @@
 			);
 			name = RRFPSBar;
 			productName = RRFPSBar;
-			productReference = AFC0D71CABDDE626136BDBBAB4874770 /* RRFPSBar.framework */;
+			productReference = 474C0F290C9C6660A72763F0FBFA7E6D /* RRFPSBar.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -244,25 +351,33 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 595B475CEB7EE76BCD20D4C3663B4E2C /* Products */;
+			productRefGroup = 85E8C6B1BC2E6EB20EB1B6F2F2D26CC6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D2504E3D9BCB9EFBAD912FB481A4278D /* Pods-Incito */,
-				FA9D5A6D329BA7DA9B24C3A090456E50 /* RRFPSBar */,
+				4D7B7D274050D6277CAECA96F3CF6722 /* FLAnimatedImage */,
+				9521A901640EEBBA2AD72EB6B9A348C4 /* Pods-Incito */,
+				9874CF0B0A5FF99624B7035BD4B9F091 /* RRFPSBar */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C6BE14CD71FA26E4A9F2C37D87A77F6F /* Resources */ = {
+		59CCC39850EF62EEF5973671879E5289 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DBB72235C35DD88E0F22212A87801F8A /* Resources */ = {
+		83192590C22D6F86D62DB7E00D6473B4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		976A055EF75A19E012598F6BDD1F8DA6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -272,36 +387,124 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C97BA8B5249F022A0027425CC1A0F925 /* Sources */ = {
+		B462C08BC2B9EBB5DD37366BDB220EB2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBB8C2B3E2639E832744BFF1AE625103 /* Pods-Incito-dummy.m in Sources */,
+				8B399633E4730A9DB94007B451B472DB /* FLAnimatedImage-dummy.m in Sources */,
+				5DF3480D9AEF5BF93EF11586B8D0CCF2 /* FLAnimatedImage.m in Sources */,
+				1FBFB43EC7DA59FB18CDBA03408AB86E /* FLAnimatedImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F8EAC6369CD765FB3CDF6E5D31A777A5 /* Sources */ = {
+		EB8B11EA9B66EC718AB2A90B6013E00F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C6A6FCCD0406A8BF63EE64C8F121244 /* RRFPSBar-dummy.m in Sources */,
-				19E7613D57DBE8C8EB1C4E46A05E4835 /* RRFPSBar.m in Sources */,
+				23C60AF69E242346052EAD2765D02EC6 /* Pods-Incito-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F876E1B3A25084E1EF4F1EF80FD461BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D813736216B29898F89363D9F0F0185 /* RRFPSBar-dummy.m in Sources */,
+				02809B254A34AAF610BB19AA853785FB /* RRFPSBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4ED226C800401C8F8F8BB47DFAE3B427 /* PBXTargetDependency */ = {
+		5A19BA4A0920C7F414BF44BB447F922A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = RRFPSBar;
-			target = FA9D5A6D329BA7DA9B24C3A090456E50 /* RRFPSBar */;
-			targetProxy = D83BA114D8DEDA5B329A58B43C5A8819 /* PBXContainerItemProxy */;
+			target = 9874CF0B0A5FF99624B7035BD4B9F091 /* RRFPSBar */;
+			targetProxy = C1529F54412D21BAEB89E813FEEE7C0F /* PBXContainerItemProxy */;
+		};
+		6CF320BD0C75634DF96B95E443239CA7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FLAnimatedImage;
+			target = 4D7B7D274050D6277CAECA96F3CF6722 /* FLAnimatedImage */;
+			targetProxy = 547C335A2F572362862A6C6CDB661306 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		3564DF5789A092CA276E2567BDB78DAE /* Debug */ = {
+		1487467AA3F61FAA68C9D31D17AECBB8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54F4752FBE06D6942D0533A79259DD86 /* RRFPSBar.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/RRFPSBar/RRFPSBar-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/RRFPSBar/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/RRFPSBar/RRFPSBar.modulemap";
+				PRODUCT_MODULE_NAME = RRFPSBar;
+				PRODUCT_NAME = RRFPSBar;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		63E8FB2957DF26DD5FC5C6ADF5C257CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 663291F6FC5C202DBC8F003D79C76F42 /* FLAnimatedImage.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/FLAnimatedImage/FLAnimatedImage-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/FLAnimatedImage/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FLAnimatedImage/FLAnimatedImage.modulemap";
+				PRODUCT_MODULE_NAME = FLAnimatedImage;
+				PRODUCT_NAME = FLAnimatedImage;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		7C39477D617634599D725E82E4BA91F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3C580C052A451B8AAEC78B1051CAFA93 /* Pods-Incito.debug.xcconfig */;
 			buildSettings = {
@@ -339,9 +542,48 @@
 			};
 			name = Debug;
 		};
-		AA5C12C2FBC1272C011ECD093071D0A8 /* Release */ = {
+		8636125ADE139D17C830DC7D28D87D91 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9F0FC5FF983019C08694B910C8721047 /* RRFPSBar.xcconfig */;
+			baseConfigurationReference = EA6046D2D033339D6F19E3B4C87B1FC2 /* Pods-Incito.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-Incito/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Incito/Pods-Incito.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B3A6BC409412B32E56B089677AD2D7CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54F4752FBE06D6942D0533A79259DD86 /* RRFPSBar.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -369,11 +611,45 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
+		};
+		BA3498B312952F6ADB3DE6DD1C4526DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 663291F6FC5C202DBC8F003D79C76F42 /* FLAnimatedImage.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/FLAnimatedImage/FLAnimatedImage-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/FLAnimatedImage/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FLAnimatedImage/FLAnimatedImage.modulemap";
+				PRODUCT_MODULE_NAME = FLAnimatedImage;
+				PRODUCT_NAME = FLAnimatedImage;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
 		};
 		C92782E717C52E3633C9A5F211E7987A /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -439,41 +715,6 @@
 			};
 			name = Debug;
 		};
-		E8E36BEBBE40690E4FC512E3279D557B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9F0FC5FF983019C08694B910C8721047 /* RRFPSBar.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/RRFPSBar/RRFPSBar-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/RRFPSBar/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/RRFPSBar/RRFPSBar.modulemap";
-				PRODUCT_MODULE_NAME = RRFPSBar;
-				PRODUCT_NAME = RRFPSBar;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		EA8C7AF90938697605468604B2A17B9F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -533,48 +774,18 @@
 			};
 			name = Release;
 		};
-		EB59710C0B4D07A3D65DB325DAD5D818 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EA6046D2D033339D6F19E3B4C87B1FC2 /* Pods-Incito.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-Incito/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Incito/Pods-Incito.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0582A8F58353C9A009CB837975AA82D6 /* Build configuration list for PBXNativeTarget "RRFPSBar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3A6BC409412B32E56B089677AD2D7CA /* Debug */,
+				1487467AA3F61FAA68C9D31D17AECBB8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -584,20 +795,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		480EB9C18B22AD38E8BB741B6997FD86 /* Build configuration list for PBXNativeTarget "RRFPSBar" */ = {
+		4569876CC071960DF5610177FA331329 /* Build configuration list for PBXNativeTarget "Pods-Incito" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E8E36BEBBE40690E4FC512E3279D557B /* Debug */,
-				AA5C12C2FBC1272C011ECD093071D0A8 /* Release */,
+				7C39477D617634599D725E82E4BA91F1 /* Debug */,
+				8636125ADE139D17C830DC7D28D87D91 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4E1BFDD9B6608B630992E9DDFB39954A /* Build configuration list for PBXNativeTarget "Pods-Incito" */ = {
+		E8D6D562BB609396B62E386B9203F207 /* Build configuration list for PBXNativeTarget "FLAnimatedImage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3564DF5789A092CA276E2567BDB78DAE /* Debug */,
-				EB59710C0B4D07A3D65DB325DAD5D818 /* Release */,
+				BA3498B312952F6ADB3DE6DD1C4526DC /* Debug */,
+				63E8FB2957DF26DD5FC5C6ADF5C257CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

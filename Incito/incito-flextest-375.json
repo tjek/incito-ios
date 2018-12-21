@@ -11,11 +11,19 @@
         "gravity": "center_horizontal",
         "background_color": "#ffffff",
         "child_views": [
+            {
+                "view_name": "ImageView",
+                "src": "https://media.giphy.com/media/eB5WYVSaOT0qUmHOWA/giphy.gif",
+                "layout_width": 300,
+                "layout_height": 300,
+                "transform_rotate": -10,
+                "background_color": "#ffffff"
+            },
             { 
                 "gravity": "center_horizontal",
                 "padding": 10,
-                "layout_width": 100,
-                "layout_height": 150,
+                "layout_width": 150,
+                "layout_height": 200,
                 "background_color": "#019a01",
                 "transform_rotate": 30,
                 "child_views": [
@@ -34,7 +42,15 @@
                                 "transform_scale": 1.6
                             }
                         ]
-                    }
+                    },
+                    {
+                        "view_name": "ImageView",
+                        "src": "https://media.giphy.com/media/ta83CqOoRwfwQ/giphy.gif",
+                        "layout_width": 130,
+                        "layout_height": 130,
+                        "transform_rotate": -10,
+                        "background_color": "#ffffff"
+                    },
                 ]
             },
             { 

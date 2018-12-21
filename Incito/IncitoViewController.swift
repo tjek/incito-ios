@@ -27,7 +27,7 @@ class IncitoViewController: UIViewController {
         self.incitoDocument = incito
         self.renderer = IncitoRenderer(
             fontProvider: UIFont.systemFont(forFamily:size:),
-            imageLoader: loadImage(url:completion:),
+            imageViewLoader: loadImageView(url:completion:),
             theme: incitoDocument.theme
         )
         
@@ -582,7 +582,7 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
                 dimensions: renderableView.dimensions
             )
             //        imageLoadRequests.append(imgReq)
-            renderProperties.imageLoader(imgReq.url) {
+            renderProperties.imageViewLoader(imgReq.url) {
                 imgReq.completion($0)
             }
             return imgView
@@ -673,30 +673,47 @@ extension UIView {
         imageProperties: ImageViewProperties,
         styleProperties: StyleProperties,
         dimensions: AbsoluteViewDimensions
-        ) -> (UIView, ImageLoadRequest) {
+        ) -> (UIView, ImageViewLoadRequest) {
         
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
+        let container = UIView()
         
-        let imageLoadReq = ImageLoadRequest(url: imageProperties.source) { [weak imageView] loadedImage in
-            
-            guard let imgView = imageView else { return }
-            
-            UIView.transition(
-                with: imgView,
-                duration: 0.2,
-                options: .transitionCrossDissolve,
-                animations: {
-                    if let img = loadedImage {
-                        imgView.image = img
-                    } else {
-                        imgView.backgroundColor = .red
-                    }            },
-                completion: nil
-            )
+//        let imageView = UIImageView()
+//        imageView.contentMode = .scaleToFill
+        
+        let imageLoadReq = ImageViewLoadRequest(url: imageProperties.source) { [weak container] loadedImageView in
+            guard let c = container else { return }
+            if let imageView = loadedImageView {
+                imageView.contentMode = .scaleToFill
+                imageView.frame = c.bounds
+                imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                imageView.alpha = 0
+                c.addSubview(imageView)
+                
+                UIView.animate(withDuration: 0.2) {
+                    imageView.alpha = 1
+                }
+                
+            } else {
+                UIView.animate(withDuration: 0.2) {
+                    c.backgroundColor = .red
+                }
+            }
+//
+//            UIView.transition(
+//                with: imgView,
+//                duration: 0.2,
+//                options: .transitionCrossDissolve,
+//                animations: {
+//                    if let img = loadedImage {
+//                        imgView.image = img
+//                    } else {
+//                        imgView.backgroundColor = .red
+//                    }            },
+//                completion: nil
+//            )
         }
         
-        return (imageView, imageLoadReq)
+        return (container, imageLoadReq)
     }
 }
 

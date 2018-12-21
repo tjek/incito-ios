@@ -18,7 +18,7 @@ typealias Image = UIImage
 
 /// Given a FontFamily and a size, it will return a font
 typealias FontProvider = (FontFamily, Double) -> Font
-typealias ImageLoader = (URL, @escaping (Image?) -> Void) -> Void
+typealias ImageViewLoader = (URL, @escaping (UIView?) -> Void) -> Void
 
 // All things platform-specific that are needed
 struct IncitoRenderer {
@@ -26,7 +26,7 @@ struct IncitoRenderer {
     var fontProvider: FontProvider
     /// given an image URL it returns the image in a completion handler.
     // TODO: way to cancel image loads?
-    var imageLoader: ImageLoader
+    var imageViewLoader: ImageViewLoader
     
     // TODO: not like this.
     var theme: Theme?
@@ -56,161 +56,161 @@ class IncitoDebugView: UIView {
 
 // MARK: - View Building
 
-extension UIView {
-    // build a UIView based on a layoutNode and it's children
-    static func build(_ layout: LayoutNode, renderer: IncitoRenderer, depth: Int = 0, maxDepth: Int? = nil) -> (UIView, [ImageLoadRequest]) {
-        
-        let view: UIView
-        // if the view needs to do an image load it populates this property
-        var imageLoadRequests: [ImageLoadRequest] = []
-        
-        switch layout.view.type {
-        case let .text(textProperties):
-            view = .buildTextView(
-                textProperties,
-                textDefaults: renderer.theme?.textDefaults ?? .empty,
-                styleProperties: layout.view.style,
-                fontProvider: renderer.fontProvider,
-                in: layout.rect
-            )
-        case let .image(imageProperties):
-            let (imgView, imgReq) = UIView.buildImageView(
-                imageProperties,
-                styleProperties: layout.view.style,
-                in: layout.rect
-            )
-            imageLoadRequests.append(imgReq)
-            view = imgView
-        case .view,
-             .absoluteLayout,
-             .flexLayout:
-            view = .buildPassthruView(
-                styleProperties: layout.view.style,
-                in: layout.rect
-            )
-        default:
-            let dbgView = IncitoDebugView()
-            dbgView.isHidden = true
-            //        dbgView.label.text = layout.view.id
-            view = dbgView
-        }
-        
-        view.frame = layout.rect.cgRect
-        
-        // must be called after frame otherwise round-rect clipping path is not sized properly
-        let bgImageReq = view.apply(styleProperties: layout.view.style, renderer: renderer, in: layout.rect)
-        
-        if let bgReq = bgImageReq {
-            imageLoadRequests.append(bgReq)
-        }
-        
-        // skip children if reached the max depth
-        if depth < maxDepth ?? .max {
-            for childNode in layout.children {
-                let (childView, childImgReqs) = UIView.build(
-                    childNode,
-                    renderer: renderer,
-                    depth: depth + 1,
-                    maxDepth: maxDepth
-                )
-                view.addSubview(childView)
-                
-                imageLoadRequests += childImgReqs
-            }
-        }
-        
-        return (view, imageLoadRequests)
-    }
-    
-    static func buildTextView(_ textProperties: TextViewProperties, textDefaults: TextViewDefaultProperties, styleProperties: StyleProperties, fontProvider: FontProvider, in rect: Rect<Double>) -> UIView {
-        
-        let label = UILabel()
-        
-        // TODO: cache these values from when doing the layout phase
-        let attributedString = textProperties.attributedString(
-            fontProvider: fontProvider,
-            defaults: textDefaults
-        )
-        
-        label.attributedText = attributedString
-        label.numberOfLines = textProperties.maxLines
-        
-        label.textAlignment = (textProperties.textAlignment ?? .left).nsTextAlignment
-        
-        label.backgroundColor = .clear
-        
-        // labels are vertically aligned in incito, so add to a container view
-        let container = UIView()
-        container.frame = rect.cgRect
-        
-        container.addSubview(label)
-        
-        let textHeight = label.sizeThatFits(container.bounds.size).height
-        label.frame = CGRect(origin: .zero,
-                             size: CGSize(width: container.bounds.size.width,
-                                          height: textHeight))
-        label.autoresizingMask = [.flexibleBottomMargin, .flexibleWidth]
+//extension UIView {
+//    // build a UIView based on a layoutNode and it's children
+//    static func build(_ layout: LayoutNode, renderer: IncitoRenderer, depth: Int = 0, maxDepth: Int? = nil) -> (UIView, [ImageLoadRequest]) {
+//
+//        let view: UIView
+//        // if the view needs to do an image load it populates this property
+//        var imageLoadRequests: [ImageLoadRequest] = []
+//
+//        switch layout.view.type {
+//        case let .text(textProperties):
+//            view = .buildTextView(
+//                textProperties,
+//                textDefaults: renderer.theme?.textDefaults ?? .empty,
+//                styleProperties: layout.view.style,
+//                fontProvider: renderer.fontProvider,
+//                in: layout.rect
+//            )
+//        case let .image(imageProperties):
+//            let (imgView, imgReq) = UIView.buildImageView(
+//                imageProperties,
+//                styleProperties: layout.view.style,
+//                in: layout.rect
+//            )
+//            imageLoadRequests.append(imgReq)
+//            view = imgView
+//        case .view,
+//             .absoluteLayout,
+//             .flexLayout:
+//            view = .buildPassthruView(
+//                styleProperties: layout.view.style,
+//                in: layout.rect
+//            )
+//        default:
+//            let dbgView = IncitoDebugView()
+//            dbgView.isHidden = true
+//            //        dbgView.label.text = layout.view.id
+//            view = dbgView
+//        }
+//
+//        view.frame = layout.rect.cgRect
+//
+//        // must be called after frame otherwise round-rect clipping path is not sized properly
+//        let bgImageReq = view.apply(styleProperties: layout.view.style, renderer: renderer, in: layout.rect)
+//
+//        if let bgReq = bgImageReq {
+//            imageLoadRequests.append(bgReq)
+//        }
+//
+//        // skip children if reached the max depth
+//        if depth < maxDepth ?? .max {
+//            for childNode in layout.children {
+//                let (childView, childImgReqs) = UIView.build(
+//                    childNode,
+//                    renderer: renderer,
+//                    depth: depth + 1,
+//                    maxDepth: maxDepth
+//                )
+//                view.addSubview(childView)
+//
+//                imageLoadRequests += childImgReqs
+//            }
+//        }
+//
+//        return (view, imageLoadRequests)
+//    }
+//
+//    static func buildTextView(_ textProperties: TextViewProperties, textDefaults: TextViewDefaultProperties, styleProperties: StyleProperties, fontProvider: FontProvider, in rect: Rect<Double>) -> UIView {
+//
+//        let label = UILabel()
+//
+//        // TODO: cache these values from when doing the layout phase
+//        let attributedString = textProperties.attributedString(
+//            fontProvider: fontProvider,
+//            defaults: textDefaults
+//        )
+//
+//        label.attributedText = attributedString
+//        label.numberOfLines = textProperties.maxLines
+//
+//        label.textAlignment = (textProperties.textAlignment ?? .left).nsTextAlignment
+//
+//        label.backgroundColor = .clear
+//
+//        // labels are vertically aligned in incito, so add to a container view
+//        let container = UIView()
+//        container.frame = rect.cgRect
+//
+//        container.addSubview(label)
+//
+//        let textHeight = label.sizeThatFits(container.bounds.size).height
+//        label.frame = CGRect(origin: .zero,
+//                             size: CGSize(width: container.bounds.size.width,
+//                                          height: textHeight))
+//        label.autoresizingMask = [.flexibleBottomMargin, .flexibleWidth]
+//
+//        return container
+//    }
+//
+//    static func buildImageView(_ imageProperties: ImageViewProperties, styleProperties: StyleProperties, in rect: Rect<Double>) -> (UIView, ImageViewLoadRequest) {
+//
+//        let imageView = UIImageView()
+//        imageView.contentMode = .scaleToFill
+//
+//        let imageLoadReq = ImageLoadRequest(url: imageProperties.source) { [weak imageView] loadedImage in
+//
+//            guard let imgView = imageView else { return }
+//
+//            UIView.transition(
+//                with: imgView,
+//                duration: 0.2,
+//                options: .transitionCrossDissolve,
+//                animations: {
+//                    if let img = loadedImage {
+//                        imgView.image = img
+//                    } else {
+//                        imgView.backgroundColor = .red
+//                    }            },
+//                completion: nil
+//            )
+//        }
+//
+//        return (imageView, imageLoadReq)
+//    }
+//
+//    static func buildPassthruView(styleProperties: StyleProperties, in rect: Rect<Double>) -> UIView {
+//        let view = UIView()
+//        return view
+//    }
+//}
 
-        return container
-    }
-    
-    static func buildImageView(_ imageProperties: ImageViewProperties, styleProperties: StyleProperties, in rect: Rect<Double>) -> (UIView, ImageLoadRequest) {
-        
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
-        
-        let imageLoadReq = ImageLoadRequest(url: imageProperties.source) { [weak imageView] loadedImage in
-            
-            guard let imgView = imageView else { return }
-            
-            UIView.transition(
-                with: imgView,
-                duration: 0.2,
-                options: .transitionCrossDissolve,
-                animations: {
-                    if let img = loadedImage {
-                        imgView.image = img
-                    } else {
-                        imgView.backgroundColor = .red
-                    }            },
-                completion: nil
-            )
-        }
-        
-        return (imageView, imageLoadReq)
-    }
-    
-    static func buildPassthruView(styleProperties: StyleProperties, in rect: Rect<Double>) -> UIView {
-        let view = UIView()
-        return view
-    }
-}
-
-struct ImageLoadRequest {
+struct ImageViewLoadRequest {
     let url: URL
-    let completion: (Image?) -> Void
+    let completion: (UIView?) -> Void
 }
 
 extension UIView {
-    func apply(styleProperties style: StyleProperties, renderer: IncitoRenderer, in rect: Rect<Double>) -> ImageLoadRequest? {
+    func apply(styleProperties style: StyleProperties, renderer: IncitoRenderer, in rect: Rect<Double>) -> ImageViewLoadRequest? {
         
         // apply the layout.view properties
         backgroundColor = style.backgroundColor?.uiColor ?? .clear
         clipsToBounds = style.clipsChildren
         
-        var imgReq: ImageLoadRequest? = nil
+        var imgReq: ImageViewLoadRequest? = nil
         if let bgImage = style.backgroundImage {
-            let imageView = UIImageView()
-            imageView.contentMode = .scaleAspectFill
-            imageView.frame = self.bounds
-            imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            self.addSubview(imageView)
-            
-            imgReq = ImageLoadRequest(url: bgImage.source) { [weak imageView] loadedImage in
-                if let img = loadedImage {
-                    imageView?.image = img
+            imgReq = ImageViewLoadRequest(url: bgImage.source) { [weak self] loadedImageView in
+                guard let self = self else { return }
+                
+                if let imageView = loadedImageView {
+                    imageView.contentMode = .scaleAspectFill
+                    imageView.frame = self.bounds
+                    imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+                    self.addSubview(imageView)
                 } else {
-                    imageView?.backgroundColor = .red
+                    self.backgroundColor = .red
                 }
             }
         }

@@ -7,4 +7,6 @@ target 'Incito' do
 
   pod 'RRFPSBar', :git => 'https://github.com/RolandasRazma/RRFPSBar.git', :tag => '0.0.2'
 
+  pod 'FLAnimatedImage'
+  
 end
