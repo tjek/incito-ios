@@ -30,6 +30,8 @@
                 "shadow_dx": 2,
                 "shadow_color": "#000000",
                 "corner_radius": 10,
+                "xcorner_top_left_radius": 20,
+                "xclip_children": false,
                 "child_views": [
                     {
                         "padding": 10,
@@ -56,6 +58,7 @@
                         "shadow_radius": 10,
                         "shadow_dx": 2,
                         "shadow_color": "#000000",
+                        "corner_top_left_radius": 20,
                         "background_color": "#ffffff"
                     },
                 ]

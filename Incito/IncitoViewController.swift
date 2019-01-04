@@ -429,45 +429,6 @@ func renderVisibleNodes(rootNode: TreeNode<RenderableView>, visibleRootViewWindo
 //    }
 //}
 
-extension UIView {
-    
-    static func buildTextView(_ textProperties: TextViewProperties, textDefaults: TextViewDefaultProperties, styleProperties: StyleProperties, fontProvider: FontProvider, position: Point<Double>, dimensions: AbsoluteViewDimensions) -> UIView {
-        
-        let label = UILabel()
-        label.clipsToBounds = false
-        
-        // TODO: cache these values from when doing the layout phase
-        let attributedString = textProperties.attributedString(
-            fontProvider: fontProvider,
-            defaults: textDefaults
-        )
-        
-        label.attributedText = attributedString
-        
-        label.numberOfLines = textProperties.maxLines
-        
-        label.textAlignment = (textProperties.textAlignment ?? .left).nsTextAlignment
-        
-        label.backgroundColor = .clear
-        
-        // labels are vertically aligned in incito, so add to a container view
-        let container = UIView()
-        container.frame = CGRect(origin: .zero,
-                                 size: dimensions.size.cgSize)
-        
-        container.addSubview(label)
-        
-        let textHeight = label.sizeThatFits(container.bounds.size).height
-        label.frame = CGRect(origin: CGPoint(x: dimensions.layout.padding.left, y: dimensions.layout.padding.top),
-                             size: CGSize(width: CGFloat(dimensions.innerSize.width),
-                                          height: textHeight))
-        label.autoresizingMask = [.flexibleBottomMargin, .flexibleWidth]
-        
-        label.textColor = .black
-        
-        return container
-    }
-}
 
 struct RenderableView {
     let viewProperties: ViewProperties
@@ -507,10 +468,18 @@ struct RenderableView {
         self.renderedView = view
         view.tag = siblingIndex + 1 // add 1 so non-sibling subviews stay at the bottom
         
-        if let prevSibling = parent.subviews.last(where: { $0.tag < view.tag }) {
-            parent.insertSubview(view, aboveSubview: prevSibling)
+        let parentContents: UIView
+        switch parent {
+        case let v as RoundedShadowedView:
+            parentContents = v.childContainer
+        default:
+            parentContents = parent
+        }
+        
+        if let prevSibling = parentContents.subviews.last(where: { $0.tag < view.tag }) {
+            parentContents.insertSubview(view, aboveSubview: prevSibling)
         } else {
-            parent.insertSubview(view, at: 0)
+            parentContents.insertSubview(view, at: 0)
         }
 
 //        if let rootView = parent.firstSuperview(where: { $0 is UIScrollView })?.subviews.first {
@@ -576,34 +545,43 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
     switch viewType {
     case let .text(textProperties):
         renderer = { renderableView in
-            return .buildTextView(
+            
+            let container = RoundedShadowedView(renderableView: renderableView)
+            
+            UIView.addTextView(
+                into: container,
                 textProperties: textProperties,
                 fontProvider: renderProperties.fontProvider,
                 textDefaults: renderProperties.theme?.textDefaults ?? .empty,
                 dimensions: renderableView.dimensions
             )
+            
+            return container
         }
         
     case let .image(imageProperties):
         renderer = { renderableView in
-            let (imgView, imgReq) = UIView.buildImageView(
-                imageProperties: imageProperties,
-                styleProperties: renderableView.viewProperties.style,
-                dimensions: renderableView.dimensions
+            let container = RoundedShadowedView(renderableView: renderableView)
+
+            let imgReq = UIView.addImageView(
+                into: container.childContainer,
+                imageProperties: imageProperties
             )
+            
             renderProperties.imageViewLoader(imgReq.url) {
                 imgReq.completion($0)
             }
-            return imgView
+            return container
         }
     case .view,
          .absoluteLayout,
          .flexLayout:
-        renderer = { _ in .buildEmptyView() }
+        renderer = { renderableView in
+            return RoundedShadowedView(renderableView: renderableView)
+        }
     default:
         renderer = { renderableView in
-            let view = UIView()
-            return view
+            return RoundedShadowedView(renderableView: renderableView)
         }
     }
     
@@ -611,8 +589,6 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
         let view = renderer(renderableView)
         
         // size the view
-        view.frame = CGRect(origin: renderableView.localPosition.cgPoint,
-                            size: renderableView.dimensions.size.cgSize)
         
         // apply the style properties to the view
         let imageRequest = view.applyStyle(renderableView.viewProperties.style, dimensions: renderableView.dimensions, parentSize: parentSize)
@@ -626,16 +602,133 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
     }
 }
 
+/**
+ A UIView subclass that allows for shadows and rounded corners. If there is a shadow all of the contents of the view, and the rounding of the corners, will be applied to a `contents` subview. When adding subviews to this view, you must use the `childContainer` property, which either refers to self or the contents, depening on if there is a shadow or not.
+ */
+class RoundedShadowedView: UIView {
+    
+    private var contents: UIView?
+    private var layerMask: CALayer? // used as a store if we disable/re-enable clipping
+    
+    init(frame: CGRect, shadow: Shadow? = nil, cornerRadius: Corners<Double> = .zero) {
+        super.init(frame: frame)
+        
+        if let shadow = shadow {
+            let contents = UIView(frame: self.bounds)
+            contents.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            contents.clipsToBounds = true
+            
+            self.addSubview(contents)
+            self.contents = contents
+            self.clipsToBounds = false
+            
+            // apply shadow to self
+            self.layer.applyShadow(shadow)
+        }
+        
+        // apply cornerRadius
+        if cornerRadius != Corners<Double>.zero {
+            let contentsView = contents ?? self
+            
+            if cornerRadius.isUniform {
+                contentsView.layer.cornerRadius = CGFloat(cornerRadius.topLeft)
+            } else {
+                
+                let cornerMaskPath = UIBezierPath(
+                    roundedRect: self.bounds,
+                    topLeft: CGFloat(cornerRadius.topLeft),
+                    topRight: CGFloat(cornerRadius.topRight),
+                    bottomLeft: CGFloat(cornerRadius.bottomLeft),
+                    bottomRight: CGFloat(cornerRadius.bottomRight)
+                ).cgPath
+
+                let shape = CAShapeLayer()
+                shape.frame = self.bounds
+                shape.path = cornerMaskPath
+                contentsView.layer.mask = shape
+                self.layerMask = contentsView.layer.mask
+                
+                if shadow != nil {
+                    self.layer.shadowPath = cornerMaskPath
+                }
+            }
+        }
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var clipsToBounds: Bool {
+        get { return contents?.clipsToBounds ?? super.clipsToBounds }
+        set {
+            if let c = contents { c.clipsToBounds = newValue }
+            else { super.clipsToBounds = newValue }
+            
+            // annoyingly if clipping is disabled && there is a background color, the corners will stop being rounded
+            if newValue == false {
+                childContainer.layer.mask = nil
+            } else {
+                childContainer.layer.mask = self.layerMask
+            }
+        }
+    }
+    
+    override var backgroundColor: UIColor? {
+        get { return contents?.backgroundColor ?? super.backgroundColor }
+        set {
+            if let c = contents { c.backgroundColor = newValue }
+            else { super.backgroundColor = newValue }
+        }
+    }
+    
+    var childContainer: UIView {
+        return contents ?? self
+    }
+}
+
+extension RoundedShadowedView {
+    convenience init(renderableView: RenderableView) {
+        let dimensions = renderableView.dimensions
+        let rect = CGRect(origin: renderableView.localPosition.cgPoint,
+                          size: dimensions.size.cgSize)
+        
+        let style = renderableView.viewProperties.style
+        let cornerRadius = style.cornerRadius.absolute(in: min(dimensions.size.width, dimensions.size.height) / 2)
+        
+        self.init(
+            frame: rect,
+            shadow: style.shadow,
+            cornerRadius: cornerRadius
+        )
+    }
+}
+
+extension CALayer {
+    func applyShadow(_ shadow: Shadow) {
+        shadowColor = shadow.color.uiColor.cgColor
+        shadowRadius = CGFloat(shadow.radius)
+        shadowOffset = shadow.offset.cgSize
+        shadowOpacity = 1
+    }
+}
+
 extension UIView {
     
-    static func buildTextView(
+    static func addTextView(
+        into container: UIView,
         textProperties: TextViewProperties,
         fontProvider: FontProvider,
         textDefaults: TextViewDefaultProperties,
         dimensions: AbsoluteViewDimensions
-        ) -> UIView {
+        ) {
         
         let label = UILabel()
+        
+        if let s = textProperties.shadow {
+            label.layer.applyShadow(s)
+        }
         
         // TODO: cache these values from when doing the layout phase
         let attributedString = textProperties.attributedString(
@@ -651,8 +744,7 @@ extension UIView {
         label.backgroundColor = .clear
         
         // labels are vertically aligned in incito, so add to a container view
-        let container = UIView()
-        container.addSubview(label)
+        container.insertSubview(label, at: 0)
         
         let containerInnerSize = dimensions.innerSize.cgSize
         let textHeight: CGFloat = {
@@ -662,7 +754,8 @@ extension UIView {
             
             return label.sizeThatFits(CGSize(width: containerInnerSize.width, height: 0)).height
         }()
-            
+        
+        print("'\(attributedString.string)'", textHeight)
         
         label.frame = CGRect(
             origin: CGPoint(
@@ -675,21 +768,13 @@ extension UIView {
             )
         )
         label.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
-        
-        return container
     }
     
-    static func buildEmptyView() -> UIView {
-        return UIView()
-    }
     
-    static func buildImageView(
-        imageProperties: ImageViewProperties,
-        styleProperties: StyleProperties,
-        dimensions: AbsoluteViewDimensions
-        ) -> (UIView, ImageViewLoadRequest) {
-        
-        let container = UIView()
+    static func addImageView(
+        into container: UIView,
+        imageProperties: ImageViewProperties
+        ) -> ImageViewLoadRequest {
         
         let imageLoadReq = ImageViewLoadRequest(url: imageProperties.source) { [weak container] loadedImageView in
             guard let c = container else { return }
@@ -711,7 +796,7 @@ extension UIView {
             }
         }
         
-        return (container, imageLoadReq)
+        return imageLoadReq
     }
 }
 
@@ -747,23 +832,6 @@ extension UIView {
         }
         
         // Use the smallest dimension when calculating relative corners.
-        let cornerRadius = style.cornerRadius.absolute(in: min(dimensions.size.width, dimensions.size.height) / 2)
-        
-        // only mask the view if it has rounded corners
-        if cornerRadius != Corners<Double>.zero {
-            if cornerRadius.topLeft == cornerRadius.topRight && cornerRadius.bottomLeft == cornerRadius.bottomRight &&
-                cornerRadius.topLeft == cornerRadius.bottomLeft {
-                
-                layer.cornerRadius = CGFloat(cornerRadius.topLeft)
-            } else {
-                roundCorners(
-                    topLeft: CGFloat(cornerRadius.topLeft),
-                    topRight: CGFloat(cornerRadius.topRight),
-                    bottomLeft: CGFloat(cornerRadius.bottomLeft),
-                    bottomRight: CGFloat(cornerRadius.bottomRight)
-                )
-            }
-        }
         
         // TODO: use real anchor point
         setAnchorPoint(anchorPoint: CGPoint.zero)

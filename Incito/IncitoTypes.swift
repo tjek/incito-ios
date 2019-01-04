@@ -65,6 +65,13 @@ extension Corners: Equatable where Value: Equatable {
             && lhs.bottomLeft == rhs.bottomLeft
             && lhs.bottomRight == rhs.bottomRight
     }
+    
+    /// If all corner values are the same
+    var isUniform: Bool {
+        return self.topLeft == self.topRight
+            && self.topRight == self.bottomRight
+            && self.bottomRight == self.bottomLeft
+    }
 }
 
 extension Corners {

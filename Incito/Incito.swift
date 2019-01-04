@@ -142,6 +142,7 @@ struct TextViewProperties {
     var lineSpacingMultiplier: Double? // todo: string or number?
     var spans: [Span]
     var maxLines: Int
+    var shadow: Shadow? = nil
 }
 
 struct FlexLayoutProperties {

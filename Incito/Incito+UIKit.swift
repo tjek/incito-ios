@@ -357,7 +357,7 @@ func sizeForText(_ textProperties: TextViewProperties, constraintSize: Size<Doub
             width: constraintSize.width ?? .greatestFiniteMagnitude,
             height: constraintSize.height ?? .greatestFiniteMagnitude
         ),
-        options: .usesLineFragmentOrigin,
+        options: [.usesLineFragmentOrigin],
         context: nil)
     
     return Size(

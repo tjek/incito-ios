@@ -273,7 +273,6 @@ extension StyleProperties: Decodable {
             self.backgroundImage = nil
         }
         
-        
         if let shadowColor: Color = try c.decodeIfPresent(.shadowColor) {
          
             let shadowRadius: Double? = try c.decodeIfPresent(.shadowRadius)
@@ -305,6 +304,11 @@ extension TextViewProperties: Decodable {
         case lineSpacingMultiplier = "line_spacing_multiplier"
         case spans
         case maxLines       = "max_lines"
+
+        case textShadowRadius = "text_shadow_radius"
+        case textShadowOffsetX = "text_shadow_dx"
+        case textShadowOffsetY = "text_shadow_dy"
+        case textShadowColor = "text_shadow_color"
     }
     
     init(from decoder: Decoder) throws {
@@ -322,6 +326,20 @@ extension TextViewProperties: Decodable {
         self.lineSpacingMultiplier = try c.decodeIfPresent(.lineSpacingMultiplier)
         self.spans = try c.decodeIfPresent(.spans) ?? []
         self.maxLines = try c.decodeIfPresent(.maxLines) ?? 0
+        
+        if let shadowColor: Color = try c.decodeIfPresent(.textShadowColor) {
+            
+            let shadowRadius: Double? = try c.decodeIfPresent(.textShadowRadius)
+            let shadowOffsetX: Double? = try c.decodeIfPresent(.textShadowOffsetX)
+            let shadowOffsetY: Double? = try c.decodeIfPresent(.textShadowOffsetY)
+            
+            self.shadow = Shadow(
+                color: shadowColor,
+                offset: Size(width: shadowOffsetX ?? 0,
+                             height: shadowOffsetY ?? 0),
+                radius: shadowRadius ?? 0
+            )
+        }
     }
 }
 

@@ -12,23 +12,35 @@ import UIKit
 /// https://stackoverflow.com/a/53128198/318834
 
 extension UIView {
-    func roundCorners(topLeft: CGFloat = 0, topRight: CGFloat = 0, bottomLeft: CGFloat = 0, bottomRight: CGFloat = 0) {
+    @discardableResult
+    func roundCorners(topLeft: CGFloat = 0, topRight: CGFloat = 0, bottomLeft: CGFloat = 0, bottomRight: CGFloat = 0) -> CGPath {
         let maskPath = UIBezierPath(
             roundedRect: bounds,
-            topLeftRadius: CGSize(width: topLeft, height: topLeft),
-            topRightRadius: CGSize(width: topRight, height: topRight),
-            bottomLeftRadius: CGSize(width: bottomLeft, height: bottomLeft),
-            bottomRightRadius: CGSize(width: bottomRight, height: bottomRight)
+            topLeft: topLeft,
+            topRight: topRight,
+            bottomLeft: bottomLeft,
+            bottomRight: bottomRight
         )
         
         let shape = CAShapeLayer()
         shape.path = maskPath.cgPath
         layer.mask = shape
+        return shape.path!
     }
 }
 extension UIBezierPath {
     
-    convenience init(roundedRect rect: CGRect, topLeftRadius: CGSize = .zero, topRightRadius: CGSize = .zero, bottomLeftRadius: CGSize = .zero, bottomRightRadius: CGSize = .zero){
+    convenience init(roundedRect rect: CGRect, topLeft: CGFloat = 0, topRight: CGFloat = 0, bottomLeft: CGFloat = 0, bottomRight: CGFloat = 0) {
+        self.init(
+            roundedRect: rect,
+            topLeftRadius: CGSize(width: topLeft, height: topLeft),
+            topRightRadius: CGSize(width: topRight, height: topRight),
+            bottomLeftRadius: CGSize(width: bottomLeft, height: bottomLeft),
+            bottomRightRadius: CGSize(width: bottomRight, height: bottomRight)
+        )
+    }
+    
+    convenience init(roundedRect rect: CGRect, topLeftRadius: CGSize = .zero, topRightRadius: CGSize = .zero, bottomLeftRadius: CGSize = .zero, bottomRightRadius: CGSize = .zero) {
         
         self.init()
         
