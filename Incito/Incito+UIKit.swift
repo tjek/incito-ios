@@ -309,16 +309,21 @@ extension TextViewProperties {
         }
         
         let font = fontProvider(fontFamily, textSize)
-
+        
+        let maxLineHeight = floor(font.pointSize * lineSpacingMultiplier)
+        let baselineOffset: CGFloat = ((maxLineHeight / 2) - (font.lineHeight / 2)) / 2
+        
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = lineSpacingMultiplier
         paragraphStyle.lineSpacing = 0
         paragraphStyle.alignment = alignment
-        
+        paragraphStyle.maximumLineHeight = maxLineHeight
+        paragraphStyle.minimumLineHeight = maxLineHeight
+
         let attrStr = NSMutableAttributedString(
             string: string,
             attributes: [.foregroundColor: textColor.uiColor,
                          .font: font,
+                         .baselineOffset: baselineOffset,
                          .paragraphStyle: paragraphStyle
             ]
         )

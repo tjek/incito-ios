@@ -751,8 +751,8 @@ extension UIView {
             if let h = dimensions.intrinsicSize.height {
                 return CGFloat(h)
             }
-            
-            return label.sizeThatFits(CGSize(width: containerInnerSize.width, height: 0)).height
+            // it may not have an intrinsic height calculated yet (eg. if the view container has absolute height specified)
+            return ceil(label.sizeThatFits(CGSize(width: containerInnerSize.width, height: 0)).height)
         }()
         
         print("'\(attributedString.string)'", textHeight)
