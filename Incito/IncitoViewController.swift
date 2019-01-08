@@ -109,10 +109,15 @@ class IncitoViewController: UIViewController {
 
         let start = Date.timeIntervalSinceReferenceDate
         
+        let intrinsicSizer = uiKitViewSizer(
+            fontProvider: fontProvider,
+            textDefaults: defaultTextProperties
+        )
+        
         let layouterTree = generateLayouters(
             rootNode: rootIncitoView,
             layoutType: .block,
-            intrinsicViewSizer: uiKitViewSizer(fontProvider, defaultTextProperties)
+            intrinsicViewSizer: intrinsicSizer
         )
         
         let dimensionsTree = resolveLayouters(
@@ -250,8 +255,8 @@ class IncitoViewController: UIViewController {
         guard let renderableRootNode = self.renderableTree else { return }
         
         let scrollVisibleWindow = scrollView.bounds
-//                        .inset(by: UIEdgeInsets(top: 120, left: 0, bottom: 150, right: 0))
-            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
+                        .inset(by: UIEdgeInsets(top: 120, left: 0, bottom: 150, right: 0))
+//            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
 
         // in RootView coord space
         let renderWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
@@ -266,9 +271,10 @@ class IncitoViewController: UIViewController {
         
         updateDebugWindowViews(in: renderWindow)
         
-        renderVisibleNodes(rootNode: renderableRootNode,
-                           visibleRootViewWindow: renderWindow,
-                           parentView: rootView)
+        renderableRootNode.renderVisibleNodes(
+            visibleRootViewWindow: renderWindow,
+            into: rootView
+        )
     }
     
     func updateDebugWindowViews(in rootViewVisibleWindow: CGRect) {
@@ -336,98 +342,35 @@ extension IncitoViewController: UIScrollViewDelegate {
     }
 }
 
-func unrenderChildNodes(rootNode: TreeNode<RenderableView>) {
-    rootNode.forEachNode(rootFirst: true) { (node, _, _) in
-        node.value.unrender()
+
+extension TreeNode where T == RenderableView {
+    func renderVisibleNodes(visibleRootViewWindow: CGRect, into parentView: UIView) {
+        
+        let absoluteRect = self.value.absoluteRect
+        
+        // TODO: if it doesnt clip, build from sum of all children, incase the children are larger than the node?
+
+        // if it's not visible unrender the child
+        guard visibleRootViewWindow.intersects(absoluteRect) else {
+            self.unrenderAllChildNodes()
+            return
+        }
+        
+        let renderedView = self.value.render(into: parentView)
+        // render/unrender each child into the newly rendered view
+        for childNode in self.children {
+            childNode.renderVisibleNodes(visibleRootViewWindow: visibleRootViewWindow, into: renderedView)
+        }
+    }
+    
+    func unrenderAllChildNodes() {
+        self.value.unrender()
+        for childNode in self.children {
+            childNode.unrenderAllChildNodes()
+        }
     }
 }
 
-func renderVisibleNodes(rootNode: TreeNode<RenderableView>, visibleRootViewWindow: CGRect, parentView: UIView) {
-    
-    let absoluteRect = rootNode.value.absoluteRect
-    
-    // TODO: if it doesnt clip, build from sum of all children, incase the children are larger than the node?
-    
-    guard visibleRootViewWindow.intersects(absoluteRect) else {
-        unrenderChildNodes(rootNode: rootNode)
-        return
-    }
-    
-    let renderedView = rootNode.value.render(into: parentView)
-    
-    for childNode in rootNode.children {
-        renderVisibleNodes(rootNode: childNode, visibleRootViewWindow: visibleRootViewWindow, parentView: renderedView)
-    }
-}
-
-
-///// Given a renderer it will return a ViewBuilder that builds the entire view hierarchy.
-//let viewHierarchyBuilder: (IncitoRenderer) -> (LayoutNode) -> (UIView, [ImageLoadRequest]) = { renderer in
-//    return { layoutNode in
-//        return UIView.build(layoutNode, renderer: renderer, depth: 0, maxDepth: nil)
-//    }
-//}
-//
-//class RenderableSection {
-//    let layoutNode: LayoutNode
-//    let viewBuilder: (LayoutNode) -> (UIView, [ImageLoadRequest])
-//    let imageLoader: ImageLoader
-//
-//    var renderedView: UIView? = nil
-////    var pendingImageLoadRequests: [ImageLoadRequest] = []
-//
-//    init(layoutNode: LayoutNode, viewBuilder: @escaping (LayoutNode) -> (UIView, [ImageLoadRequest]), imageLoader: @escaping ImageLoader) {
-//        self.layoutNode = layoutNode
-//        self.viewBuilder = viewBuilder
-//        self.imageLoader = imageLoader
-//    }
-//
-//    func unrender() {
-//        self.renderedView?.removeFromSuperview()
-//        self.renderedView = nil
-//    }
-//
-//    func render(into parentView: UIView) {
-//        // TODO: a 'force' option to refresh the view?
-//        guard renderedView == nil else {
-//            return
-//        }
-//
-//        let (view, imgReqs) = self.viewBuilder(self.layoutNode)
-//        self.renderedView = view
-//
-//        parentView.addSubview(view)
-//
-//        print(" ⇢ 🎨 Lazily Rendering Section (\(imgReqs.count) images)", self.layoutNode.rect.origin)
-//
-//        // TODO: some kind of cancellation strategy
-////        self.pendingImageLoadRequests = imgReqs
-//
-//        let start = Date.timeIntervalSinceReferenceDate
-//
-//        let pendingReqCount = imgReqs.count
-//        var completedReqs: (success: Int, err: Int) = (0, 0)
-//        for req in imgReqs {
-//            self.imageLoader(req.url) {
-//                req.completion($0)
-//
-//                if $0 == nil {
-//                    completedReqs.err += 1
-//                } else {
-//                    completedReqs.success += 1
-//                }
-//
-//                if (completedReqs.err + completedReqs.success) == pendingReqCount {
-//
-//
-//                    let end = Date.timeIntervalSinceReferenceDate
-//
-//                    print("    ‣ Images loaded: \(pendingReqCount) images in \(round((end - start) * 1_000))ms (\(completedReqs.success)x ✅,  \(completedReqs.err)x ❌)")
-//                }
-//            }
-//        }
-//    }
-//}
 
 
 struct RenderableView {
@@ -602,118 +545,6 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
     }
 }
 
-/**
- A UIView subclass that allows for shadows and rounded corners. If there is a shadow all of the contents of the view, and the rounding of the corners, will be applied to a `contents` subview. When adding subviews to this view, you must use the `childContainer` property, which either refers to self or the contents, depening on if there is a shadow or not.
- */
-class RoundedShadowedView: UIView {
-    
-    private var contents: UIView?
-    private var layerMask: CALayer? // used as a store if we disable/re-enable clipping
-    
-    init(frame: CGRect, shadow: Shadow? = nil, cornerRadius: Corners<Double> = .zero) {
-        super.init(frame: frame)
-        
-        if let shadow = shadow {
-            let contents = UIView(frame: self.bounds)
-            contents.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            contents.clipsToBounds = true
-            
-            self.addSubview(contents)
-            self.contents = contents
-            self.clipsToBounds = false
-            
-            // apply shadow to self
-            self.layer.applyShadow(shadow)
-        }
-        
-        // apply cornerRadius
-        if cornerRadius != Corners<Double>.zero {
-            let contentsView = contents ?? self
-            
-            if cornerRadius.isUniform {
-                contentsView.layer.cornerRadius = CGFloat(cornerRadius.topLeft)
-            } else {
-                
-                let cornerMaskPath = UIBezierPath(
-                    roundedRect: self.bounds,
-                    topLeft: CGFloat(cornerRadius.topLeft),
-                    topRight: CGFloat(cornerRadius.topRight),
-                    bottomLeft: CGFloat(cornerRadius.bottomLeft),
-                    bottomRight: CGFloat(cornerRadius.bottomRight)
-                ).cgPath
-
-                let shape = CAShapeLayer()
-                shape.frame = self.bounds
-                shape.path = cornerMaskPath
-                contentsView.layer.mask = shape
-                self.layerMask = contentsView.layer.mask
-                
-                if shadow != nil {
-                    self.layer.shadowPath = cornerMaskPath
-                }
-            }
-        }
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override var clipsToBounds: Bool {
-        get { return contents?.clipsToBounds ?? super.clipsToBounds }
-        set {
-            if let c = contents { c.clipsToBounds = newValue }
-            else { super.clipsToBounds = newValue }
-            
-            // annoyingly if clipping is disabled && there is a background color, the corners will stop being rounded
-            if newValue == false {
-                childContainer.layer.mask = nil
-            } else {
-                childContainer.layer.mask = self.layerMask
-            }
-        }
-    }
-    
-    override var backgroundColor: UIColor? {
-        get { return contents?.backgroundColor ?? super.backgroundColor }
-        set {
-            if let c = contents { c.backgroundColor = newValue }
-            else { super.backgroundColor = newValue }
-        }
-    }
-    
-    var childContainer: UIView {
-        return contents ?? self
-    }
-}
-
-extension RoundedShadowedView {
-    convenience init(renderableView: RenderableView) {
-        let dimensions = renderableView.dimensions
-        let rect = CGRect(origin: renderableView.localPosition.cgPoint,
-                          size: dimensions.size.cgSize)
-        
-        let style = renderableView.viewProperties.style
-        let cornerRadius = style.cornerRadius.absolute(in: min(dimensions.size.width, dimensions.size.height) / 2)
-        
-        self.init(
-            frame: rect,
-            shadow: style.shadow,
-            cornerRadius: cornerRadius
-        )
-    }
-}
-
-extension CALayer {
-    func applyShadow(_ shadow: Shadow) {
-        shadowColor = shadow.color.uiColor.cgColor
-        shadowRadius = CGFloat(shadow.radius)
-        shadowOffset = shadow.offset.cgSize
-        shadowOpacity = 1
-    }
-}
-
 extension UIView {
     
     static func addTextView(
@@ -754,8 +585,6 @@ extension UIView {
             // it may not have an intrinsic height calculated yet (eg. if the view container has absolute height specified)
             return ceil(label.sizeThatFits(CGSize(width: containerInnerSize.width, height: 0)).height)
         }()
-        
-        print("'\(attributedString.string)'", textHeight)
         
         label.frame = CGRect(
             origin: CGPoint(

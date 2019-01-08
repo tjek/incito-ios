@@ -52,3 +52,12 @@ extension TextViewProperties.TextAlignment {
         }
     }
 }
+
+extension CALayer {
+    func applyShadow(_ shadow: Shadow) {
+        shadowColor = shadow.color.uiColor.cgColor
+        shadowRadius = CGFloat(shadow.radius)
+        shadowOffset = shadow.offset.cgSize
+        shadowOpacity = 1
+    }
+}
