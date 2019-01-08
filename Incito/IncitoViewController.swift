@@ -250,8 +250,8 @@ class IncitoViewController: UIViewController {
         guard let renderableRootNode = self.renderableTree else { return }
         
         let scrollVisibleWindow = scrollView.bounds
-                        .inset(by: UIEdgeInsets(top: 120, left: 0, bottom: 150, right: 0))
-//            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
+//                        .inset(by: UIEdgeInsets(top: 120, left: 0, bottom: 150, right: 0))
+            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
 
         // in RootView coord space
         let renderWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
