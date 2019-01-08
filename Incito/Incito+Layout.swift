@@ -145,21 +145,17 @@ func generateLayouters(
         )
     }
     
-    let id = viewProperties.id ?? "??"
-    
     let contentsSizer: ViewContentsSizer = {
         switch viewProperties.type.layoutType {
         case .block:
             return blockContentsSizer(
-                id: id,
                 intrinsicSizer: intrinsicViewSizer(viewProperties),
                 childSizers: childLayouterNodes.map { $0.value.1.sizer }
             )
         case .absolute:
-            return absoluteContentsSizer(id: id)
+            return absoluteContentsSizer()
         case .flex(let flex):
             return flexContentsSizer(
-                id: id,
                 flexProperties: flex,
                 intrinsicSizer: intrinsicViewSizer(viewProperties),
                 childSizers: childLayouterNodes.map { $0.value.1.sizer }
@@ -173,20 +169,17 @@ func generateLayouters(
         switch layoutType {
         case .absolute:
             return absoluteChildSizer(
-                id: id,
                 layoutProperties: viewProperties.layout,
                 contentsSizer: contentsSizer
             )
         case .flex(let flexProperties):
             return flexChildSizer(
-                id: id,
                 flexProperties: flexProperties,
                 layoutProperties: viewProperties.layout,
                 contentsSizer: contentsSizer
             )
         case .block:
             return blockChildSizer(
-                id: id,
                 layoutProperties: viewProperties.layout,
                 contentsSizer: contentsSizer
             )
@@ -225,7 +218,6 @@ func generateLayouters(
  The size that is passed-in is the max-size the view has to fit into (eg. the innerSize of the view)
  */
 func blockContentsSizer(
-    id: String,
     intrinsicSizer: @escaping IntrinsicSizer,
     childSizers: [ViewSizer]
     ) -> ViewContentsSizer {
@@ -278,9 +270,7 @@ func blockContentsSizer(
  Generates a function that will produce the size of the contents of an AbsoluteLayout view (not including the view's padding).
  Absolute views have no intrinsic or contents size.
  */
-func absoluteContentsSizer(
-    id: String
-    ) -> ViewContentsSizer {
+func absoluteContentsSizer() -> ViewContentsSizer {
     return { _ in
         return (Size(width: nil, height: nil), Size(width: nil, height: nil))
     }
@@ -291,7 +281,6 @@ func absoluteContentsSizer(
  The size of this view's children are used to calculate the height if there is no specific height.
  */
 func flexContentsSizer(
-    id: String,
     flexProperties: FlexLayoutProperties,
     intrinsicSizer: @escaping IntrinsicSizer,
     childSizers: [ViewSizer]
@@ -373,7 +362,6 @@ func flexContentsSizer(
  The size of this view's children are used to calculate the height if there is no specific height.
  */
 func blockChildSizer(
-    id: String,
     layoutProperties: LayoutProperties,
     contentsSizer: @escaping ViewContentsSizer
     ) -> ViewSizer {
@@ -438,7 +426,6 @@ func blockChildSizer(
  Generates a function that will produce the size of a view that is _within_ an AbsoluteLayout view.
  */
 func absoluteChildSizer(
-    id: String,
     layoutProperties: LayoutProperties,
     contentsSizer: @escaping ViewContentsSizer
     ) -> ViewSizer {
@@ -531,7 +518,6 @@ func absoluteChildSizer(
  Generates a function that will produce the size of a view that is _within_ a FlexLayout view.
  */
 func flexChildSizer(
-    id: String,
     flexProperties: FlexLayoutProperties,
     layoutProperties: LayoutProperties,
     contentsSizer: @escaping ViewContentsSizer
