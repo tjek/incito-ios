@@ -301,7 +301,7 @@ extension TextViewProperties: Decodable {
         case fontStretch    = "font_stretch"
         case textStyle      = "text_style"
         case preventWidow   = "text_prevent_widow"
-        case lineSpacingMultiplier = "line_spacing_multiplier"
+        case lineHeightMultiplier = "line_spacing_multiplier"
         case spans
         case maxLines       = "max_lines"
 
@@ -323,7 +323,7 @@ extension TextViewProperties: Decodable {
         self.fontStretch = try c.decodeIfPresent(.fontStretch)
         self.textStyle = try c.decodeIfPresent(.textStyle)
         self.preventWidow = try c.decodeIfPresent(.preventWidow) ?? false
-        self.lineSpacingMultiplier = try c.decodeIfPresent(.lineSpacingMultiplier)
+        self.lineHeightMultiplier = try c.decodeIfPresent(.lineHeightMultiplier)
         self.spans = try c.decodeIfPresent(.spans) ?? []
         self.maxLines = try c.decodeIfPresent(.maxLines) ?? 0
         
@@ -491,7 +491,7 @@ extension Color: Decodable {
 extension Theme: Decodable {
     enum CodingKeys: String, CodingKey {
         case textColor = "text_color"
-        case lineSpacingMultiplier = "line_spacing_multiplier"
+        case lineHeightMultiplier = "line_spacing_multiplier"
         case fontFamily = "font_family"
         case bgColor = "background_color"
     }
@@ -503,8 +503,8 @@ extension Theme: Decodable {
         if let textColor: Color = try c.decodeIfPresent(.textColor) {
             self.textDefaults.textColor = textColor
         }
-        if let lineSpacingMultiplier: Double = try c.decodeIfPresent(.lineSpacingMultiplier) {
-            self.textDefaults.lineSpacingMultiplier = lineSpacingMultiplier
+        if let lineHeightMultiplier: Double = try c.decodeIfPresent(.lineHeightMultiplier) {
+            self.textDefaults.lineHeightMultiplier = lineHeightMultiplier
         }
         if let fontFamily: FontFamily = try c.decodeIfPresent(.fontFamily) {
             self.textDefaults.fontFamily = fontFamily

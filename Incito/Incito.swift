@@ -139,7 +139,7 @@ struct TextViewProperties {
     var fontStretch: String? // todo: what?
     var textStyle: TextStyle?
     var preventWidow: Bool
-    var lineSpacingMultiplier: Double? // todo: string or number?
+    var lineHeightMultiplier: Double?
     var spans: [Span]
     var maxLines: Int
     var shadow: Shadow? = nil
@@ -200,7 +200,7 @@ struct Theme {
 
 struct TextViewDefaultProperties {
     var textColor: Color
-    var lineSpacingMultiplier: Double
+    var lineHeightMultiplier: Double
     var fontFamily: FontFamily
     
     // Currently not provided by server
@@ -210,7 +210,7 @@ struct TextViewDefaultProperties {
 extension TextViewDefaultProperties {
     static var empty = TextViewDefaultProperties(
         textColor: Color(r: 0, g: 0, b: 0, a: 1),
-        lineSpacingMultiplier: 1,
+        lineHeightMultiplier: 1,
         fontFamily: []
     )
 }

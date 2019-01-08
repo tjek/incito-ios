@@ -296,7 +296,7 @@ extension TextViewProperties {
         let fontFamily = self.fontFamily + defaults.fontFamily
         let textSize = self.textSize ?? defaults.textSize
         let textColor = self.textColor ?? defaults.textColor
-        let lineSpacingMultiplier = CGFloat(self.lineSpacingMultiplier ?? defaults.lineSpacingMultiplier)
+        let lineHeightMultiplier = CGFloat(self.lineHeightMultiplier ?? defaults.lineHeightMultiplier)
         let alignment = (self.textAlignment ?? .left).nsTextAlignment
         
         var string = self.text
@@ -310,7 +310,16 @@ extension TextViewProperties {
         
         let font = fontProvider(fontFamily, textSize)
         
-        let maxLineHeight = floor(font.pointSize * lineSpacingMultiplier)
+        /*
+         There are 2 problems when getting multi-line text rendered on iOS to be sized/positioned the same as on web - calculating the correct scaled line-height, and vertically-aligning the text within the lines correctly
+         On web the lineheight is based on the pointSize of the font (not the actual `font.lineHeight`) * line-height-multiplier.
+         If we apply the lineHeightMultiplier directly to the `paragraphStyle.lineHeightMultiple`, it ends up scaling the font.lineHeight _and_ the baselineOffset, and so ends up massively oversized.
+         Instead we calculate the maxLineHeight using the pointSize, like on web, and use that as a min/max lineheight constraint on the paragraph style.
+         
+         For vertical positioning, on web the text is centered within each line, while on iOS it is bottom-aligned (with the bottom of the descender placed at the bottom of the line).
+         If we want to center it we need to modify the baseline offset to center the glyphs (using the possibly larger `font.lineHeight`) within the (possibly smaller, point-size-based) maxLineHeight-sized line.
+         */
+        let maxLineHeight = floor(font.pointSize * lineHeightMultiplier)
         let baselineOffset: CGFloat = ((maxLineHeight / 2) - (font.lineHeight / 2)) / 2
         
         let paragraphStyle = NSMutableParagraphStyle()
