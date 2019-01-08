@@ -18,12 +18,12 @@ class IncitoViewController: UIViewController {
     
     let scrollView = UIScrollView()
     
-    let incitoDocument: Incito
+    let incitoDocument: IncitoDocument
     
     var rootView: UIView?
     var renderer: IncitoRenderer
     
-    init(incito: Incito) {
+    init(incito: IncitoDocument) {
         self.incitoDocument = incito
         self.renderer = IncitoRenderer(
             fontProvider: UIFont.systemFont(forFamily:size:),

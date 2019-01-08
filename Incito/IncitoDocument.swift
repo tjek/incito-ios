@@ -9,8 +9,8 @@
 
 import Foundation
 
-struct Incito {
-    typealias Identifier = String // TODO
+struct IncitoDocument {
+    typealias Identifier = GenericIdentifier<IncitoDocument>
     var id: Identifier
     var version: String
     var rootView: ViewNode
@@ -24,7 +24,7 @@ struct Incito {
 typealias ViewNode = TreeNode<ViewProperties>
 
 struct ViewProperties {
-    typealias Identifier = String // TODO
+    typealias Identifier = GenericIdentifier<ViewProperties>
     var id: Identifier?
     
     var type: ViewType

@@ -9,7 +9,7 @@
 
 import Foundation
 
-extension Incito: Decodable {
+extension IncitoDocument: Decodable {
     
     enum CodingKeys: String, CodingKey {
         case id, version

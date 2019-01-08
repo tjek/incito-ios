@@ -52,7 +52,7 @@ class DemoViewController: UIViewController {
         
         DispatchQueue.global().async {
             
-            let incito: Incito = decodeIncito(filename)
+            let incito: IncitoDocument = decodeIncito(filename)
             
             DispatchQueue.main.async {
                 let oldIncitoVC = self.incitoController

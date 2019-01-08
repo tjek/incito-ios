@@ -29,8 +29,9 @@
 		AE675817219C2593006BEA9C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE675816219C2593006BEA9C /* Assets.xcassets */; };
 		AE67581A219C2593006BEA9C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675818219C2593006BEA9C /* LaunchScreen.storyboard */; };
 		AE675825219C2593006BEA9C /* IncitoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675824219C2593006BEA9C /* IncitoTests.swift */; };
-		AE675830219C25CC006BEA9C /* Incito.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67582F219C25CC006BEA9C /* Incito.swift */; };
+		AE675830219C25CC006BEA9C /* IncitoDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67582F219C25CC006BEA9C /* IncitoDocument.swift */; };
 		AE675834219C2AD5006BEA9C /* IncitoDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */; };
+		AE88362621E4ECDB0002CD56 /* GenericIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE88362521E4ECDB0002CD56 /* GenericIdentifier.swift */; };
 		AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */; };
 		AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */; };
 		AE94AD8321AC12CF00876ED6 /* FontAssetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */; };
@@ -85,8 +86,9 @@
 		AE675820219C2593006BEA9C /* IncitoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IncitoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE675824219C2593006BEA9C /* IncitoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoTests.swift; sourceTree = "<group>"; };
 		AE675826219C2593006BEA9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AE67582F219C25CC006BEA9C /* Incito.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Incito.swift; sourceTree = "<group>"; };
+		AE67582F219C25CC006BEA9C /* IncitoDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDocument.swift; sourceTree = "<group>"; };
 		AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDecoder.swift; sourceTree = "<group>"; };
+		AE88362521E4ECDB0002CD56 /* GenericIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericIdentifier.swift; sourceTree = "<group>"; };
 		AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+Decodable.swift"; sourceTree = "<group>"; };
 		AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundedCorners.swift"; sourceTree = "<group>"; };
 		AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontAssetLoader.swift; sourceTree = "<group>"; };
@@ -164,7 +166,7 @@
 				AE67580F219C2592006BEA9C /* AppDelegate.swift */,
 				AE4C57E721AFF8280004976D /* DemoViewController.swift */,
 				AE675811219C2592006BEA9C /* IncitoViewController.swift */,
-				AE67582F219C25CC006BEA9C /* Incito.swift */,
+				AE67582F219C25CC006BEA9C /* IncitoDocument.swift */,
 				AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */,
 				AE090AD521A2A0890009159E /* Incito+Layout.swift */,
 				AE4C57EE21B575E70004976D /* TreeNode.swift */,
@@ -175,6 +177,7 @@
 				AE4C57E321AFF7300004976D /* IncitoTypes+UIKit.swift */,
 				AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */,
 				AE0DDC47219C34570021B1FD /* JSONValue.swift */,
+				AE88362521E4ECDB0002CD56 /* GenericIdentifier.swift */,
 				AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */,
 				AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */,
 				AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */,
@@ -388,8 +391,9 @@
 				AE4C57EF21B575E70004976D /* TreeNode.swift in Sources */,
 				AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */,
 				AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */,
-				AE675830219C25CC006BEA9C /* Incito.swift in Sources */,
+				AE675830219C25CC006BEA9C /* IncitoDocument.swift in Sources */,
 				AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */,
+				AE88362621E4ECDB0002CD56 /* GenericIdentifier.swift in Sources */,
 				AE090AD621A2A0890009159E /* Incito+Layout.swift in Sources */,
 				AE0DDC50219CCAFD0021B1FD /* AutoLayoutHelpers.swift in Sources */,
 				AE40598221A6A52500D029AE /* DecodingHelpers.swift in Sources */,
