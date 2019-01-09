@@ -114,25 +114,14 @@ class IncitoViewController: UIViewController {
             textDefaults: defaultTextProperties
         )
         
-        let layouterTree = generateLayouters(
-            rootNode: rootIncitoView,
+        let layouterTree = rootIncitoView.generateLayouterTree(
             layoutType: .block,
             intrinsicViewSizer: intrinsicSizer
         )
         
-        let dimensionsTree = resolveLayouters(
-            rootNode: layouterTree,
-            rootSize: parentSize
-        )
+        let dimensionsTree = layouterTree.resolve(rootSize: parentSize)
         
         self.renderableTree = buildRenderableViewTree(dimensionsTree, rendererProperties: self.renderer)
-        
-        // build the layout
-//        let rootLayoutNode = LayoutNode.build(
-//            rootView: rootIncitoView,
-//            intrinsicSize: uiKitViewSizer(fontProvider, defaultTextProperties),
-//            in: parentSize
-//        )
         
         let end = Date.timeIntervalSinceReferenceDate
         print(" ⇢ 🚧 Built layout graph: \(round((end - start) * 1_000))ms")
@@ -145,8 +134,6 @@ class IncitoViewController: UIViewController {
         
         DispatchQueue.main.async { [weak self] in
             self?.initializeRootView(parentSize: parentSize.cgSize)
-//            self?.initializeRootView(dimensionsTree: dimensionsTree, in: parentSize)
-//            self?.initializeRootView(rootLayoutNode: rootLayoutNode)
         }
     }
     
@@ -175,69 +162,6 @@ class IncitoViewController: UIViewController {
         
         renderVisibleViews()
     }
-//    func initializeRootView(dimensionsTree: TreeNode<(view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>)>, in parentSize: Size<Double>) {
-//
-//        let rootView = dimensionsTree.buildViews(textViewDefaults: incitoDocument.theme?.textDefaults ?? .empty, fontProvider: self.renderer.fontProvider)
-//
-//        let wrapper = UIView()
-//        wrapper.addSubview(rootView)
-//        scrollView.insertSubview(wrapper, at: 0)
-//
-//        wrapper.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            wrapper.topAnchor.constraint(equalTo: scrollView.topAnchor),
-//            wrapper.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-//            wrapper.leftAnchor.constraint(greaterThanOrEqualTo: scrollView.leftAnchor),
-//            wrapper.rightAnchor.constraint(lessThanOrEqualTo: scrollView.rightAnchor),
-//            wrapper.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-//
-//            wrapper.heightAnchor.constraint(equalToConstant: CGFloat(parentSize.height)),
-//            wrapper.widthAnchor.constraint(equalToConstant: CGFloat(parentSize.width))
-//            ])
-//
-//    }
-    
-//    func initializeRootView(rootLayoutNode: LayoutNode) {
-//
-//
-//        self.rootLayoutNode = rootLayoutNode
-//
-//        // TODO: Load the imageReqs for the rootview
-//        // build (just) the rootView
-//        let (rootView, imageReqs) = UIView.build(rootLayoutNode,
-//                                    renderer: self.renderer,
-//                                    maxDepth: 0)
-//
-//        self.rootView = rootView
-//
-//        let viewBuilder = viewHierarchyBuilder(self.renderer)
-//
-//        self.renderableSections = rootLayoutNode.children.map {
-//            RenderableSection(
-//                layoutNode: $0,
-//                viewBuilder: viewBuilder,
-//                imageLoader: renderer.imageLoader
-//            )
-//        }
-//
-//        let wrapper = UIView()
-//        wrapper.addSubview(rootView)
-//        scrollView.insertSubview(wrapper, at: 0)
-//
-//        wrapper.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            wrapper.topAnchor.constraint(equalTo: scrollView.topAnchor),
-//            wrapper.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-//            wrapper.leftAnchor.constraint(greaterThanOrEqualTo: scrollView.leftAnchor),
-//            wrapper.rightAnchor.constraint(lessThanOrEqualTo: scrollView.rightAnchor),
-//            wrapper.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-//
-//            wrapper.heightAnchor.constraint(equalToConstant: rootView.frame.size.height),
-//            wrapper.widthAnchor.constraint(equalToConstant: rootView.frame.size.width)
-//            ])
-//
-//        renderVisibleSections()
-//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -301,41 +225,8 @@ class IncitoViewController: UIViewController {
             height: view.frame.size.height - debugViewVisibleWindow.maxY
         )
     }
-
-//    func renderVisibleSections() {
-//        return
-//        guard let rootView = self.rootView else {
-//            return
-//        }
-//
-//        // TODO: this is DEBUG to make lazy loading obvious
-//        let scrollVisibleWindow = scrollView.bounds
-////            .inset(by: UIEdgeInsets(top: 200, left: 0, bottom: 200, right: 0))
-//            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
-//
-//        let renderWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
-//
-//        // dont do rendercheck until we've scrolled a certain amount
-//        if let lastRendered = self.lastRenderedWindow,
-//            abs(lastRendered.origin.y - renderWindow.origin.y) < 50 {
-//            return
-//        }
-//
-//        self.lastRenderedWindow = renderWindow
-//
-//        for renderableSection in renderableSections {
-//            // just render all of them
-//            //            renderableSection.render(into: rootView)
-//
-//            if renderWindow.intersects(renderableSection.layoutNode.rect.cgRect) {
-//                renderableSection.render(into: rootView)
-//            } else {
-//                // TODO: only unrender on memory pressure or if rendered section count gets large
-//                renderableSection.unrender()
-//            }
-//        }
-//    }
 }
+
 extension IncitoViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         renderVisibleViews()
@@ -660,10 +551,8 @@ extension UIView {
             }
         }
         
-        // Use the smallest dimension when calculating relative corners.
-        
         // TODO: use real anchor point
-        setAnchorPoint(anchorPoint: CGPoint.zero)
+        self.setAnchorPoint(anchorPoint: CGPoint.zero)
         
         self.transform = self.transform
             .concatenating(dimensions.layout.transform.affineTransform)

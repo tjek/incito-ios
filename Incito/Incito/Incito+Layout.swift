@@ -124,90 +124,90 @@ extension ViewType {
     }
 }
 
-// Build a tree of ViewSizers
-func generateLayouters(
-    rootNode: TreeNode<ViewProperties>,
-    layoutType: LayoutType,
-    intrinsicViewSizer: @escaping (ViewProperties) -> IntrinsicSizer
-    ) -> TreeNode<(ViewProperties, ViewLayouter)> {
+extension TreeNode where T == ViewProperties {
     
-    let viewProperties = rootNode.value
-    
-    // how we are going to size the children (block/flex/absolute)
-    let childLayoutType = viewProperties.type.layoutType
-    
-    // build sizers for all the children
-    let childLayouterNodes = rootNode.children.map { childNode in
-        return generateLayouters(
-            rootNode: childNode,
-            layoutType: childLayoutType,
-            intrinsicViewSizer: intrinsicViewSizer
-        )
+    func generateLayouterTree(
+        layoutType: LayoutType,
+        intrinsicViewSizer: @escaping (ViewProperties) -> IntrinsicSizer
+        ) -> TreeNode<(ViewProperties, ViewLayouter)> {
+        
+        let viewProperties = self.value
+        
+        // how we are going to size the children (block/flex/absolute)
+        let childLayoutType = viewProperties.type.layoutType
+        
+        // build sizers for all the children
+        let childLayouterNodes = self.children.map { childNode in
+            return childNode.generateLayouterTree(
+                layoutType: childLayoutType,
+                intrinsicViewSizer: intrinsicViewSizer
+            )
+        }
+        
+        let contentsSizer: ViewContentsSizer = {
+            switch viewProperties.type.layoutType {
+            case .block:
+                return blockContentsSizer(
+                    intrinsicSizer: intrinsicViewSizer(viewProperties),
+                    childSizers: childLayouterNodes.map { $0.value.1.sizer }
+                )
+            case .absolute:
+                return absoluteContentsSizer()
+            case .flex(let flex):
+                return flexContentsSizer(
+                    flexProperties: flex,
+                    intrinsicSizer: intrinsicViewSizer(viewProperties),
+                    childSizers: childLayouterNodes.map { $0.value.1.sizer }
+                )
+            }
+        }()
+        
+        // the current node's sizer. takes into account the children.
+        // depending on the parent type, use different sizing functions for the child
+        let sizer: ViewSizer = {
+            switch layoutType {
+            case .absolute:
+                return absoluteChildSizer(
+                    layoutProperties: viewProperties.layout,
+                    contentsSizer: contentsSizer
+                )
+            case .flex(let flexProperties):
+                return flexChildSizer(
+                    flexProperties: flexProperties,
+                    layoutProperties: viewProperties.layout,
+                    contentsSizer: contentsSizer
+                )
+            case .block:
+                return blockChildSizer(
+                    layoutProperties: viewProperties.layout,
+                    contentsSizer: contentsSizer
+                )
+            }
+        }()
+        
+        // depending on the parent type, use different positioning functions
+        let positioner: ViewPositioner = {
+            switch layoutType {
+            case .absolute:
+                return absoluteChildPositioner()
+            case .flex(let flexProperties):
+                return flexChildPositioner(flexProperties: flexProperties)
+            case .block:
+                // TODO: different default gravity if system is right-to-left layout
+                let gravity = viewProperties.layout.gravity ?? .left
+                // block-positioning
+                return blockChildPositioner(gravity: gravity)
+            }
+        }()
+        
+        let node = TreeNode<(ViewProperties, ViewLayouter)>(value: (viewProperties, ViewLayouter(sizer: sizer, positioner: positioner)))
+        
+        childLayouterNodes.forEach {
+            node.add(child: $0)
+        }
+        
+        return node
     }
-    
-    let contentsSizer: ViewContentsSizer = {
-        switch viewProperties.type.layoutType {
-        case .block:
-            return blockContentsSizer(
-                intrinsicSizer: intrinsicViewSizer(viewProperties),
-                childSizers: childLayouterNodes.map { $0.value.1.sizer }
-            )
-        case .absolute:
-            return absoluteContentsSizer()
-        case .flex(let flex):
-            return flexContentsSizer(
-                flexProperties: flex,
-                intrinsicSizer: intrinsicViewSizer(viewProperties),
-                childSizers: childLayouterNodes.map { $0.value.1.sizer }
-            )
-        }
-    }()
-    
-    // the current node's sizer. takes into account the children.
-    // depending on the parent type, use different sizing functions for the child
-    let sizer: ViewSizer = {
-        switch layoutType {
-        case .absolute:
-            return absoluteChildSizer(
-                layoutProperties: viewProperties.layout,
-                contentsSizer: contentsSizer
-            )
-        case .flex(let flexProperties):
-            return flexChildSizer(
-                flexProperties: flexProperties,
-                layoutProperties: viewProperties.layout,
-                contentsSizer: contentsSizer
-            )
-        case .block:
-            return blockChildSizer(
-                layoutProperties: viewProperties.layout,
-                contentsSizer: contentsSizer
-            )
-        }
-    }()
-    
-    // depending on the parent type, use different positioning functions
-    let positioner: ViewPositioner = {
-        switch layoutType {
-        case .absolute:
-            return absoluteChildPositioner()
-        case .flex(let flexProperties):
-            return flexChildPositioner(flexProperties: flexProperties)
-        case .block:
-            // TODO: different default gravity if system is right-to-left layout
-            let gravity = viewProperties.layout.gravity ?? .left
-            // block-positioning
-            return blockChildPositioner(gravity: gravity)
-        }
-    }()
-    
-    let node = TreeNode(value: (viewProperties, ViewLayouter(sizer: sizer, positioner: positioner)))
-    
-    childLayouterNodes.forEach {
-        node.add(child: $0)
-    }
-    
-    return node
 }
 
 // MARK: - Contents Sizers
@@ -874,59 +874,60 @@ func flexChildColumnPosition(
 
 // MARK: Resolve Layouts -
 
-// given a tree of sizers, walk down calculating the actual dimensions
-func resolveLayouters(rootNode: TreeNode<(ViewProperties, ViewLayouter)>, rootSize: Size<Double>) -> TreeNode<(view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>)> {
-    
-    let rootContainerDimensions = AbsoluteViewDimensions(
-        size: rootSize,
-        intrinsicSize: Size(width: nil, height: nil),
-        contentsSize: Size(width: nil, height: nil),
-        layout: AbsoluteLayoutProperties(.empty, in: rootSize)
-    )
-    
-    let sizedTree: TreeNode<(view: ViewProperties, layouter: ViewLayouter, dimensions: AbsoluteViewDimensions)> = rootNode.mapTree { viewNode, newParent in
+extension TreeNode where T == (ViewProperties, ViewLayouter) {
+    func resolve(rootSize: Size<Double>) -> TreeNode<(view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>)> {
         
-        let (viewProperties, viewLayouter) = viewNode.value
+        let rootContainerDimensions = AbsoluteViewDimensions(
+            size: rootSize,
+            intrinsicSize: Size(width: nil, height: nil),
+            contentsSize: Size(width: nil, height: nil),
+            layout: AbsoluteLayoutProperties(.empty, in: rootSize)
+        )
         
-        let containerDimensions = newParent?.value.dimensions ?? rootContainerDimensions
-        
-        // use the container dimensions to calculate the child's dimensions
-        let viewDimensions = viewLayouter.sizer(containerDimensions)
-        
-        return (view: viewProperties,
-                layouter: viewLayouter,
-                dimensions: viewDimensions)
-    }
-    
-    return sizedTree.mapTree { viewNode, newParent in
-        
-        let (viewProperties, viewLayouter, viewDimensions) = viewNode.value
-        
-        let containerDimensions = newParent?.value.dimensions ?? rootContainerDimensions
-        
-        // get the dimensions of the preceding & following siblings        
-        let allSizedSiblings = viewNode.parent?.children ?? []
-        
-        var nextSiblings: [AbsoluteViewDimensions] = []
-        var prevSiblings: [AbsoluteViewDimensions] = []
-        
-        if let viewIndex = allSizedSiblings.index(where: { $0 === viewNode}) {
+        let sizedTree: TreeNode<(view: ViewProperties, layouter: ViewLayouter, dimensions: AbsoluteViewDimensions)> = self.mapTree { viewNode, newParent in
             
-            if viewIndex != allSizedSiblings.startIndex {
-                let prevIndex = allSizedSiblings.index(before: viewIndex)
-                
-                prevSiblings = allSizedSiblings[...prevIndex].map({ $0.value.dimensions })
-            }
+            let (viewProperties, viewLayouter) = viewNode.value
             
-            if viewIndex != allSizedSiblings.endIndex {
-                let nextIndex = allSizedSiblings.index(after: viewIndex)
-                
-                nextSiblings = allSizedSiblings[nextIndex...].map({ $0.value.dimensions })
-            }
+            let containerDimensions = newParent?.value.dimensions ?? rootContainerDimensions
+            
+            // use the container dimensions to calculate the child's dimensions
+            let viewDimensions = viewLayouter.sizer(containerDimensions)
+            
+            return (view: viewProperties,
+                    layouter: viewLayouter,
+                    dimensions: viewDimensions)
         }
         
-        let viewPosition = viewLayouter.positioner(viewDimensions, containerDimensions, prevSiblings, nextSiblings)
-        
-        return (viewProperties, viewDimensions, viewPosition)
+        return sizedTree.mapTree { viewNode, newParent in
+            
+            let (viewProperties, viewLayouter, viewDimensions) = viewNode.value
+            
+            let containerDimensions = newParent?.value.dimensions ?? rootContainerDimensions
+            
+            // get the dimensions of the preceding & following siblings
+            let allSizedSiblings = viewNode.parent?.children ?? []
+            
+            var nextSiblings: [AbsoluteViewDimensions] = []
+            var prevSiblings: [AbsoluteViewDimensions] = []
+            
+            if let viewIndex = allSizedSiblings.index(where: { $0 === viewNode}) {
+                
+                if viewIndex != allSizedSiblings.startIndex {
+                    let prevIndex = allSizedSiblings.index(before: viewIndex)
+                    
+                    prevSiblings = allSizedSiblings[...prevIndex].map({ $0.value.dimensions })
+                }
+                
+                if viewIndex != allSizedSiblings.endIndex {
+                    let nextIndex = allSizedSiblings.index(after: viewIndex)
+                    
+                    nextSiblings = allSizedSiblings[nextIndex...].map({ $0.value.dimensions })
+                }
+            }
+            
+            let viewPosition = viewLayouter.positioner(viewDimensions, containerDimensions, prevSiblings, nextSiblings)
+            
+            return (viewProperties, viewDimensions, viewPosition)
+        }
     }
 }
