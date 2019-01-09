@@ -19,6 +19,13 @@
                 "transform_rotate": -10,
                 "background_color": "#ffffff"
             },
+            {
+                "view_name": "ImageView",
+                "src": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Sunflower_as_gif_websafe.gif",
+                "layout_width": 300,
+                "layout_height": 300,
+                "background_color": "#ffffff"
+            },            
             { 
                 "gravity": "center_horizontal",
                 "padding": 10,

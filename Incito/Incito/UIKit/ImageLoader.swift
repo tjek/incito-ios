@@ -12,7 +12,10 @@ import UIKit
 import FLAnimatedImage
 import SVGKit
 
-// TODO: not like this.
+// TODO:
+//  - A proper cache
+//  - Better network session setup
+//  - Scale image to a specified size on bg queue
 func loadImageView(url: URL, completion: @escaping (UIView?) -> Void) {
     DispatchQueue.global().async {
         let urlSession = URLSession.shared
@@ -28,10 +31,17 @@ func loadImageView(url: URL, completion: @escaping (UIView?) -> Void) {
                 switch response?.mimeType {
                 case "image/gif"?:
                     if let gifImage = FLAnimatedImage(gifData: imageData) {
-                        return {
-                            let view = FLAnimatedImageView()
-                            view.animatedImage = gifImage
-                            return view
+                        // if it is a gif with only a single image, dont use the animatedImageView
+                        if gifImage.frameCount == 1, let image = gifImage.posterImage {
+                            return {
+                                UIImageView(image: image)
+                            }
+                        } else {
+                            return {
+                                let view = FLAnimatedImageView()
+                                view.animatedImage = gifImage
+                                return view
+                            }
                         }
                     }
                 case "image/svg+xml"?:
