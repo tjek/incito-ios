@@ -60,9 +60,12 @@ class IncitoViewController: UIViewController {
         scrollView.backgroundColor = incitoDocument.theme?.bgColor?.uiColor ?? .white
         
         let fontAssets = self.incitoDocument.fontAssets
+        let parentSize = Size(cgSize: self.view.frame.size)
 
         queue.async { [weak self] in
-            self?.loadFonts(fontAssets: fontAssets)
+            self?.loadFonts(fontAssets: fontAssets) { [weak self] in
+                self?.buildLayout(parentSize: parentSize)
+            }
         }
     }
     
@@ -72,10 +75,11 @@ class IncitoViewController: UIViewController {
         renderVisibleViews()
     }
     
+    // loadFonts -> buildLayout -> buildCallbacks
     
-    let queue = DispatchQueue(label: "IncitoViewControllerQueue")
+    let queue = DispatchQueue(label: "IncitoViewControllerQueue", qos: .userInitiated)
     
-    func loadFonts(fontAssets: [FontAssetName: FontAsset]) {
+    func loadFonts(fontAssets: [FontAssetName: FontAsset], completion: @escaping () -> Void) {
         
         let fontLoader = FontAssetLoader.uiKitFontAssetLoader()
         
@@ -88,24 +92,20 @@ class IncitoViewController: UIViewController {
                 print("    ‣ '\(asset.assetName)': \(asset.fontName)")
             }
             
-            DispatchQueue.main.async { [weak self] in
-                
+            self?.queue.async { [weak self] in
                 // update the renderer's fontProvider
                 self?.renderer.fontProvider = loadedAssets.font(forFamily:size:)
                 
-                // build complete layout
-                self?.buildLayout()
+                completion()
             }
         }
     }
     
-    // must call from main
-    func buildLayout() {
+    func buildLayout(parentSize: Size<Double>) {
         
         let rootIncitoView: ViewNode = incitoDocument.rootView
         let fontProvider = self.renderer.fontProvider
         let defaultTextProperties = incitoDocument.theme?.textDefaults ?? .empty
-        let parentSize = Size(cgSize: self.view.frame.size)
 
         let start = Date.timeIntervalSinceReferenceDate
         
@@ -126,11 +126,11 @@ class IncitoViewController: UIViewController {
         let end = Date.timeIntervalSinceReferenceDate
         print(" ⇢ 🚧 Built layout graph: \(round((end - start) * 1_000))ms")
         
-        let debugTree = dimensionsTree.mapValues { value, _, idx in
-            "\(idx)) \(value.view.id ?? "?"): [ size \(value.dimensions.size), pos \(value.position), margins \(value.dimensions.layout.margins), padding \(value.dimensions.layout.padding) ]"
-        }
-        
-        print("\(debugTree)")
+//        let debugTree = dimensionsTree.mapValues { value, _, idx in
+//            "\(idx)) \(value.view.id ?? "?"): [ size \(value.dimensions.size), pos \(value.position), margins \(value.dimensions.layout.margins), padding \(value.dimensions.layout.padding) ]"
+//        }
+//
+//        print("\(debugTree)")
         
         DispatchQueue.main.async { [weak self] in
             self?.initializeRootView(parentSize: parentSize.cgSize)
@@ -138,6 +138,7 @@ class IncitoViewController: UIViewController {
     }
     
     var renderableTree: TreeNode<RenderableView>? = nil
+    // Must be performed on main queue
     func initializeRootView(parentSize: CGSize) {
         
         guard let rootRenderableView = renderableTree?.value else { return }
@@ -179,8 +180,8 @@ class IncitoViewController: UIViewController {
         guard let renderableRootNode = self.renderableTree else { return }
         
         let scrollVisibleWindow = scrollView.bounds
-                        .inset(by: UIEdgeInsets(top: 120, left: 0, bottom: 150, right: 0))
-//            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
+//            .inset(by: UIEdgeInsets(top: 120, left: 0, bottom: 150, right: 0))
+            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
 
         // in RootView coord space
         let renderWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
@@ -193,7 +194,7 @@ class IncitoViewController: UIViewController {
         
         self.lastRenderedWindow = renderWindow
         
-        updateDebugWindowViews(in: renderWindow)
+//        updateDebugWindowViews(in: renderWindow)
         
         renderableRootNode.renderVisibleNodes(
             visibleRootViewWindow: renderWindow,

@@ -36,9 +36,9 @@ func loadImageView(url: URL, completion: @escaping (UIView?) -> Void) {
                     }
                 case "image/svg+xml"?:
                     if let svgImage = SVGKImage(data: imageData) {
+                        let image = SVGKExporterUIImage.export(asUIImage: svgImage)
                         return {
-                            let view = SVGKFastImageView(svgkImage: svgImage)
-                            return view!
+                            UIImageView(image: image)
                         }
                     }
                 default:
