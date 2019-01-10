@@ -228,6 +228,17 @@ class IncitoViewController: UIViewController {
         }) {
             rootView.addSubview(renderedRootView)
         }
+        
+        // shows a visibility-box around the the view
+        renderableRootNode.forEachNode { (node, _, _, _) in
+            let debugView = UIView()
+            debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
+            debugView.layer.borderWidth = 1
+            debugView.isUserInteractionEnabled = false
+            rootView.addSubview(debugView)
+            debugView.frame = node.value.absoluteRect
+        }
+        
     }
     
     func updateDebugWindowViews(in rootViewVisibleWindow: CGRect) {
@@ -368,16 +379,6 @@ class RenderableView {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
             view.addGestureRecognizer(tapGesture)
         }
-        
-//        // shows a visibility-box around the the view
-//        if let rootView = parent.firstSuperview(where: { $0 is UIScrollView })?.subviews.first {
-//            let debugView = UIView()
-//            debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
-//            debugView.layer.borderWidth = 1
-//            debugView.isUserInteractionEnabled = false
-//            rootView.addSubview(debugView)
-//            debugView.frame = absoluteRect
-//        }
         
         return view
     }
