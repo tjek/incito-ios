@@ -99,56 +99,65 @@ extension TreeNode {
 }
 
 extension TreeNode {
-    func first(where predicate: (TreeNode<T>) -> Bool) -> TreeNode? {
-        if predicate(self) {
-            return self
-        }
+    /**
+     Traverse the tree, starting at the node this is called and, and recursively inspecting all its children.
+     
+     - parameter body: The closure executed for each node in the tree. The closure takes the following arguments:
+     - parameter node: The current node being inspected
+     - parameter depth: 0 for the first node, 1 for all that node's children etc.
+     - parameter stopWalkingBranch: If you set this to true in the callback, it will not look at any of the children of the node we just inspected (but will continue to inspect the siblings and their children).
+     - parameter completeStop: If you set this to true it will stop traversing the tree - including not inspecting the children or siblings of the current node.
+     */
+    func forEachNode(_ body: (_ node: TreeNode<T>, _ depth: Int, _ stopWalkingBranch: inout Bool, _ completeStop: inout Bool) throws -> Void) rethrows {
+        try _forEachNode(depth: 0, body)
+    }
+    
+    /// Returns true if we should completely stop walking the nodes.
+    @discardableResult
+    private func _forEachNode(depth: Int, _ body: (TreeNode<T>, _ depth: Int, _ stopWalkingBranch: inout Bool, _ completeStop: inout Bool) throws -> Void) rethrows -> Bool {
+        
+        var stopWalkingBranch: Bool = false
+        var completeStop: Bool = false
+        
+        try body(self, depth, &stopWalkingBranch, &completeStop)
+        
+        guard completeStop == false, stopWalkingBranch == false else { return completeStop }
         
         for child in children {
-            if let found = child.first(where: predicate) {
-                return found
+            completeStop = try child._forEachNode(depth: depth + 1, body)
+            
+            if completeStop {
+                return true
             }
         }
-        return nil
+        return false
+    }
+}
+
+extension TreeNode {
+    /**
+     Returns the first Node where the `predicate` returns true, or nil if predicate never returns true.
+     
+     - parameter predicate: The closure that is called for each node in the tree, to check if it is the node you are looking for. Return true to use that node, false to continue looking.
+     - parameter node: The node that the predicate is checking.
+     - parameter stopWalkingBranch: Allow the predicate to ignore entire branches by setting this to true. All children of the currently-inspected node will not be checked (but its siblings will be).
+     */
+    func first(where predicate: (_ node: TreeNode<T>, _ stopWalkingBranch: inout Bool) -> Bool) -> TreeNode? {
+        
+        var found: TreeNode? = nil
+        self.forEachNode { (node, _, stopBranch, completeStop) in
+            if predicate(node, &stopBranch) {
+                found = node
+                completeStop = true
+                return
+            }
+        }
+        return found
     }
 }
 
 extension TreeNode where T: Equatable {
     func search(_ value: T) -> TreeNode? {
-        return first { $0.value == value }
-    }
-}
-
-extension TreeNode {
-    /// Walk the node and all it's children. If `rootFirst` is set to false then the closure will called on all the leaf nodes first, then their parents etc, until finally the rootNode (the object we are calling this on) is passed. if `rootFirst` is true, we start with the current node.
-    func forEachNode(rootFirst: Bool = true, _ body: (TreeNode<T>, _ depth: Int, _ stopWalkingBranch: inout Bool) throws -> Void) rethrows {
-        var wasStopped: Bool = false
-        try _forEachNode(rootFirst: rootFirst, depth: 0, body, stopWalkingBranch: &wasStopped)
-    }
-    
-    /// Returns true if we should stop walking the nodes
-    private func _forEachNode(rootFirst: Bool, depth: Int, _ body: (TreeNode<T>, _ depth: Int, _ stopWalkingBranch: inout Bool) throws -> Void, stopWalkingBranch: inout Bool) rethrows {
-        
-        if rootFirst {
-            try body(self, depth, &stopWalkingBranch)
-            if stopWalkingBranch == false {
-                for child in children {
-                    try child._forEachNode(rootFirst: rootFirst, depth: depth + 1, body, stopWalkingBranch: &stopWalkingBranch)
-                    if stopWalkingBranch {
-                        break
-                    }
-                }
-            }
-        } else {
-            for child in children {
-                try child._forEachNode(rootFirst: rootFirst, depth: depth + 1, body, stopWalkingBranch: &stopWalkingBranch)
-                if stopWalkingBranch {
-                    break
-                }
-            }
-            if stopWalkingBranch == false {
-                try body(self, depth, &stopWalkingBranch)
-            }
-        }
+        return first { node, _ in node.value == value }
     }
 }

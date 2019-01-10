@@ -13,8 +13,15 @@ import UIKit
  possible delegate methods:
  - configure scrollView
  */
+protocol IncitoViewControllerDelegate: class {
+    // incito did load
+    // viewDidAppear/viewDidDisappear
+    func viewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
+    func viewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
+}
 
 class IncitoViewController: UIViewController {
+    weak var delegate: IncitoViewControllerDelegate?
     
     let scrollView = UIScrollView()
     
@@ -121,7 +128,7 @@ class IncitoViewController: UIViewController {
         
         let dimensionsTree = layouterTree.resolve(rootSize: parentSize)
         
-        self.renderableTree = buildRenderableViewTree(dimensionsTree, rendererProperties: self.renderer)
+        self.renderableTree = dimensionsTree.buildRenderableViewTree(rendererProperties: self.renderer)
         
         let end = Date.timeIntervalSinceReferenceDate
         print(" ⇢ 🚧 Built layout graph: \(round((end - start) * 1_000))ms")
@@ -196,10 +203,18 @@ class IncitoViewController: UIViewController {
         
 //        updateDebugWindowViews(in: renderWindow)
         
-        renderableRootNode.renderVisibleNodes(
+        if let renderedRootView = renderableRootNode.renderVisibleNodes(
             visibleRootViewWindow: renderWindow,
-            into: rootView
-        )
+            didRender: { [weak self] renderableView, view in
+                guard let self = self else { return }
+                self.delegate?.viewDidRender(view: view, with: renderableView.viewProperties, in: self)
+            },
+            didUnrender: { [weak self] renderableView, view in
+                guard let self = self else { return }
+                self.delegate?.viewDidUnrender(view: view, with: renderableView.viewProperties, in: self)
+        }) {
+            rootView.addSubview(renderedRootView)
+        }
     }
     
     func updateDebugWindowViews(in rootViewVisibleWindow: CGRect) {
@@ -234,47 +249,50 @@ extension IncitoViewController: UIScrollViewDelegate {
     }
 }
 
-
-extension TreeNode where T == RenderableView {
-    func renderVisibleNodes(visibleRootViewWindow: CGRect, into parentView: UIView) {
+extension IncitoViewController {
+    func firstView(at point: CGPoint, where predicate: (UIView?, ViewProperties) -> Bool) -> (UIView, ViewProperties)? {
         
-        let absoluteRect = self.value.absoluteRect
+        let treeLocation = self.view.convert(point, to: self.scrollView)
         
-        // TODO: if it doesnt clip, build from sum of all children, incase the children are larger than the node?
+        let renderableViewNode = self.renderableTree?.first { (node, stopBranch) -> Bool in            
+            let renderableView = node.value
+            
+            let absoluteRect = renderableView.absoluteRect
 
-        // if it's not visible unrender the child
-        guard visibleRootViewWindow.intersects(absoluteRect) else {
-            self.unrenderAllChildNodes()
-            return
+            guard absoluteRect.contains(treeLocation) else {
+                stopBranch = true
+                return false
+            }
+            
+            return predicate(renderableView.renderedView, renderableView.viewProperties)
         }
         
-        let renderedView = self.value.render(into: parentView)
-        // render/unrender each child into the newly rendered view
-        for childNode in self.children {
-            childNode.renderVisibleNodes(visibleRootViewWindow: visibleRootViewWindow, into: renderedView)
-        }
-    }
-    
-    func unrenderAllChildNodes() {
-        self.value.unrender()
-        for childNode in self.children {
-            childNode.unrenderAllChildNodes()
+        if let renderableNode = renderableViewNode {
+            
+            let renderedViews = renderableNode.renderAllChildNodes(didRender: { _, _ in }, didUnrender: { _, _ in })
+            // make sure the view is rendered
+            return (renderedViews, renderableNode.value.viewProperties)
+        } else {
+            return nil
         }
     }
 }
 
+struct ViewInteractionProperties {
+    let tapCallback: ((UIView) -> Void)?
+    let peekable: Bool
+}
 
-
-struct RenderableView {
+class RenderableView {
     let viewProperties: ViewProperties
     let localPosition: Point<Double>
     let dimensions: AbsoluteViewDimensions
     let absoluteTransform: CGAffineTransform // the sum of all the parent view's transformations. Includes the localPosition translation.
     let siblingIndex: Int // The index of this view in relation to its siblings
-    let render: (RenderableView) -> UIView
-    // TODO: add tap callback?
+    let renderer: (RenderableView) -> UIView
+    let interactionProperties: ViewInteractionProperties?
     
-    private var renderedView: UIView? = nil
+    fileprivate var renderedView: UIView? = nil
     
     init(
         viewProperties: ViewProperties,
@@ -282,44 +300,36 @@ struct RenderableView {
         dimensions: AbsoluteViewDimensions,
         absoluteTransform: CGAffineTransform,
         siblingIndex: Int,
-        render: @escaping (RenderableView) -> UIView
+        renderer: @escaping (RenderableView) -> UIView,
+        interactionProperties: ViewInteractionProperties?
         ) {
         self.viewProperties = viewProperties
         self.localPosition = localPosition
         self.dimensions = dimensions
         self.absoluteTransform = absoluteTransform
         self.siblingIndex = siblingIndex
-        self.render = render
+        self.renderer = renderer
+        self.interactionProperties = interactionProperties
     }
     
     @discardableResult
-    mutating func render(into parent: UIView) -> UIView {
+    func render() -> UIView {
         if let view = renderedView {
             return view
         }
         
-        let view = render(self)
+        let view = renderer(self)
         
         self.renderedView = view
         view.tag = siblingIndex + 1 // add 1 so non-sibling subviews stay at the bottom
         
-        let parentContents: UIView
-        switch parent {
-        case let v as RoundedShadowedView:
-            parentContents = v.childContainer
-        default:
-            parentContents = parent
+        if self.interactionProperties?.tapCallback != nil {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+            view.addGestureRecognizer(tapGesture)
         }
         
-        if let prevSibling = parentContents.subviews.last(where: { $0.tag < view.tag }) {
-            parentContents.insertSubview(view, aboveSubview: prevSibling)
-        } else {
-            parentContents.insertSubview(view, at: 0)
-        }
-
+//        // shows a visibility-box around the the view
 //        if let rootView = parent.firstSuperview(where: { $0 is UIScrollView })?.subviews.first {
-//
-//            // shows a visibility-box around the the view
 //            let debugView = UIView()
 //            debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
 //            debugView.layer.borderWidth = 1
@@ -331,7 +341,7 @@ struct RenderableView {
         return view
     }
     
-    mutating func unrender() {
+    func unrender() {
         renderedView?.removeFromSuperview()
         renderedView = nil
     }
@@ -340,36 +350,130 @@ struct RenderableView {
         return CGRect(origin: .zero, size: dimensions.size.cgSize)
             .applying(absoluteTransform)
     }
+    
+    @objc
+    func didTapView(_ tap: UITapGestureRecognizer) {
+        guard let tapCallback = self.interactionProperties?.tapCallback, let view = self.renderedView else { return }
+        
+        tapCallback(view)
+    }
 }
 
-func buildRenderableViewTree(_ root: TreeNode<(view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>)>, rendererProperties: IncitoRenderer) -> TreeNode<RenderableView> {
+extension TreeNode where T == RenderableView {
     
-    return root.mapValues { (nodeValues, newParent, index) in
+    func renderVisibleNodes(visibleRootViewWindow: CGRect, didRender: @escaping (RenderableView, UIView) -> Void, didUnrender: @escaping (RenderableView, UIView) -> Void) -> UIView? {
+        return self.renderAllChildNodes(where: { renderableView in
+            let absoluteRect = renderableView.absoluteRect
+            
+            // TODO: if it doesnt clip, build from sum of all children, incase the children are larger than the node?
+            
+            // only render if its visible
+            return visibleRootViewWindow.intersects(absoluteRect)
+            
+        }, didRender: didRender, didUnrender: didUnrender)
+    }
+    
+    func renderAllChildNodes(where predicate: (RenderableView) -> Bool, didRender: @escaping (RenderableView, UIView) -> Void, didUnrender: @escaping (RenderableView, UIView) -> Void) -> UIView? {
         
-        let (viewProperties, dimensions, localPosition) = nodeValues
+        guard predicate(self.value) else {
+            self.unrenderAllChildNodes(didUnrender: didUnrender)
+            return nil
+        }
         
-        let parentSize = newParent?.value.dimensions.size ?? .zero
-        let parentTransform = newParent?.value.absoluteTransform ?? .identity
+        let renderedView = self.value.render()
+        didRender(self.value, renderedView)
         
-        let localMove = CGAffineTransform.identity
-            .translatedBy(x: CGFloat(localPosition.x),
-                          y: CGFloat(localPosition.y))
+        for childNode in self.children {
+            guard let childView = childNode.renderAllChildNodes(where: predicate, didRender: didRender, didUnrender: didUnrender) else {
+                continue
+            }
+            
+            // add the childView to the parentView, at the correct z-index
+            let parentContents: UIView = {
+                switch renderedView {
+                case let v as RoundedShadowedView:
+                    return v.childContainer
+                default:
+                    return renderedView
+                }
+            }()
+            if let prevSibling = parentContents.subviews.last(where: { $0.tag < childView.tag }) {
+                parentContents.insertSubview(childView, aboveSubview: prevSibling)
+            } else {
+                parentContents.insertSubview(childView, at: 0)
+            }
+        }
         
-        let transform = CGAffineTransform.identity
-            .concatenating(dimensions.layout.transform.affineTransform)
-            .concatenating(localMove)
-            .concatenating(parentTransform)
+        return renderedView
+    }
+    
+    func unrenderAllChildNodes(didUnrender: @escaping (RenderableView, UIView) -> Void) {
+        let oldView = self.value.renderedView
         
-        let renderer = buildViewRenderer(rendererProperties, viewType: viewProperties.type, parentSize: parentSize)
+        self.value.unrender()
         
-        return RenderableView(
-            viewProperties: viewProperties,
-            localPosition: localPosition,
-            dimensions: dimensions,
-            absoluteTransform: transform,
-            siblingIndex: index,
-            render: renderer
-        )
+        if let renderedView = oldView {
+            didUnrender(self.value, renderedView)
+        }
+        
+        for childNode in self.children {
+            childNode.unrenderAllChildNodes(didUnrender: didUnrender)
+        }
+    }
+    
+    func renderAllChildNodes(didRender: @escaping (RenderableView, UIView) -> Void, didUnrender: @escaping (RenderableView, UIView) -> Void) -> UIView {
+        return self.renderAllChildNodes(where: { _ in true }, didRender: didRender, didUnrender: didUnrender)!
+    }
+}
+
+extension TreeNode where T == (view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>) {
+    func buildRenderableViewTree(rendererProperties: IncitoRenderer) -> TreeNode<RenderableView> {
+        
+        let interactionBuilder: (ViewProperties) -> ViewInteractionProperties? = { viewProperties in
+            let alphaTap: (UIView) -> Void = { view in
+                view.alpha = 1 + (0.5 - view.alpha)
+                print("Tapped Section!", view)
+            }
+            switch viewProperties.style.role {
+            case "section"?:
+                return ViewInteractionProperties(tapCallback: alphaTap, peekable: false)
+                
+            case "offer"?:
+                return ViewInteractionProperties(tapCallback: alphaTap, peekable: true)
+                
+            default:
+                return nil
+            }
+        }
+        
+        return self.mapValues { (nodeValues, newParent, index) in
+            
+            let (viewProperties, dimensions, localPosition) = nodeValues
+            
+            let parentSize = newParent?.value.dimensions.size ?? .zero
+            let parentTransform = newParent?.value.absoluteTransform ?? .identity
+            
+            let localMove = CGAffineTransform.identity
+                .translatedBy(x: CGFloat(localPosition.x),
+                              y: CGFloat(localPosition.y))
+            
+            let transform = CGAffineTransform.identity
+                .concatenating(dimensions.layout.transform.affineTransform)
+                .concatenating(localMove)
+                .concatenating(parentTransform)
+            
+            let renderer = buildViewRenderer(rendererProperties, viewType: viewProperties.type, parentSize: parentSize)
+            
+            return RenderableView(
+                viewProperties: viewProperties,
+                localPosition: localPosition,
+                dimensions: dimensions,
+                absoluteTransform: transform,
+                siblingIndex: index,
+                renderer: renderer,
+                interactionProperties: interactionBuilder(viewProperties)
+            )
+        }
     }
 }
 

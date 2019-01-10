@@ -13,8 +13,8 @@ import RRFPSBar
 class DemoViewController: UIViewController {
     var selectedIndex: Int = 999
     let availableIncitos: [(json: String, refImg: String?)] = [
-        ("incito-flextest-375.json", nil),
-        ("incito-fakta-small-375.json", "fakta-incito-375-reference"),
+//        ("incito-flextest-375.json", nil),
+//        ("incito-fakta-small-375.json", "fakta-incito-375-reference"),
         ("incito-fakta-375.json", "fakta-incito-375-reference"),
         ("incito-superbrugsen-375.json", nil),
         
@@ -57,6 +57,7 @@ class DemoViewController: UIViewController {
             DispatchQueue.main.async {
                 let oldIncitoVC = self.incitoController
                 let newIncitoVC = IncitoViewController(incito: incito)
+                newIncitoVC.delegate = self
                 
                 self.refImageView.removeFromSuperview()
                 newIncitoVC.scrollView.addSubview(self.refImageView)
@@ -79,76 +80,14 @@ class DemoViewController: UIViewController {
                 )
             }
         }
-        //        let startFontLoad = Date.timeIntervalSinceReferenceDate
-        //
-        //        FontAssetLoader.fontAssetLoader()
-        //            .loadAndRegisterFontAssets(incito.fontAssets) { (loadedAssets) in
-        //                let endFontLoad = Date.timeIntervalSinceReferenceDate
-        //                print("\(loadedAssets.count) Fonts Loaded \(round((endFontLoad - startFontLoad) * 1_000))ms")
-        //
-        //                loadedAssets.forEach { asset in
-        //                    print(" -> '\(asset.assetName)': \(asset.fontName)")
-        //                }
-        //
-        //
-        ////                controller.build()
-        //
-        ////                self.incitoController = controller
-        //
-        //
-        //
-        //                let renderer = IncitoRenderer(
-        //                    fontProvider: loadedAssets.font(forFamily:size:),
-        //                    imageLoader: loadImage(url:completion:),
-        //                    theme: incito.theme
-        //                )
-        //
-        //                let parentSize = Size(cgSize: self.view.frame.size)
-        //
-        //                let controller = IncitoController(
-        //                    incito: incito,
-        //                    renderer: renderer,
-        //                    parentSize: parentSize
-        //                )
-        //
-        ////                controller.view
-        //
-        //                controller.rootLayoutNode.rect
-        //
-        //                // build the layout
-        ////                let rootNode = LayoutNode.build(
-        ////                    for: incito.rootView,
-        ////                    intrinsicSize: <#T##(View, Size) -> Size#>, parentLayout: <#T##LayoutType#>, in: <#T##Size#>)
-        ////
-        ////                    layout(
-        ////                    view: incito.rootView,
-        ////                    parentLayout: .static,
-        ////                    with: renderer,
-        ////                    in: parentSize)
-        ////
-        ////                rootNode.render()
-        //
-        //
-        //                let startRender = Date.timeIntervalSinceReferenceDate
-        //                render(
-        //                    incito,
-        //                    with: renderer,
-        //                    into: self.view
-        //                )
-        //                let endRender = Date.timeIntervalSinceReferenceDate
-        //                print("Building Views \(round((endRender - startRender) * 1_000))ms")
-        //
-        //                print(" -> Subviews: ", self.view.subviews.first(where: { $0 is UIScrollView })?.subviews.first?.recursiveSubviewCount() ?? 0)
-        //
-        //                self.title = filename
-        ////                self.addBlurredStatusBar()
-        //        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = .orange
         view.backgroundColor = .white
+        
+        self.registerForPreviewing(with: self, sourceView: view)
         
         refImageButton = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(toggleReferenceImage))
         
@@ -195,6 +134,88 @@ class DemoViewController: UIViewController {
     //            blur.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor)
     //            ])
     //    }
+}
+
+extension ViewProperties {
+    var isOffer: Bool {
+        return self.style.role == "offer"
+    }
+}
+
+extension DemoViewController: UIViewControllerPreviewingDelegate {
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        
+        guard let incito = incitoController else { return nil }
+        
+        let incitoVCLocation = previewingContext.sourceView.convert(location, to: incito.view)
+        
+        let firstView = incito.firstView(at: incitoVCLocation) { $1.isOffer }
+        
+        guard let view = firstView?.0 else { return nil }
+        
+        previewingContext.sourceRect = view.convert(view.bounds, to: previewingContext.sourceView)
+        
+        // TODO: use the previewingContext.sourceView to include bgColor.
+        
+        let vc = OfferPreviewViewController()
+        let screenImage = view.asImage()
+        let imageView = UIImageView(image: screenImage)
+        vc.addSnapshot(imageView)
+        
+        return vc
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+//        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
+    }
+}
+
+extension DemoViewController: IncitoViewControllerDelegate {
+    func viewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
+        // view just rendered (may still be off the bottom of the screen)
+    }
+    
+    func viewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
+        // view just disappeared
+    }
+}
+
+extension UIView {
+    
+    // Using a function since `var image` might conflict with an existing variable
+    // (like on `UIImageView`)
+    func asImage() -> UIImage {
+        if #available(iOS 10.0, *) {
+            let renderer = UIGraphicsImageRenderer(bounds: bounds)
+            return renderer.image { rendererContext in
+                layer.render(in: rendererContext.cgContext)
+            }
+        } else {
+            UIGraphicsBeginImageContext(self.frame.size)
+            self.layer.render(in:UIGraphicsGetCurrentContext()!)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return UIImage(cgImage: image!.cgImage!)
+        }
+    }
+}
+
+class OfferPreviewViewController: UIViewController {
+    func addSnapshot(_ snapshot: UIView) {
+        view.backgroundColor = .white
+        view.addSubview(snapshot)
+        
+        self.preferredContentSize = snapshot.frame.size
+    }
+    
+    override var previewActionItems: [UIPreviewActionItem] {
+        let listsAction = UIPreviewAction(title: "Add to List", style: .default) { previewAction, viewController in
+            print("Added to list!")
+        }
+        return [
+            listsAction
+        ]
+    }
 }
 
 
