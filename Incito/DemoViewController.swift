@@ -26,6 +26,8 @@ class DemoViewController: UIViewController {
     var refImageView = UIImageView()
     var refImageButton: UIBarButtonItem!
     
+    let searchResultsController = SearchResultsViewController()
+    
     @objc
     func loadNextIncito() {
         selectedIndex += 1
@@ -55,9 +57,14 @@ class DemoViewController: UIViewController {
             let incito: IncitoDocument = decodeIncito(filename)
             
             DispatchQueue.main.async {
+                
+                self.searchResultsController.offers = []
+                
+                
                 let oldIncitoVC = self.incitoController
                 let newIncitoVC = IncitoViewController(incito: incito)
                 newIncitoVC.delegate = self
+                
                 
                 self.refImageView.removeFromSuperview()
                 newIncitoVC.scrollView.addSubview(self.refImageView)
@@ -98,6 +105,21 @@ class DemoViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .fastForward, target: self, action: #selector(loadNextIncito))
 
         loadNextIncito()
+        
+        let searchController = UISearchController(searchResultsController: self.searchResultsController)
+        searchController.searchResultsUpdater = searchResultsController
+        definesPresentationContext = true
+        if #available(iOS 11.0, *) {
+            navigationItem.hidesSearchBarWhenScrolling = false
+            navigationItem.searchController = searchController
+        } else {
+            navigationItem.titleView = searchController.searchBar
+        }
+        
+        searchResultsController.didSelectOffer = { [weak self] offer in
+            searchController.isActive = false
+            self?.incitoController?.scrollToElement(withId: offer.id, animated: false)
+        }
     }
     
     @objc
@@ -177,6 +199,24 @@ extension DemoViewController: IncitoViewControllerDelegate {
     
     func viewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
         // view just disappeared
+    }
+    
+    func viewElementLoaded(viewProperties: ViewProperties, incito: IncitoDocument, in viewController: IncitoViewController) {
+        guard viewProperties.isOffer else {
+            return
+        }
+        // or products instead...
+        let metaTitle = viewProperties.style.meta["title"]?.stringValue
+        let metaDesc = viewProperties.style.meta["description"]?.stringValue
+        guard let title =  viewProperties.style.title ?? metaTitle else { return }
+        
+        print("'\(title)': '\(metaDesc ?? "")'")
+        
+        self.searchResultsController.offers.append((title, metaDesc, viewProperties.id))
+    }
+    
+    func documentLoaded(incito: IncitoDocument, in viewController: IncitoViewController) {
+//        print(offerTitles)
     }
 }
 
@@ -260,5 +300,68 @@ extension UIViewController {
             subView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
             subView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor)
             ])
+    }
+}
+
+class SearchResultsViewController: UITableViewController {
+    
+    typealias OfferProperties = (title: String, desc: String?, id: ViewProperties.Identifier)
+    
+    var didSelectOffer: ((OfferProperties) -> Void)?
+    
+    var offers: [OfferProperties] = [] {
+        didSet {
+            updateFilteredResults()
+        }
+    }
+    var searchString: String = "" {
+        didSet {
+            updateFilteredResults()
+        }
+    }
+    var filteredResults: [OfferProperties] = []
+    
+    func updateFilteredResults() {
+        
+        DispatchQueue.main.async {
+            let normalizedSearch = self.searchString.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+            self.filteredResults = self.offers.filter {
+                $0.title.lowercased().contains(normalizedSearch) || ($0.desc?.lowercased().contains(normalizedSearch) ?? false)
+            }
+            self.tableView.reloadData()
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filteredResults.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "offerCell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "offerCell")
+        
+        let offer = filteredResults[indexPath.item]
+        cell.textLabel?.text = offer.title
+        cell.detailTextLabel?.text = offer.desc
+        
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let offer = filteredResults[indexPath.item]
+        
+        didSelectOffer?(offer)
+    }
+}
+extension SearchResultsViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        self.searchString = searchController.searchBar.text ?? ""
     }
 }

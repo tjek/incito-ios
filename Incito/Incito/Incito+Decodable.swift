@@ -99,7 +99,8 @@ extension TreeNode: Decodable where T == ViewProperties {
         }()
         
         self.init(value: ViewProperties(
-            id: try c.decodeIfPresent(.id),
+            id: ViewProperties.Identifier.generate(),
+            name: try c.decodeIfPresent(.id),
             type: viewType,
             style: (try? propertiesContainer.decode()) ?? .empty,
             layout: (try? propertiesContainer.decode()) ?? .empty

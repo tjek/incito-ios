@@ -18,6 +18,11 @@ protocol IncitoViewControllerDelegate: class {
     // viewDidAppear/viewDidDisappear
     func viewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
     func viewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
+    
+    /// Called _once_ for every view element when the incito document is loaded.
+    /// It is an opportunity to index the properties of the views.
+    func viewElementLoaded(viewProperties: ViewProperties, incito: IncitoDocument, in viewController: IncitoViewController)
+    func documentLoaded(incito: IncitoDocument, in viewController: IncitoViewController)
 }
 
 class IncitoViewController: UIViewController {
@@ -128,7 +133,15 @@ class IncitoViewController: UIViewController {
         
         let dimensionsTree = layouterTree.resolve(rootSize: parentSize)
         
-        self.renderableTree = dimensionsTree.buildRenderableViewTree(rendererProperties: self.renderer)
+        self.renderableTree = dimensionsTree.buildRenderableViewTree(
+            rendererProperties: self.renderer,
+            nodeBuilt: { [weak self] renderableView in
+                guard let self = self else { return }
+                self.delegate?.viewElementLoaded(viewProperties: renderableView.viewProperties, incito: self.incitoDocument, in: self)
+            }
+        )
+        
+        self.delegate?.documentLoaded(incito: self.incitoDocument, in: self)
         
         let end = Date.timeIntervalSinceReferenceDate
         print(" ⇢ 🚧 Built layout graph: \(round((end - start) * 1_000))ms")
@@ -275,6 +288,34 @@ extension IncitoViewController {
         } else {
             return nil
         }
+    }
+    
+    
+    func scrollToElement(withId elementId: ViewProperties.Identifier, animated: Bool) {
+        
+        guard let root = self.rootView else { return }
+        
+        // TODO: keep dictionary of view/ids to improve performance
+        let renderableViewNode = self.renderableTree?.first { node, _ in
+            node.value.viewProperties.id == elementId
+        }
+        
+        guard let renderableView = renderableViewNode?.value else {
+            return
+        }
+        
+        // the view's rect within the scrollview
+        let scrollRect =  root.convert(renderableView.absoluteRect, to: self.scrollView)
+        
+        // TODO: tweak so that it is the size of the frame, centered around the scrollRect
+        let centeredRect = CGRect(
+            x: scrollRect.origin.x + scrollRect.size.width/2.0 - self.scrollView.frame.size.width/2.0,
+            y: scrollRect.origin.y + scrollRect.size.height/2.0 - self.scrollView.frame.size.height/2.0,
+            width: self.scrollView.frame.size.width,
+            height: self.scrollView.frame.size.height
+        )
+        
+        self.scrollView.scrollRectToVisible(centeredRect, animated: animated)
     }
 }
 
@@ -427,7 +468,7 @@ extension TreeNode where T == RenderableView {
 }
 
 extension TreeNode where T == (view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>) {
-    func buildRenderableViewTree(rendererProperties: IncitoRenderer) -> TreeNode<RenderableView> {
+    func buildRenderableViewTree(rendererProperties: IncitoRenderer, nodeBuilt: (RenderableView) -> Void) -> TreeNode<RenderableView> {
         
         let interactionBuilder: (ViewProperties) -> ViewInteractionProperties? = { viewProperties in
             let alphaTap: (UIView) -> Void = { view in
@@ -464,7 +505,7 @@ extension TreeNode where T == (view: ViewProperties, dimensions: AbsoluteViewDim
             
             let renderer = buildViewRenderer(rendererProperties, viewType: viewProperties.type, parentSize: parentSize)
             
-            return RenderableView(
+            let renderableView = RenderableView(
                 viewProperties: viewProperties,
                 localPosition: localPosition,
                 dimensions: dimensions,
@@ -473,6 +514,10 @@ extension TreeNode where T == (view: ViewProperties, dimensions: AbsoluteViewDim
                 renderer: renderer,
                 interactionProperties: interactionBuilder(viewProperties)
             )
+            
+            nodeBuilt(renderableView)
+            
+            return renderableView
         }
     }
 }

@@ -25,8 +25,9 @@ typealias ViewNode = TreeNode<ViewProperties>
 
 struct ViewProperties {
     typealias Identifier = GenericIdentifier<ViewProperties>
-    var id: Identifier?
+    var id: Identifier
     
+    var name: String?
     var type: ViewType
     var style: StyleProperties
     
