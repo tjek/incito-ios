@@ -77,12 +77,14 @@ extension UIFont {
         
         // try to register the font. if it fails _but_ the font is still available (eg. it was already registered), then success!
         var error: Unmanaged<CFError>?
+        defer {
+            error?.release()
+        }
         if CTFontManagerRegisterGraphicsFont(cgFont, &error) == false,
             UIFont(name: String(fontName), size: 0) == nil {
-
+            
             throw(FontLoadingError.registrationFailed)
         }
-        
         return String(fontName)
     }
 }

@@ -147,7 +147,7 @@ class IncitoViewController: UIViewController {
         print(" ⇢ 🚧 Built layout graph: \(round((end - start) * 1_000))ms")
         
 //        let debugTree = dimensionsTree.mapValues { value, _, idx in
-//            "\(idx)) \(value.view.id ?? "?"): [ size \(value.dimensions.size), pos \(value.position), margins \(value.dimensions.layout.margins), padding \(value.dimensions.layout.padding) ]"
+//            "\(idx)) \(value.view.name ?? "?"): [ size \(value.dimensions.size), pos \(value.position), margins \(value.dimensions.layout.margins), padding \(value.dimensions.layout.padding) ]"
 //        }
 //
 //        print("\(debugTree)")
@@ -229,15 +229,15 @@ class IncitoViewController: UIViewController {
             rootView.addSubview(renderedRootView)
         }
         
-        // shows a visibility-box around the the view
-        renderableRootNode.forEachNode { (node, _, _, _) in
-            let debugView = UIView()
-            debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
-            debugView.layer.borderWidth = 1
-            debugView.isUserInteractionEnabled = false
-            rootView.addSubview(debugView)
-            debugView.frame = node.value.absoluteRect
-        }
+//        // shows a visibility-box around the the view
+//        renderableRootNode.forEachNode { (node, _, _, _) in
+//            let debugView = UIView()
+//            debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
+//            debugView.layer.borderWidth = 1
+//            debugView.isUserInteractionEnabled = false
+//            rootView.addSubview(debugView)
+//            debugView.frame = node.value.absoluteRect
+//        }
         
     }
     

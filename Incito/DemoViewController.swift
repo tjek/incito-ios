@@ -119,7 +119,9 @@ class DemoViewController: UIViewController {
         }
         
         searchResultsController.didSelectOffer = { [weak self] offer in
-            searchController.isActive = false
+            if #available(iOS 11.0, *) {
+                self?.navigationItem.searchController?.isActive = false
+            }
             self?.incitoController?.scrollToElement(withId: offer.id, animated: false)
         }
     }
@@ -212,7 +214,7 @@ extension DemoViewController: IncitoViewControllerDelegate {
         let metaDesc = viewProperties.style.meta["description"]?.stringValue
         guard let title =  viewProperties.style.title ?? metaTitle else { return }
         
-        print("'\(title)': '\(metaDesc ?? "")'")
+//        print("'\(title)': '\(metaDesc ?? "")'")
         
         self.searchResultsController.offers.append((title, metaDesc, viewProperties.id))
     }

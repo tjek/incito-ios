@@ -29,6 +29,48 @@ final class TreeNode<T> {
     
     var isLeaf: Bool { return children.isEmpty }
     var isRoot: Bool { return parent == nil }
+    
+    /// The node's siblings, excluding itself
+    func siblings(excludeSelf: Bool = true) -> [TreeNode] {
+        if excludeSelf {
+            return self.parent?.children.filter({ $0 !== self }) ?? []
+        } else {
+            return self.parent?.children ?? []            
+        }
+    }
+    
+    /// The node's siblings, excluding itself
+    func groupedSiblings() -> (prev: [TreeNode], next: [TreeNode]) {
+        
+        let allSiblings = siblings(excludeSelf: false)
+        
+        guard !allSiblings.isEmpty else {
+            return ([], [])
+        }
+        
+        guard let currIndex = allSiblings.index(where: { $0 === self}) else {
+            fatalError("Current node MUST be a child of its parent")
+        }
+        
+        let prevSiblings: [TreeNode] = {
+            guard currIndex != allSiblings.startIndex else {
+                return []
+            }
+            let prevIndex = allSiblings.index(before: currIndex)
+            
+            return Array(allSiblings[...prevIndex])
+        }()
+        
+        let nextSiblings: [TreeNode] = {
+            guard currIndex != allSiblings.endIndex else {
+                return []
+            }
+            let nextIndex = allSiblings.index(after: currIndex)
+            return Array(allSiblings[nextIndex...])
+        }()
+        
+        return (prevSiblings, nextSiblings)
+    }
 }
 
 extension TreeNode: CustomStringConvertible {

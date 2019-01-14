@@ -94,9 +94,11 @@ struct AbsoluteViewDimensions {
 typealias ViewSizer = (_ container: AbsoluteViewDimensions) -> AbsoluteViewDimensions
 typealias ViewContentsSizer = (_ view: AbsoluteViewDimensions) -> (contents: Size<Double?>, intrinsic: Size<Double?>)
 typealias ViewPositioner = (_ view: AbsoluteViewDimensions, _ container: AbsoluteViewDimensions, _ prevSiblings: [AbsoluteViewDimensions], _ nextSiblings: [AbsoluteViewDimensions]) -> Point<Double>
+typealias ViewSizeTweaker = (_ view: AbsoluteViewDimensions, _ container: AbsoluteViewDimensions, _ prevSiblings: [AbsoluteViewDimensions], _ nextSiblings: [AbsoluteViewDimensions]) -> AbsoluteViewDimensions
 
 struct ViewLayouter {
     let sizer: ViewSizer
+    let sizeTweaker: ViewSizeTweaker?
     let positioner: ViewPositioner
 }
 
@@ -126,6 +128,7 @@ extension ViewType {
 
 extension TreeNode where T == ViewProperties {
     
+    /// Builds a tree of functions that, when given a root size, will calculate sizes & positions for all the nodes in the tree.
     func generateLayouterTree(
         layoutType: LayoutType,
         intrinsicViewSizer: @escaping (ViewProperties) -> IntrinsicSizer
@@ -136,6 +139,10 @@ extension TreeNode where T == ViewProperties {
         // how we are going to size the children (block/flex/absolute)
         let childLayoutType = viewProperties.type.layoutType
         
+        // get the sizer-functions for all the children
+        
+        
+        
         // build sizers for all the children
         let childLayouterNodes = self.children.map { childNode in
             return childNode.generateLayouterTree(
@@ -144,6 +151,7 @@ extension TreeNode where T == ViewProperties {
             )
         }
         
+        // make the function that will calculate the inner-size of the view, based on the sizer-functions of all its children.
         let contentsSizer: ViewContentsSizer = {
             switch viewProperties.type.layoutType {
             case .block:
@@ -162,8 +170,7 @@ extension TreeNode where T == ViewProperties {
             }
         }()
         
-        // the current node's sizer. takes into account the children.
-        // depending on the parent type, use different sizing functions for the child
+        // make a function that will calculate the size of this node given the type of the parent (eg. flex/abs/block) and the inner-size calculating function.
         let sizer: ViewSizer = {
             switch layoutType {
             case .absolute:
@@ -185,6 +192,34 @@ extension TreeNode where T == ViewProperties {
             }
         }()
         
+        let sizeTweaker: ViewSizeTweaker? = {
+            switch layoutType {
+            case .flex(let flexProperties):
+                let normalizedGrow: Double? = {
+                    guard let flexGrow = viewProperties.layout.flexGrow, flexGrow > 0 else {
+                        return nil
+                    }
+                    let totalGrow: Double = self.siblings(excludeSelf: false).reduce(0) {
+                        $0 + ($1.value.layout.flexGrow ?? 0)
+                    }
+                    return totalGrow == 0 ? nil : flexGrow / totalGrow
+                }()
+                
+                guard let normGrow = normalizedGrow else {
+                    return nil
+                }
+                
+                return flexChildSizeTweaker(
+                    flexProperties: flexProperties,
+                    normalizedFlexGrow: normGrow
+                )
+                
+            case .absolute,
+                 .block:
+                return nil
+            }
+        }()
+        
         // depending on the parent type, use different positioning functions
         let positioner: ViewPositioner = {
             switch layoutType {
@@ -200,7 +235,7 @@ extension TreeNode where T == ViewProperties {
             }
         }()
         
-        let node = TreeNode<(ViewProperties, ViewLayouter)>(value: (viewProperties, ViewLayouter(sizer: sizer, positioner: positioner)))
+        let node = TreeNode<(ViewProperties, ViewLayouter)>(value: (viewProperties, ViewLayouter(sizer: sizer, sizeTweaker: sizeTweaker, positioner: positioner)))
         
         childLayouterNodes.forEach {
             node.add(child: $0)
@@ -511,6 +546,41 @@ func absoluteChildSizer(
         )
         
         return viewDimensions
+    }
+}
+
+/**
+ Given a sized view,
+ */
+func flexChildSizeTweaker(
+    flexProperties: FlexLayoutProperties,
+    normalizedFlexGrow: Double
+    ) -> ViewSizeTweaker {
+    return { viewDims, containerDims, prevSiblings, nextSiblings in
+        switch flexProperties.direction {
+        case .column:
+            let totalContentHeight: Double = viewDims.outerSize.height + prevSiblings.reduce(0, { $0 + $1.outerSize.height }) + nextSiblings.reduce(0, { $0 + $1.outerSize.height })
+            
+            let freeHeight = containerDims.innerSize.height - totalContentHeight
+            
+            let additionalHeight = normalizedFlexGrow * freeHeight
+            
+            var tweakedViewDims = viewDims
+            tweakedViewDims.size.height += additionalHeight
+            
+            return tweakedViewDims
+        case .row:
+            let totalContentWidth: Double = viewDims.outerSize.width + prevSiblings.reduce(0, { $0 + $1.outerSize.width }) + nextSiblings.reduce(0, { $0 + $1.outerSize.width })
+            
+            let freeWidth = containerDims.innerSize.width - totalContentWidth
+            
+            let additionalWidth = normalizedFlexGrow * freeWidth
+            
+            var tweakedViewDims = viewDims
+            tweakedViewDims.size.width += additionalWidth
+            
+            return tweakedViewDims
+        }
     }
 }
 
@@ -898,34 +968,46 @@ extension TreeNode where T == (ViewProperties, ViewLayouter) {
                     dimensions: viewDimensions)
         }
         
-        return sizedTree.mapTree { viewNode, newParent in
+        let tweakedSizedTree: TreeNode<(view: ViewProperties, layouter: ViewLayouter, dimensions: AbsoluteViewDimensions)> = sizedTree.mapTree { viewNode, newParent in
+            
+            let (viewProperties, viewLayouter, viewDimensions) = viewNode.value
+
+            // only map if it has a sizeTweaker
+            guard let sizeTweaker = viewLayouter.sizeTweaker else {
+                return viewNode.value
+            }
+            
+            let containerDimensions = newParent?.value.dimensions ?? rootContainerDimensions
+            
+            let (prevSiblings, nextSiblings) = viewNode.groupedSiblings()
+            
+            let tweakedDimensions = sizeTweaker(
+                viewDimensions,
+                containerDimensions,
+                prevSiblings.map({ $0.value.dimensions }),
+                nextSiblings.map({ $0.value.dimensions })
+            )
+            
+            return (view: viewProperties,
+                    layouter: viewLayouter,
+                    dimensions: tweakedDimensions)
+        }
+        
+        return tweakedSizedTree.mapTree { viewNode, newParent in
             
             let (viewProperties, viewLayouter, viewDimensions) = viewNode.value
             
             let containerDimensions = newParent?.value.dimensions ?? rootContainerDimensions
             
             // get the dimensions of the preceding & following siblings
-            let allSizedSiblings = viewNode.parent?.children ?? []
+            let (prevSiblings, nextSiblings) = viewNode.groupedSiblings()
             
-            var nextSiblings: [AbsoluteViewDimensions] = []
-            var prevSiblings: [AbsoluteViewDimensions] = []
-            
-            if let viewIndex = allSizedSiblings.index(where: { $0 === viewNode}) {
-                
-                if viewIndex != allSizedSiblings.startIndex {
-                    let prevIndex = allSizedSiblings.index(before: viewIndex)
-                    
-                    prevSiblings = allSizedSiblings[...prevIndex].map({ $0.value.dimensions })
-                }
-                
-                if viewIndex != allSizedSiblings.endIndex {
-                    let nextIndex = allSizedSiblings.index(after: viewIndex)
-                    
-                    nextSiblings = allSizedSiblings[nextIndex...].map({ $0.value.dimensions })
-                }
-            }
-            
-            let viewPosition = viewLayouter.positioner(viewDimensions, containerDimensions, prevSiblings, nextSiblings)
+            let viewPosition = viewLayouter.positioner(
+                viewDimensions,
+                containerDimensions,
+                prevSiblings.map({ $0.value.dimensions }),
+                nextSiblings.map({ $0.value.dimensions })
+            )
             
             return (viewProperties, viewDimensions, viewPosition)
         }
