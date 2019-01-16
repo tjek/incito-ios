@@ -122,6 +122,32 @@ extension Size where Value == Double {
     static let zero = Size(width: 0, height: 0)
 }
 
+extension Size where Value == Double {
+    func inset(_ edges: Edges<Double>) -> Size<Double> {
+        return Size(width: self.width - edges.left - edges.right,
+                    height: self.height - edges.top - edges.bottom)
+    }
+}
+
+extension Size where Value == Double? {
+    func unwrapped(width: Double, height: Double) -> Size<Double> {
+        return Size<Double>(width: self.width ?? width, height: self.height ?? height)
+    }
+}
+
+extension Size where Value == Double? {
+    func inset(_ edges: Edges<Double>) -> Size<Double?> {
+        var insetSize = self
+        if let w = insetSize.width {
+            insetSize.width = w - edges.left - edges.right
+        }
+        if let h = insetSize.height {
+            insetSize.height = h - edges.top - edges.bottom
+        }
+        return insetSize
+    }
+}
+
 extension Rect: Equatable where Value: Equatable {
     static func == (lhs: Rect<Value>, rhs: Rect<Value>) -> Bool {
         return lhs.origin == rhs.origin

@@ -23,6 +23,13 @@ final class TreeNode<T> {
         child.parent = self
     }
     
+    func add(children: [TreeNode<T>]) {
+        for child in children {
+            self.children.append(child)
+            child.parent = self
+        }
+    }
+    
     func remove(child: TreeNode<T>) {
         self.children.removeAll { $0 === self }
     }
