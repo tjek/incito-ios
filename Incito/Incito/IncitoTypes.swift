@@ -54,6 +54,12 @@ extension Edges where Value == Double {
     static let zero = Edges(0)
 }
 
+extension Edges where Value: Numeric {
+    var negated: Edges {
+        return Edges(top: self.top * -1, left: self.left * -1, bottom: self.bottom * -1, right: self.right * -1)
+    }
+}
+
 struct Corners<Value> {
     var topLeft, topRight, bottomLeft, bottomRight: Value
 }

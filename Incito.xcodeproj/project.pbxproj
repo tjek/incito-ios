@@ -47,6 +47,7 @@
 		AEA4109F21E7833500C6BEC1 /* incito-elgiganten-small-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEA4109E21E7833400C6BEC1 /* incito-elgiganten-small-375.json */; };
 		AEDD608B21BFE1A500C94188 /* incito-flextest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */; };
 		AEDD608F21CBD72800C94188 /* String+PreventWidows.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */; };
+		AEE67E9A21F1F5E700FB1C7D /* incito-blocktest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,7 @@
 		AEA4109E21E7833400C6BEC1 /* incito-elgiganten-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-small-375.json"; sourceTree = "<group>"; };
 		AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-flextest-375.json"; sourceTree = "<group>"; };
 		AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+PreventWidows.swift"; sourceTree = "<group>"; };
+		AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "incito-blocktest-375.json"; path = "Incito/incito-blocktest-375.json"; sourceTree = SOURCE_ROOT; };
 		E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,6 +178,7 @@
 				AE88362F21E502190002CD56 /* Incito */,
 				AE88362D21E501480002CD56 /* Debug */,
 				AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */,
+				AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */,
 				AE4C57F021BE54560004976D /* incito-fakta-small-375.json */,
 				AE94AD8A21AC349100876ED6 /* incito-fakta-375.json */,
 				AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */,
@@ -345,6 +348,7 @@
 				AEDD608B21BFE1A500C94188 /* incito-flextest-375.json in Resources */,
 				AEA4109F21E7833500C6BEC1 /* incito-elgiganten-small-375.json in Resources */,
 				AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */,
+				AEE67E9A21F1F5E700FB1C7D /* incito-blocktest-375.json in Resources */,
 				AE94AD8B21AC349100876ED6 /* incito-fakta-375.json in Resources */,
 				AE4C57F121BE54570004976D /* incito-fakta-small-375.json in Resources */,
 				AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */,

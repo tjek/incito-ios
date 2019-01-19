@@ -48,6 +48,10 @@ final class TreeNode<T> {
     
     /// The node's siblings, excluding itself
     func groupedSiblings() -> (prev: [TreeNode], next: [TreeNode]) {
+        return mappedGroupedSiblings({ $0 })
+    }
+    
+    func mappedGroupedSiblings<A>(_ transform: (TreeNode<T>) -> A) -> (prev: [A], next: [A]) {
         
         let allSiblings = siblings(excludeSelf: false)
         
@@ -59,21 +63,21 @@ final class TreeNode<T> {
             fatalError("Current node MUST be a child of its parent")
         }
         
-        let prevSiblings: [TreeNode] = {
+        let prevSiblings: [A] = {
             guard currIndex != allSiblings.startIndex else {
                 return []
             }
             let prevIndex = allSiblings.index(before: currIndex)
             
-            return Array(allSiblings[...prevIndex])
+            return Array(allSiblings[...prevIndex].map(transform))
         }()
         
-        let nextSiblings: [TreeNode] = {
+        let nextSiblings: [A] = {
             guard currIndex != allSiblings.endIndex else {
                 return []
             }
             let nextIndex = allSiblings.index(after: currIndex)
-            return Array(allSiblings[nextIndex...])
+            return Array(allSiblings[nextIndex...].map(transform))
         }()
         
         return (prevSiblings, nextSiblings)
