@@ -119,7 +119,7 @@ class IncitoViewController: UIViewController {
         let fontProvider = self.renderer.fontProvider
         let defaultTextProperties = incitoDocument.theme?.textDefaults ?? .empty
 
-        let start = Date.timeIntervalSinceReferenceDate
+        let startA = Date.timeIntervalSinceReferenceDate
         
         let intrinsicSizer = uiKitViewSizer(
             fontProvider: fontProvider,
@@ -133,7 +133,7 @@ class IncitoViewController: UIViewController {
         
         let dimensionsTree = layouterTree.resolve(rootSize: parentSize)
         
-        self.renderableTree = dimensionsTree.buildRenderableViewTree(
+        let oldRenderableTree = dimensionsTree.OLD_buildRenderableViewTree(
             rendererProperties: self.renderer,
             nodeBuilt: { [weak self] renderableView in
                 guard let self = self else { return }
@@ -141,13 +141,32 @@ class IncitoViewController: UIViewController {
             }
         )
         
+        let endA = Date.timeIntervalSinceReferenceDate
+        print(" ⇢ 🚧 [OLD] Built layout graph: \(round((endA - startA) * 1_000))ms")
+        
+        
+        let startB = Date.timeIntervalSinceReferenceDate
+        
+        let layoutTree = rootIncitoView.layout(
+            rootSize: parentSize,
+            intrinsicSizerBuilder: intrinsicSizer
+        )
+        
+        self.renderableTree = layoutTree.buildRenderableViewTree(
+            rendererProperties: self.renderer,
+            nodeBuilt: { [weak self] renderableView in
+                guard let self = self else { return }
+                self.delegate?.viewElementLoaded(viewProperties: renderableView.viewProperties, incito: self.incitoDocument, in: self)
+            }
+        )
+        let endB = Date.timeIntervalSinceReferenceDate
+        print(" ⇢ 🚧 [NEW] Built layout graph: \(round((endB - startB) * 1_000))ms")
+        
         self.delegate?.documentLoaded(incito: self.incitoDocument, in: self)
         
-        let end = Date.timeIntervalSinceReferenceDate
-        print(" ⇢ 🚧 Built layout graph: \(round((end - start) * 1_000))ms")
-        
-//        let debugTree = dimensionsTree.mapValues { value, _, idx in
-//            "\(idx)) \(value.view.name ?? "?"): [ size \(value.dimensions.size), pos \(value.position), margins \(value.dimensions.layout.margins), padding \(value.dimensions.layout.padding) ]"
+//        
+//        let debugTree = layoutTree.mapValues { value, _, idx in
+//            "\(idx)) \(value.0.name ?? "?"): [ size \(value.2), pos \(value.3), margins \(value.1.layout.margins), padding \(value.1.layout.padding) ]"
 //        }
 //
 //        print("\(debugTree)")
@@ -468,8 +487,71 @@ extension TreeNode where T == RenderableView {
     }
 }
 
-extension TreeNode where T == (view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>) {
+extension TreeNode where T == (ViewProperties, PassOneResult, Size<Double>, Point<Double>) {
     func buildRenderableViewTree(rendererProperties: IncitoRenderer, nodeBuilt: (RenderableView) -> Void) -> TreeNode<RenderableView> {
+        
+        let interactionBuilder: (ViewProperties) -> ViewInteractionProperties? = { viewProperties in
+            let alphaTap: (UIView) -> Void = { view in
+                view.alpha = 1 + (0.5 - view.alpha)
+                print("Tapped Section!", view)
+            }
+            switch viewProperties.style.role {
+            case "section"?:
+                return ViewInteractionProperties(tapCallback: alphaTap, peekable: false)
+                
+            case "offer"?:
+                return ViewInteractionProperties(tapCallback: alphaTap, peekable: true)
+                
+            default:
+                return nil
+            }
+        }
+        
+        return self.mapValues { (nodeValues, newParent, index) in
+            
+            let (viewProperties, dimensions, size, localPosition) = nodeValues
+            
+            let parentSize = newParent?.value.dimensions.size ?? .zero
+            let parentTransform = newParent?.value.absoluteTransform ?? .identity
+            
+            let localMove = CGAffineTransform.identity
+                .translatedBy(x: CGFloat(localPosition.x),
+                              y: CGFloat(localPosition.y))
+            
+            let transform = CGAffineTransform.identity
+                .concatenating(dimensions.layout.transform.affineTransform)
+                .concatenating(localMove)
+                .concatenating(parentTransform)
+            
+            let renderer = buildViewRenderer(rendererProperties, viewType: viewProperties.type, parentSize: parentSize)
+            
+            // TODO: not like this - remove the need for AbsViewDims in RenderableView
+            let absDimensions = AbsoluteViewDimensions(
+                size: size,
+                intrinsicSize: dimensions.intrinsicSize,
+                contentsSize: dimensions.contentsSize,
+                layout: dimensions.layout
+            )
+            
+            let renderableView = RenderableView(
+                viewProperties: viewProperties,
+                localPosition: localPosition,
+                dimensions: absDimensions,
+                absoluteTransform: transform,
+                siblingIndex: index,
+                renderer: renderer,
+                interactionProperties: interactionBuilder(viewProperties)
+            )
+            
+            nodeBuilt(renderableView)
+            
+            return renderableView
+        }
+    }
+}
+
+extension TreeNode where T == (view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>) {
+    func OLD_buildRenderableViewTree(rendererProperties: IncitoRenderer, nodeBuilt: (RenderableView) -> Void) -> TreeNode<RenderableView> {
         
         let interactionBuilder: (ViewProperties) -> ViewInteractionProperties? = { viewProperties in
             let alphaTap: (UIView) -> Void = { view in

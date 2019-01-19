@@ -1187,7 +1187,7 @@ extension TreeNode where T == ViewProperties {
         let positionedTree = actualSizedTree.positioningPass(position: .zero)
         
 //        let debugTree = positionedTree.mapValues { value, _, idx in
-//            "\(idx)) \(value.0.name ?? "?"): [ pos: \(value.3), size: \(value.2), concrete: \(value.1.concreteSize), rough \(value.1.roughSize), intrinsic \(value.1.intrinsicSize), contents \(value.1.contentsSize) ]"
+//            "\(idx)) \(value.0.name ?? ""): [ pos: \(value.3), size: \(value.2), concrete: \(value.1.concreteSize), rough \(value.1.roughSize), intrinsic \(value.1.intrinsicSize), contents \(value.1.contentsSize) ]"
 //        }
 //
 //        print("\(debugTree)")
@@ -1530,9 +1530,6 @@ extension TreeNode where T == (ViewProperties, PassOneResult) {
             
             let childDimensions = child.value.1
             let childViewProperties = child.value.0
-//            let (prevSiblings, nextSiblings) = self.mappedGroupedSiblings()
-//            let prevSiblingContentSizes = prevSiblings.map { $0.value.1.contentsSize }
-//            let nextSiblingContentSizes = nextSiblings.map { $0.value.1.contentsSize }
             
             let childActualSize = calculateActualSize(
                 parentLayoutType: layoutType,
@@ -1543,8 +1540,6 @@ extension TreeNode where T == (ViewProperties, PassOneResult) {
                 layoutProperties: childViewProperties.layout,
                 siblings: child.siblings(excludeSelf: true).map({ $0.value.0.layout })
             )
-            
-//            (parentLayoutType: layoutType, dimensions: childDimensions)
             
             // Once a child's actual-size is known, call "pass-2" recursively on that child using the newly found actual-size. This can be done in parallel.
             return child.sizingPass(actualSize: childActualSize)
@@ -1608,6 +1603,7 @@ func calculateActualSize(parentLayoutType: LayoutType, parentSize: Size<Double>,
     switch parentLayoutType {
     case .block:
         return calculateBlockChildActualSize(
+            parentContentsSize: parentContentsSize,
             concreteSize: dimensions.concreteSize,
             roughSize: dimensions.roughSize,
             contentsSize: dimensions.contentsSize,
@@ -1637,18 +1633,14 @@ func calculateActualSize(parentLayoutType: LayoutType, parentSize: Size<Double>,
     }
 }
 
-func calculateBlockChildActualSize(concreteSize: Size<Double?>, roughSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>) -> Size<Double> {
+func calculateBlockChildActualSize(parentContentsSize: Size<Double?>, concreteSize: Size<Double?>, roughSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>) -> Size<Double> {
     
-    // get an concrete version of the contentsSize
-    let paddedContentsHeight = (contentsSize.height ?? 0) + padding.top + padding.bottom
-    
-    // what about intrinsic height?
-    let size = Size(
-        width: concreteSize.width ?? roughSize.width ?? 0,
-        height: concreteSize.height ?? paddedContentsHeight
-    )
+    let paddedContentsSize = contentsSize.inset(padding.negated)
 
-    return size
+    return Size(
+        width: concreteSize.width ?? parentContentsSize.width ?? roughSize.width ?? 0,
+        height: concreteSize.height ?? paddedContentsSize.height ?? 0
+    )
 }
 
 func calculateAbsoluteChildActualSize(concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>) -> Size<Double> {
@@ -1675,16 +1667,10 @@ func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concrete
         return totalShrink == 0 ? 0 : flexShrink / totalShrink
     }()
     
-    // for some reason, when in a flex-view, the size is the max of concrete size & padded size
-//    let initialSize = Size(
-//        width: max((concreteSize.width ?? 0), (paddedContentsSize.width ?? 0)),
-//        height: max((concreteSize.height ?? 0), (paddedContentsSize.height ?? 0))
-//    )
-    
     // we now have viewDimensions that are based on the view's contents/intrinsic size etc
     // now we need to apply the flex-layout to those dimensions
     
-    // TODO: use flex-basis / flex-grow / flex-shrink etc here...
+    // TODO: use flex-basis here?
     switch flexProperties.direction {
     case .column:
         
