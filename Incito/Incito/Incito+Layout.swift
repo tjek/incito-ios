@@ -16,10 +16,8 @@ struct AbsoluteLayoutProperties {
     var margins: Edges<Double>
     var padding: Edges<Double>
 
-    var maxWidth: Double
-    var minWidth: Double
-    var maxHeight: Double
-    var minHeight: Double
+    var maxSize: Size<Double>
+    var minSize: Size<Double>
 
     var size: Size<Double?> // nil if fitting to child
     
@@ -29,20 +27,25 @@ struct AbsoluteLayoutProperties {
 extension AbsoluteLayoutProperties {
     /// parentSize is the container's inner size (size - padding)
     init(_ properties: LayoutProperties, in parentSize: Size<Double>) {
-        self.maxWidth = properties.maxWidth?.absolute(in: parentSize.width) ?? .infinity
-        self.minWidth = properties.minWidth?.absolute(in: parentSize.width) ?? 0
-        self.maxHeight = properties.maxHeight?.absolute(in: parentSize.height) ?? .infinity
-        self.minHeight = properties.minHeight?.absolute(in: parentSize.height) ?? 0
-        
-        self.size = Size(width: properties.width?.absolute(in: parentSize.width),
-                         height: properties.height?.absolute(in: parentSize.height))
+        self.maxSize = Size(
+            width: properties.maxWidth?.absolute(in: parentSize.width) ?? .infinity,
+            height: properties.maxHeight?.absolute(in: parentSize.height) ?? .infinity
+        )
+        self.minSize = Size(
+            width: properties.minWidth?.absolute(in: parentSize.width) ?? 0,
+            height: properties.minHeight?.absolute(in: parentSize.height) ?? 0
+        )
+        self.size = Size(
+            width: properties.width?.absolute(in: parentSize.width),
+            height: properties.height?.absolute(in: parentSize.height)
+        )
         
         self.position = properties.position.absolute(in: parentSize)
         
         // margins & padding are actually only relative to the width of the parent, not the height
-        let squareParentSize = Size(width: parentSize.width, height: parentSize.width)
-        self.margins = properties.margins.absolute(in: squareParentSize)
-        self.padding = properties.padding.absolute(in: squareParentSize)
+        let widthOnlyParentSize = Size(width: parentSize.width, height: parentSize.width)
+        self.margins = properties.margins.absolute(in: widthOnlyParentSize)
+        self.padding = properties.padding.absolute(in: widthOnlyParentSize)
         
         self.transform = Transform(
             scale: properties.transform.scale,
@@ -441,15 +444,9 @@ func blockChildSizer(
 //        }
         
         // clamp the generated sizes using the min/max width & height
-        viewDimensions.size = Size(
-            width: viewDimensions.size.width.clamped(
-                min: viewDimensions.layout.minWidth,
-                max: viewDimensions.layout.maxWidth
-            ),
-            height: viewDimensions.size.height.clamped(
-                min: viewDimensions.layout.minHeight,
-                max: viewDimensions.layout.maxHeight
-            )
+        viewDimensions.size = viewDimensions.size.clamped(
+            min: viewDimensions.layout.minSize,
+            max: viewDimensions.layout.maxSize
         )
         
         return viewDimensions
@@ -533,15 +530,9 @@ func absoluteChildSizer(
 //        }
         
         // clamp the generated sizes using the min/max width & height
-        viewDimensions.size = Size(
-            width: viewDimensions.size.width.clamped(
-                min: viewDimensions.layout.minWidth,
-                max: viewDimensions.layout.maxWidth
-            ),
-            height: viewDimensions.size.height.clamped(
-                min: viewDimensions.layout.minHeight,
-                max: viewDimensions.layout.maxHeight
-            )
+        viewDimensions.size = viewDimensions.size.clamped(
+            min: viewDimensions.layout.minSize,
+            max: viewDimensions.layout.maxSize
         )
         
         return viewDimensions
@@ -1223,7 +1214,8 @@ extension TreeNode where T == ViewProperties {
             layoutSize: absoluteLayoutProperties.size,
             layoutPosition: absoluteLayoutProperties.position,
             layoutMargins: absoluteLayoutProperties.margins
-        )
+            )
+            .clamped(min: absoluteLayoutProperties.minSize, max: absoluteLayoutProperties.maxSize)
         
         // calculate a node's rough-size (combine concrete-size and/or parent's rough-size). No child size used.
         let roughSize = calculateRoughSize(
@@ -1231,7 +1223,8 @@ extension TreeNode where T == ViewProperties {
             parentRoughInnerSize: parentRoughInnerSize,
             concreteSize: concreteSize,
             layoutMargins: absoluteLayoutProperties.margins
-        )
+            )
+            .clamped(min: absoluteLayoutProperties.minSize, max: absoluteLayoutProperties.maxSize)
         
         // when calculating the child-nodes, we need the rough inner-size.
         let roughInnerSize = roughSize.inset(absoluteLayoutProperties.padding)
@@ -1239,6 +1232,7 @@ extension TreeNode where T == ViewProperties {
         // calculate the intrinsic-size (eg. the actual contents of the node, like text), constrained to the rough-inner-size.
         // depends on the injected 'intrinsicSizerBuilder', which depends on the node's viewProperties
         let intrinsicSize = intrinsicSizerBuilder(self.value)(roughInnerSize)
+            .clamped(min: absoluteLayoutProperties.minSize, max: absoluteLayoutProperties.maxSize)
         
         // use that rough-size to calculate the contents-sizes (the size of the child based on only its own content) of all the child-nodes. do this by calling "pass-1" recursively on all each child (this could be done in parallel).
         let childNodes = self.children.map {
@@ -1255,7 +1249,8 @@ extension TreeNode where T == ViewProperties {
             layoutType: self.value.type.layoutType,
             intrinsicSize: intrinsicSize,
             childDimensions: childNodes.map { $0.value.1 }
-        )
+            )
+            .clamped(min: absoluteLayoutProperties.minSize, max: absoluteLayoutProperties.maxSize)
         
         // return the rough-size, concrete-size, intrinsic-size, and contents-size, of the node
         let result = PassOneResult(
@@ -1539,7 +1534,8 @@ extension TreeNode where T == (ViewProperties, PassOneResult) {
                 dimensions: childDimensions,
                 layoutProperties: childViewProperties.layout,
                 siblings: child.siblings(excludeSelf: true).map({ $0.value.0.layout })
-            )
+                )
+                .clamped(min: childDimensions.layout.minSize, max: childDimensions.layout.maxSize)
             
             // Once a child's actual-size is known, call "pass-2" recursively on that child using the newly found actual-size. This can be done in parallel.
             return child.sizingPass(actualSize: childActualSize)

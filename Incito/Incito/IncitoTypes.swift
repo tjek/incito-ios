@@ -128,16 +128,19 @@ extension Size where Value == Double {
     static let zero = Size(width: 0, height: 0)
 }
 
-extension Size where Value == Double {
-    func inset(_ edges: Edges<Double>) -> Size<Double> {
-        return Size(width: self.width - edges.left - edges.right,
-                    height: self.height - edges.top - edges.bottom)
-    }
-}
 
 extension Size where Value == Double? {
     func unwrapped(width: Double, height: Double) -> Size<Double> {
         return Size<Double>(width: self.width ?? width, height: self.height ?? height)
+    }
+}
+
+// MARK: Size + Inset
+
+extension Size where Value == Double {
+    func inset(_ edges: Edges<Double>) -> Size<Double> {
+        return Size(width: self.width - edges.left - edges.right,
+                    height: self.height - edges.top - edges.bottom)
     }
 }
 
@@ -151,6 +154,30 @@ extension Size where Value == Double? {
             insetSize.height = h - edges.top - edges.bottom
         }
         return insetSize
+    }
+}
+
+// MARK: Size + Clamped
+
+extension Size where Value == Double {
+    func clamped(min: Size<Double>, max: Size<Double>) -> Size<Double> {
+        return Size(
+            width: self.width.clamped(min: min.width, max: max.width),
+            height: self.height.clamped(min: min.height, max: max.height)
+        )
+    }
+}
+
+extension Size where Value == Double? {
+    func clamped(min: Size<Double>, max: Size<Double>) -> Size<Double?> {
+        var clampedSize = self
+        if let w = clampedSize.width {
+            clampedSize.width = w.clamped(min: min.width, max: max.width)
+        }
+        if let h = clampedSize.height {
+            clampedSize.height = h.clamped(min: min.height, max: max.height)
+        }
+        return clampedSize
     }
 }
 
