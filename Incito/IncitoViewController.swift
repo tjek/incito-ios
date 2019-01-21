@@ -786,8 +786,13 @@ extension UIView {
                 guard let self = self else { return }
                 
                 if let imageView = loadedImageView {
-                    imageView.contentMode = bgImage.contentMode
                     imageView.frame = self.bounds
+                    imageView.applyBackground(
+                        position: bgImage.position,
+                        scalingType: bgImage.scale,
+                        tilingMode: bgImage.tileMode
+                    )
+                    
                     imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
                     imageView.alpha = 0
                     self.insertSubview(imageView, at: 0)

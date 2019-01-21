@@ -16,13 +16,13 @@ import SVGKit
 //  - A proper cache
 //  - Better network session setup
 //  - Scale image to a specified size on bg queue
-func loadImageView(url: URL, completion: @escaping (UIView?) -> Void) {
+func loadImageView(url: URL, completion: @escaping (UIImageView?) -> Void) {
     DispatchQueue.global().async {
         let urlSession = URLSession.shared
         let urlReq = URLRequest(url: url, timeoutInterval: 10)
         let task = urlSession.dataTask(with: urlReq) { data, response, error in
             
-            let viewBuilder: (() -> UIView)? = {
+            let viewBuilder: (() -> UIImageView)? = {
                 guard let imageData = data else {
                     print(" ❌ image load failed - no data", url)
                     return nil

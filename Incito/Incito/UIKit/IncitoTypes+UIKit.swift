@@ -61,3 +61,28 @@ extension CALayer {
         shadowOpacity = 1
     }
 }
+
+extension BackgroundImage.Position {
+    func contentsGravity(isFlipped: Bool) -> CALayerContentsGravity {
+        switch self {
+        case .leftTop:
+            return isFlipped ? .bottomLeft : .topLeft
+        case .leftCenter:
+            return .left
+        case .leftBottom:
+            return isFlipped ? .topLeft : .bottomLeft
+        case .centerTop:
+            return isFlipped ? .bottom : .top
+        case .centerCenter:
+            return .center
+        case .centerBottom:
+            return isFlipped ? .top : .bottom
+        case .rightTop:
+            return isFlipped ? .bottomRight : .topRight
+        case .rightCenter:
+            return .right
+        case .rightBottom:
+            return isFlipped ? .topRight : .bottomRight
+        }
+    }
+}

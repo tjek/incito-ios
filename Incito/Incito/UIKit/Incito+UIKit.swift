@@ -18,7 +18,7 @@ typealias Image = UIImage
 
 /// Given a FontFamily and a size, it will return a font
 typealias FontProvider = (FontFamily, Double) -> Font
-typealias ImageViewLoader = (URL, @escaping (UIView?) -> Void) -> Void
+typealias ImageViewLoader = (URL, @escaping (UIImageView?) -> Void) -> Void
 
 /// All things platform-specific that are needed
 struct IncitoRenderer {
@@ -35,7 +35,7 @@ struct IncitoRenderer {
 /// Represents a request for a url-based image, and provides the UIView into which the image was rendered.
 struct ImageViewLoadRequest {
     let url: URL
-    let completion: (UIView?) -> Void
+    let completion: (UIImageView?) -> Void
 }
 
 // MARK: - Sizing
@@ -145,5 +145,126 @@ extension NSAttributedString {
             width: ceil(Double(boundingBox.size.width)),
             height: ceil(Double(boundingBox.size.height))
         )
+    }
+}
+
+extension UIImageView {
+    func applyBackground(
+        position: BackgroundImage.Position,
+        scalingType: BackgroundImage.ScaleType,
+        tilingMode: BackgroundImage.TileMode
+        ) {
+        
+        let containerSize = self.bounds.size
+        let imageSize = (self.image?.size ?? .zero)
+        
+        // calculate how much the image needs to be scaled to fill or fit the container, depending on the scale type
+        let fitFillScale: CGFloat = {
+            if containerSize.width == 0 || containerSize.height == 0 || imageSize.width == 0 || imageSize.height == 0 {
+                return 1
+            }
+            switch scalingType {
+            case .centerCrop:
+                // fill container. No tiling necessary.
+                let scaleX = imageSize.width / containerSize.width
+                let scaleY = imageSize.height / containerSize.height
+                return min(scaleX, scaleY)
+                
+            case .centerInside:
+                // fit container
+                let scaleX = imageSize.width / containerSize.width
+                let scaleY = imageSize.height / containerSize.height
+                return max(scaleX, scaleY)
+                
+            case .none:
+                // original size
+                return 1
+            }
+        }()
+        
+        if tilingMode != .none && scalingType != .centerCrop {
+            
+            // get the size of the image if it were repeated in a specific access, fitting into the containerSize
+            let tiledImageSize: CGSize = {
+                var size = containerSize
+                switch tilingMode {
+                case .repeatX:
+                    size.height = imageSize.height / fitFillScale
+                case .repeatY:
+                    size.width = imageSize.width / fitFillScale
+                case .repeatXY, .none:
+                    break
+                }
+                return size
+            }()
+            
+            // calculate a pattern phase. this is used to position the repeating patterns within the repeating direction
+            let patternPhase: CGSize = {
+                let w: CGFloat = {
+                    switch position {
+                    case .leftTop,
+                         .leftCenter,
+                         .leftBottom:
+                        return 0
+                        
+                    case .centerTop,
+                         .centerCenter,
+                         .centerBottom:
+                        return (tiledImageSize.width / 2) - (imageSize.width / fitFillScale / 2)
+                        
+                    case .rightTop,
+                         .rightCenter,
+                         .rightBottom:
+                        return tiledImageSize.width - (imageSize.width / fitFillScale)
+                    }
+                }()
+                let h: CGFloat = {
+                    switch position {
+                    case .leftTop,
+                         .centerTop,
+                         .rightTop:
+                        return 0
+                        
+                    case .leftCenter,
+                         .centerCenter,
+                         .rightCenter:
+                        return (tiledImageSize.height / 2) - (imageSize.height / fitFillScale / 2)
+                        
+                    case .leftBottom,
+                         .centerBottom,
+                         .rightBottom:
+                        return tiledImageSize.height - (imageSize.height / fitFillScale)
+                    }
+                }()
+                
+                return CGSize(width: w, height: h)
+            }()
+            
+            var image = self.image
+            
+            // As the scaling needs to be applied before the tiling, we need to scale the image first
+            if fitFillScale != 1 && fitFillScale != 0 {
+                image = image?.resized(to: CGSize(
+                    width: imageSize.width / fitFillScale,
+                    height: imageSize.height / fitFillScale)
+                )
+            }
+            
+            // generate an image that is tiled to fill the desired size, using the specified pattern phase.
+            image = image?.tiled(
+                to: tiledImageSize,
+                patternPhase: patternPhase
+            )
+            
+            self.image = image
+            
+        } else {
+            // if no tiling, or if fill (so no tiling visible)
+            let imageScale = self.image?.scale ?? 1
+            
+            self.layer.contentsScale = fitFillScale * imageScale
+        }
+        // use gravity to define the position
+        self.layer.contentsGravity = position.contentsGravity(isFlipped: self.layer.contentsAreFlipped())
     }
 }

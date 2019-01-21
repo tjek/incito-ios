@@ -1170,11 +1170,8 @@ extension TreeNode where T == ViewProperties {
             intrinsicSizerBuilder: intrinsicSizerBuilder
         )
         
-        // TODO: maybe need a node inbetween?
-        
         let actualSizedTree = contentSizedTree.sizingPass(actualSize: rootSize)
         
-        // TODO: maybe need input position?
         let positionedTree = actualSizedTree.positioningPass(position: .zero)
         
 //        let debugTree = positionedTree.mapValues { value, _, idx in

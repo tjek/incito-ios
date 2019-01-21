@@ -48,6 +48,7 @@
 		AEDD608B21BFE1A500C94188 /* incito-flextest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */; };
 		AEDD608F21CBD72800C94188 /* String+PreventWidows.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */; };
 		AEE67E9A21F1F5E700FB1C7D /* incito-blocktest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */; };
+		AEE67E9C21F688D600FB1C7D /* UIImage+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,7 @@
 		AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-flextest-375.json"; sourceTree = "<group>"; };
 		AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+PreventWidows.swift"; sourceTree = "<group>"; };
 		AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "incito-blocktest-375.json"; path = "Incito/incito-blocktest-375.json"; sourceTree = SOURCE_ROOT; };
+		AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Sizing.swift"; sourceTree = "<group>"; };
 		E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -218,6 +220,7 @@
 				AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */,
 				AE88362921E500E30002CD56 /* UIView+AnchorPoint.swift */,
 				AE88363021E5027B0002CD56 /* RoundedShadowedView.swift */,
+				AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -440,6 +443,7 @@
 				AE4C57EF21B575E70004976D /* TreeNode.swift in Sources */,
 				AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */,
 				AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */,
+				AEE67E9C21F688D600FB1C7D /* UIImage+Sizing.swift in Sources */,
 				AE88363121E5027B0002CD56 /* RoundedShadowedView.swift in Sources */,
 				AE675830219C25CC006BEA9C /* IncitoDocument.swift in Sources */,
 				AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */,
