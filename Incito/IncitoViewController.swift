@@ -225,7 +225,6 @@ class IncitoViewController: UIViewController {
         guard let renderableRootNode = self.renderableTree else { return }
         
         
-        
         let scrollVisibleWindow: CGRect
         
         if showDebugRenderWindow {
@@ -716,7 +715,7 @@ extension UIView {
         label.numberOfLines = textProperties.maxLines
         
         label.textAlignment = (textProperties.textAlignment ?? .left).nsTextAlignment
-        
+        label.lineBreakMode = .byTruncatingTail
         label.backgroundColor = .clear
         
         // labels are vertically aligned in incito, so add to a container view
@@ -787,7 +786,7 @@ extension UIView {
                 guard let self = self else { return }
                 
                 if let imageView = loadedImageView {
-                    imageView.contentMode = .scaleToFill
+                    imageView.contentMode = bgImage.contentMode
                     imageView.frame = self.bounds
                     imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
                     imageView.alpha = 0

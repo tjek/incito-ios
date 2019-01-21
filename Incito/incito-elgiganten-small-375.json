@@ -71,13 +71,7 @@
                                             "title": "Lenovo Ideapad 120s 14\" bærbar computer (mineralgrå)"
                                         }
                                     ],
-                                    "labels": [
-                                        {
-                                            "title": "PCMark BASIC",
-                                            "src": "https://bumblebee-stg.imgix.net/feed-images/01b61b6438affc25a6a11dcfd797afd9?w=100&auto=compress%2Cformat&s=0fdf29799dacdab4ba1656671d07d820",
-                                            "link": "https://www.elgiganten.dk/cms/find-den-rigtige-computer/nu-er-det-blevet-nemt-at-kobe-den-perfekte-computer/"
-                                        }
-                                    ],
+                                    "labels": [],
                                     "ids": [
                                         {
                                             "value": "LE81A5007SMX",
@@ -123,6 +117,7 @@
                                             },
                                             {
                                                 "view_name": "FlexLayout",
+                                                "layout_flex_justify_content": "space-between",
                                                 "layout_flex_direction": "row",
                                                 "layout_flex_align_items": "flex-end",
                                                 "clip_children": false,
@@ -191,7 +186,6 @@
                                                     },
                                                     {
                                                         "layout_flex_shrink": 0,
-                                                        "gravity": "right_horizontal",
                                                         "clip_children": false,
                                                         "child_views": [
                                                             {
@@ -269,27 +263,6 @@
                                                         "layout_width": 13.299999999999999,
                                                         "layout_height": 13.299999999999999,
                                                         "background_color": "#1CA45C"
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "layout_top": 8,
-                                        "layout_right": 8,
-                                        "child_views": [
-                                            {
-                                                "child_views": [
-                                                    {
-                                                        "view_name": "ImageView",
-                                                        "title": "PCMark BASIC",
-                                                        "src": "https://bumblebee-stg.imgix.net/feed-images/01b61b6438affc25a6a11dcfd797afd9?w=50&auto=compress%2Cformat&dpr=2&s=e7aa7bf8f2f2d2d4617713565c891506",
-                                                        "role": "label",
-                                                        "layout_width": 50,
-                                                        "layout_margin_bottom": 5,
-                                                        "layout_height": 21,
-                                                        "gravity": "right_horizontal",
-                                                        "accessibility_label": "PCMark BASIC"
                                                     }
                                                 ]
                                             }

@@ -96,6 +96,7 @@ extension TextViewProperties {
         paragraphStyle.alignment = alignment
         paragraphStyle.maximumLineHeight = maxLineHeight
         paragraphStyle.minimumLineHeight = maxLineHeight
+        paragraphStyle.lineBreakMode = .byTruncatingTail
         
         let attrStr = NSMutableAttributedString(
             string: string,
@@ -137,7 +138,7 @@ extension NSAttributedString {
                 width: constraintSize.width ?? .greatestFiniteMagnitude,
                 height: constraintSize.height ?? .greatestFiniteMagnitude
             ),
-            options: [.usesLineFragmentOrigin],
+            options: [.usesLineFragmentOrigin, .truncatesLastVisibleLine],
             context: nil)
         
         return Size(

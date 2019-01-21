@@ -291,8 +291,9 @@ struct Accessibility {
 
 struct BackgroundImage {
     enum ScaleType: String, Decodable {
-        case centerCrop = "center_crop"
-        case centerInside = "center_inside"
+        case none // original size
+        case centerCrop = "center_crop" // fill
+        case centerInside = "center_inside" // fit
     }
     
     enum TileMode: String, Decodable {
@@ -302,8 +303,20 @@ struct BackgroundImage {
         case repeatXY = "repeat"
     }
     
+    enum Position: String, Decodable {
+        case leftTop = "left_top"
+        case leftCenter = "left_center"
+        case leftBottom = "left_bottom"
+        case centerTop = "center_top"
+        case centerCenter = "center_center"
+        case centerBottom = "center_bottom"
+        case rightTop = "right_top"
+        case rightCenter = "right_center"
+        case rightBottom = "right_bottom"
+    }
+    
     var source: URL
     var scale: ScaleType
-    var position: String? // TODO: what? "center_center" /
+    var position: Position
     var tileMode: TileMode
 }
