@@ -119,31 +119,33 @@ class IncitoViewController: UIViewController {
         let fontProvider = self.renderer.fontProvider
         let defaultTextProperties = incitoDocument.theme?.textDefaults ?? .empty
 
-        let startA = Date.timeIntervalSinceReferenceDate
-        
         let intrinsicSizer = uiKitViewSizer(
             fontProvider: fontProvider,
             textDefaults: defaultTextProperties
         )
         
-        let layouterTree = rootIncitoView.generateLayouterTree(
-            layoutType: .block,
-            intrinsicViewSizer: intrinsicSizer
-        )
-        
-        let dimensionsTree = layouterTree.resolve(rootSize: parentSize)
-        
-        let oldRenderableTree = dimensionsTree.OLD_buildRenderableViewTree(
-            rendererProperties: self.renderer,
-            nodeBuilt: { [weak self] renderableView in
-                guard let self = self else { return }
-                self.delegate?.viewElementLoaded(viewProperties: renderableView.viewProperties, incito: self.incitoDocument, in: self)
+        DispatchQueue.global().async {
+            
+            let startA = Date.timeIntervalSinceReferenceDate
+            
+            
+            let layouterTree = rootIncitoView.generateLayouterTree(
+                layoutType: .block,
+                intrinsicViewSizer: intrinsicSizer
+            )
+            
+            let dimensionsTree = layouterTree.resolve(rootSize: parentSize)
+            
+            let oldRenderableTree = dimensionsTree.OLD_buildRenderableViewTree(
+                rendererProperties: self.renderer,
+                nodeBuilt: { _ in }
+            )
+            
+            let endA = Date.timeIntervalSinceReferenceDate
+            DispatchQueue.main.async {
+                print(" ⇢ 🚧 [OLD] Built layout graph: \(round((endA - startA) * 1_000))ms")
             }
-        )
-        
-        let endA = Date.timeIntervalSinceReferenceDate
-        print(" ⇢ 🚧 [OLD] Built layout graph: \(round((endA - startA) * 1_000))ms")
-        
+        }
         
         let startB = Date.timeIntervalSinceReferenceDate
         
@@ -212,15 +214,28 @@ class IncitoViewController: UIViewController {
     var lastRenderedWindow: CGRect?
     
     var debugWindowViews = (top: UIView(), bottom: UIView())
+    var debugOutlineViews: [UIView] = []
+    
+    var showDebugOutlines: Bool = false
+    var showDebugRenderWindow: Bool = false
     
     func renderVisibleViews() {
         
         guard let rootView = self.rootView else { return }
         guard let renderableRootNode = self.renderableTree else { return }
         
-        let scrollVisibleWindow = scrollView.bounds
-//            .inset(by: UIEdgeInsets(top: 120, left: 0, bottom: 150, right: 0))
-            .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
+        
+        
+        let scrollVisibleWindow: CGRect
+        
+        if showDebugRenderWindow {
+            scrollVisibleWindow = scrollView.bounds
+                .inset(by: UIEdgeInsets(top: 120, left: 0, bottom: 150, right: 0))
+        } else {
+            scrollVisibleWindow = scrollView.bounds
+                .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
+        }
+        
 
         // in RootView coord space
         let renderWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
@@ -233,7 +248,9 @@ class IncitoViewController: UIViewController {
         
         self.lastRenderedWindow = renderWindow
         
-//        updateDebugWindowViews(in: renderWindow)
+        if showDebugRenderWindow {
+            updateDebugWindowViews(in: renderWindow)
+        }
         
         if let renderedRootView = renderableRootNode.renderVisibleNodes(
             visibleRootViewWindow: renderWindow,
@@ -248,16 +265,20 @@ class IncitoViewController: UIViewController {
             rootView.addSubview(renderedRootView)
         }
         
-//        // shows a visibility-box around the the view
-//        renderableRootNode.forEachNode { (node, _, _, _) in
-//            let debugView = UIView()
-//            debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
-//            debugView.layer.borderWidth = 1
-//            debugView.isUserInteractionEnabled = false
-//            rootView.addSubview(debugView)
-//            debugView.frame = node.value.absoluteRect
-//        }
-        
+        debugOutlineViews.forEach { $0.removeFromSuperview() }
+        if (self.showDebugOutlines) {
+            // shows a visibility-box around the the view
+            renderableRootNode.forEachNode { (node, _, _, _) in
+                let debugView = UIView()
+                debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
+                debugView.layer.borderWidth = 1
+                debugView.isUserInteractionEnabled = false
+                rootView.addSubview(debugView)
+                debugView.frame = node.value.absoluteRect
+                
+                debugOutlineViews.append(debugView)
+            }
+        }
     }
     
     func updateDebugWindowViews(in rootViewVisibleWindow: CGRect) {

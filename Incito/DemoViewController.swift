@@ -13,9 +13,10 @@ import RRFPSBar
 class DemoViewController: UIViewController {
     var selectedIndex: Int = 999
     let availableIncitos: [(json: String, refImg: String?)] = [
-//        ("incito-flextest-375.json", nil),
-//        ("incito-fakta-small-375.json", "fakta-incito-375-reference"),
         ("incito-elgiganten-small-375.json", nil),
+        ("incito-fakta-small-375.json", "fakta-incito-375-reference"),
+        ("incito-flextest-375.json", nil),
+        ("incito-blocktest-375.json", nil),
         ("incito-elgiganten-375.json", nil),
         ("incito-fakta-375.json", "fakta-incito-375-reference"),
         ("incito-superbrugsen-375.json", nil),

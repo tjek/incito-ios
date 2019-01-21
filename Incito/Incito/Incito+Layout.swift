@@ -1560,7 +1560,7 @@ extension TreeNode where T == (ViewProperties, PassOneResult, Size<Double>) {
         let layoutType = self.value.0.type.layoutType
         let size = self.value.2
         let dimensions = self.value.1
-        
+
         // calculate the actual-size (size taking into account parent's actual-size, sibling's content-sizes, and the node's rough-size/contents-size etc) of all of a node's children. We need the node's actual size to be passed into this function. For the very first node, we can use the screen's size as the actual-size.
         let childNodes: [TreeNode<(ViewProperties, PassOneResult, Size<Double>, Point<Double>)>] = self.children.map { child in
             
@@ -1743,17 +1743,18 @@ func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concrete
 // MARK: - Calculate Position
 
 func calculatePosition(parentLayoutType: LayoutType, parentSize: Size<Double>, parentPadding: Edges<Double>, parentIntrinsicSize: Size<Double?>, size: Size<Double>, margins: Edges<Double>, position: Edges<Double?>, layoutProperties: LayoutProperties, prevSiblings: [(size: Size<Double>, dimensions: PassOneResult)], nextSiblings: [(size: Size<Double>, dimensions: PassOneResult)]) -> Point<Double> {
+    // TODO: different default gravity if system is right-to-left layout
+    let gravity = layoutProperties.gravity ?? .left
+    
     switch parentLayoutType {
     case .block:
-        // TODO: different default gravity if system is right-to-left layout
-        let gravity = layoutProperties.gravity ?? .left
         return calculateBlockChildPosition(
             parentSize: parentSize,
-            parentGravity: gravity,
             parentPadding: parentPadding,
             parentIntrinsicSize: parentIntrinsicSize,
             size: size,
             margins: margins,
+            gravity: gravity,
             prevSiblings: prevSiblings
         )
     case .absolute:
@@ -1777,7 +1778,7 @@ func calculatePosition(parentLayoutType: LayoutType, parentSize: Size<Double>, p
     }
 }
 
-func calculateBlockChildPosition(parentSize: Size<Double>, parentGravity: HorizontalGravity, parentPadding: Edges<Double>, parentIntrinsicSize: Size<Double?>, size: Size<Double>, margins: Edges<Double>, prevSiblings: [(size: Size<Double>, dimensions: PassOneResult)]) -> Point<Double> {
+func calculateBlockChildPosition(parentSize: Size<Double>, parentPadding: Edges<Double>, parentIntrinsicSize: Size<Double?>, size: Size<Double>, margins: Edges<Double>, gravity: HorizontalGravity, prevSiblings: [(size: Size<Double>, dimensions: PassOneResult)]) -> Point<Double> {
     
     let originY: Double = {
         
@@ -1798,7 +1799,7 @@ func calculateBlockChildPosition(parentSize: Size<Double>, parentGravity: Horizo
     }()
     
     let originX: Double = {
-        switch parentGravity {
+        switch gravity {
         case .left:
             return parentPadding.left + margins.left
         case .right:
