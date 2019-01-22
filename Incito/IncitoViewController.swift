@@ -39,7 +39,7 @@ class IncitoViewController: UIViewController {
         self.incitoDocument = incito
         self.renderer = IncitoRenderer(
             fontProvider: UIFont.systemFont(forFamily:size:),
-            imageViewLoader: loadImageView(url:completion:),
+            imageViewLoader: loadImageView,
             theme: incitoDocument.theme
         )
         
@@ -609,9 +609,7 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
                 imageProperties: imageProperties
             )
             
-            renderProperties.imageViewLoader(imgReq.url) {
-                imgReq.completion($0)
-            }
+            renderProperties.imageViewLoader(imgReq)
             return container
         }
     case .view,
@@ -637,9 +635,7 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
         )
         // perform any image loading
         if let imgReq = imageRequest {
-            renderProperties.imageViewLoader(imgReq.url) {
-                imgReq.completion($0)
-            }
+            renderProperties.imageViewLoader(imgReq)
         }
         
         return view
@@ -708,7 +704,12 @@ extension UIView {
         imageProperties: ImageViewProperties
         ) -> ImageViewLoadRequest {
         
-        let imageLoadReq = ImageViewLoadRequest(url: imageProperties.source) { [weak container] loadedImageView in
+        let size = container.bounds.size
+        let transform: (UIImage) -> UIImage = {
+            $0.resized(scalingType: .centerCrop, into: size)
+        }
+        
+        let imageLoadReq = ImageViewLoadRequest(url: imageProperties.source, transform: transform) { [weak container] loadedImageView in
             guard let c = container else { return }
             if let imageView = loadedImageView {
                 imageView.contentMode = .scaleToFill
@@ -732,6 +733,48 @@ extension UIView {
     }
 }
 
+extension UIImage {
+    func resized(scalingType: BackgroundImage.ScaleType, into containerSize: CGSize) -> UIImage {
+        let imageSize = self.size
+        
+        // calculate how much the image needs to be scaled to fill or fit the container, depending on the scale type
+        let fitFillScale: CGFloat = {
+            if containerSize.width == 0 || containerSize.height == 0 || imageSize.width == 0 || imageSize.height == 0 {
+                return 1
+            }
+            switch scalingType {
+            case .centerCrop:
+                // fill container. No tiling necessary.
+                let scaleX = imageSize.width / containerSize.width
+                let scaleY = imageSize.height / containerSize.height
+                return min(scaleX, scaleY)
+                
+            case .centerInside:
+                // fit container
+                let scaleX = imageSize.width / containerSize.width
+                let scaleY = imageSize.height / containerSize.height
+                return max(scaleX, scaleY)
+                
+            case .none:
+                // original size
+                return 1
+            }
+        }()
+        
+        if fitFillScale == 1 {
+            return self
+        } else {
+            let targetSize = CGSize(
+                width: imageSize.width / fitFillScale,
+                height: imageSize.height / fitFillScale
+            )
+            let newImage = self.resized(to: targetSize)
+            print("Resizing \(imageSize) -> \(targetSize)")
+            return newImage
+        }
+    }
+}
+
 extension UIView {
     func applyStyle(
         _ style: StyleProperties,
@@ -745,8 +788,13 @@ extension UIView {
         
         var imageLoadReq: ImageViewLoadRequest? = nil
         if let bgImage = style.backgroundImage {
-            // TODO: do any image-resizing as an off-main callback
-            imageLoadReq = ImageViewLoadRequest(url: bgImage.source) { [weak self] loadedImageView in
+            
+            let size = self.bounds.size
+            let transform: (UIImage) -> UIImage = {
+                $0.resized(scalingType: bgImage.scale, into: size)
+            }
+            
+            imageLoadReq = ImageViewLoadRequest(url: bgImage.source, transform: transform) { [weak self] loadedImageView in
                 guard let self = self else { return }
                 
                 if let imageView = loadedImageView {

@@ -16,15 +16,15 @@ import SVGKit
 //  - A proper cache
 //  - Better network session setup
 //  - Scale image to a specified size on bg queue
-func loadImageView(url: URL, completion: @escaping (UIImageView?) -> Void) {
+func loadImageView(_ request: ImageViewLoadRequest) {
     DispatchQueue.global().async {
         let urlSession = URLSession.shared
-        let urlReq = URLRequest(url: url, timeoutInterval: 10)
+        let urlReq = URLRequest(url: request.url, timeoutInterval: 10)
         let task = urlSession.dataTask(with: urlReq) { data, response, error in
             
             let viewBuilder: (() -> UIImageView)? = {
                 guard let imageData = data else {
-                    print(" ❌ image load failed - no data", url)
+                    print(" ❌ image load failed - no data", request.url)
                     return nil
                 }
                 
@@ -52,12 +52,15 @@ func loadImageView(url: URL, completion: @escaping (UIImageView?) -> Void) {
                         }
                     }
                 default:
-                    if let image = UIImage(data: imageData) {
+                    if var image = UIImage(data: imageData) {
+                        if let t = request.transform {
+                            image = t(image)
+                        }
                         return {
                             UIImageView(image: image)
                         }
                     } else {
-                        print(" ❌ image load failed - unknown data type '\(response?.mimeType ?? "?")'", url)
+                        print(" ❌ image load failed - unknown data type '\(response?.mimeType ?? "?")'", request.url)
                     }
                 }
                 
@@ -65,7 +68,7 @@ func loadImageView(url: URL, completion: @escaping (UIImageView?) -> Void) {
             }()
             
             DispatchQueue.main.async {
-                completion(viewBuilder?())
+                request.completion(viewBuilder?())
             }
         }
 

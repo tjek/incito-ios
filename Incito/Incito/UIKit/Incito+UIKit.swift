@@ -18,7 +18,6 @@ typealias Image = UIImage
 
 /// Given a FontFamily and a size, it will return a font
 typealias FontProvider = (FontFamily, Double) -> Font
-typealias ImageViewLoader = (URL, @escaping (UIImageView?) -> Void) -> Void
 
 /// All things platform-specific that are needed
 struct IncitoRenderer {
@@ -26,7 +25,7 @@ struct IncitoRenderer {
     var fontProvider: FontProvider
     /// given an image URL it returns the image in a completion handler.
     // TODO: way to cancel image loads?
-    var imageViewLoader: ImageViewLoader
+    var imageViewLoader: (ImageViewLoadRequest) -> Void
     
     // TODO: not like this.
     var theme: Theme?
@@ -35,6 +34,7 @@ struct IncitoRenderer {
 /// Represents a request for a url-based image, and provides the UIView into which the image was rendered.
 struct ImageViewLoadRequest {
     let url: URL
+    let transform: ((UIImage) -> UIImage)?
     let completion: (UIImageView?) -> Void
 }
 
