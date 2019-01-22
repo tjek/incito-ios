@@ -210,7 +210,6 @@ extension TreeNode where T == ViewProperties {
         // calculate the intrinsic-size (eg. the actual contents of the node, like text), constrained to the rough-inner-size.
         // depends on the injected 'intrinsicSizerBuilder', which depends on the node's viewProperties
         let intrinsicSize = intrinsicSizerBuilder(self.value)(roughInnerSize)
-            .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
         
         // use that rough-size to calculate the contents-sizes (the size of the child based on only its own content) of all the child-nodes. do this by calling "pass-1" recursively on all each child (this could be done in parallel).
         let childNodes = self.children.map {
@@ -228,7 +227,6 @@ extension TreeNode where T == ViewProperties {
             intrinsicSize: intrinsicSize,
             childDimensions: childNodes.map { $0.value.1 }
             )
-            .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
         
         // return the rough-size, concrete-size, intrinsic-size, and contents-size, of the node
         let result = ViewDimensions(

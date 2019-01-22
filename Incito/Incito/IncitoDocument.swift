@@ -188,6 +188,16 @@ struct VideoViewProperties: Decodable {
     var loop: Bool = false
     var controls: Bool = true
     var mime: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case source = "src"
+        case autoplay
+        case loop
+        case controls
+        case mime
+//        "video_width": 1500,
+//        "video_height": 844,
+    }
 }
 
 /////////////////

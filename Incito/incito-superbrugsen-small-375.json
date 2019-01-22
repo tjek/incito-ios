@@ -1,0 +1,235 @@
+{
+                "version": "1.0.0",
+                "theme": {
+                    "text_color": "#000000",
+                    "line_spacing_multiplier": 1.4,
+                    "font_family": [
+                        "incito-cph-signs-regular",
+                        "HelveticaNeue-CondensedBold",
+                        "HelveticaNeueBoldCondensed",
+                        "HelveticaNeue-Bold-Condensed",
+                        "Helvetica Neue Bold Condensed",
+                        "HelveticaNeueBold",
+                        "HelveticaNeue-Bold",
+                        "Helvetica Neue Bold",
+                        "HelveticaNeue",
+                        "Helvetica Neue",
+                        "TeXGyreHerosCnBold",
+                        "Helvetica",
+                        "Tahoma",
+                        "Geneva",
+                        "Arial Narrow",
+                        "Arial",
+                        "sans-serif"
+                    ],
+                    "background_color": "#e1dabf"
+                },
+                "root_view": {
+                    "layout_width": 375,
+                    "gravity": "center_horizontal",
+                    "child_views": [
+                        {
+                            "role": "section",
+                            "layout_margin_bottom": 8,
+                            "id": "bb-offers-1",
+                            "child_views": [
+                                {
+                                    "view_name": "AbsoluteLayout",
+                                    "layout_width": 375,
+                                    "layout_height": 779.6666666666667,
+                                    "child_views": [                                        
+                                        {
+                                            "view_name": "AbsoluteLayout",
+                                            "role": "offer",
+                                            "layout_width": 187.5,
+                                            "layout_top": 404.6666666666667,
+                                            "layout_left": 187.5,
+                                            "layout_height": 187.5,
+                                            "id": "1673392",
+                                            "child_views": [
+                                                {
+                                                    "id": "main-container",
+                                                    "shadow_radius": 10,
+                                                    "shadow_dy": 0,
+                                                    "shadow_dx": 0,
+                                                    "shadow_color": "rgba(0, 0, 0, 0.3)",
+                                                    "max_height": 93.75,
+                                                    "layout_width": 80,
+                                                    "layout_left": 8,
+                                                    "layout_bottom": 8,
+                                                    "corner_radius": 10,
+                                                    "child_views": [
+                                                        {
+                                                            "id": "6-flasker-container",
+                                                            "padding": 4,
+                                                            "child_views": [
+                                                                {
+                                                                    "id": "6-flasker",
+                                                                    "view_name": "TextView",
+                                                                    "text_size": 11.52,
+                                                                    "text_color": "#ffffff",
+                                                                    "text_alignment": "center",
+                                                                    "text": "6 flasker",
+                                                                    "max_lines": 1,
+                                                                    "line_spacing_multiplier": 1,
+                                                                    "clip_children": false
+                                                                }
+                                                            ],
+                                                            "background_color": "#B40A0E"
+                                                        },
+                                                        {
+                                                            "id": "price-flex",
+                                                            "view_name": "FlexLayout",
+                                                            "padding_top": 8,
+                                                            "padding_right": 8,
+                                                            "padding_left": 8,
+                                                            "padding_bottom": 12.96,
+                                                            "min_height": 56,
+                                                            "layout_flex_justify_content": "center",
+                                                            "layout_flex_direction": "column",
+                                                            "layout_flex_align_items": "center",
+                                                            "layout_flex_align_content": "center",
+                                                            "child_views": [
+                                                                {
+                                                                    "id": "price-text",
+                                                                    "view_name": "TextView",
+                                                                    "text_size": 34.061135371179034,
+                                                                    "text_color": "#ffffff",
+                                                                    "text_alignment": "center",
+                                                                    "text": "279,-",
+                                                                    "spans": [],
+                                                                    "max_lines": 1,
+                                                                    "line_spacing_multiplier": 1,
+                                                                    "clip_children": false,
+                                                                    "accessibility_label": "279 kr."
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "background_color": "#cd161f"
+                                                },
+                                                {
+                                                    "id": "spar-flex",
+                                                    "view_name": "FlexLayout",
+                                                    "layout_width": 80,
+                                                    "layout_left": 8,
+                                                    "layout_flex_justify_content": "center",
+                                                    "layout_flex_direction": "row",
+                                                    "layout_bottom": 3,
+                                                    "clip_children": false,
+                                                    "child_views": [
+                                                        {
+                                                            "id": "spar-text",
+                                                            "view_name": "TextView",
+                                                            "text_size": 11.52,
+                                                            "text_color": "#000000",
+                                                            "text_alignment": "center",
+                                                            "text": "Spar 32070",
+                                                            "stroke_width": 1,
+                                                            "stroke_style": "solid",
+                                                            "stroke_color": "#A41219",
+                                                            "spans": [
+                                                                {
+                                                                    "start": 8,
+                                                                    "name": "superscript",
+                                                                    "end": 10
+                                                                }
+                                                            ],
+                                                            "padding_top": 2,
+                                                            "padding_right": 2.6666666666666665,
+                                                            "padding_left": 2.6666666666666665,
+                                                            "padding_bottom": 2,
+                                                            "min_width": 72,
+                                                            "max_width": 80,
+                                                            "max_lines": 1,
+                                                            "line_spacing_multiplier": 1,
+                                                            "layout_width": "wrap_content",
+                                                            "corner_radius": 6,
+                                                            "clip_children": false,
+                                                            "background_color": "#ffffff",
+                                                            "accessibility_label": "Spar 320,70 kr."
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "background_tile_mode": "repeat",
+                            "background_image_position": "center_center",
+                            "background_image": "https://bumblebee.imgix.net/feed-images/0fe6e0536af917626de988cbea64bd37?max-w=375&fit=crop&auto=compress%2Cformat&s=0728a73a985669d769873fbedc956bc4"
+                        }
+                    ]
+                },
+                "meta": {
+                    "system": "bumblebee-v2.0.23",
+                    "device": {
+                        "versionsSupported": [
+                            "1.2.3"
+                        ],
+                        "time": null,
+                        "pointer": "fine",
+                        "pixelRatio": 2,
+                        "orientation": "vertical",
+                        "maxWidth": 375,
+                        "locale": null,
+                        "geohash": "u4p5",
+                        "category": "mobile"
+                    },
+                    "build_time": 48,
+                    "author": "ShopGun <hello@shopgun.com> (https://shopgun.com/)"
+                },
+                "locale": "da_DK",
+                "id": "ip8d44bg7d9f",
+                "font_assets": {
+                    "incito-istok-regular": {
+                        "weight": "normal",
+                        "style": "normal",
+                        "src": [
+                            [
+                                "woff",
+                                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/istok-web-v11-latin-regular.woff"
+                            ],
+                            [
+                                "woff2",
+                                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/istok-web-v11-latin-regular.woff2"
+                            ],
+                            [
+                                "truetype",
+                                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/istok-web-v11-latin-regular.ttf"
+                            ],
+                            [
+                                "svg",
+                                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/istok-web-v11-latin-regular.svg"
+                            ],
+                            [
+                                "embedded-opentype",
+                                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/istok-web-v11-latin-regular.eot"
+                            ]
+                        ]
+                    },
+                    "incito-cph-signs-regular": {
+                        "weight": "normal",
+                        "style": "normal",
+                        "src": [
+                            [
+                                "woff",
+                                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/cph-signs-regular.woff"
+                            ],
+                            [
+                                "truetype",
+                                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/cph-signs-regular.ttf"
+                            ],
+                            [
+                                "svg",
+                                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/cph-signs-regular.svg"
+                            ],
+                            [
+                                "embedded-opentype",
+                                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/cph-signs-regular.eot"
+                            ]
+                        ]
+                    }
+                }
+            }

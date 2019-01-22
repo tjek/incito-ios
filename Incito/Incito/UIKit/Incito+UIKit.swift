@@ -97,6 +97,12 @@ extension TextViewProperties {
         paragraphStyle.maximumLineHeight = maxLineHeight
         paragraphStyle.minimumLineHeight = maxLineHeight
         
+        if self.maxLines == 1 {
+            paragraphStyle.lineBreakMode = .byClipping
+        } else {
+            paragraphStyle.lineBreakMode = .byWordWrapping
+        }
+        
         let attrStr = NSMutableAttributedString(
             string: string,
             attributes: [.foregroundColor: textColor.uiColor,
@@ -137,7 +143,7 @@ extension NSAttributedString {
                 width: constraintSize.width ?? .greatestFiniteMagnitude,
                 height: constraintSize.height ?? .greatestFiniteMagnitude
             ),
-            options: [.usesLineFragmentOrigin, .truncatesLastVisibleLine],
+            options: [.usesLineFragmentOrigin],
             context: nil)
         
         return Size(
