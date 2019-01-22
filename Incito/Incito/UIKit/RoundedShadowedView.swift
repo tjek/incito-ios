@@ -97,12 +97,15 @@ class RoundedShadowedView: UIView {
 
 extension RoundedShadowedView {
     convenience init(renderableView: RenderableView) {
-        let dimensions = renderableView.dimensions
-        let rect = CGRect(origin: renderableView.localPosition.cgPoint,
-                          size: dimensions.size.cgSize)
+        let size = renderableView.layout.size
         
-        let style = renderableView.viewProperties.style
-        let cornerRadius = style.cornerRadius.absolute(in: min(dimensions.size.width, dimensions.size.height) / 2)
+        let rect = CGRect(
+            origin: renderableView.layout.position.cgPoint,
+            size: size.cgSize
+        )
+        
+        let style = renderableView.layout.viewProperties.style
+        let cornerRadius = style.cornerRadius.absolute(in: min(size.width, size.height) / 2)
         
         self.init(
             frame: rect,

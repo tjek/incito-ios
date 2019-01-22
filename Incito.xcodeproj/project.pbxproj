@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		86A7E23B220F57C7001FB56F /* Pods_Incito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A489C6669186ACDA3F0D6DC /* Pods_Incito.framework */; };
-		AE090AD621A2A0890009159E /* Incito+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE090AD521A2A0890009159E /* Incito+Layout.swift */; };
 		AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC47219C34570021B1FD /* JSONValue.swift */; };
 		AE0DDC4A219CC2AC0021B1FD /* UIColor+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */; };
 		AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */ = {isa = PBXBuildFile; fileRef = AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */; };
@@ -49,6 +48,7 @@
 		AEDD608F21CBD72800C94188 /* String+PreventWidows.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */; };
 		AEE67E9A21F1F5E700FB1C7D /* incito-blocktest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */; };
 		AEE67E9C21F688D600FB1C7D /* UIImage+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */; };
+		AEE67E9F21F7122800FB1C7D /* Incito+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE090AD521A2A0890009159E /* Incito+Layout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +111,7 @@
 		AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+PreventWidows.swift"; sourceTree = "<group>"; };
 		AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "incito-blocktest-375.json"; path = "Incito/incito-blocktest-375.json"; sourceTree = SOURCE_ROOT; };
 		AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Sizing.swift"; sourceTree = "<group>"; };
+		AEE67E9D21F711BE00FB1C7D /* Incito+Layout_OLD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+Layout_OLD.swift"; sourceTree = "<group>"; };
 		E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -253,6 +254,7 @@
 				AE67582F219C25CC006BEA9C /* IncitoDocument.swift */,
 				AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */,
 				AE090AD521A2A0890009159E /* Incito+Layout.swift */,
+				AEE67E9D21F711BE00FB1C7D /* Incito+Layout_OLD.swift */,
 				AE4C57E121AFF60C0004976D /* IncitoTypes.swift */,
 				AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */,
 				AE88362B21E501100002CD56 /* UIKit */,
@@ -440,6 +442,7 @@
 				AE88362C21E5012C0002CD56 /* UIColor+Hex.swift in Sources */,
 				AE88362A21E500E30002CD56 /* UIView+AnchorPoint.swift in Sources */,
 				AE4C57E421AFF7300004976D /* IncitoTypes+UIKit.swift in Sources */,
+				AEE67E9F21F7122800FB1C7D /* Incito+Layout.swift in Sources */,
 				AE4C57EF21B575E70004976D /* TreeNode.swift in Sources */,
 				AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */,
 				AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */,
@@ -448,7 +451,6 @@
 				AE675830219C25CC006BEA9C /* IncitoDocument.swift in Sources */,
 				AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */,
 				AE88362621E4ECDB0002CD56 /* GenericIdentifier.swift in Sources */,
-				AE090AD621A2A0890009159E /* Incito+Layout.swift in Sources */,
 				AE88362821E4F31B0002CD56 /* Incito+UIKit.swift in Sources */,
 				AE40598221A6A52500D029AE /* DecodingHelpers.swift in Sources */,
 				AE4C57E221AFF60C0004976D /* IncitoTypes.swift in Sources */,

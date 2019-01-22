@@ -124,28 +124,28 @@ class IncitoViewController: UIViewController {
             textDefaults: defaultTextProperties
         )
         
-        DispatchQueue.global().async {
-            
-            let startA = Date.timeIntervalSinceReferenceDate
-            
-            
-            let layouterTree = rootIncitoView.generateLayouterTree(
-                layoutType: .block,
-                intrinsicViewSizer: intrinsicSizer
-            )
-            
-            let dimensionsTree = layouterTree.resolve(rootSize: parentSize)
-            
-            let oldRenderableTree = dimensionsTree.OLD_buildRenderableViewTree(
-                rendererProperties: self.renderer,
-                nodeBuilt: { _ in }
-            )
-            
-            let endA = Date.timeIntervalSinceReferenceDate
-            DispatchQueue.main.async {
-                print(" ⇢ 🚧 [OLD] Built layout graph: \(round((endA - startA) * 1_000))ms")
-            }
-        }
+//        DispatchQueue.global().async {
+//
+//            let startA = Date.timeIntervalSinceReferenceDate
+//
+//
+//            let layouterTree = rootIncitoView.generateLayouterTree(
+//                layoutType: .block,
+//                intrinsicViewSizer: intrinsicSizer
+//            )
+//
+//            let dimensionsTree = layouterTree.resolve(rootSize: parentSize)
+//
+//            let oldRenderableTree = dimensionsTree.OLD_buildRenderableViewTree(
+//                rendererProperties: self.renderer,
+//                nodeBuilt: { _ in }
+//            )
+//
+//            let endA = Date.timeIntervalSinceReferenceDate
+//            DispatchQueue.main.async {
+//                print(" ⇢ 🚧 [OLD] Built layout graph: \(round((endA - startA) * 1_000))ms")
+//            }
+//        }
         
         let startB = Date.timeIntervalSinceReferenceDate
         
@@ -158,7 +158,11 @@ class IncitoViewController: UIViewController {
             rendererProperties: self.renderer,
             nodeBuilt: { [weak self] renderableView in
                 guard let self = self else { return }
-                self.delegate?.viewElementLoaded(viewProperties: renderableView.viewProperties, incito: self.incitoDocument, in: self)
+                self.delegate?.viewElementLoaded(
+                    viewProperties: renderableView.layout.viewProperties,
+                    incito: self.incitoDocument,
+                    in: self
+                )
             }
         )
         let endB = Date.timeIntervalSinceReferenceDate
@@ -166,12 +170,21 @@ class IncitoViewController: UIViewController {
         
         self.delegate?.documentLoaded(incito: self.incitoDocument, in: self)
         
-//        
-//        let debugTree = layoutTree.mapValues { value, _, idx in
-//            "\(idx)) \(value.0.name ?? "?"): [ size \(value.2), pos \(value.3), margins \(value.1.layout.margins), padding \(value.1.layout.padding) ]"
-//        }
-//
-//        print("\(debugTree)")
+        
+        let debugTree: TreeNode<String> = layoutTree.mapValues { layout, _, idx in
+            
+            let name = layout.viewProperties.name ?? ""
+            let position = layout.position
+            let size = layout.size
+            
+            let res = "\(idx)) \(name): [\(position)\(size)]"
+            
+//            res += "\n\t dimensions: \(layout.dimensions)"
+            
+            return res
+        }
+
+        print("\(debugTree)")
         
         DispatchQueue.main.async { [weak self] in
             self?.initializeRootView(parentSize: parentSize.cgSize)
@@ -184,7 +197,7 @@ class IncitoViewController: UIViewController {
         
         guard let rootRenderableView = renderableTree?.value else { return }
         
-        let rootSize = rootRenderableView.dimensions.size.cgSize
+        let rootSize = rootRenderableView.layout.size.cgSize
         
         let wrapper = UIView()
         rootView = wrapper
@@ -255,11 +268,19 @@ class IncitoViewController: UIViewController {
             visibleRootViewWindow: renderWindow,
             didRender: { [weak self] renderableView, view in
                 guard let self = self else { return }
-                self.delegate?.viewDidRender(view: view, with: renderableView.viewProperties, in: self)
+                self.delegate?.viewDidRender(
+                    view: view,
+                    with: renderableView.layout.viewProperties,
+                    in: self
+                )
             },
             didUnrender: { [weak self] renderableView, view in
                 guard let self = self else { return }
-                self.delegate?.viewDidUnrender(view: view, with: renderableView.viewProperties, in: self)
+                self.delegate?.viewDidUnrender(
+                    view: view,
+                    with: renderableView.layout.viewProperties,
+                    in: self
+                )
         }) {
             rootView.addSubview(renderedRootView)
         }
@@ -327,14 +348,14 @@ extension IncitoViewController {
                 return false
             }
             
-            return predicate(renderableView.renderedView, renderableView.viewProperties)
+            return predicate(renderableView.renderedView, renderableView.layout.viewProperties)
         }
         
         if let renderableNode = renderableViewNode {
             
             let renderedViews = renderableNode.renderAllChildNodes(didRender: { _, _ in }, didUnrender: { _, _ in })
             // make sure the view is rendered
-            return (renderedViews, renderableNode.value.viewProperties)
+            return (renderedViews, renderableNode.value.layout.viewProperties)
         } else {
             return nil
         }
@@ -347,7 +368,7 @@ extension IncitoViewController {
         
         // TODO: keep dictionary of view/ids to improve performance
         let renderableViewNode = self.renderableTree?.first { node, _ in
-            node.value.viewProperties.id == elementId
+            node.value.layout.viewProperties.id == elementId
         }
         
         guard let renderableView = renderableViewNode?.value else {
@@ -375,9 +396,7 @@ struct ViewInteractionProperties {
 }
 
 class RenderableView {
-    let viewProperties: ViewProperties
-    let localPosition: Point<Double>
-    let dimensions: AbsoluteViewDimensions
+    let layout: ViewLayout
     let absoluteTransform: CGAffineTransform // the sum of all the parent view's transformations. Includes the localPosition translation.
     let siblingIndex: Int // The index of this view in relation to its siblings
     let renderer: (RenderableView) -> UIView
@@ -386,17 +405,13 @@ class RenderableView {
     fileprivate var renderedView: UIView? = nil
     
     init(
-        viewProperties: ViewProperties,
-        localPosition: Point<Double>,
-        dimensions: AbsoluteViewDimensions,
+        layout: ViewLayout,
         absoluteTransform: CGAffineTransform,
         siblingIndex: Int,
         renderer: @escaping (RenderableView) -> UIView,
         interactionProperties: ViewInteractionProperties?
         ) {
-        self.viewProperties = viewProperties
-        self.localPosition = localPosition
-        self.dimensions = dimensions
+        self.layout = layout
         self.absoluteTransform = absoluteTransform
         self.siblingIndex = siblingIndex
         self.renderer = renderer
@@ -428,7 +443,7 @@ class RenderableView {
     }
     
     var absoluteRect: CGRect {
-        return CGRect(origin: .zero, size: dimensions.size.cgSize)
+        return CGRect(origin: .zero, size: layout.size.cgSize)
             .applying(absoluteTransform)
     }
     
@@ -507,7 +522,7 @@ extension TreeNode where T == RenderableView {
     }
 }
 
-extension TreeNode where T == (ViewProperties, PassOneResult, Size<Double>, Point<Double>) {
+extension TreeNode where T == ViewLayout {
     func buildRenderableViewTree(rendererProperties: IncitoRenderer, nodeBuilt: (RenderableView) -> Void) -> TreeNode<RenderableView> {
         
         let interactionBuilder: (ViewProperties) -> ViewInteractionProperties? = { viewProperties in
@@ -527,11 +542,13 @@ extension TreeNode where T == (ViewProperties, PassOneResult, Size<Double>, Poin
             }
         }
         
-        return self.mapValues { (nodeValues, newParent, index) in
+        return self.mapValues { (viewLayout, newParent, index) in
             
-            let (viewProperties, dimensions, size, localPosition) = nodeValues
+            let viewProperties = viewLayout.viewProperties
+            let dimensions = viewLayout.dimensions
+            let localPosition = viewLayout.position
             
-            let parentSize = newParent?.value.dimensions.size ?? .zero
+            let parentSize = newParent?.value.layout.size ?? .zero
             let parentTransform = newParent?.value.absoluteTransform ?? .identity
             
             let localMove = CGAffineTransform.identity
@@ -539,79 +556,14 @@ extension TreeNode where T == (ViewProperties, PassOneResult, Size<Double>, Poin
                               y: CGFloat(localPosition.y))
             
             let transform = CGAffineTransform.identity
-                .concatenating(dimensions.layout.transform.affineTransform)
-                .concatenating(localMove)
-                .concatenating(parentTransform)
-            
-            let renderer = buildViewRenderer(rendererProperties, viewType: viewProperties.type, parentSize: parentSize)
-            
-            // TODO: not like this - remove the need for AbsViewDims in RenderableView
-            let absDimensions = AbsoluteViewDimensions(
-                size: size,
-                intrinsicSize: dimensions.intrinsicSize,
-                contentsSize: dimensions.contentsSize,
-                layout: dimensions.layout
-            )
-            
-            let renderableView = RenderableView(
-                viewProperties: viewProperties,
-                localPosition: localPosition,
-                dimensions: absDimensions,
-                absoluteTransform: transform,
-                siblingIndex: index,
-                renderer: renderer,
-                interactionProperties: interactionBuilder(viewProperties)
-            )
-            
-            nodeBuilt(renderableView)
-            
-            return renderableView
-        }
-    }
-}
-
-extension TreeNode where T == (view: ViewProperties, dimensions: AbsoluteViewDimensions, position: Point<Double>) {
-    func OLD_buildRenderableViewTree(rendererProperties: IncitoRenderer, nodeBuilt: (RenderableView) -> Void) -> TreeNode<RenderableView> {
-        
-        let interactionBuilder: (ViewProperties) -> ViewInteractionProperties? = { viewProperties in
-            let alphaTap: (UIView) -> Void = { view in
-                view.alpha = 1 + (0.5 - view.alpha)
-                print("Tapped Section!", view)
-            }
-            switch viewProperties.style.role {
-            case "section"?:
-                return ViewInteractionProperties(tapCallback: alphaTap, peekable: false)
-                
-            case "offer"?:
-                return ViewInteractionProperties(tapCallback: alphaTap, peekable: true)
-                
-            default:
-                return nil
-            }
-        }
-        
-        return self.mapValues { (nodeValues, newParent, index) in
-            
-            let (viewProperties, dimensions, localPosition) = nodeValues
-            
-            let parentSize = newParent?.value.dimensions.size ?? .zero
-            let parentTransform = newParent?.value.absoluteTransform ?? .identity
-            
-            let localMove = CGAffineTransform.identity
-                .translatedBy(x: CGFloat(localPosition.x),
-                              y: CGFloat(localPosition.y))
-            
-            let transform = CGAffineTransform.identity
-                .concatenating(dimensions.layout.transform.affineTransform)
+                .concatenating(dimensions.layoutProperties.transform.affineTransform)
                 .concatenating(localMove)
                 .concatenating(parentTransform)
             
             let renderer = buildViewRenderer(rendererProperties, viewType: viewProperties.type, parentSize: parentSize)
             
             let renderableView = RenderableView(
-                viewProperties: viewProperties,
-                localPosition: localPosition,
-                dimensions: dimensions,
+                layout: viewLayout,
                 absoluteTransform: transform,
                 siblingIndex: index,
                 renderer: renderer,
@@ -640,7 +592,9 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
                 textProperties: textProperties,
                 fontProvider: renderProperties.fontProvider,
                 textDefaults: renderProperties.theme?.textDefaults ?? .empty,
-                dimensions: renderableView.dimensions
+                size: renderableView.layout.size,
+                padding: renderableView.layout.dimensions.layoutProperties.padding,
+                intrinsicSize: renderableView.layout.dimensions.intrinsicSize
             )
             
             return container
@@ -675,10 +629,13 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
     return { renderableView in
         let view = renderer(renderableView)
         
-        // size the view
-        
         // apply the style properties to the view
-        let imageRequest = view.applyStyle(renderableView.viewProperties.style, dimensions: renderableView.dimensions, parentSize: parentSize)
+        let imageRequest = view.applyStyle(
+            renderableView.layout.viewProperties.style,
+            transform: renderableView.layout.dimensions.layoutProperties.transform,
+            parentSize: parentSize
+        )
+        // perform any image loading
         if let imgReq = imageRequest {
             renderProperties.imageViewLoader(imgReq.url) {
                 imgReq.completion($0)
@@ -696,7 +653,9 @@ extension UIView {
         textProperties: TextViewProperties,
         fontProvider: FontProvider,
         textDefaults: TextViewDefaultProperties,
-        dimensions: AbsoluteViewDimensions
+        size: Size<Double>,
+        padding: Edges<Double>,
+        intrinsicSize: Size<Double?>
         ) {
         
         let label = UILabel()
@@ -721,19 +680,19 @@ extension UIView {
         // labels are vertically aligned in incito, so add to a container view
         container.insertSubview(label, at: 0)
         
-        let containerInnerSize = dimensions.innerSize.cgSize
-        let textHeight: CGFloat = {
-            if let h = dimensions.intrinsicSize.height {
-                return CGFloat(h)
+        let containerInnerSize = size.inset(padding)
+        let textHeight: Double = {
+            if let h = intrinsicSize.height {
+                return h
             }
             // it may not have an intrinsic height calculated yet (eg. if the view container has absolute height specified)
-            return ceil(label.sizeThatFits(CGSize(width: containerInnerSize.width, height: 0)).height)
+            return Double(ceil(label.sizeThatFits(CGSize(width: containerInnerSize.width, height: 0)).height))
         }()
         
         label.frame = CGRect(
             origin: CGPoint(
-                x: dimensions.layout.padding.left,
-                y: dimensions.layout.padding.top
+                x: padding.left,
+                y: padding.top
             ),
             size: CGSize(
                 width: containerInnerSize.width,
@@ -774,7 +733,11 @@ extension UIView {
 }
 
 extension UIView {
-    func applyStyle(_ style: StyleProperties, dimensions: AbsoluteViewDimensions, parentSize: Size<Double>) -> ImageViewLoadRequest? {
+    func applyStyle(
+        _ style: StyleProperties,
+        transform: Transform<Double>,
+        parentSize: Size<Double>
+        ) -> ImageViewLoadRequest? {
         
         // apply the layout.view properties
         backgroundColor = style.backgroundColor?.uiColor ?? .clear
@@ -782,6 +745,7 @@ extension UIView {
         
         var imageLoadReq: ImageViewLoadRequest? = nil
         if let bgImage = style.backgroundImage {
+            // TODO: do any image-resizing as an off-main callback
             imageLoadReq = ImageViewLoadRequest(url: bgImage.source) { [weak self] loadedImageView in
                 guard let self = self else { return }
                 
@@ -813,7 +777,7 @@ extension UIView {
         self.setAnchorPoint(anchorPoint: CGPoint.zero)
         
         self.transform = self.transform
-            .concatenating(dimensions.layout.transform.affineTransform)
+            .concatenating(transform.affineTransform)
         
         return imageLoadReq
     }
