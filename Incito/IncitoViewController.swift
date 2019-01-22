@@ -170,22 +170,21 @@ class IncitoViewController: UIViewController {
         
         self.delegate?.documentLoaded(incito: self.incitoDocument, in: self)
         
-        
-        let debugTree: TreeNode<String> = layoutTree.mapValues { layout, _, idx in
+        if self.printDebugLayout {
+            let debugTree: TreeNode<String> = layoutTree.mapValues { layout, _, idx in
+                
+                let name = layout.viewProperties.name ?? ""
+                let position = layout.position
+                let size = layout.size
+                
+                let res = "\(idx)) \(name): [\(position)\(size)]"
+                //                + "\n\t dimensions: \(layout.dimensions)"
+                
+                return res
+            }
             
-            let name = layout.viewProperties.name ?? ""
-            let position = layout.position
-            let size = layout.size
-            
-            let res = "\(idx)) \(name): [\(position)\(size)]"
-            
-//            res += "\n\t dimensions: \(layout.dimensions)"
-            
-            return res
+            print("\(debugTree)")
         }
-
-        print("\(debugTree)")
-        
         DispatchQueue.main.async { [weak self] in
             self?.initializeRootView(parentSize: parentSize.cgSize)
         }
@@ -231,6 +230,7 @@ class IncitoViewController: UIViewController {
     
     var showDebugOutlines: Bool = false
     var showDebugRenderWindow: Bool = false
+    var printDebugLayout: Bool = false
     
     func renderVisibleViews() {
         

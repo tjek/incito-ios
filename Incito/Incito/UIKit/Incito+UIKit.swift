@@ -96,7 +96,6 @@ extension TextViewProperties {
         paragraphStyle.alignment = alignment
         paragraphStyle.maximumLineHeight = maxLineHeight
         paragraphStyle.minimumLineHeight = maxLineHeight
-        paragraphStyle.lineBreakMode = .byTruncatingTail
         
         let attrStr = NSMutableAttributedString(
             string: string,

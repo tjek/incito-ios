@@ -585,9 +585,9 @@ func calculateActualSize(parentLayoutType: LayoutType, parentSize: Size<Double>,
     switch parentLayoutType {
     case .block:
         return calculateBlockChildActualSize(
-            parentContentsSize: parentContentsSize,
+            parentSize: parentSize,
+            parentPadding: parentPadding,
             concreteSize: dimensions.concreteSize,
-            roughSize: dimensions.roughSize,
             contentsSize: dimensions.contentsSize,
             padding: dimensions.layoutProperties.padding
         )
@@ -615,12 +615,13 @@ func calculateActualSize(parentLayoutType: LayoutType, parentSize: Size<Double>,
     }
 }
 
-func calculateBlockChildActualSize(parentContentsSize: Size<Double?>, concreteSize: Size<Double?>, roughSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>) -> Size<Double> {
+func calculateBlockChildActualSize(parentSize: Size<Double>, parentPadding: Edges<Double>, concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>) -> Size<Double> {
     
     let paddedContentsSize = contentsSize.inset(padding.negated)
-
+    let parentInnerSize = parentSize.inset(parentPadding)
+    
     return Size(
-        width: concreteSize.width ?? parentContentsSize.width ?? roughSize.width ?? 0,
+        width: concreteSize.width ?? parentInnerSize.width,
         height: concreteSize.height ?? paddedContentsSize.height ?? 0
     )
 }
