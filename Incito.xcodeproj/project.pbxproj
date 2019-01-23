@@ -189,7 +189,6 @@
 			children = (
 				AE67580F219C2592006BEA9C /* AppDelegate.swift */,
 				AE4C57E721AFF8280004976D /* DemoViewController.swift */,
-				AE675811219C2592006BEA9C /* IncitoViewController.swift */,
 				AE88362F21E502190002CD56 /* Incito */,
 				AE88362D21E501480002CD56 /* Debug */,
 				AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */,
@@ -229,6 +228,7 @@
 		AE88362B21E501100002CD56 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				AE675811219C2592006BEA9C /* IncitoViewController.swift */,
 				AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */,
 				AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */,
 				AE88362721E4F31B0002CD56 /* Incito+UIKit.swift */,
