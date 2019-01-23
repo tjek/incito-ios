@@ -272,20 +272,31 @@ struct Stroke {
 }
 
 /// `TranslateValue` is the value used by the translate point property
-struct Transform<TranslateValue> {
+struct Transform<Value> {
     var scale: Double
-    var translate: Point<TranslateValue>
     var rotate: Double // radians
-    // TODO: how is this represented?
-    //    let origin: [String] // seems to more be an tuple of 2 Unit strings? x & y?
+    // if these are % values, they are relative to the views size, not the parent's size
+    var translate: Point<Value>
+    var origin: Point<Value>
 }
 
-extension Transform where TranslateValue == Unit {
+extension Transform where Value == Unit {
     static var identity = Transform(
         scale: 1,
+        rotate: 0,
         translate: Point(x: .pts(0), y: .pts(0)),
-        rotate: 0
+        origin: Point(x: .pts(0), y: .pts(0))
     )
+}
+extension Transform where Value: Numeric {
+    static var identity: Transform {
+        return Transform(
+            scale: 1,
+            rotate: 0,
+            translate: .zero,
+            origin: .zero
+        )
+    }
 }
 
 enum HorizontalGravity: String, Decodable {

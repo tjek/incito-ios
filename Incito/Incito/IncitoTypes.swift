@@ -96,3 +96,22 @@ extension Corners where Value == Unit {
         )
     }
 }
+
+extension Point where Value == Unit {
+    func absolute(in size: Size<Double>) -> Point<Double> {
+        return Point<Double>(
+            x: x.absolute(in: size.width),
+            y: y.absolute(in: size.height)
+        )
+    }
+}
+extension Transform where Value == Unit {
+    func absolute(viewSize: Size<Double>) -> Transform<Double> {
+        return Transform<Double>(
+            scale: self.scale,
+            rotate: self.rotate,
+            translate: self.translate.absolute(in: viewSize),
+            origin: self.origin.absolute(in: viewSize)
+        )
+    }
+}

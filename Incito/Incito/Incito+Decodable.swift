@@ -208,6 +208,11 @@ extension LayoutProperties: Decodable {
         if let rotateDegs: Double = try c.decodeIfPresent(.transformRotate) {
             transform.rotate = rotateDegs * .pi / 180
         }
+        if let originVals: [Unit] = try c.decodeIfPresent(.transformOrigin),
+            originVals.count > 1 {
+            transform.origin = Point(x: originVals[0], y: originVals[1])
+        }
+        
         self.transform = transform
     }
 }

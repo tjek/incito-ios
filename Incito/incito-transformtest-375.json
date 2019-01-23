@@ -5,9 +5,10 @@
         "background_color": "#5c5c5c"
     },
     "root_view": {
+        "view_name": "AbsoluteLayout",
         "layout_width": 350,
         "layout_height": 1500,
-        "padding": 10,
+        "padding": 50,
         "gravity": "center_horizontal",
         "background_color": "#ffffff",
         "child_views": [
@@ -17,7 +18,12 @@
                 "layout_width": 100,
                 "layout_height": 150,
                 "background_color": "#019a01",
-                "transform_rotate": 30,
+                "transform_rotate": 13.5,
+                "transform_scale": 1.5,
+                "transform_origin": [
+                    10,
+                    "50px"
+                ],
                 "child_views": [
                     {
                         "padding": 10,
@@ -37,11 +43,19 @@
                     }
                 ]
             },
+            {
+                "layout_width": 6,
+                "layout_height": 6,
+                "transform_translate_y": -3,
+                "transform_translate_x": -3,
+                "background_color": "rgba(255,128,255, 0.7)"
+            },
             { 
                 "gravity": "center_horizontal",
                 "padding": 10,
                 "layout_width": 100,
                 "layout_height": 150,
+                "layout_top": 300,
                 "background_color": "#019a01",
                 "transform_scale": 2,
                 "layout_margin_top": 50,

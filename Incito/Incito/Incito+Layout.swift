@@ -38,6 +38,7 @@ struct ViewLayout {
     var position: Point<Double>
     var viewProperties: ViewProperties
     var dimensions: ViewDimensions
+    var transform: Transform<Double>
 }
 
 typealias IntrinsicSizer = (_ sizeConstraint: Size<Double?>) -> Size<Double?>
@@ -73,8 +74,6 @@ struct ResolvedLayoutProperties {
     var minSize: Size<Double>
 
     var size: Size<Double?> // nil if fitting to child
-    
-    var transform: Transform<Double>
 }
 
 extension ResolvedLayoutProperties {
@@ -99,15 +98,6 @@ extension ResolvedLayoutProperties {
         let widthOnlyParentSize = Size(width: parentSize.width, height: parentSize.width)
         self.margins = properties.margins.absolute(in: widthOnlyParentSize)
         self.padding = properties.padding.absolute(in: widthOnlyParentSize)
-        
-        self.transform = Transform(
-            scale: properties.transform.scale,
-            translate: Point(
-                x: properties.transform.translate.x.absolute(in: parentSize.width),
-                y: properties.transform.translate.y.absolute(in: parentSize.height)
-            ),
-            rotate: properties.transform.rotate
-        )
     }
 }
 
@@ -255,7 +245,8 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
             size: actualSize,
             position: .zero,
             viewProperties: self.value.properties,
-            dimensions: self.value.dimensions
+            dimensions: self.value.dimensions,
+            transform: self.value.properties.layout.transform.absolute(viewSize: actualSize)
         )
         
         let newNode = TreeNode<ViewLayout>(value: viewLayout)

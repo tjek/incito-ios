@@ -17,6 +17,7 @@ class DemoViewController: UIViewController {
         ("incito-imagetest-375.json", nil),
         ("incito-elgiganten-small-375.json", nil),
         ("incito-elgiganten-375.json", nil),
+        ("incito-elgiganten-legacy-375.json", nil),
         ("incito-superbrugsen-small-375.json", nil),
         ("incito-superbrugsen-375.json", nil),
         ("incito-fakta-small-375.json", "fakta-incito-375-reference"),

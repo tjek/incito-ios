@@ -35,6 +35,10 @@ class IncitoViewController: UIViewController {
     var rootView: UIView?
     var renderer: IncitoRenderer
     
+    var showDebugOutlines: Bool = false
+    var showDebugRenderWindow: Bool = false
+    var printDebugLayout: Bool = false
+    
     init(incito: IncitoDocument) {
         self.incitoDocument = incito
         self.renderer = IncitoRenderer(
@@ -125,8 +129,8 @@ class IncitoViewController: UIViewController {
         )
         
         var layoutTree: TreeNode<ViewLayout>!
-        print("⇢ 🚧 Building LayoutTree...")
-        measure("  Total", timeScale: .milliseconds) {
+        print(" ⇢ 🚧 Building LayoutTree...")
+        measure("   Total", timeScale: .milliseconds) {
             layoutTree = rootIncitoView.layout(
                 rootSize: parentSize,
                 intrinsicSizerBuilder: intrinsicSizer
@@ -206,10 +210,6 @@ class IncitoViewController: UIViewController {
     
     var debugWindowViews = (top: UIView(), bottom: UIView())
     var debugOutlineViews: [UIView] = []
-    
-    var showDebugOutlines: Bool = false
-    var showDebugRenderWindow: Bool = false
-    var printDebugLayout: Bool = false
     
     func renderVisibleViews() {
         
@@ -524,7 +524,6 @@ extension TreeNode where T == ViewLayout {
         return self.mapValues { (viewLayout, newParent, index) in
             
             let viewProperties = viewLayout.viewProperties
-            let dimensions = viewLayout.dimensions
             let localPosition = viewLayout.position
             
             let parentSize = newParent?.value.layout.size ?? .zero
@@ -536,7 +535,7 @@ extension TreeNode where T == ViewLayout {
                               y: CGFloat(localPosition.y))
             
             let transform = CGAffineTransform.identity
-                .concatenating(dimensions.layoutProperties.transform.affineTransform)
+                .concatenating(viewLayout.transform.affineTransform)
                 .concatenating(localMove)
                 .concatenating(parentTransform)
             
@@ -610,7 +609,7 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
         // apply the style properties to the view
         let imageRequest = view.applyStyle(
             renderableView.layout.viewProperties.style,
-            transform: renderableView.layout.dimensions.layoutProperties.transform,
+            transform: renderableView.layout.transform,
             parentSize: parentSize
         )
         // perform any image loading
@@ -822,11 +821,13 @@ extension UIView {
     }
 }
 
-extension Transform where TranslateValue == Double {
+extension Transform where Value == Double {
     var affineTransform: CGAffineTransform {
         return CGAffineTransform.identity
+            .translatedBy(x: CGFloat(origin.x), y: CGFloat(origin.y))
             .translatedBy(x: CGFloat(translate.x), y: CGFloat(translate.y))
             .rotated(by: CGFloat(rotate))
             .scaledBy(x: CGFloat(scale), y: CGFloat(scale))
+            .translatedBy(x: CGFloat(-origin.x), y: CGFloat(-origin.y))
     }
 }
