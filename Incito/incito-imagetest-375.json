@@ -1,0 +1,111 @@
+{
+    "version": "1.0.0",
+    "id": "flex-test-375",
+    "theme": {
+        "background_color": "#5c5c5c"
+    },
+    "root_view": {
+        "layout_width": 350,
+        "layout_height": 1500,
+        "padding": 10,
+        "gravity": "center_horizontal",
+        "background_color": "#ffffff",
+        "child_views": [
+            {
+                "view_name": "ImageView",
+                "src": "https://media.giphy.com/media/eB5WYVSaOT0qUmHOWA/giphy.gif",
+                "layout_width": 300,
+                "layout_height": 300,
+                "transform_rotate": -10,
+                "background_color": "#ffffff"
+            },
+            {
+                "view_name": "ImageView",
+                "src": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Sunflower_as_gif_websafe.gif",
+                "layout_width": 300,
+                "layout_height": 300,
+                "background_color": "#ffffff"
+            },            
+            { 
+                "gravity": "center_horizontal",
+                "padding": 10,
+                "layout_width": 150,
+                "layout_height": 200,
+                "background_color": "#019a01",
+                "transform_rotate": 30,
+                "shadow_radius": 10,
+                "shadow_dx": 2,
+                "shadow_color": "#000000",
+                "corner_radius": 10,
+                "xcorner_top_left_radius": 20,
+                "xclip_children": false,
+                "child_views": [
+                    {
+                        "padding": 10,
+                        "layout_height": "50%",
+                        "background_color": "#00ff00",
+                        "transform_rotate": -20,
+                        "transform_translate_y": 5,
+                        "child_views": [
+                            {
+                                "padding": 10,
+                                "layout_width": "80%",
+                                "background_color": "#0000ff",
+                                "transform_rotate": 20,
+                                "transform_scale": 1.6
+                            }
+                        ]
+                    },
+                    {
+                        "view_name": "ImageView",
+                        "src": "https://media.giphy.com/media/ta83CqOoRwfwQ/giphy.gif",
+                        "layout_width": 130,
+                        "layout_height": 130,
+                        "transform_rotate": -10,
+                        "shadow_radius": 10,
+                        "shadow_dx": 2,
+                        "shadow_color": "#000000",
+                        "corner_top_left_radius": 20,
+                        "background_color": "#ffffff"
+                    },
+                ]
+            },
+            { 
+                "gravity": "center_horizontal",
+                "padding": 10,
+                "layout_width": 100,
+                "layout_height": 150,
+                "background_color": "#019a01",
+                "transform_scale": 2,
+                "layout_margin_top": 50,
+                "transform_rotate": -20,
+                "child_views": [
+                    {
+                        "padding": 10,
+                        "background_color": "#00ff00",
+                        "transform_scale": 0.6,
+                        "transform_rotate": 15
+                    },
+                    {
+                        "padding": 10,
+                        "layout_margin": 10,
+                        "background_color": "#00ff00"
+                    },
+                    {
+                        "padding": 10,
+                        "layout_margin": 10,
+                        "transform_scale": 0.5,
+                        "transform_rotate": 15,
+                        "background_color": "#00ff00"
+                    },
+                    {
+                        "padding": 10,
+                        "layout_margin": 10,
+                        "background_color": "#00ff00"
+                    }
+                ]
+
+            }
+        ]    
+    }
+}

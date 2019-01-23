@@ -590,7 +590,8 @@ func calculateActualSize(parentLayoutType: LayoutType, parentSize: Size<Double>,
             parentPadding: parentPadding,
             concreteSize: dimensions.concreteSize,
             contentsSize: dimensions.contentsSize,
-            padding: dimensions.layoutProperties.padding
+            padding: dimensions.layoutProperties.padding,
+            margins: dimensions.layoutProperties.margins
         )
     case .absolute:
         return calculateAbsoluteChildActualSize(
@@ -616,30 +617,30 @@ func calculateActualSize(parentLayoutType: LayoutType, parentSize: Size<Double>,
     }
 }
 
-func calculateBlockChildActualSize(parentSize: Size<Double>, parentPadding: Edges<Double>, concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>) -> Size<Double> {
+func calculateBlockChildActualSize(parentSize: Size<Double>, parentPadding: Edges<Double>, concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>, margins: Edges<Double>) -> Size<Double> {
     
-    let paddedContentsSize = contentsSize.outset(padding)
-    let parentInnerSize = parentSize.inset(parentPadding)
+    let paddedContentsSize = contentsSize.unwrapped(or: .zero).outset(padding)
+    let parentInnerSize = parentSize.inset(parentPadding).inset(margins)
     
     return Size(
         width: concreteSize.width ?? parentInnerSize.width,
-        height: concreteSize.height ?? paddedContentsSize.height ?? 0
+        height: concreteSize.height ?? paddedContentsSize.height
     )
 }
 
 func calculateAbsoluteChildActualSize(concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>) -> Size<Double> {
     
-    let paddedContentsSize = contentsSize.outset(padding)
+    let paddedContentsSize = contentsSize.unwrapped(or: .zero).outset(padding)
     
     return Size(
-        width: concreteSize.width ?? paddedContentsSize.width ?? 0,
-        height: concreteSize.height ?? paddedContentsSize.height ?? 0
+        width: concreteSize.width ?? paddedContentsSize.width,
+        height: concreteSize.height ?? paddedContentsSize.height
     )
 }
 
 func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>, margins: Edges<Double>, flexGrow: Double, siblingFlexGrows: [Double], flexShrink: Double, siblingFlexShrinks: [Double], parentSize: Size<Double>, parentPadding: Edges<Double>, parentContentsSize: Size<Double?>) -> Size<Double> {
     
-    let paddedContentsSize = contentsSize.outset(padding)
+    let paddedContentsSize = contentsSize.unwrapped(or: .zero).outset(padding)
     
     let normalizedGrow: Double = {
         let totalGrow: Double = siblingFlexGrows.reduce(flexGrow, +)
@@ -667,12 +668,12 @@ func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concrete
                     .inset(margins)
                     .width
             } else {
-                return paddedContentsSize.width ?? 0
+                return paddedContentsSize.width
             }
         }()
         
         let height: Double = {
-            let actualHeight = concreteSize.height ?? paddedContentsSize.height ?? 0
+            let actualHeight = concreteSize.height ?? paddedContentsSize.height
             
             let freeSpace = parentSize.height - parentPadding.top - parentPadding.bottom - (parentContentsSize.height ?? 0)
             
@@ -700,12 +701,12 @@ func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concrete
                     .inset(margins)
                     .height
             } else {
-                return paddedContentsSize.height ?? 0
+                return paddedContentsSize.height
             }
         }()
         
         let width: Double = {
-            let actualWidth = concreteSize.width ?? paddedContentsSize.width ?? 0
+            let actualWidth = concreteSize.width ?? paddedContentsSize.width
             
             let freeSpace = parentSize.width - parentPadding.left - parentPadding.right - (parentContentsSize.width ?? 0)
             

@@ -5,107 +5,65 @@
         "background_color": "#5c5c5c"
     },
     "root_view": {
-        "layout_width": 350,
-        "layout_height": 1500,
-        "padding": 10,
+        "layout_width": 375,
         "gravity": "center_horizontal",
-        "background_color": "#ffffff",
         "child_views": [
             {
-                "view_name": "ImageView",
-                "src": "https://media.giphy.com/media/eB5WYVSaOT0qUmHOWA/giphy.gif",
-                "layout_width": 300,
-                "layout_height": 300,
-                "transform_rotate": -10,
-                "background_color": "#ffffff"
-            },
-            {
-                "view_name": "ImageView",
-                "src": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Sunflower_as_gif_websafe.gif",
-                "layout_width": 300,
-                "layout_height": 300,
-                "background_color": "#ffffff"
-            },            
-            { 
-                "gravity": "center_horizontal",
-                "padding": 10,
-                "layout_width": 150,
+                "view_name": "FlexLayout",
+                "layout_flex_direction": "column",
+                "layout_flex_align_items": "stretch",
+                "layout_width": 350,
                 "layout_height": 200,
-                "background_color": "#019a01",
-                "transform_rotate": 30,
-                "shadow_radius": 10,
-                "shadow_dx": 2,
-                "shadow_color": "#000000",
-                "corner_radius": 10,
-                "xcorner_top_left_radius": 20,
-                "xclip_children": false,
+                "xpadding": 10,
+                "gravity": "center_horizontal",
+                "background_color": "#ffffff",
                 "child_views": [
                     {
-                        "padding": 10,
-                        "layout_height": "50%",
-                        "background_color": "#00ff00",
-                        "transform_rotate": -20,
-                        "transform_translate_y": 5,
+                        "layout_width": 100,
+                        "layout_height": 100,
+                        "xlayout_margin": 10,
+                        "layout_flex_grow": 1,
+                        "layout_flex_shrink": 1,
+                        "xlayout_flex_basis": 0,
+                        "background_color": "#aa00ff"
+                    },
+                    {
+                        "xlayout_height": 50,
+                        "xlayout_width": 60,
+                        "xlayout_margin": 10,
+                        "xlayout_flex_grow": 1,
+                        "layout_flex_shrink": 0,
+                        "xlayout_flex_basis": "50%",
+                        "background_color": "#ff00aa",
                         "child_views": [
                             {
-                                "padding": 10,
-                                "layout_width": "80%",
-                                "background_color": "#0000ff",
-                                "transform_rotate": 20,
-                                "transform_scale": 1.6
+                                "layout_width": 30,
+                                "layout_height": 50,
+                                "background_color": "#ffaa00"
+                            },
+                            {
+                                "layout_width": 100,
+                                "layout_height": 30,
+                                "background_color": "#00ff00"
+                            },
+                            {
+                                "layout_width": 80,
+                                "layout_height": 20,
+                                "background_color": "#0000ff"
                             }
                         ]
                     },
                     {
-                        "view_name": "ImageView",
-                        "src": "https://media.giphy.com/media/ta83CqOoRwfwQ/giphy.gif",
-                        "layout_width": 130,
-                        "layout_height": 130,
-                        "transform_rotate": -10,
-                        "shadow_radius": 10,
-                        "shadow_dx": 2,
-                        "shadow_color": "#000000",
-                        "corner_top_left_radius": 20,
-                        "background_color": "#ffffff"
-                    },
-                ]
-            },
-            { 
-                "gravity": "center_horizontal",
-                "padding": 10,
-                "layout_width": 100,
-                "layout_height": 150,
-                "background_color": "#019a01",
-                "transform_scale": 2,
-                "layout_margin_top": 50,
-                "transform_rotate": -20,
-                "child_views": [
-                    {
-                        "padding": 10,
-                        "background_color": "#00ff00",
-                        "transform_scale": 0.6,
-                        "transform_rotate": 15
-                    },
-                    {
-                        "padding": 10,
-                        "layout_margin": 10,
-                        "background_color": "#00ff00"
-                    },
-                    {
-                        "padding": 10,
-                        "layout_margin": 10,
-                        "transform_scale": 0.5,
-                        "transform_rotate": 15,
-                        "background_color": "#00ff00"
-                    },
-                    {
-                        "padding": 10,
-                        "layout_margin": 10,
-                        "background_color": "#00ff00"
+                        "layout_width": 300,
+                        "layout_height": 100,
+                        "xlayout_margin": 10,
+                        "xlayout_flex_grow": 1,
+                        "layout_flex_shrink": 2,
+                        "xlayout_flex_basis": 0,
+                        "background_color": "#00ffaa"
                     }
                 ]
-
             }
-        ]    
+        ]
     }
 }

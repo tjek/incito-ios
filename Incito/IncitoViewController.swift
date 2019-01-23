@@ -157,7 +157,7 @@ class IncitoViewController: UIViewController {
                 let size = layout.size
                 
                 let res = "\(idx)) \(name): [\(position)\(size)]"
-                //                + "\n\t dimensions: \(layout.dimensions)"
+//                    + "\n\t dimensions: \(layout.dimensions)\n"
                 
                 return res
             }

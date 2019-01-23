@@ -1,0 +1,78 @@
+{
+    "version": "1.0.0",
+    "id": "flex-test-375",
+    "theme": {
+        "background_color": "#5c5c5c"
+    },
+    "root_view": {
+        "layout_width": 350,
+        "layout_height": 1500,
+        "padding": 10,
+        "gravity": "center_horizontal",
+        "background_color": "#ffffff",
+        "child_views": [
+            { 
+                "gravity": "center_horizontal",
+                "padding": 10,
+                "layout_width": 100,
+                "layout_height": 150,
+                "background_color": "#019a01",
+                "transform_rotate": 30,
+                "child_views": [
+                    {
+                        "padding": 10,
+                        "layout_height": "50%",
+                        "background_color": "#00ff00",
+                        "transform_rotate": -20,
+                        "transform_translate_y": 5,
+                        "child_views": [
+                            {
+                                "padding": 10,
+                                "layout_width": "80%",
+                                "background_color": "#0000ff",
+                                "transform_rotate": 20,
+                                "transform_scale": 1.6
+                            }
+                        ]
+                    }
+                ]
+            },
+            { 
+                "gravity": "center_horizontal",
+                "padding": 10,
+                "layout_width": 100,
+                "layout_height": 150,
+                "background_color": "#019a01",
+                "transform_scale": 2,
+                "layout_margin_top": 50,
+                "transform_rotate": -20,
+                "child_views": [
+                    {
+                        "padding": 10,
+                        "background_color": "#00ff00",
+                        "transform_scale": 0.6,
+                        "transform_rotate": 15
+                    },
+                    {
+                        "padding": 10,
+                        "layout_margin": 10,
+                        "background_color": "#00ff00"
+                    },
+                    {
+                        "padding": 10,
+                        "layout_margin": 10,
+                        "transform_scale": 0.5,
+                        "transform_rotate": 15,
+                        "background_color": "#00ff00"
+                    },
+                    {
+                        "padding": 10,
+                        "layout_margin": 10,
+                        "background_color": "#00ff00"
+                    }
+                ]
+
+            }
+        ]    
+    }
+}

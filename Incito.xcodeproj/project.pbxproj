@@ -24,6 +24,8 @@
 		AE58298D21F85513009F4D8A /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58298C21F85513009F4D8A /* Measure.swift */; };
 		AE58298F21F8797C009F4D8A /* incito-elgiganten-768.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58298E21F8797B009F4D8A /* incito-elgiganten-768.json */; };
 		AE58299121F88514009F4D8A /* GenericGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299021F88514009F4D8A /* GenericGeometry.swift */; };
+		AE58299321F8932E009F4D8A /* incito-imagetest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58299221F8932D009F4D8A /* incito-imagetest-375.json */; };
+		AE58299521F8A339009F4D8A /* incito-transformtest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58299421F8A338009F4D8A /* incito-transformtest-375.json */; };
 		AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67580F219C2592006BEA9C /* AppDelegate.swift */; };
 		AE675812219C2592006BEA9C /* IncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675811219C2592006BEA9C /* IncitoViewController.swift */; };
 		AE675815219C2592006BEA9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675813219C2592006BEA9C /* Main.storyboard */; };
@@ -88,6 +90,8 @@
 		AE58298C21F85513009F4D8A /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		AE58298E21F8797B009F4D8A /* incito-elgiganten-768.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-768.json"; sourceTree = "<group>"; };
 		AE58299021F88514009F4D8A /* GenericGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericGeometry.swift; sourceTree = "<group>"; };
+		AE58299221F8932D009F4D8A /* incito-imagetest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-imagetest-375.json"; sourceTree = "<group>"; };
+		AE58299421F8A338009F4D8A /* incito-transformtest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-transformtest-375.json"; sourceTree = "<group>"; };
 		AE67580C219C2592006BEA9C /* Incito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Incito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE67580F219C2592006BEA9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE675811219C2592006BEA9C /* IncitoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoViewController.swift; sourceTree = "<group>"; };
@@ -190,6 +194,8 @@
 				AE88362D21E501480002CD56 /* Debug */,
 				AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */,
 				AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */,
+				AE58299221F8932D009F4D8A /* incito-imagetest-375.json */,
+				AE58299421F8A338009F4D8A /* incito-transformtest-375.json */,
 				AE4C57F021BE54560004976D /* incito-fakta-small-375.json */,
 				AE94AD8A21AC349100876ED6 /* incito-fakta-375.json */,
 				AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */,
@@ -368,8 +374,10 @@
 				AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */,
 				AEE67E9A21F1F5E700FB1C7D /* incito-blocktest-375.json in Resources */,
 				AE94AD8B21AC349100876ED6 /* incito-fakta-375.json in Resources */,
+				AE58299521F8A339009F4D8A /* incito-transformtest-375.json in Resources */,
 				AE58298B21F767F9009F4D8A /* incito-superbrugsen-small-375.json in Resources */,
 				AE4C57F121BE54570004976D /* incito-fakta-small-375.json in Resources */,
+				AE58299321F8932E009F4D8A /* incito-imagetest-375.json in Resources */,
 				AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */,
 				AE40597E21A5A3A300D029AE /* simple-incito-static.json in Resources */,
 				AE675815219C2592006BEA9C /* Main.storyboard in Resources */,
