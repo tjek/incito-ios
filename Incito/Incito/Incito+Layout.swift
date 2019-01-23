@@ -111,12 +111,6 @@ extension ResolvedLayoutProperties {
     }
 }
 
-extension Double {
-    func clamped(min: Double, max: Double) -> Double {
-        return Swift.min(Swift.max(self, min), max)
-    }
-}
-
 /**
  These are the properties that are calculated for each node in the first layout pass.
  They are used to calculate the actual size of the node in the next pass.
@@ -189,7 +183,7 @@ extension TreeNode where T == ViewProperties {
         // make the view's layout properties absolute (in relation to the parent's inner-size)
         let resolvedLayoutProperties = ResolvedLayoutProperties(
             self.value.layout,
-            in: parentRoughInnerSize.unwrapped(width: 0, height: 0)
+            in: parentRoughInnerSize.unwrapped(or: .zero)
         )
         
         // calculate concrete-size (depends on node's layout-type)

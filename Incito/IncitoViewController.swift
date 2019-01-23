@@ -528,6 +528,7 @@ extension TreeNode where T == ViewLayout {
             let localPosition = viewLayout.position
             
             let parentSize = newParent?.value.layout.size ?? .zero
+            
             let parentTransform = newParent?.value.absoluteTransform ?? .identity
             
             let localMove = CGAffineTransform.identity
