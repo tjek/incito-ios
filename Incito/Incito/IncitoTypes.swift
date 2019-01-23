@@ -142,6 +142,9 @@ extension Size where Value == Double {
         return Size(width: self.width - edges.left - edges.right,
                     height: self.height - edges.top - edges.bottom)
     }
+    func outset(_ edges: Edges<Double>) -> Size<Double> {
+        return inset(edges.negated)
+    }
 }
 
 extension Size where Value == Double? {
@@ -154,6 +157,9 @@ extension Size where Value == Double? {
             insetSize.height = h - edges.top - edges.bottom
         }
         return insetSize
+    }
+    func outset(_ edges: Edges<Double>) -> Size<Double?> {
+        return inset(edges.negated)
     }
 }
 

@@ -22,6 +22,7 @@
 		AE4C57F121BE54570004976D /* incito-fakta-small-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE4C57F021BE54560004976D /* incito-fakta-small-375.json */; };
 		AE58298B21F767F9009F4D8A /* incito-superbrugsen-small-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58298A21F767F9009F4D8A /* incito-superbrugsen-small-375.json */; };
 		AE58298D21F85513009F4D8A /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58298C21F85513009F4D8A /* Measure.swift */; };
+		AE58298F21F8797C009F4D8A /* incito-elgiganten-768.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58298E21F8797B009F4D8A /* incito-elgiganten-768.json */; };
 		AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67580F219C2592006BEA9C /* AppDelegate.swift */; };
 		AE675812219C2592006BEA9C /* IncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675811219C2592006BEA9C /* IncitoViewController.swift */; };
 		AE675815219C2592006BEA9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675813219C2592006BEA9C /* Main.storyboard */; };
@@ -84,6 +85,7 @@
 		AE4C57F021BE54560004976D /* incito-fakta-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-small-375.json"; sourceTree = "<group>"; };
 		AE58298A21F767F9009F4D8A /* incito-superbrugsen-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-small-375.json"; sourceTree = "<group>"; };
 		AE58298C21F85513009F4D8A /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
+		AE58298E21F8797B009F4D8A /* incito-elgiganten-768.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-768.json"; sourceTree = "<group>"; };
 		AE67580C219C2592006BEA9C /* Incito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Incito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE67580F219C2592006BEA9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE675811219C2592006BEA9C /* IncitoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoViewController.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 				AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */,
 				AEA4109E21E7833400C6BEC1 /* incito-elgiganten-small-375.json */,
 				AEA4109C21E7819200C6BEC1 /* incito-elgiganten-375.json */,
+				AE58298E21F8797B009F4D8A /* incito-elgiganten-768.json */,
 				AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */,
 				AE40597D21A5A3A300D029AE /* simple-incito-static.json */,
 				AE675813219C2592006BEA9C /* Main.storyboard */,
@@ -357,6 +360,7 @@
 				AE675817219C2593006BEA9C /* Assets.xcassets in Resources */,
 				AEA4109D21E7819200C6BEC1 /* incito-elgiganten-375.json in Resources */,
 				AEDD608B21BFE1A500C94188 /* incito-flextest-375.json in Resources */,
+				AE58298F21F8797C009F4D8A /* incito-elgiganten-768.json in Resources */,
 				AEA4109F21E7833500C6BEC1 /* incito-elgiganten-small-375.json in Resources */,
 				AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */,
 				AEE67E9A21F1F5E700FB1C7D /* incito-blocktest-375.json in Resources */,

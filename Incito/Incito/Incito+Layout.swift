@@ -234,7 +234,9 @@ extension TreeNode where T == ViewProperties {
             intrinsicSize: intrinsicSize,
             childDimensions: childNodes.map { $0.value.1 }
             )
-        
+            .clamped(min: resolvedLayoutProperties.minSize.inset(resolvedLayoutProperties.padding),
+                     max: resolvedLayoutProperties.maxSize.inset(resolvedLayoutProperties.padding))
+
         // return the rough-size, concrete-size, intrinsic-size, and contents-size, of the node
         let result = ViewDimensions(
             concreteSize: concreteSize,
@@ -448,7 +450,7 @@ func calculateBlockContentsSize(intrinsicSize: Size<Double?>, childDimensions: [
             
             var maxWidth = res.2
             
-            let childPaddedContentsSize = childDims.contentsSize.inset(childDims.layoutProperties.padding.negated)
+            let childPaddedContentsSize = childDims.contentsSize.outset(childDims.layoutProperties.padding)
             
             let childPossibleSize = Size(
                 width: childDims.concreteSize.width ?? childPaddedContentsSize.width,
@@ -509,7 +511,7 @@ func calculateFlexContentsSize(flexProperties: FlexLayoutProperties, childDimens
                 
                 var maxWidth = res.1
                 
-                let childPaddedContentsSize = childDims.contentsSize.inset(childDims.layoutProperties.padding.negated)
+                let childPaddedContentsSize = childDims.contentsSize.outset(childDims.layoutProperties.padding)
                 
                 let childPossibleSize = Size(
                     width: childDims.concreteSize.width ?? childPaddedContentsSize.width,
@@ -549,7 +551,7 @@ func calculateFlexContentsSize(flexProperties: FlexLayoutProperties, childDimens
                 
                 var maxHeight = res.1
                 
-                let childPaddedContentsSize = childDims.contentsSize.inset(childDims.layoutProperties.padding.negated)
+                let childPaddedContentsSize = childDims.contentsSize.outset(childDims.layoutProperties.padding)
                 
                 let childPossibleSize = Size(
                     width: childDims.concreteSize.width ?? childPaddedContentsSize.width,
@@ -622,7 +624,7 @@ func calculateActualSize(parentLayoutType: LayoutType, parentSize: Size<Double>,
 
 func calculateBlockChildActualSize(parentSize: Size<Double>, parentPadding: Edges<Double>, concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>) -> Size<Double> {
     
-    let paddedContentsSize = contentsSize.inset(padding.negated)
+    let paddedContentsSize = contentsSize.outset(padding)
     let parentInnerSize = parentSize.inset(parentPadding)
     
     return Size(
@@ -633,7 +635,7 @@ func calculateBlockChildActualSize(parentSize: Size<Double>, parentPadding: Edge
 
 func calculateAbsoluteChildActualSize(concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>) -> Size<Double> {
     
-    let paddedContentsSize = contentsSize.inset(padding.negated)
+    let paddedContentsSize = contentsSize.outset(padding)
     
     return Size(
         width: concreteSize.width ?? paddedContentsSize.width ?? 0,
@@ -643,7 +645,7 @@ func calculateAbsoluteChildActualSize(concreteSize: Size<Double?>, contentsSize:
 
 func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>, margins: Edges<Double>, flexGrow: Double, siblingFlexGrows: [Double], flexShrink: Double, siblingFlexShrinks: [Double], parentSize: Size<Double>, parentPadding: Edges<Double>, parentContentsSize: Size<Double?>) -> Size<Double> {
     
-    let paddedContentsSize = contentsSize.inset(padding.negated)
+    let paddedContentsSize = contentsSize.outset(padding)
     
     let normalizedGrow: Double = {
         let totalGrow: Double = siblingFlexGrows.reduce(flexGrow, +)
@@ -873,15 +875,15 @@ func calculateFlexChildRowPosition(
     ) -> Point<Double> {
     
     let parentInnerSize = parentSize.inset(parentPadding)
-    let outerSize = size.inset(margins.negated)
+    let outerSize = size.outset(margins)
     
     // the width of all the preceding views
     let totalPrevSiblingWidth = prevSiblings.reduce(0, {
-        $0 + $1.size.inset($1.dimensions.layoutProperties.margins.negated).width
+        $0 + $1.size.outset($1.dimensions.layoutProperties.margins).width
     })
     // the width of all the following views
     let totalTrailingWidth = nextSiblings.reduce(0, {
-        $0 + $1.size.inset($1.dimensions.layoutProperties.margins.negated).width
+        $0 + $1.size.outset($1.dimensions.layoutProperties.margins).width
     })
     
     let totalSiblingWidth = totalPrevSiblingWidth + outerSize.width + totalTrailingWidth
@@ -957,15 +959,15 @@ func calculateFlexChildColumnPosition(
     ) -> Point<Double> {
     
     let parentInnerSize = parentSize.inset(parentPadding)
-    let outerSize = size.inset(margins.negated)
+    let outerSize = size.outset(margins)
     
     // the height of all the preceding views
     let totalPrevSiblingHeight = prevSiblings.reduce(0, {
-        $0 + $1.size.inset($1.dimensions.layoutProperties.margins.negated).height
+        $0 + $1.size.outset($1.dimensions.layoutProperties.margins).height
     })
     // the height of all the following views
     let totalTrailingHeight = nextSiblings.reduce(0, {
-        $0 + $1.size.inset($1.dimensions.layoutProperties.margins.negated).height
+        $0 + $1.size.outset($1.dimensions.layoutProperties.margins).height
     })
     // the combined height of all the views (including their margins)
     let totalSiblingHeight = totalPrevSiblingHeight + outerSize.height + totalTrailingHeight
