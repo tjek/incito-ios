@@ -124,49 +124,28 @@ class IncitoViewController: UIViewController {
             textDefaults: defaultTextProperties
         )
         
-//        DispatchQueue.global().async {
-//
-//            let startA = Date.timeIntervalSinceReferenceDate
-//
-//
-//            let layouterTree = rootIncitoView.generateLayouterTree(
-//                layoutType: .block,
-//                intrinsicViewSizer: intrinsicSizer
-//            )
-//
-//            let dimensionsTree = layouterTree.resolve(rootSize: parentSize)
-//
-//            let oldRenderableTree = dimensionsTree.OLD_buildRenderableViewTree(
-//                rendererProperties: self.renderer,
-//                nodeBuilt: { _ in }
-//            )
-//
-//            let endA = Date.timeIntervalSinceReferenceDate
-//            DispatchQueue.main.async {
-//                print(" ⇢ 🚧 [OLD] Built layout graph: \(round((endA - startA) * 1_000))ms")
-//            }
-//        }
+        var layoutTree: TreeNode<ViewLayout>!
+        print("⇢ 🚧 Building LayoutTree...")
+        measure("  Total", timeScale: .milliseconds) {
+            layoutTree = rootIncitoView.layout(
+                rootSize: parentSize,
+                intrinsicSizerBuilder: intrinsicSizer
+            )
+        }
         
-        let startB = Date.timeIntervalSinceReferenceDate
-        
-        let layoutTree = rootIncitoView.layout(
-            rootSize: parentSize,
-            intrinsicSizerBuilder: intrinsicSizer
-        )
-        
-        self.renderableTree = layoutTree.buildRenderableViewTree(
-            rendererProperties: self.renderer,
-            nodeBuilt: { [weak self] renderableView in
-                guard let self = self else { return }
-                self.delegate?.viewElementLoaded(
-                    viewProperties: renderableView.layout.viewProperties,
-                    incito: self.incitoDocument,
-                    in: self
-                )
-            }
-        )
-        let endB = Date.timeIntervalSinceReferenceDate
-        print(" ⇢ 🚧 [NEW] Built layout graph: \(round((endB - startB) * 1_000))ms")
+        measure(" ⇢ 🚧 Renderable Tree", timeScale: .milliseconds) {
+            self.renderableTree = layoutTree.buildRenderableViewTree(
+                rendererProperties: self.renderer,
+                nodeBuilt: { [weak self] renderableView in
+                    guard let self = self else { return }
+                    self.delegate?.viewElementLoaded(
+                        viewProperties: renderableView.layout.viewProperties,
+                        incito: self.incitoDocument,
+                        in: self
+                    )
+                }
+            )
+        }
         
         self.delegate?.documentLoaded(incito: self.incitoDocument, in: self)
         
@@ -705,8 +684,10 @@ extension UIView {
         ) -> ImageViewLoadRequest {
         
         let size = container.bounds.size
-        let transform: (UIImage) -> UIImage = {
-            $0.resized(scalingType: .centerCrop, into: size)
+        let transform: (UIImage) -> UIImage = { oldImage in
+//            measure("⏱ Resize Img \(oldImage.size) x\(oldImage.scale) -> \(size)", timeScale: .milliseconds) {
+                oldImage.resized(scalingType: .centerCrop, into: size)
+//            }.result
         }
         
         let imageLoadReq = ImageViewLoadRequest(url: imageProperties.source, transform: transform) { [weak container] loadedImageView in
@@ -734,8 +715,9 @@ extension UIView {
 }
 
 extension UIImage {
-    func resized(scalingType: BackgroundImage.ScaleType, into containerSize: CGSize) -> UIImage {
+    func resized(scalingType: BackgroundImage.ScaleType, into containerSize: CGSize, scale: CGFloat = 0) -> UIImage {
         let imageSize = self.size
+        let imagePxSize = CGSize(width: imageSize.width * self.scale, height: imageSize.height * self.scale)
         
         // calculate how much the image needs to be scaled to fill or fit the container, depending on the scale type
         let fitFillScale: CGFloat = {
@@ -744,7 +726,7 @@ extension UIImage {
             }
             switch scalingType {
             case .centerCrop:
-                // fill container. No tiling necessary.
+                // fill container
                 let scaleX = imageSize.width / containerSize.width
                 let scaleY = imageSize.height / containerSize.height
                 return min(scaleX, scaleY)
@@ -768,9 +750,15 @@ extension UIImage {
                 width: imageSize.width / fitFillScale,
                 height: imageSize.height / fitFillScale
             )
-            let newImage = self.resized(to: targetSize)
-            print("Resizing \(imageSize) -> \(targetSize)")
-            return newImage
+            let actualScale = scale == 0 ? UIScreen.main.scale : scale
+            let targetPxSize = CGSize(width: targetSize.width * actualScale, height: targetSize.height * actualScale)
+            
+            // check if this image's pixel size matches the desired pixel size of the container
+            if targetPxSize == imagePxSize {
+                return self
+            }
+            
+            return self.resized(to: targetSize, scale: scale)
         }
     }
 }
@@ -790,8 +778,10 @@ extension UIView {
         if let bgImage = style.backgroundImage {
             
             let size = self.bounds.size
-            let transform: (UIImage) -> UIImage = {
-                $0.resized(scalingType: bgImage.scale, into: size)
+            let transform: (UIImage) -> UIImage = { oldImage in
+//                measure("⏱ Resize BGImg \(oldImage.size) x\(oldImage.scale) -> \(size)", timeScale: .milliseconds) {
+                    oldImage.resized(scalingType: bgImage.scale, into: size)
+//                }.result
             }
             
             imageLoadReq = ImageViewLoadRequest(url: bgImage.source, transform: transform) { [weak self] loadedImageView in

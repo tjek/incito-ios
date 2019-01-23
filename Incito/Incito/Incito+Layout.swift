@@ -153,15 +153,22 @@ extension TreeNode where T == ViewProperties {
         
         wrapperNode.add(child: self)
         
-        let contentSizedTree = wrapperNode.viewDimensioningPass(
-            parentRoughInnerSize: Size(width: rootSize.width, height: rootSize.height),
-            parentLayoutType: .block,
-            intrinsicSizerBuilder: intrinsicSizerBuilder
-        )
+        let contentSizedTree = measure("   ‣ 📦 Dimensioning Pass", timeScale: .milliseconds) {
+            wrapperNode.viewDimensioningPass(
+                parentRoughInnerSize: Size(width: rootSize.width, height: rootSize.height),
+                parentLayoutType: .block,
+                intrinsicSizerBuilder: intrinsicSizerBuilder
+            )
+        }.result
         
-        let actualSizedTree = contentSizedTree.sizingPass(actualSize: rootSize)
         
-        let positionedTree = actualSizedTree.positioningPass(position: .zero)
+        let actualSizedTree = measure("   ‣ 📏 Sizing Pass", timeScale: .milliseconds) {
+            contentSizedTree.sizingPass(actualSize: rootSize)
+        }.result
+        
+        let positionedTree = measure("   ‣ 📐 Positioning Pass", timeScale: .milliseconds) {
+            actualSizedTree.positioningPass(position: .zero)
+        }.result
         
         return positionedTree.children.first!
     }

@@ -10,17 +10,23 @@
 import UIKit
 
 extension UIImage {
-    func resized(to newSize: CGSize) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0);
+    /// if `scale` is 0.0 it uses the devices scale
+    func resized(to newSize: CGSize, scale: CGFloat = 0.0) -> UIImage {
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, scale);
         
         self.draw(in: CGRect(origin: CGPoint.zero, size: CGSize(width: newSize.width, height: newSize.height)))
         let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        
         UIGraphicsEndImageContext()
+        
         return newImage
     }
     
-    func tiled(to newSize: CGSize, patternPhase: CGSize = .zero) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0);
+    /// if `scale` is 0.0 it uses the devices scale
+    func tiled(to newSize: CGSize, patternPhase: CGSize = .zero, scale: CGFloat = 0.0) -> UIImage {
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, scale);
         
         let ctx = UIGraphicsGetCurrentContext()
         
@@ -36,6 +42,7 @@ extension UIImage {
         
         let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
+        
         return newImage
     }
 }
