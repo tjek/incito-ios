@@ -131,7 +131,6 @@
 		AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+PreventWidows.swift"; sourceTree = "<group>"; };
 		AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "incito-blocktest-375.json"; path = "Incito/incito-blocktest-375.json"; sourceTree = SOURCE_ROOT; };
 		AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Sizing.swift"; sourceTree = "<group>"; };
-		AEE67E9D21F711BE00FB1C7D /* Incito+Layout_OLD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+Layout_OLD.swift"; sourceTree = "<group>"; };
 		E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -284,7 +283,6 @@
 				AE58299C21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift */,
 				AE58299A21F9F408009F4D8A /* IncitoLayout+Sizing.swift */,
 				AE58299821F9F214009F4D8A /* IncitoLayout+Positioning.swift */,
-				AEE67E9D21F711BE00FB1C7D /* Incito+Layout_OLD.swift */,
 				AE4C57E121AFF60C0004976D /* IncitoTypes.swift */,
 				AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */,
 				AE88362B21E501100002CD56 /* UIKit */,
