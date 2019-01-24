@@ -65,6 +65,38 @@ extension Size where Value: Numeric {
     }
 }
 
+extension Size where Value: Numeric {
+    func multipling(by value: Value) -> Size {
+        return Size(width: width * value,
+                    height: height * value)
+    }
+    func multipling(by other: Size) -> Size {
+        return Size(width: width * other.width,
+                    height: height * other.height)
+    }
+    
+    func adding(_ value: Value) -> Size {
+        return Size(width: width + value,
+                    height: height + value)
+    }
+    func adding(_ other: Size) -> Size {
+        return Size(width: width + other.width,
+                    height: height + other.height)
+    }
+}
+
+extension Size where Value: FloatingPoint {
+    func dividing(by value: Value) -> Size {
+        guard value != 0 else { return .zero }
+        return Size(width: width / value,
+                    height: height / value)
+    }
+    func dividing(by other: Size) -> Size {
+        return Size(width: other.width != 0 ? width / other.width : 0,
+                    height: other.height != 0 ? height / other.height : 0)
+    }
+}
+
 // MARK: Inset
 
 extension Size where Value: Numeric {

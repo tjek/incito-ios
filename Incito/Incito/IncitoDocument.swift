@@ -74,6 +74,12 @@ struct StyleProperties {
     )
 }
 
+
+enum FlexBasis<Value> {
+    case auto
+    case value(Value)
+}
+
 struct LayoutProperties {
     var position: Edges<Unit?>
     var padding: UnitEdges
@@ -88,8 +94,9 @@ struct LayoutProperties {
     
     var gravity: HorizontalGravity?
     
-    var flexShrink: Double?
-    var flexGrow: Double?
+    var flexShrink: Double
+    var flexGrow: Double
+    var flexBasis: FlexBasis<Unit>
     
     var transform: Transform<Unit>
 
@@ -104,8 +111,9 @@ struct LayoutProperties {
         maxHeight: nil,
         maxWidth: nil,
         gravity: nil,
-        flexShrink: nil,
-        flexGrow: nil,
+        flexShrink: 1,
+        flexGrow: 0,
+        flexBasis: .auto,
         transform: .identity
     )
 }

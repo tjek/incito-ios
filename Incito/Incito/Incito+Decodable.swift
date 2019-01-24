@@ -121,44 +121,47 @@ extension TreeNode: Decodable where T == ViewProperties {
 extension LayoutProperties: Decodable {
     
     enum CodingKeys: String, CodingKey {
-        case height = "layout_height"
-        case width = "layout_width"
-        case minHeight = "min_height"
-        case minWidth = "min_width"
-        case maxHeight = "max_height"
-        case maxWidth = "max_width"
+        case height     = "layout_height"
+        case width      = "layout_width"
+        case minHeight  = "min_height"
+        case minWidth   = "min_width"
+        case maxHeight  = "max_height"
+        case maxWidth   = "max_width"
         
-        case positionTop = "layout_top"
-        case positionLeft = "layout_left"
+        case positionTop    = "layout_top"
+        case positionLeft   = "layout_left"
         case positionBottom = "layout_bottom"
-        case positionRight = "layout_right"
+        case positionRight  = "layout_right"
         
-        case margin = "layout_margin"
-        case marginTop = "layout_margin_top"
-        case marginBottom = "layout_margin_bottom"
-        case marginLeft = "layout_margin_left"
-        case marginRight = "layout_margin_right"
+        case margin         = "layout_margin"
+        case marginTop      = "layout_margin_top"
+        case marginBottom   = "layout_margin_bottom"
+        case marginLeft     = "layout_margin_left"
+        case marginRight    = "layout_margin_right"
         
-        case padding = "padding"
-        case paddingTop = "padding_top"
-        case paddingBottom = "padding_bottom"
-        case paddingLeft = "padding_left"
-        case paddingRight = "padding_right"
+        case padding        = "padding"
+        case paddingTop     = "padding_top"
+        case paddingBottom  = "padding_bottom"
+        case paddingLeft    = "padding_left"
+        case paddingRight   = "padding_right"
         
         case gravity
         
-        case flexShrink             = "layout_flex_shrink"
-        case flexGrow               = "layout_flex_grow"
+        case flexShrink     = "layout_flex_shrink"
+        case flexGrow       = "layout_flex_grow"
+        case flexBasis      = "layout_flex_basis"
         
-        case transformScale = "transform_scale"
-        case transformTranslateX = "transform_translate_x"
-        case transformTranslateY = "transform_translate_y"
-        case transformRotate = "transform_rotate"
-        case transformOrigin = "transform_origin"
+        case transformScale         = "transform_scale"
+        case transformTranslateX    = "transform_translate_x"
+        case transformTranslateY    = "transform_translate_y"
+        case transformRotate        = "transform_rotate"
+        case transformOrigin        = "transform_origin"
     }
     
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let defualts = LayoutProperties.empty
         
         self.position = .init(
             top: try c.decodeIfPresent(.positionTop),
@@ -192,10 +195,11 @@ extension LayoutProperties: Decodable {
         
         self.gravity = try c.decodeIfPresent(.gravity)
         
-        self.flexShrink = try c.decodeIfPresent(.flexShrink)
-        self.flexGrow = try c.decodeIfPresent(.flexGrow)
+        self.flexShrink = try c.decodeIfPresent(.flexShrink) ?? defualts.flexShrink
+        self.flexGrow = try c.decodeIfPresent(.flexGrow) ?? defualts.flexGrow
+        self.flexBasis = try c.decodeIfPresent(.flexBasis) ?? defualts.flexBasis
         
-        var transform = Transform.identity
+        var transform = defualts.transform
         if let scale: Double = try c.decodeIfPresent(.transformScale) {
             transform.scale = scale
         }
@@ -391,6 +395,20 @@ extension LayoutSize: Decodable {
                     .init(codingPath: c.codingPath, debugDescription: "Unable to find valid LayoutSize from '\(str)'")
                 ))
             }
+        }
+    }
+}
+
+extension FlexBasis: Decodable where Value: Decodable {
+    
+    init(from decoder: Decoder) throws {
+        let c = try decoder.singleValueContainer()
+        
+        if let str = try? c.decode(String.self),
+            str.lowercased() == "auto" {
+            self = .auto
+        } else {
+            self = .value(try c.decode(Value.self))
         }
     }
 }

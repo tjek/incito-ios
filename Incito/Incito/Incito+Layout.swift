@@ -74,6 +74,8 @@ struct ResolvedLayoutProperties {
     var minSize: Size<Double>
 
     var size: Size<Double?> // nil if fitting to child
+    
+    var flexBasisSize: Size<Double>? // nil if auto
 }
 
 extension ResolvedLayoutProperties {
@@ -98,6 +100,16 @@ extension ResolvedLayoutProperties {
         let widthOnlyParentSize = Size(width: parentSize.width, height: parentSize.width)
         self.margins = properties.margins.absolute(in: widthOnlyParentSize)
         self.padding = properties.padding.absolute(in: widthOnlyParentSize)
+        
+        switch properties.flexBasis {
+        case .auto:
+            self.flexBasisSize = nil
+        case .value(let unit):
+            self.flexBasisSize = Size(
+                width: unit.absolute(in: parentSize.width),
+                height: unit.absolute(in: parentSize.height)
+            )
+        }
     }
 }
 
@@ -180,9 +192,10 @@ extension TreeNode where T == ViewProperties {
         let concreteSize = calculateConcreteSize(
             parentLayoutType: parentLayoutType,
             parentSize: parentRoughInnerSize,
-            layoutSize: resolvedLayoutProperties.size,
+            layoutConcreteSize: resolvedLayoutProperties.size,
             layoutPosition: resolvedLayoutProperties.position,
-            layoutMargins: resolvedLayoutProperties.margins
+            layoutMargins: resolvedLayoutProperties.margins,
+            flexBasisSize: resolvedLayoutProperties.flexBasisSize
             )
             .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
         
@@ -264,7 +277,7 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
                 parentContentsSize: viewLayout.dimensions.contentsSize,
                 dimensions: childDimensions,
                 layoutProperties: childViewProperties.layout,
-                siblings: child.siblings(excludeSelf: true).map({ $0.value.0.layout })
+                siblings: child.siblings(excludeSelf: true).map({ $0.value })
                 )
                 .clamped(min: childDimensions.layoutProperties.minSize, max: childDimensions.layoutProperties.maxSize)
             
@@ -333,17 +346,30 @@ extension TreeNode where T == ViewLayout {
  - parameter parentLayoutType: The view's parent's layout type (block/abs/flex)
  - parameter parentSize: The rough size of the parent (excluding margins, including padding, so not inner or outer-size)
  */
-func calculateConcreteSize(parentLayoutType: LayoutType, parentSize: Size<Double?>, layoutSize: Size<Double?>, layoutPosition: Edges<Double?>, layoutMargins: Edges<Double>) -> Size<Double?> {
+func calculateConcreteSize(parentLayoutType: LayoutType, parentSize: Size<Double?>, layoutConcreteSize: Size<Double?>, layoutPosition: Edges<Double?>, layoutMargins: Edges<Double>, flexBasisSize: Size<Double>?) -> Size<Double?> {
     
     switch parentLayoutType {
-    case .block,
-         .flex:
-        return layoutSize
+    case .block:
+        return layoutConcreteSize
+    case .flex(let flexProperties):
+        
+        // if flex then replace the layoutConcreteSize with the flex basis, depending on the flex direction
+        var size = layoutConcreteSize
+        
+        if let flexBasis = flexBasisSize {
+            switch flexProperties.direction {
+            case .column:
+                size.height = flexBasis.height
+            case .row:
+                size.width = flexBasis.width
+            }
+        }
+        return size
     case .absolute:
         // find the width specified in the layout properties, or nil if no width specified
         let concreteWidth: Double? = {
             // there is a specific width in the layout properties, so use it
-            if let w = layoutSize.width {
+            if let w = layoutConcreteSize.width {
                 return w
             }
             
@@ -359,7 +385,7 @@ func calculateConcreteSize(parentLayoutType: LayoutType, parentSize: Size<Double
         // find the height specified in the layout properties, or nil if no width specified
         let concreteHeight: Double? = {
             // there is a specific height in the layout constraints, so use it
-            if let h = layoutSize.height {
+            if let h = layoutConcreteSize.height {
                 return h
             }
             
@@ -476,15 +502,7 @@ func calculateBlockContentsSize(intrinsicSize: Size<Double?>, childDimensions: [
 
 
 func calculateFlexContentsSize(flexProperties: FlexLayoutProperties, childDimensions: [ViewDimensions]) -> Size<Double?> {
-    // TODO: flex-basis may/will affect this?
-    // flex-basis is used when calculating the 'free-space' to share amongst the other siblings
-    // it totally replaces the 'concrete' & 'contents' height
-    // if there is no 'flex-grow' it is still used as the height of the view.
-    // if flex-basis is "auto", then just use the normal sizing method
-    // if basis is "0" it acts weird... but for now just treat it like it's a specific size until i learn more
-    // if flex-basis is a percentage it is of the parent's size
-    
-    
+
     switch flexProperties.direction {
     case .column:
         // calculate the innersize of the flex view when the subviews are positioned vertically
@@ -573,7 +591,7 @@ func calculateFlexContentsSize(flexProperties: FlexLayoutProperties, childDimens
 /**
  Calculate the 'actual' size of a view. This is the final size of the view, given the size of all the children etc.
  */
-func calculateActualSize(parentLayoutType: LayoutType, parentSize: Size<Double>, parentPadding: Edges<Double>, parentContentsSize: Size<Double?>, dimensions: ViewDimensions, layoutProperties: LayoutProperties, siblings: [LayoutProperties]) -> Size<Double> {
+func calculateActualSize(parentLayoutType: LayoutType, parentSize: Size<Double>, parentPadding: Edges<Double>, parentContentsSize: Size<Double?>, dimensions: ViewDimensions, layoutProperties: LayoutProperties, siblings: [(ViewProperties, ViewDimensions)]) -> Size<Double> {
     switch parentLayoutType {
     case .block:
         return calculateBlockChildActualSize(
@@ -597,10 +615,9 @@ func calculateActualSize(parentLayoutType: LayoutType, parentSize: Size<Double>,
             contentsSize: dimensions.contentsSize,
             padding: dimensions.layoutProperties.padding,
             margins: dimensions.layoutProperties.margins,
-            flexGrow: layoutProperties.flexGrow ?? 0,
-            siblingFlexGrows: siblings.map({ $0.flexGrow ?? 0 }),
-            flexShrink: layoutProperties.flexShrink ?? 1,
-            siblingFlexShrinks: siblings.map({ $0.flexShrink ?? 1 }),
+            flexGrow: layoutProperties.flexGrow,
+            flexShrink: layoutProperties.flexShrink,
+            siblings: siblings,
             parentSize: parentSize,
             parentPadding: parentPadding,
             parentContentsSize: parentContentsSize
@@ -629,24 +646,32 @@ func calculateAbsoluteChildActualSize(concreteSize: Size<Double?>, contentsSize:
     )
 }
 
-func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>, margins: Edges<Double>, flexGrow: Double, siblingFlexGrows: [Double], flexShrink: Double, siblingFlexShrinks: [Double], parentSize: Size<Double>, parentPadding: Edges<Double>, parentContentsSize: Size<Double?>) -> Size<Double> {
+func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concreteSize: Size<Double?>, contentsSize: Size<Double?>, padding: Edges<Double>, margins: Edges<Double>, flexGrow: Double, flexShrink: Double, siblings: [(ViewProperties, ViewDimensions)], parentSize: Size<Double>, parentPadding: Edges<Double>, parentContentsSize: Size<Double?>) -> Size<Double> {
     
     let paddedContentsSize = contentsSize.unwrapped(or: .zero).outset(padding)
+    let actualSize = concreteSize.unwrapped(or: paddedContentsSize)
+
+    // flex-shrink is actually handled slightly differently than flex-grow.
+    // flex-shrink is normalized relative to a scaled version.
+    // so, for views with `size@shrink/grow` values of `[50px@1, 100px@0, 100px@3]`, to calculate the normalized version of the first view's shrink or grow we do the following:
+    // flex-grow:   `1/(1+0+3) = 0.25`
+    // flex-shrink: `(1*50) / (1*50 + 0*100 + 3*100) = 0.1429`
+    let scaledShrink = actualSize.multipling(by: flexShrink)
+    let (totalGrow, totalScaledShrink) = siblings.reduce((flexGrow, scaledShrink)) {
+        let siblingPaddedContentsSize = $1.1.contentsSize.unwrapped(or: .zero).outset($1.1.layoutProperties.padding)
+        let siblingActualSize = $1.1.concreteSize.unwrapped(or: siblingPaddedContentsSize)
+        
+        return (
+            $0.0 + $1.0.layout.flexGrow,
+            $0.1.adding(siblingActualSize.multipling(by: $1.0.layout.flexShrink))
+        )
+    }
     
-    let normalizedGrow: Double = {
-        let totalGrow: Double = siblingFlexGrows.reduce(flexGrow, +)
-        return totalGrow == 0 ? 0 : flexGrow / totalGrow
-    }()
-    
-    let normalizedShrink: Double = {
-        let totalShrink: Double = siblingFlexShrinks.reduce(flexShrink, +)
-        return totalShrink == 0 ? 0 : flexShrink / totalShrink
-    }()
+    let normalizedGrow: Double = totalGrow != 0 ? flexGrow / totalGrow : 0
+    let normalizedShrinkSize: Size<Double> = scaledShrink.dividing(by: totalScaledShrink)
     
     // we now have viewDimensions that are based on the view's contents/intrinsic size etc
-    // now we need to apply the flex-layout to those dimensions
-    
-    // TODO: use flex-basis here?
+    // now we need to apply the flex-layout to those dimensions    
     switch flexProperties.direction {
     case .column:
         
@@ -664,15 +689,13 @@ func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concrete
         }()
         
         let height: Double = {
-            let actualHeight = concreteSize.height ?? paddedContentsSize.height
-            
             let freeSpace = parentSize.height - parentPadding.top - parentPadding.bottom - (parentContentsSize.height ?? 0)
             
             // we then need to either size that down or up, depending on flex-grow/shrink
             if freeSpace > 0 {
-                return actualHeight + (freeSpace * normalizedGrow)
+                return actualSize.height + (freeSpace * normalizedGrow)
             } else {
-                return actualHeight + (freeSpace * normalizedShrink)
+                return actualSize.height + (freeSpace * normalizedShrinkSize.height)
             }
         }()
         
@@ -697,15 +720,13 @@ func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concrete
         }()
         
         let width: Double = {
-            let actualWidth = concreteSize.width ?? paddedContentsSize.width
-            
             let freeSpace = parentSize.width - parentPadding.left - parentPadding.right - (parentContentsSize.width ?? 0)
             
             // we then need to either size that down or up, depending on flex-grow/shrink
             if freeSpace > 0 {
-                return actualWidth + (freeSpace * normalizedGrow)
+                return actualSize.width + (freeSpace * normalizedGrow)
             } else {
-                return actualWidth + (freeSpace * normalizedShrink)
+                return actualSize.width + (freeSpace * normalizedShrinkSize.width)
             }
         }()
         
