@@ -27,6 +27,9 @@
 		AE58299321F8932E009F4D8A /* incito-imagetest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58299221F8932D009F4D8A /* incito-imagetest-375.json */; };
 		AE58299521F8A339009F4D8A /* incito-transformtest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58299421F8A338009F4D8A /* incito-transformtest-375.json */; };
 		AE58299721F8AA70009F4D8A /* incito-elgiganten-legacy-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58299621F8AA70009F4D8A /* incito-elgiganten-legacy-375.json */; };
+		AE58299921F9F214009F4D8A /* IncitoLayout+Positioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299821F9F214009F4D8A /* IncitoLayout+Positioning.swift */; };
+		AE58299B21F9F408009F4D8A /* IncitoLayout+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299A21F9F408009F4D8A /* IncitoLayout+Sizing.swift */; };
+		AE58299D21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299C21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift */; };
 		AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67580F219C2592006BEA9C /* AppDelegate.swift */; };
 		AE675812219C2592006BEA9C /* IncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675811219C2592006BEA9C /* IncitoViewController.swift */; };
 		AE675815219C2592006BEA9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675813219C2592006BEA9C /* Main.storyboard */; };
@@ -40,7 +43,7 @@
 		AE88362A21E500E30002CD56 /* UIView+AnchorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE88362921E500E30002CD56 /* UIView+AnchorPoint.swift */; };
 		AE88362C21E5012C0002CD56 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC4D219CC47E0021B1FD /* UIColor+Hex.swift */; };
 		AE88363121E5027B0002CD56 /* RoundedShadowedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE88363021E5027B0002CD56 /* RoundedShadowedView.swift */; };
-		AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */; };
+		AE94AD7F21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD7E21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift */; };
 		AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */; };
 		AE94AD8321AC12CF00876ED6 /* FontAssetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */; };
 		AE94AD8521AC136A00876ED6 /* FontAssetLoader+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */; };
@@ -55,7 +58,7 @@
 		AEDD608F21CBD72800C94188 /* String+PreventWidows.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */; };
 		AEE67E9A21F1F5E700FB1C7D /* incito-blocktest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */; };
 		AEE67E9C21F688D600FB1C7D /* UIImage+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */; };
-		AEE67E9F21F7122800FB1C7D /* Incito+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE090AD521A2A0890009159E /* Incito+Layout.swift */; };
+		AEE67E9F21F7122800FB1C7D /* IncitoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE090AD521A2A0890009159E /* IncitoLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,7 +75,7 @@
 		46807A9FD9EF7017F3537723 /* Pods_IncitoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IncitoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A489C6669186ACDA3F0D6DC /* Pods_Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CD366430FE97E1D0DF87BDA /* Pods-Incito.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.release.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.release.xcconfig"; sourceTree = "<group>"; };
-		AE090AD521A2A0890009159E /* Incito+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+Layout.swift"; sourceTree = "<group>"; };
+		AE090AD521A2A0890009159E /* IncitoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoLayout.swift; sourceTree = "<group>"; };
 		AE0DDC47219C34570021B1FD /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Debug.swift"; sourceTree = "<group>"; };
 		AE0DDC4D219CC47E0021B1FD /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
@@ -94,6 +97,9 @@
 		AE58299221F8932D009F4D8A /* incito-imagetest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-imagetest-375.json"; sourceTree = "<group>"; };
 		AE58299421F8A338009F4D8A /* incito-transformtest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-transformtest-375.json"; sourceTree = "<group>"; };
 		AE58299621F8AA70009F4D8A /* incito-elgiganten-legacy-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-legacy-375.json"; sourceTree = "<group>"; };
+		AE58299821F9F214009F4D8A /* IncitoLayout+Positioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Positioning.swift"; sourceTree = "<group>"; };
+		AE58299A21F9F408009F4D8A /* IncitoLayout+Sizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Sizing.swift"; sourceTree = "<group>"; };
+		AE58299C21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Dimensioning.swift"; sourceTree = "<group>"; };
 		AE67580C219C2592006BEA9C /* Incito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Incito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE67580F219C2592006BEA9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE675811219C2592006BEA9C /* IncitoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoViewController.swift; sourceTree = "<group>"; };
@@ -110,7 +116,7 @@
 		AE88362721E4F31B0002CD56 /* Incito+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+UIKit.swift"; sourceTree = "<group>"; };
 		AE88362921E500E30002CD56 /* UIView+AnchorPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AnchorPoint.swift"; sourceTree = "<group>"; };
 		AE88363021E5027B0002CD56 /* RoundedShadowedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowedView.swift; sourceTree = "<group>"; };
-		AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+Decodable.swift"; sourceTree = "<group>"; };
+		AE94AD7E21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoDocument+Decodable.swift"; sourceTree = "<group>"; };
 		AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundedCorners.swift"; sourceTree = "<group>"; };
 		AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontAssetLoader.swift; sourceTree = "<group>"; };
 		AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FontAssetLoader+UIKit.swift"; sourceTree = "<group>"; };
@@ -273,8 +279,11 @@
 			isa = PBXGroup;
 			children = (
 				AE67582F219C25CC006BEA9C /* IncitoDocument.swift */,
-				AE94AD7E21A6DFFE00876ED6 /* Incito+Decodable.swift */,
-				AE090AD521A2A0890009159E /* Incito+Layout.swift */,
+				AE94AD7E21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift */,
+				AE090AD521A2A0890009159E /* IncitoLayout.swift */,
+				AE58299C21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift */,
+				AE58299A21F9F408009F4D8A /* IncitoLayout+Sizing.swift */,
+				AE58299821F9F214009F4D8A /* IncitoLayout+Positioning.swift */,
 				AEE67E9D21F711BE00FB1C7D /* Incito+Layout_OLD.swift */,
 				AE4C57E121AFF60C0004976D /* IncitoTypes.swift */,
 				AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */,
@@ -470,9 +479,11 @@
 				AE88362C21E5012C0002CD56 /* UIColor+Hex.swift in Sources */,
 				AE88362A21E500E30002CD56 /* UIView+AnchorPoint.swift in Sources */,
 				AE4C57E421AFF7300004976D /* IncitoTypes+UIKit.swift in Sources */,
-				AEE67E9F21F7122800FB1C7D /* Incito+Layout.swift in Sources */,
+				AE58299921F9F214009F4D8A /* IncitoLayout+Positioning.swift in Sources */,
+				AE58299B21F9F408009F4D8A /* IncitoLayout+Sizing.swift in Sources */,
+				AEE67E9F21F7122800FB1C7D /* IncitoLayout.swift in Sources */,
 				AE4C57EF21B575E70004976D /* TreeNode.swift in Sources */,
-				AE94AD7F21A6DFFE00876ED6 /* Incito+Decodable.swift in Sources */,
+				AE94AD7F21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift in Sources */,
 				AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */,
 				AEE67E9C21F688D600FB1C7D /* UIImage+Sizing.swift in Sources */,
 				AE88363121E5027B0002CD56 /* RoundedShadowedView.swift in Sources */,
@@ -481,6 +492,7 @@
 				AE88362621E4ECDB0002CD56 /* GenericIdentifier.swift in Sources */,
 				AE88362821E4F31B0002CD56 /* Incito+UIKit.swift in Sources */,
 				AE40598221A6A52500D029AE /* DecodingHelpers.swift in Sources */,
+				AE58299D21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */,
 				AE4C57E221AFF60C0004976D /* IncitoTypes.swift in Sources */,
 				AE4C57E821AFF8280004976D /* DemoViewController.swift in Sources */,
 			);
