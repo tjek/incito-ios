@@ -186,12 +186,18 @@ extension LayoutProperties: Decodable {
             right: try c.decodeIfPresent(.marginRight) ?? baseMargin
         )
         
-        self.height = try c.decodeIfPresent(.height)
-        self.width = try c.decodeIfPresent(.width)
-        self.minHeight = try c.decodeIfPresent(.minHeight)
-        self.minWidth = try c.decodeIfPresent(.minWidth)
-        self.maxHeight = try c.decodeIfPresent(.maxHeight)
-        self.maxWidth = try c.decodeIfPresent(.maxWidth)
+        self.size = Size(
+            width: try c.decodeIfPresent(.width),
+            height: try c.decodeIfPresent(.height)
+        )
+        self.minSize = Size(
+            width: try c.decodeIfPresent(.minWidth),
+            height: try c.decodeIfPresent(.minHeight)
+        )
+        self.maxSize = Size(
+            width: try c.decodeIfPresent(.maxWidth),
+            height: try c.decodeIfPresent(.maxHeight)
+        )
         
         self.gravity = try c.decodeIfPresent(.gravity)
         

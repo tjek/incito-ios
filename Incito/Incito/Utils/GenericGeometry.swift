@@ -24,6 +24,12 @@ struct Point<Value> {
 }
 typealias PointDbl = Point<Double>
 
+extension Point {
+    init(_ val: Value) {
+        self.init(x: val, y: val)
+    }
+}
+
 extension Point: Equatable where Value: Equatable {
     static func == (lhs: Point<Value>, rhs: Point<Value>) -> Bool {
         return lhs.x == rhs.x
@@ -51,6 +57,12 @@ struct Size<Value> {
     var width, height: Value
 }
 typealias SizeDbl = Size<Double>
+
+extension Size {
+    init(_ val: Value) {
+        self.init(width: val, height: val)
+    }
+}
 
 extension Size: Equatable where Value: Equatable {
     static func == (lhs: Size<Value>, rhs: Size<Value>) -> Bool {

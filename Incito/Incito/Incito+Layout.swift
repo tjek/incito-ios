@@ -82,16 +82,16 @@ extension ResolvedLayoutProperties {
     /// parentSize is the container's inner size (size - padding)
     init(_ properties: LayoutProperties, in parentSize: Size<Double>) {
         self.maxSize = Size(
-            width: properties.maxWidth?.absolute(in: parentSize.width) ?? .infinity,
-            height: properties.maxHeight?.absolute(in: parentSize.height) ?? .infinity
+            width: properties.maxSize.width?.absolute(in: parentSize.width) ?? .infinity,
+            height: properties.maxSize.height?.absolute(in: parentSize.height) ?? .infinity
         )
         self.minSize = Size(
-            width: properties.minWidth?.absolute(in: parentSize.width) ?? 0,
-            height: properties.minHeight?.absolute(in: parentSize.height) ?? 0
+            width: properties.minSize.width?.absolute(in: parentSize.width) ?? 0,
+            height: properties.minSize.height?.absolute(in: parentSize.height) ?? 0
         )
         self.size = Size(
-            width: properties.width?.absolute(in: parentSize.width),
-            height: properties.height?.absolute(in: parentSize.height)
+            width: properties.size.width?.absolute(in: parentSize.width),
+            height: properties.size.height?.absolute(in: parentSize.height)
         )
         
         self.position = properties.position.absolute(in: parentSize)
@@ -134,7 +134,7 @@ extension TreeNode where T == ViewProperties {
         ) -> TreeNode<ViewLayout> {
 
         var wrapperLayout = LayoutProperties.empty
-        wrapperLayout.width = .unit(.pts(rootSize.width))
+        wrapperLayout.size.width = .unit(.pts(rootSize.width))
         wrapperLayout.gravity = .center
 
         let wrapperNode = TreeNode<ViewProperties>(
@@ -671,7 +671,7 @@ func calculateFlexChildActualSize(flexProperties: FlexLayoutProperties, concrete
     let normalizedShrinkSize: Size<Double> = scaledShrink.dividing(by: totalScaledShrink)
     
     // we now have viewDimensions that are based on the view's contents/intrinsic size etc
-    // now we need to apply the flex-layout to those dimensions    
+    // now we need to apply the flex-layout to those dimensions
     switch flexProperties.direction {
     case .column:
         

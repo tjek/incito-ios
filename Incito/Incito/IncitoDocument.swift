@@ -85,12 +85,9 @@ struct LayoutProperties {
     var padding: UnitEdges
     var margins: UnitEdges
     
-    var height: LayoutSize?
-    var width: LayoutSize?
-    var minHeight: Unit?
-    var minWidth: Unit?
-    var maxHeight: Unit?
-    var maxWidth: Unit?
+    var size: Size<LayoutSize?>
+    var minSize: Size<Unit?>
+    var maxSize: Size<Unit?>
     
     var gravity: HorizontalGravity?
     
@@ -104,12 +101,9 @@ struct LayoutProperties {
         position: .init(nil),
         padding: .zero,
         margins: .zero,
-        height: nil,
-        width: nil,
-        minHeight: nil,
-        minWidth: nil,
-        maxHeight: nil,
-        maxWidth: nil,
+        size: .init(nil),
+        minSize: .init(nil),
+        maxSize: .init(nil),
         gravity: nil,
         flexShrink: 1,
         flexGrow: 0,

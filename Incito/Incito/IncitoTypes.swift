@@ -97,6 +97,15 @@ extension Corners where Value == Unit {
     }
 }
 
+extension Size where Value == Unit {
+    func absolute(in size: Size<Double>) -> Size<Double> {
+        return Size<Double>(
+            width: width.absolute(in: size.width),
+            height: height.absolute(in: size.height)
+        )
+    }
+}
+
 extension Point where Value == Unit {
     func absolute(in size: Size<Double>) -> Point<Double> {
         return Point<Double>(
