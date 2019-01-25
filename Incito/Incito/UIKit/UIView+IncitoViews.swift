@@ -81,21 +81,16 @@ extension UIView {
         
         let imageLoadReq = ImageViewLoadRequest(url: imageProperties.source, transform: transform) { [weak self] loadedImageView in
             guard let c = self else { return }
-            if let imageView = loadedImageView {
-                imageView.contentMode = .scaleToFill
-                imageView.frame = c.bounds
-                imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                imageView.alpha = 0
-                c.insertSubview(imageView, at: 0)
-                
-                UIView.animate(withDuration: 0.2) {
-                    imageView.alpha = 1
-                }
-                
-            } else {
-                UIView.animate(withDuration: 0.2) {
-                    c.backgroundColor = .red
-                }
+            guard let imageView = loadedImageView else { return }
+            
+            imageView.contentMode = .scaleToFill
+            imageView.frame = c.bounds
+            imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            imageView.alpha = 0
+            c.insertSubview(imageView, at: 0)
+            
+            UIView.animate(withDuration: 0.2) {
+                imageView.alpha = 1
             }
         }
         
@@ -176,27 +171,21 @@ extension UIView {
             
             imageLoadReq = ImageViewLoadRequest(url: bgImage.source, transform: transform) { [weak self] loadedImageView in
                 guard let self = self else { return }
+                guard let imageView = loadedImageView else { return }
                 
-                if let imageView = loadedImageView {
-                    imageView.frame = self.bounds
-                    imageView.applyBackground(
-                        position: bgImage.position,
-                        scalingType: bgImage.scale,
-                        tilingMode: bgImage.tileMode
-                    )
-                    
-                    imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                    imageView.alpha = 0
-                    self.insertSubview(imageView, at: 0)
-                    
-                    UIView.animate(withDuration: 0.2) {
-                        imageView.alpha = 1
-                    }
-                    
-                } else {
-                    UIView.animate(withDuration: 0.2) {
-                        self.backgroundColor = .red
-                    }
+                imageView.frame = self.bounds
+                imageView.applyBackground(
+                    position: bgImage.position,
+                    scalingType: bgImage.scale,
+                    tilingMode: bgImage.tileMode
+                )
+                
+                imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                imageView.alpha = 0
+                self.insertSubview(imageView, at: 0)
+                
+                UIView.animate(withDuration: 0.2) {
+                    imageView.alpha = 1
                 }
             }
         }
