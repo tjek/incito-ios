@@ -86,3 +86,14 @@ extension BackgroundImage.Position {
         }
     }
 }
+
+extension Transform where Value == Double {
+    var affineTransform: CGAffineTransform {
+        return CGAffineTransform.identity
+            .translatedBy(x: CGFloat(origin.x), y: CGFloat(origin.y))
+            .translatedBy(x: CGFloat(translate.x), y: CGFloat(translate.y))
+            .rotated(by: CGFloat(rotate))
+            .scaledBy(x: CGFloat(scale), y: CGFloat(scale))
+            .translatedBy(x: CGFloat(-origin.x), y: CGFloat(-origin.y))
+    }
+}

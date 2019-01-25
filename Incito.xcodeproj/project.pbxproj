@@ -30,6 +30,11 @@
 		AE58299921F9F214009F4D8A /* IncitoLayout+Positioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299821F9F214009F4D8A /* IncitoLayout+Positioning.swift */; };
 		AE58299B21F9F408009F4D8A /* IncitoLayout+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299A21F9F408009F4D8A /* IncitoLayout+Sizing.swift */; };
 		AE58299D21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299C21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift */; };
+		AE58299F21FA0DCF009F4D8A /* incito-videotest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58299E21FA0DCE009F4D8A /* incito-videotest-375.json */; };
+		AE5829A121FB066E009F4D8A /* UIView+IncitoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5829A021FB066E009F4D8A /* UIView+IncitoViews.swift */; };
+		AE5829A321FB0CD1009F4D8A /* RenderableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5829A221FB0CD1009F4D8A /* RenderableView.swift */; };
+		AE5829A621FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE5829A421FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json */; };
+		AE5829A721FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json in Resources */ = {isa = PBXBuildFile; fileRef = AE5829A521FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json */; };
 		AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67580F219C2592006BEA9C /* AppDelegate.swift */; };
 		AE675812219C2592006BEA9C /* IncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675811219C2592006BEA9C /* IncitoViewController.swift */; };
 		AE675815219C2592006BEA9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675813219C2592006BEA9C /* Main.storyboard */; };
@@ -100,6 +105,11 @@
 		AE58299821F9F214009F4D8A /* IncitoLayout+Positioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Positioning.swift"; sourceTree = "<group>"; };
 		AE58299A21F9F408009F4D8A /* IncitoLayout+Sizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Sizing.swift"; sourceTree = "<group>"; };
 		AE58299C21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Dimensioning.swift"; sourceTree = "<group>"; };
+		AE58299E21FA0DCE009F4D8A /* incito-videotest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-videotest-375.json"; sourceTree = "<group>"; };
+		AE5829A021FB066E009F4D8A /* UIView+IncitoViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+IncitoViews.swift"; sourceTree = "<group>"; };
+		AE5829A221FB0CD1009F4D8A /* RenderableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderableView.swift; sourceTree = "<group>"; };
+		AE5829A421FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-mar18-375.json"; sourceTree = "<group>"; };
+		AE5829A521FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-mar18-768.json"; sourceTree = "<group>"; };
 		AE67580C219C2592006BEA9C /* Incito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Incito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE67580F219C2592006BEA9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE675811219C2592006BEA9C /* IncitoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoViewController.swift; sourceTree = "<group>"; };
@@ -202,10 +212,13 @@
 				AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */,
 				AE58299221F8932D009F4D8A /* incito-imagetest-375.json */,
 				AE58299421F8A338009F4D8A /* incito-transformtest-375.json */,
+				AE58299E21FA0DCE009F4D8A /* incito-videotest-375.json */,
 				AE4C57F021BE54560004976D /* incito-fakta-small-375.json */,
 				AE94AD8A21AC349100876ED6 /* incito-fakta-375.json */,
 				AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */,
 				AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen-375.json */,
+				AE5829A421FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json */,
+				AE5829A521FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json */,
 				AE58298A21F767F9009F4D8A /* incito-superbrugsen-small-375.json */,
 				AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */,
 				AEA4109E21E7833400C6BEC1 /* incito-elgiganten-small-375.json */,
@@ -240,6 +253,8 @@
 				AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */,
 				AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */,
 				AE88362721E4F31B0002CD56 /* Incito+UIKit.swift */,
+				AE5829A021FB066E009F4D8A /* UIView+IncitoViews.swift */,
+				AE5829A221FB0CD1009F4D8A /* RenderableView.swift */,
 				AE4C57E321AFF7300004976D /* IncitoTypes+UIKit.swift */,
 				AE0DDC4D219CC47E0021B1FD /* UIColor+Hex.swift */,
 				AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */,
@@ -378,6 +393,7 @@
 				AE94AD8F21AC889A00876ED6 /* incito-superbrugsen-1200.json in Resources */,
 				AE675817219C2593006BEA9C /* Assets.xcassets in Resources */,
 				AEA4109D21E7819200C6BEC1 /* incito-elgiganten-375.json in Resources */,
+				AE5829A721FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json in Resources */,
 				AE58299721F8AA70009F4D8A /* incito-elgiganten-legacy-375.json in Resources */,
 				AEDD608B21BFE1A500C94188 /* incito-flextest-375.json in Resources */,
 				AE58298F21F8797C009F4D8A /* incito-elgiganten-768.json in Resources */,
@@ -385,8 +401,10 @@
 				AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */,
 				AEE67E9A21F1F5E700FB1C7D /* incito-blocktest-375.json in Resources */,
 				AE94AD8B21AC349100876ED6 /* incito-fakta-375.json in Resources */,
+				AE58299F21FA0DCF009F4D8A /* incito-videotest-375.json in Resources */,
 				AE58299521F8A339009F4D8A /* incito-transformtest-375.json in Resources */,
 				AE58298B21F767F9009F4D8A /* incito-superbrugsen-small-375.json in Resources */,
+				AE5829A621FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json in Resources */,
 				AE4C57F121BE54570004976D /* incito-fakta-small-375.json in Resources */,
 				AE58299321F8932E009F4D8A /* incito-imagetest-375.json in Resources */,
 				AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */,
@@ -488,10 +506,12 @@
 				AE675830219C25CC006BEA9C /* IncitoDocument.swift in Sources */,
 				AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */,
 				AE88362621E4ECDB0002CD56 /* GenericIdentifier.swift in Sources */,
+				AE5829A121FB066E009F4D8A /* UIView+IncitoViews.swift in Sources */,
 				AE88362821E4F31B0002CD56 /* Incito+UIKit.swift in Sources */,
 				AE40598221A6A52500D029AE /* DecodingHelpers.swift in Sources */,
 				AE58299D21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */,
 				AE4C57E221AFF60C0004976D /* IncitoTypes.swift in Sources */,
+				AE5829A321FB0CD1009F4D8A /* RenderableView.swift in Sources */,
 				AE4C57E821AFF8280004976D /* DemoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

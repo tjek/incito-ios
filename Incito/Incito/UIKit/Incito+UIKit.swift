@@ -40,7 +40,7 @@ struct ImageViewLoadRequest {
 
 // MARK: - Sizing
 
-/// Returns a function that, when given some viewProperties, returns a function that
+/// Returns a function that, when given some viewProperties, returns a function that calculates the intrinsic size of a view within some constraints.
 func uiKitViewSizer(fontProvider: @escaping FontProvider, textDefaults: TextViewDefaultProperties) -> (ViewProperties) -> IntrinsicSizer {
     return { view in
         return { constraintSize in
@@ -52,6 +52,14 @@ func uiKitViewSizer(fontProvider: @escaping FontProvider, textDefaults: TextView
                 )
                 let size = attrString.size(within: constraintSize)
                 return Size(width: size.width, height: size.height)
+            case let .video(video):
+                return Size(width: video.videoSize?.width,
+                            height: video.videoSize?.height)
+                
+            case let .videoEmbed(videoEmbed):
+                return Size(width: videoEmbed.videoSize?.width,
+                            height: videoEmbed.videoSize?.height)
+                
             default:
                 return Size(width: nil, height: nil)
             }

@@ -85,8 +85,8 @@ extension TreeNode: Decodable where T == ViewProperties {
                 let imageProperties = try propertiesContainer.decode(ImageViewProperties.self)
                 return .image(imageProperties)
             case "VideoEmbedView"?:
-                let src: String = try c.decode(.properties(key: "src"))
-                return .videoEmbed(src: src)
+                let videoEmbedProperties = try propertiesContainer.decode(VideoEmbedViewProperties.self)
+                return .videoEmbed(videoEmbedProperties)
             case "VideoView"?:
                 let videoProperties = try propertiesContainer.decode(VideoViewProperties.self)
                 return .video(videoProperties)
@@ -606,6 +606,54 @@ extension FlexLayoutProperties: Decodable {
         }
         if let contentJustification: ContentJustification = try c.decodeIfPresent(.contentJustification) {
             self.contentJustification = contentJustification
+        }
+    }
+}
+
+extension VideoViewProperties: Decodable {
+    
+    enum CodingKeys: String, CodingKey {
+        case source = "src"
+        case autoplay
+        case loop
+        case controls
+        case mime
+        case videoWidth = "video_width"
+        case videoHeight = "video_height"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.source = try c.decode(.source)
+        self.autoplay = try c.decodeIfPresent(.autoplay) ?? self.autoplay
+        self.loop = try c.decodeIfPresent(.loop) ?? self.loop
+        self.controls = try c.decodeIfPresent(.controls) ?? self.controls
+        self.mime = try c.decodeIfPresent(.mime)
+        
+        if let w: Double = try c.decodeIfPresent(.videoWidth),
+            let h: Double = try c.decodeIfPresent(.videoHeight) {
+            self.videoSize = Size(width: w, height: h)
+        }
+    }
+}
+
+extension VideoEmbedViewProperties: Decodable {
+    
+    enum CodingKeys: String, CodingKey {
+        case source = "src"
+        case videoWidth = "video_width"
+        case videoHeight = "video_height"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.source = try c.decode(.source)
+
+        if let w: Double = try c.decodeIfPresent(.videoWidth),
+            let h: Double = try c.decodeIfPresent(.videoHeight) {
+            self.videoSize = Size(width: w, height: h)
         }
     }
 }

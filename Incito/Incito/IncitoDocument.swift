@@ -40,7 +40,7 @@ enum ViewType {
     case flexLayout(FlexLayoutProperties)
     case text(TextViewProperties)
     case image(ImageViewProperties)
-    case videoEmbed(src: String)
+    case videoEmbed(VideoEmbedViewProperties)
     case video(VideoViewProperties)
 }
 
@@ -184,22 +184,20 @@ struct ImageViewProperties: Decodable {
         case caption = "label"
     }
 }
-struct VideoViewProperties: Decodable {
-    var source: String // URI
+
+
+struct VideoViewProperties {
+    var source: URL
     var autoplay: Bool = false
     var loop: Bool = false
     var controls: Bool = true
-    var mime: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case source = "src"
-        case autoplay
-        case loop
-        case controls
-        case mime
-//        "video_width": 1500,
-//        "video_height": 844,
-    }
+    var mime: String? = nil
+    var videoSize: Size<Double>? = nil
+}
+
+struct VideoEmbedViewProperties {
+    var source: URL
+    var videoSize: Size<Double>? = nil
 }
 
 /////////////////
