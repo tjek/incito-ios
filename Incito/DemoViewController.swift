@@ -73,25 +73,32 @@ class DemoViewController: UIViewController {
                 self.searchResultsController.offers = []
                 
                 
+                let loader = incitoDocumentLoader()
+//                loader.load()
+                
+                
                 let oldIncitoVC = self.incitoController
-                let newIncitoVC = IncitoViewController(incito: incito)
-                newIncitoVC.delegate = self
+                let newIncitoVC = LoadedIncitoViewController(loader: loader)
                 
+//                newIncitoVC.reload((CGSize(width: 375, height: <#T##CGFloat#>), IncitoPropertiesDocument))
                 
-                self.refImageView.removeFromSuperview()
-                newIncitoVC.scrollView.addSubview(self.refImageView)
-                
-                self.refImageView.image = refImage
-                self.refImageView.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    self.refImageView.centerXAnchor.constraint(equalTo: newIncitoVC.scrollView.centerXAnchor),
-                    self.refImageView.topAnchor.constraint(equalTo: newIncitoVC.scrollView.topAnchor)
-                    ])
-                self.refImageView.alpha = 0
-                self.refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
-                self.refImageButton.isEnabled = (refImage != nil)
-                
-                self.incitoController = newIncitoVC
+//                newIncitoVC.delegate = self
+//
+//
+//                self.refImageView.removeFromSuperview()
+//                newIncitoVC.scrollView.addSubview(self.refImageView)
+//
+//                self.refImageView.image = refImage
+//                self.refImageView.translatesAutoresizingMaskIntoConstraints = false
+//                NSLayoutConstraint.activate([
+//                    self.refImageView.centerXAnchor.constraint(equalTo: newIncitoVC.scrollView.centerXAnchor),
+//                    self.refImageView.topAnchor.constraint(equalTo: newIncitoVC.scrollView.topAnchor)
+//                    ])
+//                self.refImageView.alpha = 0
+//                self.refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
+//                self.refImageButton.isEnabled = (refImage != nil)
+//
+//                self.incitoController = newIncitoVC
                 
                 self.cycleFromViewController(
                     oldViewController: oldIncitoVC,
@@ -215,7 +222,7 @@ extension DemoViewController: IncitoViewControllerDelegate {
         // view just disappeared
     }
     
-    func viewElementLoaded(viewProperties: ViewProperties, incito: IncitoDocument, in viewController: IncitoViewController) {
+    func viewElementLoaded(viewProperties: ViewProperties, incito: RenderableIncitoDocument, in viewController: IncitoViewController) {
         guard viewProperties.isOffer else {
             return
         }
@@ -229,7 +236,7 @@ extension DemoViewController: IncitoViewControllerDelegate {
         self.searchResultsController.offers.append((title, metaDesc, viewProperties.id))
     }
     
-    func documentLoaded(incito: IncitoDocument, in viewController: IncitoViewController) {
+    func documentLoaded(incito: RenderableIncitoDocument, in viewController: IncitoViewController) {
 //        print(offerTitles)
     }
 }

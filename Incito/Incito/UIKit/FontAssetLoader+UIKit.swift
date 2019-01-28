@@ -60,6 +60,7 @@ enum FontLoadingError: Error {
     case invalidData // unable to convert data into a CGFont
     case registrationFailed
     case postscriptNameUnavailable
+    case unknownError
 }
 
 extension UIFont {
@@ -93,6 +94,7 @@ extension FontAssetLoader {
     // TODO: allow for different urlSession/cache properties
     static func uiKitFontAssetLoader() -> FontAssetLoader {
       
+        // TODO: A real cache
         let fontCache = FontAssetLoader.Cache(
             get: { _, completion in completion(nil) },
             set: { _, _ in }
@@ -122,11 +124,15 @@ extension FontAssetLoader {
                         
                         // TODO: what if timeout error?
                         guard let loadedData = data else {
+                            if let err = error {
+                                complete = true
+                                completion(.error(err))
+                            }
                             return
                         }
                         
                         complete = true
-                        completion((loadedData, (source, sourceURL)))
+                        completion(.success((loadedData, (source, sourceURL))))
                     }
                     
                     task.resume()
@@ -135,7 +141,7 @@ extension FontAssetLoader {
                 }
                 
                 if complete == false {
-                    completion(nil)
+                    completion(.error(FontLoadingError.unknownError))
                 }
             }
         }

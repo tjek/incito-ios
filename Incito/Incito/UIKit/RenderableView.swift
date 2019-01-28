@@ -141,8 +141,10 @@ extension TreeNode where T == RenderableView {
     }
 }
 
+typealias RenderableViewTree = TreeNode<RenderableView>
+
 extension TreeNode where T == ViewLayout {
-    func buildRenderableViewTree(rendererProperties: IncitoRenderer, nodeBuilt: (RenderableView) -> Void) -> TreeNode<RenderableView> {
+    func buildRenderableViewTree(rendererProperties: IncitoRenderer, nodeBuilt: (RenderableView) -> Void) -> RenderableViewTree {
         
         let interactionBuilder: (ViewProperties) -> ViewInteractionProperties? = { viewProperties in
             let alphaTap: (UIView) -> Void = { view in

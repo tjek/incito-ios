@@ -9,7 +9,7 @@
 
 import Foundation
 
-extension IncitoDocument: Decodable {
+extension IncitoDocument: Decodable where ViewTreeNode == ViewProperties {
     
     enum CodingKeys: String, CodingKey {
         case id, version
@@ -106,7 +106,7 @@ extension TreeNode: Decodable where T == ViewProperties {
             layout: (try? propertiesContainer.decode()) ?? .empty
         ))
         
-        let childNodes: [ViewNode]
+        let childNodes: [TreeNode<ViewProperties>]
         do {
             childNodes = try c.decodeIfPresent(.children) ?? []
         } catch {

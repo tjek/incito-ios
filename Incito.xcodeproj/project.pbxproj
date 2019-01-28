@@ -35,6 +35,8 @@
 		AE5829A321FB0CD1009F4D8A /* RenderableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5829A221FB0CD1009F4D8A /* RenderableView.swift */; };
 		AE5829A621FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE5829A421FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json */; };
 		AE5829A721FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json in Resources */ = {isa = PBXBuildFile; fileRef = AE5829A521FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json */; };
+		AE5829A921FEF0BF009F4D8A /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5829A821FEF0BF009F4D8A /* Result.swift */; };
+		AE5829AB21FEF9D9009F4D8A /* LoadedIncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5829AA21FEF9D9009F4D8A /* LoadedIncitoViewController.swift */; };
 		AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67580F219C2592006BEA9C /* AppDelegate.swift */; };
 		AE675812219C2592006BEA9C /* IncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675811219C2592006BEA9C /* IncitoViewController.swift */; };
 		AE675815219C2592006BEA9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675813219C2592006BEA9C /* Main.storyboard */; };
@@ -110,6 +112,8 @@
 		AE5829A221FB0CD1009F4D8A /* RenderableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderableView.swift; sourceTree = "<group>"; };
 		AE5829A421FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-mar18-375.json"; sourceTree = "<group>"; };
 		AE5829A521FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-mar18-768.json"; sourceTree = "<group>"; };
+		AE5829A821FEF0BF009F4D8A /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		AE5829AA21FEF9D9009F4D8A /* LoadedIncitoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadedIncitoViewController.swift; sourceTree = "<group>"; };
 		AE67580C219C2592006BEA9C /* Incito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Incito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE67580F219C2592006BEA9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AE675811219C2592006BEA9C /* IncitoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoViewController.swift; sourceTree = "<group>"; };
@@ -261,6 +265,7 @@
 				AE88362921E500E30002CD56 /* UIView+AnchorPoint.swift */,
 				AE88363021E5027B0002CD56 /* RoundedShadowedView.swift */,
 				AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */,
+				AE5829AA21FEF9D9009F4D8A /* LoadedIncitoViewController.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -279,6 +284,7 @@
 		AE88362E21E5017C0002CD56 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				AE5829A821FEF0BF009F4D8A /* Result.swift */,
 				AE4C57EE21B575E70004976D /* TreeNode.swift */,
 				AE0DDC47219C34570021B1FD /* JSONValue.swift */,
 				AE88362521E4ECDB0002CD56 /* GenericIdentifier.swift */,
@@ -502,6 +508,7 @@
 				AE94AD7F21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift in Sources */,
 				AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */,
 				AEE67E9C21F688D600FB1C7D /* UIImage+Sizing.swift in Sources */,
+				AE5829A921FEF0BF009F4D8A /* Result.swift in Sources */,
 				AE88363121E5027B0002CD56 /* RoundedShadowedView.swift in Sources */,
 				AE675830219C25CC006BEA9C /* IncitoDocument.swift in Sources */,
 				AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */,
@@ -512,6 +519,7 @@
 				AE58299D21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */,
 				AE4C57E221AFF60C0004976D /* IncitoTypes.swift in Sources */,
 				AE5829A321FB0CD1009F4D8A /* RenderableView.swift in Sources */,
+				AE5829AB21FEF9D9009F4D8A /* LoadedIncitoViewController.swift in Sources */,
 				AE4C57E821AFF8280004976D /* DemoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

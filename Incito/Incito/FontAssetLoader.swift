@@ -11,7 +11,7 @@ import Foundation
 
 struct FontAssetLoader {
     typealias Registrator = (Data) throws -> String
-    typealias NetworkRequest = ([FontAsset.FontSource], @escaping ((Data, FontAsset.FontSource)?) -> Void) -> Void
+    typealias NetworkRequest = ([FontAsset.FontSource], @escaping (Result<(Data, FontAsset.FontSource)>) -> Void) -> Void
     
     struct Cache {
         var get: ([FontAsset.FontSource], ((Data, FontAsset.FontSource)?) -> Void) -> Void
@@ -53,7 +53,7 @@ extension FontAssetLoader {
                 queue.sync {
                     defer { dispatchGroup.leave() }
                     
-                    guard let (fontName, source) = result else {
+                    guard let (fontName, source) = result.value else {
                         return
                     }
                     
@@ -73,44 +73,47 @@ extension FontAssetLoader {
     
     func loadAndRegisterFontAsset(
         _ asset: FontAsset,
-        completion: @escaping ((String, FontAsset.FontSource)?) -> Void
+        completion: @escaping (Result<(String, FontAsset.FontSource)>) -> Void
         ) {
         
         let sources: [FontAsset.FontSource] = supportedFontTypes().compactMap { sourceType in
             return asset.sources.first(where: { $0.0 == sourceType })
         }
         
-        let fontDataLoaded: ((Data, FontAsset.FontSource)?) -> Void = {
-            guard let (loadedData, source) = $0 else {
-                completion(nil)
-                return
-            }
+        let fontDataLoaded: (Result<(Data, FontAsset.FontSource)>) -> Void = {
             
-            guard let registeredName = try? self.registrator(loadedData) else {
-                completion(nil)
-                return
+            switch $0 {
+            case let .error(err):
+                completion(.error(err))
+            case let .success((loadedData, source)):
+                do {
+                    let registeredName = try self.registrator(loadedData)
+                    completion(.success((registeredName, source)))
+                } catch {
+                    completion(.error(error))
+                }
             }
-            
-            completion((registeredName, source))
         }
         
         // try to get the data from the cache.
         cache.get(sources) { cacheResult in
             if let cacheSuccess = cacheResult {
-                fontDataLoaded(cacheSuccess)
+                fontDataLoaded(.success(cacheSuccess))
                 return
             }
             
             // if that fails, try to get it from the network
             network(sources) { networkResult in
-                guard let (loadedData, source) = networkResult else {
-                    fontDataLoaded(nil)
-                    return
+                
+                switch networkResult {
+                case let .error(err):
+                    fontDataLoaded(.error(err))
+                case let .success((loadedData, source)):
+                    
+                    self.cache.set(loadedData, source)
+                    
+                    fontDataLoaded(.success((loadedData, source)))
                 }
-                
-                self.cache.set(loadedData, source)
-                
-                fontDataLoaded((loadedData, source))
             }
         }
     }

@@ -9,11 +9,11 @@
 
 import Foundation
 
-struct IncitoDocument {
-    typealias Identifier = GenericIdentifier<IncitoDocument>
+struct IncitoDocument<ViewTreeNode> {
+    typealias Identifier = GenericIdentifier<IncitoDocument<Void>>
     var id: Identifier
     var version: String
-    var rootView: ViewNode
+    var rootView: TreeNode<ViewTreeNode>
 
     var locale: String?
     var theme: Theme?
@@ -21,7 +21,8 @@ struct IncitoDocument {
     var fontAssets: [FontAssetName: FontAsset]
 }
 
-typealias ViewNode = TreeNode<ViewProperties>
+/// An incitoDocument with ViewProperties for the ViewNodes
+typealias IncitoPropertiesDocument = IncitoDocument<ViewProperties>
 
 struct ViewProperties {
     typealias Identifier = GenericIdentifier<ViewProperties>

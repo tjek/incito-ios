@@ -9,7 +9,7 @@
 
 import Foundation
 
-func decodeIncito(_ filename: String) -> IncitoDocument {
+func decodeIncito(_ filename: String) -> IncitoPropertiesDocument {
     
     do {
         let jsonFile = Bundle.main.url(forResource: filename, withExtension: nil)
