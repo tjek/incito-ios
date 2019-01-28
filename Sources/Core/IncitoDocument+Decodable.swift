@@ -18,7 +18,7 @@ extension IncitoDocument: Decodable where ViewTreeNode == ViewProperties {
         case fontAssets = "font_assets"
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         self.id = try c.decode(.id)
@@ -64,7 +64,7 @@ extension TreeNode: Decodable where T == ViewProperties {
         
     }
     
-    convenience init(from decoder: Decoder) throws {
+    public convenience init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         let propertiesContainer = try decoder.singleValueContainer()
@@ -158,7 +158,7 @@ extension LayoutProperties: Decodable {
         case transformOrigin        = "transform_origin"
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         let defualts = LayoutProperties.empty
@@ -251,7 +251,7 @@ extension StyleProperties: Decodable {
         case shadowColor = "shadow_color"
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         self.role = try c.decodeIfPresent(.role)
@@ -323,7 +323,7 @@ extension TextViewProperties: Decodable {
         case textShadowColor = "text_shadow_color"
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         self.text = try c.decode(.text)
@@ -522,7 +522,7 @@ extension Theme: Decodable {
         case bgColor = "background_color"
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         self.textDefaults = .empty
@@ -546,7 +546,7 @@ extension FontAsset: Decodable {
         case src, weight, style
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         let srcArr: [[String]] = try c.decodeIfPresent(.src) ?? []
@@ -569,7 +569,7 @@ extension FontAsset: Decodable {
 }
 
 extension TextStyle: Decodable {
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.singleValueContainer()
         
         let name = (try? c.decode(String.self)) ?? ""
@@ -595,7 +595,7 @@ extension FlexLayoutProperties: Decodable {
         case contentJustification = "layout_flex_justify_content"
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         if let dir: Direction = try c.decodeIfPresent(.direction) {
@@ -622,7 +622,7 @@ extension VideoViewProperties: Decodable {
         case videoHeight = "video_height"
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         self.source = try c.decode(.source)
@@ -646,7 +646,7 @@ extension VideoEmbedViewProperties: Decodable {
         case videoHeight = "video_height"
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         self.source = try c.decode(.source)

@@ -9,33 +9,33 @@
 
 import Foundation
 
-struct IncitoDocument<ViewTreeNode> {
-    typealias Identifier = GenericIdentifier<IncitoDocument<Void>>
-    var id: Identifier
-    var version: String
-    var rootView: TreeNode<ViewTreeNode>
+public struct IncitoDocument<ViewTreeNode> {
+    public typealias Identifier = GenericIdentifier<IncitoDocument<Void>>
+    public var id: Identifier
+    public var version: String
+    public var rootView: TreeNode<ViewTreeNode>
 
-    var locale: String?
-    var theme: Theme?
-    var meta: [String: JSONValue]
-    var fontAssets: [FontAssetName: FontAsset]
+    public var locale: String?
+    public var theme: Theme?
+    public var meta: [String: JSONValue]
+    public var fontAssets: [FontAssetName: FontAsset]
 }
 
 /// An incitoDocument with ViewProperties for the ViewNodes
-typealias IncitoPropertiesDocument = IncitoDocument<ViewProperties>
+public typealias IncitoPropertiesDocument = IncitoDocument<ViewProperties>
 
-struct ViewProperties {
-    typealias Identifier = GenericIdentifier<ViewProperties>
-    var id: Identifier
+public struct ViewProperties {
+    public typealias Identifier = GenericIdentifier<ViewProperties>
+    public var id: Identifier
     
-    var name: String?
-    var type: ViewType
-    var style: StyleProperties
+    public var name: String?
+    public var type: ViewType
+    public var style: StyleProperties
     
-    var layout: LayoutProperties
+    public var layout: LayoutProperties
 }
 
-enum ViewType {
+public enum ViewType {
     case view
     case absoluteLayout
     case flexLayout(FlexLayoutProperties)
@@ -45,7 +45,7 @@ enum ViewType {
     case video(VideoViewProperties)
 }
 
-struct StyleProperties {
+public struct StyleProperties {
     
     var role: String?
     var meta: [String: JSONValue]
@@ -81,7 +81,7 @@ enum FlexBasis<Value> {
     case value(Value)
 }
 
-struct LayoutProperties {
+public struct LayoutProperties {
     var position: Edges<Unit?>
     var padding: UnitEdges
     var margins: UnitEdges
@@ -115,7 +115,7 @@ struct LayoutProperties {
 
 // MARK: Subtype properties
 
-struct TextViewProperties {
+public struct TextViewProperties {
     
     struct Span: Decodable {
         enum SpanType: String, Decodable {
@@ -149,7 +149,7 @@ struct TextViewProperties {
     var shadow: Shadow? = nil
 }
 
-struct FlexLayoutProperties {
+public struct FlexLayoutProperties {
     enum ItemAlignment: String, Decodable {
         case stretch
         case center
@@ -176,7 +176,7 @@ struct FlexLayoutProperties {
     var contentJustification: ContentJustification = .flexStart
 }
 
-struct ImageViewProperties: Decodable {
+public struct ImageViewProperties: Decodable {
     var source: URL // URI
     var caption: String?
     
@@ -187,7 +187,7 @@ struct ImageViewProperties: Decodable {
 }
 
 
-struct VideoViewProperties {
+public struct VideoViewProperties {
     var source: URL
     var autoplay: Bool = false
     var loop: Bool = false
@@ -196,7 +196,7 @@ struct VideoViewProperties {
     var videoSize: Size<Double>? = nil
 }
 
-struct VideoEmbedViewProperties {
+public struct VideoEmbedViewProperties {
     var source: URL
     var videoSize: Size<Double>? = nil
 }
@@ -205,12 +205,12 @@ struct VideoEmbedViewProperties {
 // Definitions //
 /////////////////
 
-struct Theme {
+public struct Theme {
     var textDefaults: TextViewDefaultProperties
     var bgColor: Color?
 }
 
-struct TextViewDefaultProperties {
+public struct TextViewDefaultProperties {
     var textColor: Color
     var lineHeightMultiplier: Double
     var fontFamily: FontFamily
@@ -227,10 +227,10 @@ extension TextViewDefaultProperties {
     )
 }
 
-struct FontAsset {
-    typealias FontSource = (SourceType, URL)
+public struct FontAsset {
+    public typealias FontSource = (SourceType, URL)
     
-    enum SourceType: String {
+    public enum SourceType: String {
         case woff2
         case woff
         case truetype
@@ -239,12 +239,12 @@ struct FontAsset {
         case embeddedOpentype = "embedded-opentype"
     }
     
-    var sources: [FontSource]
-    var weight: String?
-    var style: TextStyle
+    public var sources: [FontSource]
+    public var weight: String?
+    public var style: TextStyle
 }
 
-enum TextStyle: String {
+public enum TextStyle: String {
     case normal
     case bold
     case italic

@@ -10,107 +10,7 @@
 import UIKit
 
 /// A document whose viewNodes are RenderableViews
-typealias RenderableIncitoDocument = IncitoDocument<RenderableView>
-
-
-func incitoDocumentLoader() -> IncitoLoader<(CGSize, IncitoPropertiesDocument)> {
-    
-    return IncitoLoader { (input, completion) in
-        
-        let (size, document) = input
-        
-        var renderer = IncitoRenderer(
-            fontProvider: UIFont.systemFont(forFamily:size:),
-            imageViewLoader: loadImageView,
-            theme: document.theme
-        )
-        
-        // load fonts
-        let fontLoader = FontAssetLoader.uiKitFontAssetLoader() // injectable?
-        let fontAssets = document.fontAssets
-        
-        fontLoader.loadAndRegisterFontAssets(fontAssets) { (loadedAssets) in
-            
-            // TODO: fail if font-load fails? or show crappy fonts?
-            let fontProvider = loadedAssets.font(forFamily:size:)
-            
-            // update the renderer's fontProvider
-            renderer.fontProvider = fontProvider
-            
-            let rootPropertiesNode = document.rootView
-            let defaultTextProperties = document.theme?.textDefaults ?? .empty
-            
-            let intrinsicSizer = uiKitViewSizer(
-                fontProvider: fontProvider,
-                textDefaults: defaultTextProperties
-            )
-            
-            print(" ⇢ 🚧 Building LayoutTree...")
-            let layoutTree: TreeNode<ViewLayout> = measure("   Total", timeScale: .milliseconds) {
-                
-                rootPropertiesNode.layout(
-                    rootSize: Size(cgSize: size),
-                    intrinsicSizerBuilder: intrinsicSizer
-                )
-                
-                }.result
-            
-            let renderableTree: RenderableViewTree = measure(" ⇢ 🚧 Renderable Tree", timeScale: .milliseconds) {
-                
-                layoutTree.buildRenderableViewTree(
-                    rendererProperties: renderer,
-                    nodeBuilt: { _ in
-                        // TODO: a pass on setting up the incito
-                        //                    [weak self] renderableView in
-                        //                    guard let self = self else { return }
-                        //                    self.delegate?.viewElementLoaded(
-                        //                        viewProperties: renderableView.layout.viewProperties,
-                        //                        incito: self.incitoDocument,
-                        //                        in: self
-                        //                    )
-                }
-                )
-                
-                }.result
-            
-            //        self.delegate?.documentLoaded(incito: self.incitoDocument, in: self)
-            //
-            //        if self.printDebugLayout {
-            //            let debugTree: TreeNode<String> = layoutTree.mapValues { layout, _, idx in
-            //
-            //                let name = layout.viewProperties.name ?? ""
-            //                let position = layout.position
-            //                let size = layout.size
-            //
-            //                var res = "\(idx)) \(name): [\(position)\(size)]"
-            //                if printDebugLayoutDetails {
-            //                    res += "\n\t dimensions: \(layout.dimensions)\n"
-            //                }
-            //
-            //                return res
-            //            }
-            //
-            //            print("\(debugTree)")
-            //        }
-            //        DispatchQueue.main.async { [weak self] in
-            //            self?.initializeRootView(parentSize: parentSize.cgSize)
-            //        }
-            
-            let renderableDocument = RenderableIncitoDocument(
-                id:  document.id,
-                version: document.version,
-                rootView: renderableTree,
-                locale: document.locale,
-                theme: document.theme,
-                meta: document.meta,
-                fontAssets: document.fontAssets
-            )
-            
-            // TODO: push completion to main?
-            completion(.success(renderableDocument))
-        }
-    }
-}
+public typealias RenderableIncitoDocument = IncitoDocument<RenderableView>
 
 /**
  possible delegate methods:
@@ -136,19 +36,23 @@ public class IncitoViewController: UIViewController {
     
     private(set) var renderableDocument: RenderableIncitoDocument? = nil
     
-    var showDebugOutlines: Bool = false
-    var showDebugRenderWindow: Bool = false
+    public struct Debug {
+        public var showOutlines: Bool = false
+        public var showRenderWindows: Bool = false
+    }
+    public var debug: Debug = Debug() {
+        didSet {
+            self.renderVisibleViews(forced: true)
+        }
+    }
+    
 //    var printDebugLayout: Bool = false
 //    var printDebugLayoutDetails: Bool = true
     
-    init(document: RenderableIncitoDocument?) {
-        self.renderableDocument = document
+    public func update(renderableDocument: RenderableIncitoDocument) {
+        self.renderableDocument = renderableDocument
         
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        initializeRootView(parentSize: self.view.frame.size)
     }
     
     public override func viewDidLoad() {
@@ -170,8 +74,6 @@ public class IncitoViewController: UIViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
         
-        scrollView.backgroundColor = renderableDocument?.theme?.bgColor?.uiColor ?? .white
-        
         initializeRootView(parentSize: self.view.frame.size)
     }
     
@@ -181,10 +83,22 @@ public class IncitoViewController: UIViewController {
         renderVisibleViews()
     }
     
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        renderVisibleViews()
+    }
+    
     // Must be performed on main queue
     func initializeRootView(parentSize: CGSize) {
         
-        guard let rootRenderableView = renderableDocument?.rootView.value else { return }
+        scrollView.backgroundColor = renderableDocument?.theme?.bgColor?.uiColor ?? .white
+        
+        guard let rootRenderableView = renderableDocument?.rootView.value else {
+            self.rootView?.removeFromSuperview()
+            self.rootView = nil
+            return
+        }
         
         let rootSize = rootRenderableView.layout.size.cgSize
         
@@ -201,7 +115,7 @@ public class IncitoViewController: UIViewController {
             wrapper.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             
             wrapper.heightAnchor.constraint(equalToConstant: rootSize.height),
-            wrapper.widthAnchor.constraint(equalToConstant: parentSize.width)
+            wrapper.widthAnchor.constraint(equalToConstant: rootSize.width)
             ])
         
         renderVisibleViews()
@@ -305,48 +219,40 @@ public class IncitoViewController: UIViewController {
 //        }
 //    }
     
-    public override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
-        // TODO: `unrender` all the rendered RenderableSections (prioritizing those above)
-    }
+    private var lastRenderedWindow: CGRect = .null
     
-    var lastRenderedWindow: CGRect?
-    
-    var debugWindowViews = (top: UIView(), bottom: UIView())
-    var debugOutlineViews: [UIView] = []
-    
-    func renderVisibleViews() {
+    func renderVisibleViews(forced: Bool = false) {
         
         guard let rootView = self.rootView else { return }
         guard let renderableRootNode = self.renderableDocument?.rootView else { return }
         
-        
         let scrollVisibleWindow: CGRect
-        
-        if showDebugRenderWindow {
+        if debug.showRenderWindows {
+            let height = scrollView.bounds.size.height
             scrollVisibleWindow = scrollView.bounds
-                .inset(by: UIEdgeInsets(top: 120, left: 0, bottom: 150, right: 0))
+                .inset(by: UIEdgeInsets(top: height * 0.1, left: 0, bottom: height * 0.15, right: 0))
         } else {
             scrollVisibleWindow = scrollView.bounds
                 .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
         }
         
-
         // in RootView coord space
         let renderWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
         
-//        // dont do rendercheck until we've scrolled a certain amount
-//        if let lastRendered = self.lastRenderedWindow,
-//            abs(lastRendered.origin.y - renderWindow.origin.y) < 50 {
-//            return
-//        }
+        if debug.showRenderWindows {
+            updateDebugWindowViews(in: lastRenderedWindow)
+        }
+        
+        // dont re-render if no significant change in render window, unless forced
+        guard forced
+            || lastRenderedWindow.isNull
+            || lastRenderedWindow.size != renderWindow.size
+            || abs(lastRenderedWindow.origin.y - renderWindow.origin.y) > 50
+            else {
+            return
+        }
         
         self.lastRenderedWindow = renderWindow
-        
-        if showDebugRenderWindow {
-            updateDebugWindowViews(in: renderWindow)
-        }
         
         if let renderedRootView = renderableRootNode.renderVisibleNodes(
             visibleRootViewWindow: renderWindow,
@@ -370,7 +276,7 @@ public class IncitoViewController: UIViewController {
         }
         
         debugOutlineViews.forEach { $0.removeFromSuperview() }
-        if (self.showDebugOutlines) {
+        if (self.debug.showOutlines) {
             // shows a visibility-box around the the view
             renderableRootNode.forEachNode { (node, _, _, _) in
                 let debugView = UIView()
@@ -384,6 +290,11 @@ public class IncitoViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: - Debug
+    
+    private var debugWindowViews = (top: UIView(), bottom: UIView())
+    private var debugOutlineViews: [UIView] = []
     
     func updateDebugWindowViews(in rootViewVisibleWindow: CGRect) {
         let overlayColor = UIColor.black.withAlphaComponent(0.2)

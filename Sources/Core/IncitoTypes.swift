@@ -7,8 +7,8 @@
 //
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
-typealias FontAssetName = String
-typealias FontFamily = [FontAssetName]
+public typealias FontAssetName = String
+public typealias FontFamily = [FontAssetName]
 
 struct Color: Equatable {
     // 0-1 Doubles

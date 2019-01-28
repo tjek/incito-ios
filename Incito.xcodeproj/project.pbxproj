@@ -45,6 +45,7 @@
 		AE582B0121FF371E009F4D8A /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */; };
 		AE582B0221FF3729009F4D8A /* SVGKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582A9A21FF2E49009F4D8A /* SVGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE582B0321FF372F009F4D8A /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE582B1021FF4EA8009F4D8A /* IncitoLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +191,7 @@
 		AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "External/SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/iOS/CocoaLumberjack.framework"; sourceTree = "<group>"; };
 		AE582B0421FF37A9009F4D8A /* Incito.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Incito.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		AE582B0521FF37A9009F4D8A /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoLoader.swift; sourceTree = "<group>"; };
 		AE675820219C2593006BEA9C /* IncitoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IncitoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -256,6 +258,7 @@
 			children = (
 				AE582A5921FF1736009F4D8A /* IncitoViewController.swift */,
 				AE582A5F21FF1736009F4D8A /* LoadedIncitoViewController.swift */,
+				AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */,
 				AE582A5421FF1736009F4D8A /* RenderableView.swift */,
 				AE582A5521FF1736009F4D8A /* ImageLoader.swift */,
 				AE582A5621FF1736009F4D8A /* FontAssetLoader+UIKit.swift */,
@@ -359,8 +362,8 @@
 			buildConfigurationList = AE5829E121FF1000009F4D8A /* Build configuration list for PBXNativeTarget "Incito-iOS" */;
 			buildPhases = (
 				AE5829D321FF1000009F4D8A /* Headers */,
-				AE5829D421FF1000009F4D8A /* Sources */,
 				AE5829D521FF1000009F4D8A /* Frameworks */,
+				AE5829D421FF1000009F4D8A /* Sources */,
 				AE5829D621FF1000009F4D8A /* Resources */,
 				AE582AB121FF2EDF009F4D8A /* Embed Frameworks */,
 			);
@@ -533,6 +536,7 @@
 				AE582A6C21FF1736009F4D8A /* Result.swift in Sources */,
 				AE582A8221FF1736009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */,
 				AE582A7721FF1736009F4D8A /* IncitoTypes+UIKit.swift in Sources */,
+				AE582B1021FF4EA8009F4D8A /* IncitoLoader.swift in Sources */,
 				AE582A7621FF1736009F4D8A /* IncitoViewController.swift in Sources */,
 				AE582A6D21FF1736009F4D8A /* GenericGeometry.swift in Sources */,
 				AE582A7F21FF1736009F4D8A /* IncitoLayout+Sizing.swift in Sources */,

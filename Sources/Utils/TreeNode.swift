@@ -8,7 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 // TODO: maybe as struct - do we need a parent?
-final class TreeNode<T> {
+public final class TreeNode<T> {
     var value: T
     
     private(set) weak var parent: TreeNode? = nil

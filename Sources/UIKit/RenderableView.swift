@@ -14,7 +14,7 @@ struct ViewInteractionProperties {
     let peekable: Bool
 }
 
-class RenderableView {
+public final class RenderableView {
     let layout: ViewLayout
     let absoluteTransform: CGAffineTransform // the sum of all the parent view's transformations. Includes the localPosition translation.
     let siblingIndex: Int // The index of this view in relation to its siblings
