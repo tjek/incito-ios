@@ -1,6 +1,0 @@
-framework module RRFPSBar {
-  umbrella header "RRFPSBar-umbrella.h"
-
-  export *
-  module * { export * }
-}

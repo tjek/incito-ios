@@ -1,0 +1,6 @@
+[submodule "External/FLAnimatedImage"]
+	path = External/FLAnimatedImage
+	url = https://github.com/Flipboard/FLAnimatedImage.git
+[submodule "External/SVGKit"]
+	path = External/SVGKit
+	url = https://github.com/SVGKit/SVGKit.git

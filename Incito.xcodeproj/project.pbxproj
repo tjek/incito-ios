@@ -7,153 +7,200 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		86A7E23B220F57C7001FB56F /* Pods_Incito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A489C6669186ACDA3F0D6DC /* Pods_Incito.framework */; };
-		AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC47219C34570021B1FD /* JSONValue.swift */; };
-		AE0DDC4A219CC2AC0021B1FD /* UIColor+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */; };
-		AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */ = {isa = PBXBuildFile; fileRef = AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */; };
-		AE40597E21A5A3A300D029AE /* simple-incito-static.json in Resources */ = {isa = PBXBuildFile; fileRef = AE40597D21A5A3A300D029AE /* simple-incito-static.json */; };
-		AE40598221A6A52500D029AE /* DecodingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE40598121A6A52500D029AE /* DecodingHelpers.swift */; };
-		AE4C57E221AFF60C0004976D /* IncitoTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57E121AFF60C0004976D /* IncitoTypes.swift */; };
-		AE4C57E421AFF7300004976D /* IncitoTypes+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57E321AFF7300004976D /* IncitoTypes+UIKit.swift */; };
-		AE4C57E621AFF79C0004976D /* UIView+RecursiveSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57E521AFF79C0004976D /* UIView+RecursiveSubviews.swift */; };
-		AE4C57E821AFF8280004976D /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57E721AFF8280004976D /* DemoViewController.swift */; };
-		AE4C57ED21B538CC0004976D /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57EC21B538CC0004976D /* DecodableTests.swift */; };
-		AE4C57EF21B575E70004976D /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4C57EE21B575E70004976D /* TreeNode.swift */; };
-		AE4C57F121BE54570004976D /* incito-fakta-small-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE4C57F021BE54560004976D /* incito-fakta-small-375.json */; };
-		AE58298B21F767F9009F4D8A /* incito-superbrugsen-small-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58298A21F767F9009F4D8A /* incito-superbrugsen-small-375.json */; };
-		AE58298D21F85513009F4D8A /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58298C21F85513009F4D8A /* Measure.swift */; };
-		AE58298F21F8797C009F4D8A /* incito-elgiganten-768.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58298E21F8797B009F4D8A /* incito-elgiganten-768.json */; };
-		AE58299121F88514009F4D8A /* GenericGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299021F88514009F4D8A /* GenericGeometry.swift */; };
-		AE58299321F8932E009F4D8A /* incito-imagetest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58299221F8932D009F4D8A /* incito-imagetest-375.json */; };
-		AE58299521F8A339009F4D8A /* incito-transformtest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58299421F8A338009F4D8A /* incito-transformtest-375.json */; };
-		AE58299721F8AA70009F4D8A /* incito-elgiganten-legacy-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58299621F8AA70009F4D8A /* incito-elgiganten-legacy-375.json */; };
-		AE58299921F9F214009F4D8A /* IncitoLayout+Positioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299821F9F214009F4D8A /* IncitoLayout+Positioning.swift */; };
-		AE58299B21F9F408009F4D8A /* IncitoLayout+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299A21F9F408009F4D8A /* IncitoLayout+Sizing.swift */; };
-		AE58299D21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58299C21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift */; };
-		AE58299F21FA0DCF009F4D8A /* incito-videotest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE58299E21FA0DCE009F4D8A /* incito-videotest-375.json */; };
-		AE5829A121FB066E009F4D8A /* UIView+IncitoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5829A021FB066E009F4D8A /* UIView+IncitoViews.swift */; };
-		AE5829A321FB0CD1009F4D8A /* RenderableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5829A221FB0CD1009F4D8A /* RenderableView.swift */; };
-		AE5829A621FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE5829A421FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json */; };
-		AE5829A721FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json in Resources */ = {isa = PBXBuildFile; fileRef = AE5829A521FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json */; };
-		AE5829A921FEF0BF009F4D8A /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5829A821FEF0BF009F4D8A /* Result.swift */; };
-		AE5829AB21FEF9D9009F4D8A /* LoadedIncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5829AA21FEF9D9009F4D8A /* LoadedIncitoViewController.swift */; };
-		AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67580F219C2592006BEA9C /* AppDelegate.swift */; };
-		AE675812219C2592006BEA9C /* IncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675811219C2592006BEA9C /* IncitoViewController.swift */; };
-		AE675815219C2592006BEA9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675813219C2592006BEA9C /* Main.storyboard */; };
-		AE675817219C2593006BEA9C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE675816219C2593006BEA9C /* Assets.xcassets */; };
-		AE67581A219C2593006BEA9C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE675818219C2593006BEA9C /* LaunchScreen.storyboard */; };
-		AE675825219C2593006BEA9C /* IncitoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675824219C2593006BEA9C /* IncitoTests.swift */; };
-		AE675830219C25CC006BEA9C /* IncitoDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE67582F219C25CC006BEA9C /* IncitoDocument.swift */; };
-		AE675834219C2AD5006BEA9C /* IncitoDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */; };
-		AE88362621E4ECDB0002CD56 /* GenericIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE88362521E4ECDB0002CD56 /* GenericIdentifier.swift */; };
-		AE88362821E4F31B0002CD56 /* Incito+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE88362721E4F31B0002CD56 /* Incito+UIKit.swift */; };
-		AE88362A21E500E30002CD56 /* UIView+AnchorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE88362921E500E30002CD56 /* UIView+AnchorPoint.swift */; };
-		AE88362C21E5012C0002CD56 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0DDC4D219CC47E0021B1FD /* UIColor+Hex.swift */; };
-		AE88363121E5027B0002CD56 /* RoundedShadowedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE88363021E5027B0002CD56 /* RoundedShadowedView.swift */; };
-		AE94AD7F21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD7E21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift */; };
-		AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */; };
-		AE94AD8321AC12CF00876ED6 /* FontAssetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */; };
-		AE94AD8521AC136A00876ED6 /* FontAssetLoader+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */; };
-		AE94AD8B21AC349100876ED6 /* incito-fakta-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8A21AC349100876ED6 /* incito-fakta-375.json */; };
-		AE94AD8D21AC36EF00876ED6 /* incito-superbrugsen-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen-375.json */; };
-		AE94AD8F21AC889A00876ED6 /* incito-superbrugsen-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */; };
-		AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */; };
-		AE94AD9321AC97AE00876ED6 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */; };
-		AEA4109D21E7819200C6BEC1 /* incito-elgiganten-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEA4109C21E7819200C6BEC1 /* incito-elgiganten-375.json */; };
-		AEA4109F21E7833500C6BEC1 /* incito-elgiganten-small-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEA4109E21E7833400C6BEC1 /* incito-elgiganten-small-375.json */; };
-		AEDD608B21BFE1A500C94188 /* incito-flextest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */; };
-		AEDD608F21CBD72800C94188 /* String+PreventWidows.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */; };
-		AEE67E9A21F1F5E700FB1C7D /* incito-blocktest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */; };
-		AEE67E9C21F688D600FB1C7D /* UIImage+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */; };
-		AEE67E9F21F7122800FB1C7D /* IncitoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE090AD521A2A0890009159E /* IncitoLayout.swift */; };
+		AE582A2521FF118A009F4D8A /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A2221FF118A009F4D8A /* DecodableTests.swift */; };
+		AE582A2D21FF1266009F4D8A /* Incito.h in Headers */ = {isa = PBXBuildFile; fileRef = AE582A2B21FF1252009F4D8A /* Incito.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AE582A2E21FF131D009F4D8A /* Incito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5829D821FF1000009F4D8A /* Incito.framework */; };
+		AE582A6A21FF1736009F4D8A /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4C21FF1735009F4D8A /* JSONValue.swift */; };
+		AE582A6B21FF1736009F4D8A /* String+PreventWidows.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */; };
+		AE582A6C21FF1736009F4D8A /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4E21FF1735009F4D8A /* Result.swift */; };
+		AE582A6D21FF1736009F4D8A /* GenericGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4F21FF1735009F4D8A /* GenericGeometry.swift */; };
+		AE582A6E21FF1736009F4D8A /* DecodingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5021FF1735009F4D8A /* DecodingHelpers.swift */; };
+		AE582A6F21FF1736009F4D8A /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5121FF1735009F4D8A /* TreeNode.swift */; };
+		AE582A7021FF1736009F4D8A /* GenericIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5221FF1735009F4D8A /* GenericIdentifier.swift */; };
+		AE582A7121FF1736009F4D8A /* RenderableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5421FF1736009F4D8A /* RenderableView.swift */; };
+		AE582A7221FF1736009F4D8A /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5521FF1736009F4D8A /* ImageLoader.swift */; };
+		AE582A7321FF1736009F4D8A /* FontAssetLoader+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5621FF1736009F4D8A /* FontAssetLoader+UIKit.swift */; };
+		AE582A7421FF1736009F4D8A /* Incito+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5721FF1736009F4D8A /* Incito+UIKit.swift */; };
+		AE582A7521FF1736009F4D8A /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5821FF1736009F4D8A /* UIColor+Hex.swift */; };
+		AE582A7621FF1736009F4D8A /* IncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5921FF1736009F4D8A /* IncitoViewController.swift */; };
+		AE582A7721FF1736009F4D8A /* IncitoTypes+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5A21FF1736009F4D8A /* IncitoTypes+UIKit.swift */; };
+		AE582A7821FF1736009F4D8A /* UIView+RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5B21FF1736009F4D8A /* UIView+RoundedCorners.swift */; };
+		AE582A7921FF1736009F4D8A /* UIImage+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5C21FF1736009F4D8A /* UIImage+Sizing.swift */; };
+		AE582A7A21FF1736009F4D8A /* UIView+AnchorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5D21FF1736009F4D8A /* UIView+AnchorPoint.swift */; };
+		AE582A7B21FF1736009F4D8A /* UIView+IncitoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5E21FF1736009F4D8A /* UIView+IncitoViews.swift */; };
+		AE582A7C21FF1736009F4D8A /* LoadedIncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5F21FF1736009F4D8A /* LoadedIncitoViewController.swift */; };
+		AE582A7D21FF1736009F4D8A /* RoundedShadowedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6021FF1736009F4D8A /* RoundedShadowedView.swift */; };
+		AE582A7E21FF1736009F4D8A /* IncitoDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6221FF1736009F4D8A /* IncitoDocument.swift */; };
+		AE582A7F21FF1736009F4D8A /* IncitoLayout+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6321FF1736009F4D8A /* IncitoLayout+Sizing.swift */; };
+		AE582A8021FF1736009F4D8A /* IncitoDocument+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6421FF1736009F4D8A /* IncitoDocument+Decodable.swift */; };
+		AE582A8121FF1736009F4D8A /* IncitoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6521FF1736009F4D8A /* IncitoLayout.swift */; };
+		AE582A8221FF1736009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6621FF1736009F4D8A /* IncitoLayout+Dimensioning.swift */; };
+		AE582A8321FF1736009F4D8A /* IncitoLayout+Positioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6721FF1736009F4D8A /* IncitoLayout+Positioning.swift */; };
+		AE582A8421FF1736009F4D8A /* FontAssetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6821FF1736009F4D8A /* FontAssetLoader.swift */; };
+		AE582A8521FF1736009F4D8A /* IncitoTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6921FF1736009F4D8A /* IncitoTypes.swift */; };
+		AE582AAB21FF2EAA009F4D8A /* FLAnimatedImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AAA21FF2E6E009F4D8A /* FLAnimatedImage.framework */; };
+		AE582AB221FF2EF9009F4D8A /* FLAnimatedImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AAA21FF2E6E009F4D8A /* FLAnimatedImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE582AB521FF2FCD009F4D8A /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582AB421FF2FCD009F4D8A /* Measure.swift */; };
+		AE582B0021FF3716009F4D8A /* SVGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE582A9A21FF2E49009F4D8A /* SVGKit.framework */; };
+		AE582B0121FF371E009F4D8A /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */; };
+		AE582B0221FF3729009F4D8A /* SVGKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582A9A21FF2E49009F4D8A /* SVGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE582B0321FF372F009F4D8A /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		AE675821219C2593006BEA9C /* PBXContainerItemProxy */ = {
+		AE582A2821FF11B1009F4D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AE675804219C2591006BEA9C /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = AE67580B219C2591006BEA9C;
-			remoteInfo = Incito;
+			remoteGlobalIDString = AE5829D721FF1000009F4D8A;
+			remoteInfo = "Incito-iOS";
+		};
+		AE582A9521FF2E49009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6639618E16145D0400E58CCA;
+			remoteInfo = "SVGKit-iOS";
+		};
+		AE582A9721FF2E49009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55452BF119EC68A200B75A30;
+			remoteInfo = "SVGKit-iOS Tests";
+		};
+		AE582A9921FF2E49009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 825CDAAF1BDA4BC0003C1C12;
+			remoteInfo = "SVGKitFramework-iOS";
+		};
+		AE582A9B21FF2E49009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 825CDAB81BDA4BC0003C1C12;
+			remoteInfo = "SVGKitFramework-iOSTests";
+		};
+		AE582A9D21FF2E49009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 825CDAD31BDA4D38003C1C12;
+			remoteInfo = "SVGKitFramework-tvOS";
+		};
+		AE582A9F21FF2E49009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 825CDADC1BDA4D38003C1C12;
+			remoteInfo = "SVGKitFramework-tvOSTests";
+		};
+		AE582AA121FF2E49009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 321EAA622171EC8700640504;
+			remoteInfo = "SVGKitFramework-OSX";
+		};
+		AE582AA321FF2E49009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 32A1F09C21746F4700ABFCE1;
+			remoteInfo = "SVGKitFramework-OSXTests";
+		};
+		AE582AA921FF2E6E009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92C9BC0C1B199DC500D79B06;
+			remoteInfo = FLAnimatedImage;
+		};
+		AE582AAD21FF2EC2009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 92C9BC0B1B199DC500D79B06;
+			remoteInfo = FLAnimatedImage;
+		};
+		AE582AFE21FF3708009F4D8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 825CDAAE1BDA4BC0003C1C12;
+			remoteInfo = "SVGKitFramework-iOS";
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		AE582AB121FF2EDF009F4D8A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AE582B0321FF372F009F4D8A /* CocoaLumberjack.framework in Embed Frameworks */,
+				AE582B0221FF3729009F4D8A /* SVGKit.framework in Embed Frameworks */,
+				AE582AB221FF2EF9009F4D8A /* FLAnimatedImage.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		46807A9FD9EF7017F3537723 /* Pods_IncitoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IncitoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7A489C6669186ACDA3F0D6DC /* Pods_Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7CD366430FE97E1D0DF87BDA /* Pods-Incito.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.release.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.release.xcconfig"; sourceTree = "<group>"; };
-		AE090AD521A2A0890009159E /* IncitoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoLayout.swift; sourceTree = "<group>"; };
-		AE0DDC47219C34570021B1FD /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
-		AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Debug.swift"; sourceTree = "<group>"; };
-		AE0DDC4D219CC47E0021B1FD /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
-		AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-absolute.json"; sourceTree = "<group>"; };
-		AE40597D21A5A3A300D029AE /* simple-incito-static.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-static.json"; sourceTree = "<group>"; };
-		AE40598121A6A52500D029AE /* DecodingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodingHelpers.swift; sourceTree = "<group>"; };
-		AE4C57E121AFF60C0004976D /* IncitoTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoTypes.swift; sourceTree = "<group>"; };
-		AE4C57E321AFF7300004976D /* IncitoTypes+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoTypes+UIKit.swift"; sourceTree = "<group>"; };
-		AE4C57E521AFF79C0004976D /* UIView+RecursiveSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RecursiveSubviews.swift"; sourceTree = "<group>"; };
-		AE4C57E721AFF8280004976D /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
-		AE4C57E921B176A50004976D /* Scratchpad.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Scratchpad.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		AE4C57EC21B538CC0004976D /* DecodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
-		AE4C57EE21B575E70004976D /* TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
-		AE4C57F021BE54560004976D /* incito-fakta-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-small-375.json"; sourceTree = "<group>"; };
-		AE58298A21F767F9009F4D8A /* incito-superbrugsen-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-small-375.json"; sourceTree = "<group>"; };
-		AE58298C21F85513009F4D8A /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
-		AE58298E21F8797B009F4D8A /* incito-elgiganten-768.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-768.json"; sourceTree = "<group>"; };
-		AE58299021F88514009F4D8A /* GenericGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericGeometry.swift; sourceTree = "<group>"; };
-		AE58299221F8932D009F4D8A /* incito-imagetest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-imagetest-375.json"; sourceTree = "<group>"; };
-		AE58299421F8A338009F4D8A /* incito-transformtest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-transformtest-375.json"; sourceTree = "<group>"; };
-		AE58299621F8AA70009F4D8A /* incito-elgiganten-legacy-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-legacy-375.json"; sourceTree = "<group>"; };
-		AE58299821F9F214009F4D8A /* IncitoLayout+Positioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Positioning.swift"; sourceTree = "<group>"; };
-		AE58299A21F9F408009F4D8A /* IncitoLayout+Sizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Sizing.swift"; sourceTree = "<group>"; };
-		AE58299C21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Dimensioning.swift"; sourceTree = "<group>"; };
-		AE58299E21FA0DCE009F4D8A /* incito-videotest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-videotest-375.json"; sourceTree = "<group>"; };
-		AE5829A021FB066E009F4D8A /* UIView+IncitoViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+IncitoViews.swift"; sourceTree = "<group>"; };
-		AE5829A221FB0CD1009F4D8A /* RenderableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderableView.swift; sourceTree = "<group>"; };
-		AE5829A421FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-mar18-375.json"; sourceTree = "<group>"; };
-		AE5829A521FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-mar18-768.json"; sourceTree = "<group>"; };
-		AE5829A821FEF0BF009F4D8A /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		AE5829AA21FEF9D9009F4D8A /* LoadedIncitoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadedIncitoViewController.swift; sourceTree = "<group>"; };
-		AE67580C219C2592006BEA9C /* Incito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Incito.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE67580F219C2592006BEA9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AE675811219C2592006BEA9C /* IncitoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoViewController.swift; sourceTree = "<group>"; };
-		AE675814219C2592006BEA9C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		AE675816219C2593006BEA9C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AE675819219C2593006BEA9C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		AE67581B219C2593006BEA9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE5829D821FF1000009F4D8A /* Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE582A2221FF118A009F4D8A /* DecodableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
+		AE582A2321FF118A009F4D8A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE582A2B21FF1252009F4D8A /* Incito.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Incito.h; sourceTree = "<group>"; };
+		AE582A2C21FF1252009F4D8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE582A4C21FF1735009F4D8A /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
+		AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+PreventWidows.swift"; sourceTree = "<group>"; };
+		AE582A4E21FF1735009F4D8A /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		AE582A4F21FF1735009F4D8A /* GenericGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericGeometry.swift; sourceTree = "<group>"; };
+		AE582A5021FF1735009F4D8A /* DecodingHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodingHelpers.swift; sourceTree = "<group>"; };
+		AE582A5121FF1735009F4D8A /* TreeNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
+		AE582A5221FF1735009F4D8A /* GenericIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericIdentifier.swift; sourceTree = "<group>"; };
+		AE582A5421FF1736009F4D8A /* RenderableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderableView.swift; sourceTree = "<group>"; };
+		AE582A5521FF1736009F4D8A /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		AE582A5621FF1736009F4D8A /* FontAssetLoader+UIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FontAssetLoader+UIKit.swift"; sourceTree = "<group>"; };
+		AE582A5721FF1736009F4D8A /* Incito+UIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Incito+UIKit.swift"; sourceTree = "<group>"; };
+		AE582A5821FF1736009F4D8A /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
+		AE582A5921FF1736009F4D8A /* IncitoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncitoViewController.swift; sourceTree = "<group>"; };
+		AE582A5A21FF1736009F4D8A /* IncitoTypes+UIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncitoTypes+UIKit.swift"; sourceTree = "<group>"; };
+		AE582A5B21FF1736009F4D8A /* UIView+RoundedCorners.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+RoundedCorners.swift"; sourceTree = "<group>"; };
+		AE582A5C21FF1736009F4D8A /* UIImage+Sizing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Sizing.swift"; sourceTree = "<group>"; };
+		AE582A5D21FF1736009F4D8A /* UIView+AnchorPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AnchorPoint.swift"; sourceTree = "<group>"; };
+		AE582A5E21FF1736009F4D8A /* UIView+IncitoViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+IncitoViews.swift"; sourceTree = "<group>"; };
+		AE582A5F21FF1736009F4D8A /* LoadedIncitoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadedIncitoViewController.swift; sourceTree = "<group>"; };
+		AE582A6021FF1736009F4D8A /* RoundedShadowedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedShadowedView.swift; sourceTree = "<group>"; };
+		AE582A6221FF1736009F4D8A /* IncitoDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncitoDocument.swift; sourceTree = "<group>"; };
+		AE582A6321FF1736009F4D8A /* IncitoLayout+Sizing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Sizing.swift"; sourceTree = "<group>"; };
+		AE582A6421FF1736009F4D8A /* IncitoDocument+Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncitoDocument+Decodable.swift"; sourceTree = "<group>"; };
+		AE582A6521FF1736009F4D8A /* IncitoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncitoLayout.swift; sourceTree = "<group>"; };
+		AE582A6621FF1736009F4D8A /* IncitoLayout+Dimensioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Dimensioning.swift"; sourceTree = "<group>"; };
+		AE582A6721FF1736009F4D8A /* IncitoLayout+Positioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Positioning.swift"; sourceTree = "<group>"; };
+		AE582A6821FF1736009F4D8A /* FontAssetLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAssetLoader.swift; sourceTree = "<group>"; };
+		AE582A6921FF1736009F4D8A /* IncitoTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncitoTypes.swift; sourceTree = "<group>"; };
+		AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "SVGKit-iOS.xcodeproj"; path = "External/SVGKit/SVGKit-iOS.xcodeproj"; sourceTree = "<group>"; };
+		AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FLAnimatedImage.xcodeproj; path = External/FLAnimatedImage/FLAnimatedImage.xcodeproj; sourceTree = "<group>"; };
+		AE582AB421FF2FCD009F4D8A /* Measure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
+		AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "External/SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/iOS/CocoaLumberjack.framework"; sourceTree = "<group>"; };
+		AE582B0421FF37A9009F4D8A /* Incito.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Incito.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		AE582B0521FF37A9009F4D8A /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		AE675820219C2593006BEA9C /* IncitoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IncitoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE675824219C2593006BEA9C /* IncitoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoTests.swift; sourceTree = "<group>"; };
-		AE675826219C2593006BEA9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AE67582F219C25CC006BEA9C /* IncitoDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDocument.swift; sourceTree = "<group>"; };
-		AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDecoder.swift; sourceTree = "<group>"; };
-		AE88362521E4ECDB0002CD56 /* GenericIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericIdentifier.swift; sourceTree = "<group>"; };
-		AE88362721E4F31B0002CD56 /* Incito+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+UIKit.swift"; sourceTree = "<group>"; };
-		AE88362921E500E30002CD56 /* UIView+AnchorPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AnchorPoint.swift"; sourceTree = "<group>"; };
-		AE88363021E5027B0002CD56 /* RoundedShadowedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowedView.swift; sourceTree = "<group>"; };
-		AE94AD7E21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoDocument+Decodable.swift"; sourceTree = "<group>"; };
-		AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundedCorners.swift"; sourceTree = "<group>"; };
-		AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontAssetLoader.swift; sourceTree = "<group>"; };
-		AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FontAssetLoader+UIKit.swift"; sourceTree = "<group>"; };
-		AE94AD8A21AC349100876ED6 /* incito-fakta-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-375.json"; sourceTree = "<group>"; };
-		AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-375.json"; sourceTree = "<group>"; };
-		AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-1200.json"; sourceTree = "<group>"; };
-		AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-1200.json"; sourceTree = "<group>"; };
-		AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
-		AEA4109C21E7819200C6BEC1 /* incito-elgiganten-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-375.json"; sourceTree = "<group>"; };
-		AEA4109E21E7833400C6BEC1 /* incito-elgiganten-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-small-375.json"; sourceTree = "<group>"; };
-		AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-flextest-375.json"; sourceTree = "<group>"; };
-		AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+PreventWidows.swift"; sourceTree = "<group>"; };
-		AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "incito-blocktest-375.json"; path = "Incito/incito-blocktest-375.json"; sourceTree = SOURCE_ROOT; };
-		AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Sizing.swift"; sourceTree = "<group>"; };
-		E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Incito.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Incito/Pods-Incito.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		AE675809219C2591006BEA9C /* Frameworks */ = {
+		AE5829D521FF1000009F4D8A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86A7E23B220F57C7001FB56F /* Pods_Incito.framework in Frameworks */,
+				AE582B0121FF371E009F4D8A /* CocoaLumberjack.framework in Frameworks */,
+				AE582B0021FF3716009F4D8A /* SVGKit.framework in Frameworks */,
+				AE582AAB21FF2EAA009F4D8A /* FLAnimatedImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,178 +208,172 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE582A2E21FF131D009F4D8A /* Incito.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		092C31812CF72413F8E4A303 /* Pods */ = {
+		AE582A2121FF118A009F4D8A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */,
-				7CD366430FE97E1D0DF87BDA /* Pods-Incito.release.xcconfig */,
+				AE582A2221FF118A009F4D8A /* DecodableTests.swift */,
+				AE582A2321FF118A009F4D8A /* Info.plist */,
 			);
-			name = Pods;
+			path = Tests;
 			sourceTree = "<group>";
 		};
-		57D77BE1AFC591B3CD7C3BAD /* Frameworks */ = {
+		AE582A2A21FF1252009F4D8A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				7A489C6669186ACDA3F0D6DC /* Pods_Incito.framework */,
-				46807A9FD9EF7017F3537723 /* Pods_IncitoTests.framework */,
+				AE582A2C21FF1252009F4D8A /* Info.plist */,
+				AE582A2B21FF1252009F4D8A /* Incito.h */,
+				AE582A6121FF1736009F4D8A /* Core */,
+				AE582A5321FF1736009F4D8A /* UIKit */,
+				AE582A4B21FF1735009F4D8A /* Utils */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		AE582A4B21FF1735009F4D8A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				AE582A4C21FF1735009F4D8A /* JSONValue.swift */,
+				AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */,
+				AE582A4E21FF1735009F4D8A /* Result.swift */,
+				AE582A4F21FF1735009F4D8A /* GenericGeometry.swift */,
+				AE582A5021FF1735009F4D8A /* DecodingHelpers.swift */,
+				AE582A5121FF1735009F4D8A /* TreeNode.swift */,
+				AE582A5221FF1735009F4D8A /* GenericIdentifier.swift */,
+				AE582AB421FF2FCD009F4D8A /* Measure.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		AE582A5321FF1736009F4D8A /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				AE582A5921FF1736009F4D8A /* IncitoViewController.swift */,
+				AE582A5F21FF1736009F4D8A /* LoadedIncitoViewController.swift */,
+				AE582A5421FF1736009F4D8A /* RenderableView.swift */,
+				AE582A5521FF1736009F4D8A /* ImageLoader.swift */,
+				AE582A5621FF1736009F4D8A /* FontAssetLoader+UIKit.swift */,
+				AE582A5721FF1736009F4D8A /* Incito+UIKit.swift */,
+				AE582A5821FF1736009F4D8A /* UIColor+Hex.swift */,
+				AE582A5A21FF1736009F4D8A /* IncitoTypes+UIKit.swift */,
+				AE582A5B21FF1736009F4D8A /* UIView+RoundedCorners.swift */,
+				AE582A5C21FF1736009F4D8A /* UIImage+Sizing.swift */,
+				AE582A5D21FF1736009F4D8A /* UIView+AnchorPoint.swift */,
+				AE582A5E21FF1736009F4D8A /* UIView+IncitoViews.swift */,
+				AE582A6021FF1736009F4D8A /* RoundedShadowedView.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		AE582A6121FF1736009F4D8A /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				AE582A6221FF1736009F4D8A /* IncitoDocument.swift */,
+				AE582A6421FF1736009F4D8A /* IncitoDocument+Decodable.swift */,
+				AE582A6521FF1736009F4D8A /* IncitoLayout.swift */,
+				AE582A6321FF1736009F4D8A /* IncitoLayout+Sizing.swift */,
+				AE582A6621FF1736009F4D8A /* IncitoLayout+Dimensioning.swift */,
+				AE582A6721FF1736009F4D8A /* IncitoLayout+Positioning.swift */,
+				AE582A6821FF1736009F4D8A /* FontAssetLoader.swift */,
+				AE582A6921FF1736009F4D8A /* IncitoTypes.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		AE582A8921FF2E24009F4D8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */,
+				AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */,
+				AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE582A8B21FF2E48009F4D8A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE582A9621FF2E49009F4D8A /* libSVGKit-iOS.2.1.0.a */,
+				AE582A9821FF2E49009F4D8A /* SVGKit-iOS Tests.xctest */,
+				AE582A9A21FF2E49009F4D8A /* SVGKit.framework */,
+				AE582A9C21FF2E49009F4D8A /* SVGKitFramework-iOSTests.xctest */,
+				AE582A9E21FF2E49009F4D8A /* SVGKit.framework */,
+				AE582AA021FF2E49009F4D8A /* SVGKitFramework-tvOSTests.xctest */,
+				AE582AA221FF2E49009F4D8A /* SVGKit.framework */,
+				AE582AA421FF2E49009F4D8A /* SVGKitFramework-OSXTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AE582AA621FF2E6E009F4D8A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE582AAA21FF2E6E009F4D8A /* FLAnimatedImage.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		AE675803219C2591006BEA9C = {
 			isa = PBXGroup;
 			children = (
-				AE67580E219C2592006BEA9C /* Incito */,
-				AE675823219C2593006BEA9C /* IncitoTests */,
+				AE582B0421FF37A9009F4D8A /* Incito.podspec */,
+				AE582B0521FF37A9009F4D8A /* Cartfile */,
+				AE582A2A21FF1252009F4D8A /* Sources */,
+				AE582A2121FF118A009F4D8A /* Tests */,
 				AE67580D219C2592006BEA9C /* Products */,
-				092C31812CF72413F8E4A303 /* Pods */,
-				57D77BE1AFC591B3CD7C3BAD /* Frameworks */,
+				AE582A8921FF2E24009F4D8A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		AE67580D219C2592006BEA9C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AE67580C219C2592006BEA9C /* Incito.app */,
 				AE675820219C2593006BEA9C /* IncitoTests.xctest */,
+				AE5829D821FF1000009F4D8A /* Incito.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AE67580E219C2592006BEA9C /* Incito */ = {
-			isa = PBXGroup;
-			children = (
-				AE67580F219C2592006BEA9C /* AppDelegate.swift */,
-				AE4C57E721AFF8280004976D /* DemoViewController.swift */,
-				AE88362F21E502190002CD56 /* Incito */,
-				AE88362D21E501480002CD56 /* Debug */,
-				AEDD608A21BFE1A500C94188 /* incito-flextest-375.json */,
-				AEE67E9921F1F5E600FB1C7D /* incito-blocktest-375.json */,
-				AE58299221F8932D009F4D8A /* incito-imagetest-375.json */,
-				AE58299421F8A338009F4D8A /* incito-transformtest-375.json */,
-				AE58299E21FA0DCE009F4D8A /* incito-videotest-375.json */,
-				AE4C57F021BE54560004976D /* incito-fakta-small-375.json */,
-				AE94AD8A21AC349100876ED6 /* incito-fakta-375.json */,
-				AE94AD9021AC88C600876ED6 /* incito-fakta-1200.json */,
-				AE94AD8C21AC36EF00876ED6 /* incito-superbrugsen-375.json */,
-				AE5829A421FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json */,
-				AE5829A521FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json */,
-				AE58298A21F767F9009F4D8A /* incito-superbrugsen-small-375.json */,
-				AE94AD8E21AC889A00876ED6 /* incito-superbrugsen-1200.json */,
-				AEA4109E21E7833400C6BEC1 /* incito-elgiganten-small-375.json */,
-				AE58299621F8AA70009F4D8A /* incito-elgiganten-legacy-375.json */,
-				AEA4109C21E7819200C6BEC1 /* incito-elgiganten-375.json */,
-				AE58298E21F8797B009F4D8A /* incito-elgiganten-768.json */,
-				AE0DDC51219D58C90021B1FD /* simple-incito-absolute.json */,
-				AE40597D21A5A3A300D029AE /* simple-incito-static.json */,
-				AE675813219C2592006BEA9C /* Main.storyboard */,
-				AE675816219C2593006BEA9C /* Assets.xcassets */,
-				AE675818219C2593006BEA9C /* LaunchScreen.storyboard */,
-				AE67581B219C2593006BEA9C /* Info.plist */,
-				AE4C57E921B176A50004976D /* Scratchpad.playground */,
-			);
-			path = Incito;
-			sourceTree = "<group>";
-		};
-		AE675823219C2593006BEA9C /* IncitoTests */ = {
-			isa = PBXGroup;
-			children = (
-				AE675824219C2593006BEA9C /* IncitoTests.swift */,
-				AE4C57EC21B538CC0004976D /* DecodableTests.swift */,
-				AE675826219C2593006BEA9C /* Info.plist */,
-			);
-			path = IncitoTests;
-			sourceTree = "<group>";
-		};
-		AE88362B21E501100002CD56 /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-				AE675811219C2592006BEA9C /* IncitoViewController.swift */,
-				AE94AD9221AC97AE00876ED6 /* ImageLoader.swift */,
-				AE94AD8421AC136A00876ED6 /* FontAssetLoader+UIKit.swift */,
-				AE88362721E4F31B0002CD56 /* Incito+UIKit.swift */,
-				AE5829A021FB066E009F4D8A /* UIView+IncitoViews.swift */,
-				AE5829A221FB0CD1009F4D8A /* RenderableView.swift */,
-				AE4C57E321AFF7300004976D /* IncitoTypes+UIKit.swift */,
-				AE0DDC4D219CC47E0021B1FD /* UIColor+Hex.swift */,
-				AE94AD8021A7EE6F00876ED6 /* UIView+RoundedCorners.swift */,
-				AE88362921E500E30002CD56 /* UIView+AnchorPoint.swift */,
-				AE88363021E5027B0002CD56 /* RoundedShadowedView.swift */,
-				AEE67E9B21F688D600FB1C7D /* UIImage+Sizing.swift */,
-				AE5829AA21FEF9D9009F4D8A /* LoadedIncitoViewController.swift */,
-			);
-			path = UIKit;
-			sourceTree = "<group>";
-		};
-		AE88362D21E501480002CD56 /* Debug */ = {
-			isa = PBXGroup;
-			children = (
-				AE675833219C2AD5006BEA9C /* IncitoDecoder.swift */,
-				AE0DDC49219CC2AC0021B1FD /* UIColor+Debug.swift */,
-				AE4C57E521AFF79C0004976D /* UIView+RecursiveSubviews.swift */,
-				AE58298C21F85513009F4D8A /* Measure.swift */,
-			);
-			path = Debug;
-			sourceTree = "<group>";
-		};
-		AE88362E21E5017C0002CD56 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				AE5829A821FEF0BF009F4D8A /* Result.swift */,
-				AE4C57EE21B575E70004976D /* TreeNode.swift */,
-				AE0DDC47219C34570021B1FD /* JSONValue.swift */,
-				AE88362521E4ECDB0002CD56 /* GenericIdentifier.swift */,
-				AEDD608E21CBD72800C94188 /* String+PreventWidows.swift */,
-				AE40598121A6A52500D029AE /* DecodingHelpers.swift */,
-				AE58299021F88514009F4D8A /* GenericGeometry.swift */,
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
-		AE88362F21E502190002CD56 /* Incito */ = {
-			isa = PBXGroup;
-			children = (
-				AE67582F219C25CC006BEA9C /* IncitoDocument.swift */,
-				AE94AD7E21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift */,
-				AE090AD521A2A0890009159E /* IncitoLayout.swift */,
-				AE58299C21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift */,
-				AE58299A21F9F408009F4D8A /* IncitoLayout+Sizing.swift */,
-				AE58299821F9F214009F4D8A /* IncitoLayout+Positioning.swift */,
-				AE4C57E121AFF60C0004976D /* IncitoTypes.swift */,
-				AE94AD8221AC12CF00876ED6 /* FontAssetLoader.swift */,
-				AE88362B21E501100002CD56 /* UIKit */,
-				AE88362E21E5017C0002CD56 /* Utils */,
-			);
-			path = Incito;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		AE5829D321FF1000009F4D8A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE582A2D21FF1266009F4D8A /* Incito.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		AE67580B219C2591006BEA9C /* Incito */ = {
+		AE5829D721FF1000009F4D8A /* Incito-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AE675829219C2593006BEA9C /* Build configuration list for PBXNativeTarget "Incito" */;
+			buildConfigurationList = AE5829E121FF1000009F4D8A /* Build configuration list for PBXNativeTarget "Incito-iOS" */;
 			buildPhases = (
-				52B84ECA38E727C79AEC3D82 /* [CP] Check Pods Manifest.lock */,
-				AE675808219C2591006BEA9C /* Sources */,
-				AE675809219C2591006BEA9C /* Frameworks */,
-				AE67580A219C2591006BEA9C /* Resources */,
-				7A4E961BB1AE4B5668E0A314 /* [CP] Embed Pods Frameworks */,
+				AE5829D321FF1000009F4D8A /* Headers */,
+				AE5829D421FF1000009F4D8A /* Sources */,
+				AE5829D521FF1000009F4D8A /* Frameworks */,
+				AE5829D621FF1000009F4D8A /* Resources */,
+				AE582AB121FF2EDF009F4D8A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				AE582AFF21FF3708009F4D8A /* PBXTargetDependency */,
+				AE582AAE21FF2EC2009F4D8A /* PBXTargetDependency */,
 			);
-			name = Incito;
-			productName = Incito;
-			productReference = AE67580C219C2592006BEA9C /* Incito.app */;
-			productType = "com.apple.product-type.application";
+			name = "Incito-iOS";
+			productName = "Incito-iOS";
+			productReference = AE5829D821FF1000009F4D8A /* Incito.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		AE67581F219C2593006BEA9C /* IncitoTests */ = {
 			isa = PBXNativeTarget;
@@ -345,7 +386,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				AE675822219C2593006BEA9C /* PBXTargetDependency */,
+				AE582A2921FF11B1009F4D8A /* PBXTargetDependency */,
 			);
 			name = IncitoTests;
 			productName = IncitoTests;
@@ -362,7 +403,7 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = ShopGun;
 				TargetAttributes = {
-					AE67580B219C2591006BEA9C = {
+					AE5829D721FF1000009F4D8A = {
 						CreatedOnToolsVersion = 10.1;
 					};
 					AE67581F219C2593006BEA9C = {
@@ -382,41 +423,95 @@
 			mainGroup = AE675803219C2591006BEA9C;
 			productRefGroup = AE67580D219C2592006BEA9C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = AE582AA621FF2E6E009F4D8A /* Products */;
+					ProjectRef = AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */;
+				},
+				{
+					ProductGroup = AE582A8B21FF2E48009F4D8A /* Products */;
+					ProjectRef = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
-				AE67580B219C2591006BEA9C /* Incito */,
+				AE5829D721FF1000009F4D8A /* Incito-iOS */,
 				AE67581F219C2593006BEA9C /* IncitoTests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		AE582A9621FF2E49009F4D8A /* libSVGKit-iOS.2.1.0.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libSVGKit-iOS.2.1.0.a";
+			remoteRef = AE582A9521FF2E49009F4D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE582A9821FF2E49009F4D8A /* SVGKit-iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SVGKit-iOS Tests.xctest";
+			remoteRef = AE582A9721FF2E49009F4D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE582A9A21FF2E49009F4D8A /* SVGKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SVGKit.framework;
+			remoteRef = AE582A9921FF2E49009F4D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE582A9C21FF2E49009F4D8A /* SVGKitFramework-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SVGKitFramework-iOSTests.xctest";
+			remoteRef = AE582A9B21FF2E49009F4D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE582A9E21FF2E49009F4D8A /* SVGKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SVGKit.framework;
+			remoteRef = AE582A9D21FF2E49009F4D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE582AA021FF2E49009F4D8A /* SVGKitFramework-tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SVGKitFramework-tvOSTests.xctest";
+			remoteRef = AE582A9F21FF2E49009F4D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE582AA221FF2E49009F4D8A /* SVGKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SVGKit.framework;
+			remoteRef = AE582AA121FF2E49009F4D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE582AA421FF2E49009F4D8A /* SVGKitFramework-OSXTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SVGKitFramework-OSXTests.xctest";
+			remoteRef = AE582AA321FF2E49009F4D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE582AAA21FF2E6E009F4D8A /* FLAnimatedImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FLAnimatedImage.framework;
+			remoteRef = AE582AA921FF2E6E009F4D8A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
-		AE67580A219C2591006BEA9C /* Resources */ = {
+		AE5829D621FF1000009F4D8A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE67581A219C2593006BEA9C /* LaunchScreen.storyboard in Resources */,
-				AE94AD8F21AC889A00876ED6 /* incito-superbrugsen-1200.json in Resources */,
-				AE675817219C2593006BEA9C /* Assets.xcassets in Resources */,
-				AEA4109D21E7819200C6BEC1 /* incito-elgiganten-375.json in Resources */,
-				AE5829A721FB0F25009F4D8A /* incito-superbrugsen-mar18-768.json in Resources */,
-				AE58299721F8AA70009F4D8A /* incito-elgiganten-legacy-375.json in Resources */,
-				AEDD608B21BFE1A500C94188 /* incito-flextest-375.json in Resources */,
-				AE58298F21F8797C009F4D8A /* incito-elgiganten-768.json in Resources */,
-				AEA4109F21E7833500C6BEC1 /* incito-elgiganten-small-375.json in Resources */,
-				AE0DDC52219D58CA0021B1FD /* simple-incito-absolute.json in Resources */,
-				AEE67E9A21F1F5E700FB1C7D /* incito-blocktest-375.json in Resources */,
-				AE94AD8B21AC349100876ED6 /* incito-fakta-375.json in Resources */,
-				AE58299F21FA0DCF009F4D8A /* incito-videotest-375.json in Resources */,
-				AE58299521F8A339009F4D8A /* incito-transformtest-375.json in Resources */,
-				AE58298B21F767F9009F4D8A /* incito-superbrugsen-small-375.json in Resources */,
-				AE5829A621FB0F25009F4D8A /* incito-superbrugsen-mar18-375.json in Resources */,
-				AE4C57F121BE54570004976D /* incito-fakta-small-375.json in Resources */,
-				AE58299321F8932E009F4D8A /* incito-imagetest-375.json in Resources */,
-				AE94AD9121AC88C600876ED6 /* incito-fakta-1200.json in Resources */,
-				AE40597E21A5A3A300D029AE /* simple-incito-static.json in Resources */,
-				AE675815219C2592006BEA9C /* Main.storyboard in Resources */,
-				AE94AD8D21AC36EF00876ED6 /* incito-superbrugsen-375.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,98 +524,40 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		52B84ECA38E727C79AEC3D82 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Incito-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7A4E961BB1AE4B5668E0A314 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Incito/Pods-Incito-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
-				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
-				"${BUILT_PRODUCTS_DIR}/RRFPSBar/RRFPSBar.framework",
-				"${BUILT_PRODUCTS_DIR}/SVGKit/SVGKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RRFPSBar.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVGKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Incito/Pods-Incito-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		AE675808219C2591006BEA9C /* Sources */ = {
+		AE5829D421FF1000009F4D8A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE675812219C2592006BEA9C /* IncitoViewController.swift in Sources */,
-				AEDD608F21CBD72800C94188 /* String+PreventWidows.swift in Sources */,
-				AE675810219C2592006BEA9C /* AppDelegate.swift in Sources */,
-				AE94AD8521AC136A00876ED6 /* FontAssetLoader+UIKit.swift in Sources */,
-				AE94AD8321AC12CF00876ED6 /* FontAssetLoader.swift in Sources */,
-				AE58299121F88514009F4D8A /* GenericGeometry.swift in Sources */,
-				AE675834219C2AD5006BEA9C /* IncitoDecoder.swift in Sources */,
-				AE58298D21F85513009F4D8A /* Measure.swift in Sources */,
-				AE0DDC4A219CC2AC0021B1FD /* UIColor+Debug.swift in Sources */,
-				AE94AD9321AC97AE00876ED6 /* ImageLoader.swift in Sources */,
-				AE4C57E621AFF79C0004976D /* UIView+RecursiveSubviews.swift in Sources */,
-				AE88362C21E5012C0002CD56 /* UIColor+Hex.swift in Sources */,
-				AE88362A21E500E30002CD56 /* UIView+AnchorPoint.swift in Sources */,
-				AE4C57E421AFF7300004976D /* IncitoTypes+UIKit.swift in Sources */,
-				AE58299921F9F214009F4D8A /* IncitoLayout+Positioning.swift in Sources */,
-				AE58299B21F9F408009F4D8A /* IncitoLayout+Sizing.swift in Sources */,
-				AEE67E9F21F7122800FB1C7D /* IncitoLayout.swift in Sources */,
-				AE4C57EF21B575E70004976D /* TreeNode.swift in Sources */,
-				AE94AD7F21A6DFFE00876ED6 /* IncitoDocument+Decodable.swift in Sources */,
-				AE94AD8121A7EE7000876ED6 /* UIView+RoundedCorners.swift in Sources */,
-				AEE67E9C21F688D600FB1C7D /* UIImage+Sizing.swift in Sources */,
-				AE5829A921FEF0BF009F4D8A /* Result.swift in Sources */,
-				AE88363121E5027B0002CD56 /* RoundedShadowedView.swift in Sources */,
-				AE675830219C25CC006BEA9C /* IncitoDocument.swift in Sources */,
-				AE0DDC48219C34570021B1FD /* JSONValue.swift in Sources */,
-				AE88362621E4ECDB0002CD56 /* GenericIdentifier.swift in Sources */,
-				AE5829A121FB066E009F4D8A /* UIView+IncitoViews.swift in Sources */,
-				AE88362821E4F31B0002CD56 /* Incito+UIKit.swift in Sources */,
-				AE40598221A6A52500D029AE /* DecodingHelpers.swift in Sources */,
-				AE58299D21F9FED0009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */,
-				AE4C57E221AFF60C0004976D /* IncitoTypes.swift in Sources */,
-				AE5829A321FB0CD1009F4D8A /* RenderableView.swift in Sources */,
-				AE5829AB21FEF9D9009F4D8A /* LoadedIncitoViewController.swift in Sources */,
-				AE4C57E821AFF8280004976D /* DemoViewController.swift in Sources */,
+				AE582A6E21FF1736009F4D8A /* DecodingHelpers.swift in Sources */,
+				AE582A6C21FF1736009F4D8A /* Result.swift in Sources */,
+				AE582A8221FF1736009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */,
+				AE582A7721FF1736009F4D8A /* IncitoTypes+UIKit.swift in Sources */,
+				AE582A7621FF1736009F4D8A /* IncitoViewController.swift in Sources */,
+				AE582A6D21FF1736009F4D8A /* GenericGeometry.swift in Sources */,
+				AE582A7F21FF1736009F4D8A /* IncitoLayout+Sizing.swift in Sources */,
+				AE582A8021FF1736009F4D8A /* IncitoDocument+Decodable.swift in Sources */,
+				AE582A7A21FF1736009F4D8A /* UIView+AnchorPoint.swift in Sources */,
+				AE582A6B21FF1736009F4D8A /* String+PreventWidows.swift in Sources */,
+				AE582A7D21FF1736009F4D8A /* RoundedShadowedView.swift in Sources */,
+				AE582A8521FF1736009F4D8A /* IncitoTypes.swift in Sources */,
+				AE582A6A21FF1736009F4D8A /* JSONValue.swift in Sources */,
+				AE582A7221FF1736009F4D8A /* ImageLoader.swift in Sources */,
+				AE582A8321FF1736009F4D8A /* IncitoLayout+Positioning.swift in Sources */,
+				AE582A8421FF1736009F4D8A /* FontAssetLoader.swift in Sources */,
+				AE582A7E21FF1736009F4D8A /* IncitoDocument.swift in Sources */,
+				AE582A6F21FF1736009F4D8A /* TreeNode.swift in Sources */,
+				AE582A7421FF1736009F4D8A /* Incito+UIKit.swift in Sources */,
+				AE582AB521FF2FCD009F4D8A /* Measure.swift in Sources */,
+				AE582A7321FF1736009F4D8A /* FontAssetLoader+UIKit.swift in Sources */,
+				AE582A7521FF1736009F4D8A /* UIColor+Hex.swift in Sources */,
+				AE582A8121FF1736009F4D8A /* IncitoLayout.swift in Sources */,
+				AE582A7B21FF1736009F4D8A /* UIView+IncitoViews.swift in Sources */,
+				AE582A7821FF1736009F4D8A /* UIView+RoundedCorners.swift in Sources */,
+				AE582A7121FF1736009F4D8A /* RenderableView.swift in Sources */,
+				AE582A7021FF1736009F4D8A /* GenericIdentifier.swift in Sources */,
+				AE582A7921FF1736009F4D8A /* UIImage+Sizing.swift in Sources */,
+				AE582A7C21FF1736009F4D8A /* LoadedIncitoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,41 +565,93 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE675825219C2593006BEA9C /* IncitoTests.swift in Sources */,
-				AE4C57ED21B538CC0004976D /* DecodableTests.swift in Sources */,
+				AE582A2521FF118A009F4D8A /* DecodableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AE675822219C2593006BEA9C /* PBXTargetDependency */ = {
+		AE582A2921FF11B1009F4D8A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AE67580B219C2591006BEA9C /* Incito */;
-			targetProxy = AE675821219C2593006BEA9C /* PBXContainerItemProxy */;
+			target = AE5829D721FF1000009F4D8A /* Incito-iOS */;
+			targetProxy = AE582A2821FF11B1009F4D8A /* PBXContainerItemProxy */;
+		};
+		AE582AAE21FF2EC2009F4D8A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FLAnimatedImage;
+			targetProxy = AE582AAD21FF2EC2009F4D8A /* PBXContainerItemProxy */;
+		};
+		AE582AFF21FF3708009F4D8A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SVGKitFramework-iOS";
+			targetProxy = AE582AFE21FF3708009F4D8A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		AE675813219C2592006BEA9C /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AE675814219C2592006BEA9C /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		AE675818219C2593006BEA9C /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AE675819219C2593006BEA9C /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
+		AE5829E221FF1000009F4D8A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MN86AVA6GX;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/External/SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/iOS",
+				);
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = Incito;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		AE5829E321FF1000009F4D8A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = MN86AVA6GX;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/External/SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/iOS",
+				);
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = Incito;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		AE675827219C2593006BEA9C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -600,7 +689,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -614,7 +703,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -661,7 +750,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -669,53 +758,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		AE67582A219C2593006BEA9C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E19FDA92DD01682C080D0B9E /* Pods-Incito.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MN86AVA6GX;
-				INFOPLIST_FILE = Incito/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shopgun.Incito;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		AE67582B219C2593006BEA9C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7CD366430FE97E1D0DF87BDA /* Pods-Incito.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MN86AVA6GX;
-				INFOPLIST_FILE = Incito/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shopgun.Incito;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -726,7 +775,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MN86AVA6GX;
-				INFOPLIST_FILE = IncitoTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -747,7 +796,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MN86AVA6GX;
-				INFOPLIST_FILE = IncitoTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -764,20 +813,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		AE5829E121FF1000009F4D8A /* Build configuration list for PBXNativeTarget "Incito-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE5829E221FF1000009F4D8A /* Debug */,
+				AE5829E321FF1000009F4D8A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		AE675807219C2591006BEA9C /* Build configuration list for PBXProject "Incito" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE675827219C2593006BEA9C /* Debug */,
 				AE675828219C2593006BEA9C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AE675829219C2593006BEA9C /* Build configuration list for PBXNativeTarget "Incito" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AE67582A219C2593006BEA9C /* Debug */,
-				AE67582B219C2593006BEA9C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

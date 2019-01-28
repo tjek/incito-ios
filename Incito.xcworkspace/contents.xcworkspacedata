@@ -5,6 +5,6 @@
       location = "group:Incito.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Pods/Pods.xcodeproj">
+      location = "group:Demo/Incito-Demo.xcodeproj">
    </FileRef>
 </Workspace>

@@ -1,0 +1,503 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AE582A1021FF10DC009F4D8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A0F21FF10DC009F4D8A /* AppDelegate.swift */; };
+		AE582A1221FF10DC009F4D8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A1121FF10DC009F4D8A /* ViewController.swift */; };
+		AE582A4721FF1675009F4D8A /* Incito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE582A4621FF1675009F4D8A /* Incito.framework */; };
+		AE582A4821FF1675009F4D8A /* Incito.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582A4621FF1675009F4D8A /* Incito.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE582ADA21FF3127009F4D8A /* incito-flextest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582ABA21FF3126009F4D8A /* incito-flextest-375.json */; };
+		AE582ADB21FF3127009F4D8A /* incito-transformtest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582ABB21FF3126009F4D8A /* incito-transformtest-375.json */; };
+		AE582ADC21FF3127009F4D8A /* incito-superbrugsen-mar18-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582ABC21FF3126009F4D8A /* incito-superbrugsen-mar18-375.json */; };
+		AE582ADD21FF3127009F4D8A /* incito-superbrugsen-mar18-768.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582ABD21FF3126009F4D8A /* incito-superbrugsen-mar18-768.json */; };
+		AE582ADE21FF3127009F4D8A /* incito-imagetest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582ABE21FF3126009F4D8A /* incito-imagetest-375.json */; };
+		AE582ADF21FF3127009F4D8A /* incito-superbrugsen-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582ABF21FF3126009F4D8A /* incito-superbrugsen-1200.json */; };
+		AE582AE021FF3127009F4D8A /* incito-elgiganten-768.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AC021FF3126009F4D8A /* incito-elgiganten-768.json */; };
+		AE582AE121FF3127009F4D8A /* incito-fakta-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AC121FF3126009F4D8A /* incito-fakta-375.json */; };
+		AE582AE221FF3127009F4D8A /* incito-elgiganten-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AC221FF3126009F4D8A /* incito-elgiganten-375.json */; };
+		AE582AE321FF3127009F4D8A /* incito-superbrugsen-small-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AC421FF3126009F4D8A /* incito-superbrugsen-small-375.json */; };
+		AE582AE421FF3127009F4D8A /* incito-superbrugsen-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AC521FF3126009F4D8A /* incito-superbrugsen-375.json */; };
+		AE582AE621FF3127009F4D8A /* incito-videotest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AC721FF3126009F4D8A /* incito-videotest-375.json */; };
+		AE582AE821FF3127009F4D8A /* incito-elgiganten-legacy-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AC921FF3126009F4D8A /* incito-elgiganten-legacy-375.json */; };
+		AE582AEB21FF3127009F4D8A /* simple-incito-static.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582ACE21FF3126009F4D8A /* simple-incito-static.json */; };
+		AE582AEC21FF3127009F4D8A /* incito-fakta-1200.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582ACF21FF3126009F4D8A /* incito-fakta-1200.json */; };
+		AE582AED21FF3127009F4D8A /* incito-elgiganten-small-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AD021FF3126009F4D8A /* incito-elgiganten-small-375.json */; };
+		AE582AEF21FF3127009F4D8A /* incito-blocktest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AD221FF3126009F4D8A /* incito-blocktest-375.json */; };
+		AE582AF021FF3127009F4D8A /* incito-fakta-small-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AD321FF3126009F4D8A /* incito-fakta-small-375.json */; };
+		AE582AF121FF3127009F4D8A /* simple-incito-absolute.json in Resources */ = {isa = PBXBuildFile; fileRef = AE582AD421FF3126009F4D8A /* simple-incito-absolute.json */; };
+		AE582AF621FF3191009F4D8A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE582A1321FF10DC009F4D8A /* Main.storyboard */; };
+		AE582AF721FF3195009F4D8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE582A1621FF10DD009F4D8A /* Assets.xcassets */; };
+		AE582AF821FF3198009F4D8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE582A1821FF10DD009F4D8A /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AE582A4921FF1676009F4D8A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AE582A4821FF1675009F4D8A /* Incito.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		AE582A0C21FF10DC009F4D8A /* Incito-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Incito-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE582A0F21FF10DC009F4D8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AE582A1121FF10DC009F4D8A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		AE582A1421FF10DC009F4D8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		AE582A1621FF10DD009F4D8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AE582A1921FF10DD009F4D8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AE582A1B21FF10DD009F4D8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE582A4621FF1675009F4D8A /* Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE582ABA21FF3126009F4D8A /* incito-flextest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-flextest-375.json"; sourceTree = "<group>"; };
+		AE582ABB21FF3126009F4D8A /* incito-transformtest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-transformtest-375.json"; sourceTree = "<group>"; };
+		AE582ABC21FF3126009F4D8A /* incito-superbrugsen-mar18-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-mar18-375.json"; sourceTree = "<group>"; };
+		AE582ABD21FF3126009F4D8A /* incito-superbrugsen-mar18-768.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-mar18-768.json"; sourceTree = "<group>"; };
+		AE582ABE21FF3126009F4D8A /* incito-imagetest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-imagetest-375.json"; sourceTree = "<group>"; };
+		AE582ABF21FF3126009F4D8A /* incito-superbrugsen-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-1200.json"; sourceTree = "<group>"; };
+		AE582AC021FF3126009F4D8A /* incito-elgiganten-768.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-768.json"; sourceTree = "<group>"; };
+		AE582AC121FF3126009F4D8A /* incito-fakta-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-375.json"; sourceTree = "<group>"; };
+		AE582AC221FF3126009F4D8A /* incito-elgiganten-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-375.json"; sourceTree = "<group>"; };
+		AE582AC321FF3126009F4D8A /* Scratchpad.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Scratchpad.playground; sourceTree = "<group>"; };
+		AE582AC421FF3126009F4D8A /* incito-superbrugsen-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-small-375.json"; sourceTree = "<group>"; };
+		AE582AC521FF3126009F4D8A /* incito-superbrugsen-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-375.json"; sourceTree = "<group>"; };
+		AE582AC621FF3126009F4D8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AE582AC721FF3126009F4D8A /* incito-videotest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-videotest-375.json"; sourceTree = "<group>"; };
+		AE582AC821FF3126009F4D8A /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
+		AE582AC921FF3126009F4D8A /* incito-elgiganten-legacy-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-legacy-375.json"; sourceTree = "<group>"; };
+		AE582ACB21FF3126009F4D8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AE582ACD21FF3126009F4D8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		AE582ACE21FF3126009F4D8A /* simple-incito-static.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-static.json"; sourceTree = "<group>"; };
+		AE582ACF21FF3126009F4D8A /* incito-fakta-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-1200.json"; sourceTree = "<group>"; };
+		AE582AD021FF3126009F4D8A /* incito-elgiganten-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-small-375.json"; sourceTree = "<group>"; };
+		AE582AD221FF3126009F4D8A /* incito-blocktest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-blocktest-375.json"; sourceTree = "<group>"; };
+		AE582AD321FF3126009F4D8A /* incito-fakta-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-small-375.json"; sourceTree = "<group>"; };
+		AE582AD421FF3126009F4D8A /* simple-incito-absolute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-absolute.json"; sourceTree = "<group>"; };
+		AE582AD521FF3126009F4D8A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE582AD721FF3126009F4D8A /* IncitoDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncitoDecoder.swift; sourceTree = "<group>"; };
+		AE582AD821FF3126009F4D8A /* UIColor+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Debug.swift"; sourceTree = "<group>"; };
+		AE582AD921FF3126009F4D8A /* UIView+RecursiveSubviews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+RecursiveSubviews.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AE582A0921FF10DC009F4D8A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE582A4721FF1675009F4D8A /* Incito.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AE582A0321FF10DC009F4D8A = {
+			isa = PBXGroup;
+			children = (
+				AE582A0E21FF10DC009F4D8A /* Incito-Demo */,
+				AE582A0D21FF10DC009F4D8A /* Products */,
+				AE582A3321FF13AC009F4D8A /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		AE582A0D21FF10DC009F4D8A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE582A0C21FF10DC009F4D8A /* Incito-Demo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AE582A0E21FF10DC009F4D8A /* Incito-Demo */ = {
+			isa = PBXGroup;
+			children = (
+				AE582A0F21FF10DC009F4D8A /* AppDelegate.swift */,
+				AE582A1121FF10DC009F4D8A /* ViewController.swift */,
+				AE582AFA21FF31C8009F4D8A /* Test-Incitos */,
+				AE582AB921FF3126009F4D8A /* Old */,
+				AE582A1321FF10DC009F4D8A /* Main.storyboard */,
+				AE582A1621FF10DD009F4D8A /* Assets.xcassets */,
+				AE582A1821FF10DD009F4D8A /* LaunchScreen.storyboard */,
+				AE582A1B21FF10DD009F4D8A /* Info.plist */,
+			);
+			path = "Incito-Demo";
+			sourceTree = "<group>";
+		};
+		AE582A3321FF13AC009F4D8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AE582A4621FF1675009F4D8A /* Incito.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE582AB921FF3126009F4D8A /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				AE582AC321FF3126009F4D8A /* Scratchpad.playground */,
+				AE582AC621FF3126009F4D8A /* Assets.xcassets */,
+				AE582AC821FF3126009F4D8A /* DemoViewController.swift */,
+				AE582ACA21FF3126009F4D8A /* LaunchScreen.storyboard */,
+				AE582ACC21FF3126009F4D8A /* Main.storyboard */,
+				AE582AD521FF3126009F4D8A /* Info.plist */,
+				AE582AD621FF3126009F4D8A /* Debug */,
+			);
+			path = Old;
+			sourceTree = "<group>";
+		};
+		AE582AD621FF3126009F4D8A /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				AE582AD721FF3126009F4D8A /* IncitoDecoder.swift */,
+				AE582AD821FF3126009F4D8A /* UIColor+Debug.swift */,
+				AE582AD921FF3126009F4D8A /* UIView+RecursiveSubviews.swift */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
+		AE582AFA21FF31C8009F4D8A /* Test-Incitos */ = {
+			isa = PBXGroup;
+			children = (
+				AE582ABA21FF3126009F4D8A /* incito-flextest-375.json */,
+				AE582ABB21FF3126009F4D8A /* incito-transformtest-375.json */,
+				AE582ABC21FF3126009F4D8A /* incito-superbrugsen-mar18-375.json */,
+				AE582ABD21FF3126009F4D8A /* incito-superbrugsen-mar18-768.json */,
+				AE582ABE21FF3126009F4D8A /* incito-imagetest-375.json */,
+				AE582ABF21FF3126009F4D8A /* incito-superbrugsen-1200.json */,
+				AE582AC021FF3126009F4D8A /* incito-elgiganten-768.json */,
+				AE582AC121FF3126009F4D8A /* incito-fakta-375.json */,
+				AE582AC221FF3126009F4D8A /* incito-elgiganten-375.json */,
+				AE582AC421FF3126009F4D8A /* incito-superbrugsen-small-375.json */,
+				AE582AC521FF3126009F4D8A /* incito-superbrugsen-375.json */,
+				AE582AC921FF3126009F4D8A /* incito-elgiganten-legacy-375.json */,
+				AE582ACE21FF3126009F4D8A /* simple-incito-static.json */,
+				AE582ACF21FF3126009F4D8A /* incito-fakta-1200.json */,
+				AE582AD021FF3126009F4D8A /* incito-elgiganten-small-375.json */,
+				AE582AD221FF3126009F4D8A /* incito-blocktest-375.json */,
+				AE582AD321FF3126009F4D8A /* incito-fakta-small-375.json */,
+				AE582AD421FF3126009F4D8A /* simple-incito-absolute.json */,
+				AE582AC721FF3126009F4D8A /* incito-videotest-375.json */,
+			);
+			path = "Test-Incitos";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AE582A0B21FF10DC009F4D8A /* Incito-Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE582A1E21FF10DD009F4D8A /* Build configuration list for PBXNativeTarget "Incito-Demo" */;
+			buildPhases = (
+				AE582A0821FF10DC009F4D8A /* Sources */,
+				AE582A0921FF10DC009F4D8A /* Frameworks */,
+				AE582A0A21FF10DC009F4D8A /* Resources */,
+				AE582A4921FF1676009F4D8A /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Incito-Demo";
+			productName = "Incito-Demo";
+			productReference = AE582A0C21FF10DC009F4D8A /* Incito-Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AE582A0421FF10DC009F4D8A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = ShopGun;
+				TargetAttributes = {
+					AE582A0B21FF10DC009F4D8A = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = AE582A0721FF10DC009F4D8A /* Build configuration list for PBXProject "Incito-Demo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AE582A0321FF10DC009F4D8A;
+			productRefGroup = AE582A0D21FF10DC009F4D8A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AE582A0B21FF10DC009F4D8A /* Incito-Demo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AE582A0A21FF10DC009F4D8A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE582ADF21FF3127009F4D8A /* incito-superbrugsen-1200.json in Resources */,
+				AE582AE121FF3127009F4D8A /* incito-fakta-375.json in Resources */,
+				AE582AF621FF3191009F4D8A /* Main.storyboard in Resources */,
+				AE582ADC21FF3127009F4D8A /* incito-superbrugsen-mar18-375.json in Resources */,
+				AE582ADE21FF3127009F4D8A /* incito-imagetest-375.json in Resources */,
+				AE582AEB21FF3127009F4D8A /* simple-incito-static.json in Resources */,
+				AE582AF821FF3198009F4D8A /* LaunchScreen.storyboard in Resources */,
+				AE582AE621FF3127009F4D8A /* incito-videotest-375.json in Resources */,
+				AE582AE321FF3127009F4D8A /* incito-superbrugsen-small-375.json in Resources */,
+				AE582ADA21FF3127009F4D8A /* incito-flextest-375.json in Resources */,
+				AE582AE821FF3127009F4D8A /* incito-elgiganten-legacy-375.json in Resources */,
+				AE582AEC21FF3127009F4D8A /* incito-fakta-1200.json in Resources */,
+				AE582ADB21FF3127009F4D8A /* incito-transformtest-375.json in Resources */,
+				AE582AF021FF3127009F4D8A /* incito-fakta-small-375.json in Resources */,
+				AE582ADD21FF3127009F4D8A /* incito-superbrugsen-mar18-768.json in Resources */,
+				AE582AE021FF3127009F4D8A /* incito-elgiganten-768.json in Resources */,
+				AE582AEF21FF3127009F4D8A /* incito-blocktest-375.json in Resources */,
+				AE582AE421FF3127009F4D8A /* incito-superbrugsen-375.json in Resources */,
+				AE582AF121FF3127009F4D8A /* simple-incito-absolute.json in Resources */,
+				AE582AED21FF3127009F4D8A /* incito-elgiganten-small-375.json in Resources */,
+				AE582AE221FF3127009F4D8A /* incito-elgiganten-375.json in Resources */,
+				AE582AF721FF3195009F4D8A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AE582A0821FF10DC009F4D8A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE582A1221FF10DC009F4D8A /* ViewController.swift in Sources */,
+				AE582A1021FF10DC009F4D8A /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		AE582A1321FF10DC009F4D8A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE582A1421FF10DC009F4D8A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		AE582A1821FF10DD009F4D8A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE582A1921FF10DD009F4D8A /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		AE582ACA21FF3126009F4D8A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE582ACB21FF3126009F4D8A /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		AE582ACC21FF3126009F4D8A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE582ACD21FF3126009F4D8A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AE582A1C21FF10DD009F4D8A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AE582A1D21FF10DD009F4D8A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AE582A1F21FF10DD009F4D8A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MN86AVA6GX;
+				INFOPLIST_FILE = "Incito-Demo/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.Incito-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AE582A2021FF10DD009F4D8A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MN86AVA6GX;
+				INFOPLIST_FILE = "Incito-Demo/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.Incito-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AE582A0721FF10DC009F4D8A /* Build configuration list for PBXProject "Incito-Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE582A1C21FF10DD009F4D8A /* Debug */,
+				AE582A1D21FF10DD009F4D8A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE582A1E21FF10DD009F4D8A /* Build configuration list for PBXNativeTarget "Incito-Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE582A1F21FF10DD009F4D8A /* Debug */,
+				AE582A2021FF10DD009F4D8A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AE582A0421FF10DC009F4D8A /* Project object */;
+}

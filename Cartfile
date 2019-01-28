@@ -1,0 +1,3 @@
+
+github "SVGKit/SVGKit" "3.x"
+github "Flipboard/FLAnimatedImage" ~> 4.10.0
