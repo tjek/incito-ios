@@ -11,6 +11,10 @@ import UIKit
 
 public struct IncitoLoader {
     public let load: (@escaping (Result<RenderableIncitoDocument>) -> Void) -> Void
+    
+    public init(_ load: @escaping (@escaping (Result<RenderableIncitoDocument>) -> Void) -> Void) {
+        self.load = load
+    }
 }
 
 enum IncitoLoaderError: Error {

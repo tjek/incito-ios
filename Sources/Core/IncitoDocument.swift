@@ -9,8 +9,11 @@
 
 import Foundation
 
+public enum IncitoIdentifierType {}
+public typealias IncitoIdentifier = GenericIdentifier<IncitoIdentifierType>
+
 public struct IncitoDocument<ViewTreeNode> {
-    public var id: Identifier
+    public var id: IncitoIdentifier
     public var version: String
     public var rootView: TreeNode<ViewTreeNode>
 
@@ -18,10 +21,6 @@ public struct IncitoDocument<ViewTreeNode> {
     public var theme: Theme?
     public var meta: [String: JSONValue]
     public var fontAssets: [FontAssetName: FontAsset]
-}
-
-extension IncitoDocument {
-    public typealias Identifier = GenericIdentifier<IncitoDocument<Void>>
 }
 
 /// An incitoDocument with ViewProperties for the ViewNodes
