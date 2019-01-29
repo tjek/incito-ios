@@ -1,15 +1,17 @@
 //
-//  ViewController.swift
-//  Incito-Demo
+//  ┌────┬─┐         ┌─────┐
+//  │  ──┤ └─┬───┬───┤  ┌──┼─┬─┬───┐
+//  ├──  │ ╷ │ · │ · │  ╵  │ ╵ │ ╷ │
+//  └────┴─┴─┴───┤ ┌─┴─────┴───┴─┴─┘
+//               └─┘
 //
-//  Created by Laurie Hufford on 28/01/2019.
-//  Copyright © 2019 ShopGun. All rights reserved.
-//
+//  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import UIKit
 import Incito
 
-class DemoViewController: LoadedIncitoViewController {
+class DemoViewController: IncitoLoaderViewController {
+    
     var selectedIndex: Int = 999
     let availableIncitos: [(json: String, refImg: String?)] = [
         ("incito-superbrugsen-mar18-375.json", nil),
@@ -33,10 +35,12 @@ class DemoViewController: LoadedIncitoViewController {
         //"incito-superbrugsen-1200.json",
     ]
     
+    let searchResultsController = SearchResultsViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.delegate = self
         self.navigationController?.navigationBar.tintColor = .orange
         view.backgroundColor = .white
         
@@ -51,22 +55,22 @@ class DemoViewController: LoadedIncitoViewController {
         
 //        self.registerForPreviewing(with: self, sourceView: view)
         
-//        let searchController = UISearchController(searchResultsController: self.searchResultsController)
-//        searchController.searchResultsUpdater = searchResultsController
-//        definesPresentationContext = true
-//        if #available(iOS 11.0, *) {
-//            navigationItem.hidesSearchBarWhenScrolling = false
-//            navigationItem.searchController = searchController
-//        } else {
-//            navigationItem.titleView = searchController.searchBar
-//        }
-//
-//        searchResultsController.didSelectOffer = { [weak self] offer in
-//            if #available(iOS 11.0, *) {
-//                self?.navigationItem.searchController?.isActive = false
-//            }
-//            self?.incitoController?.scrollToElement(withId: offer.id, animated: false)
-//        }
+        let searchController = UISearchController(searchResultsController: self.searchResultsController)
+        searchController.searchResultsUpdater = searchResultsController
+        definesPresentationContext = true
+        if #available(iOS 11.0, *) {
+            navigationItem.hidesSearchBarWhenScrolling = false
+            navigationItem.searchController = searchController
+        } else {
+            navigationItem.titleView = searchController.searchBar
+        }
+
+        searchResultsController.didSelectOffer = { [weak self] offer in
+            if #available(iOS 11.0, *) {
+                self?.navigationItem.searchController?.isActive = false
+            }
+            self?.incitoViewController?.scrollToElement(withId: offer.id, animated: false)
+        }
     }
     
     @objc
@@ -93,6 +97,8 @@ class DemoViewController: LoadedIncitoViewController {
         
         self.title = filename
         
+        self.searchResultsController.offers = []
+        
         var size = self.view.frame.size
         size.width = min(size.width, size.height)
         
@@ -103,25 +109,6 @@ class DemoViewController: LoadedIncitoViewController {
         )
         
         self.reload(loader)
-        
-//        { [weak self] in
-//            guard let self = self,
-//                let incitoVC = self.incitoViewController else { return }
-            
-//            self.refImageView.removeFromSuperview()
-//
-//            incitoVC.scrollView.addSubview(self.refImageView)
-//
-//            self.refImageView.image = refImage
-//            self.refImageView.translatesAutoresizingMaskIntoConstraints = false
-//            NSLayoutConstraint.activate([
-//                self.refImageView.centerXAnchor.constraint(equalTo: newIncitoVC.scrollView.centerXAnchor),
-//                self.refImageView.topAnchor.constraint(equalTo: newIncitoVC.scrollView.topAnchor)
-//                ])
-//            self.refImageView.alpha = 0
-//            self.refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
-//            self.refImageButton.isEnabled = (refImage != nil)
-//        }
     }
     
     @objc
@@ -148,5 +135,114 @@ class DemoViewController: LoadedIncitoViewController {
         )
         
         present(alert, animated: true)
+    }
+}
+
+extension ViewProperties {
+    var isOffer: Bool {
+        return self.style.role == "offer"
+    }
+}
+
+extension DemoViewController: IncitoLoaderViewControllerDelegate {
+    func viewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
+        
+    }
+    
+    func viewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
+        
+    }
+    
+    func incitoDocumentLoaded(in viewController: IncitoViewController) {
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            var offers: [SearchResultsViewController.OfferProperties] = []
+            
+            // walk through all the view elements, indexing all the offers.
+            viewController.iterateViewElements { viewProperties in
+                guard viewProperties.isOffer else {
+                    return
+                }
+                // or products instead...
+                let metaTitle = viewProperties.style.meta["title"]?.stringValue
+                let metaDesc = viewProperties.style.meta["description"]?.stringValue
+                guard let title =  viewProperties.style.title ?? metaTitle else { return }
+                
+                //        print("'\(title)': '\(metaDesc ?? "")'")
+                
+                offers.append((title, metaDesc, viewProperties.id))
+            }
+            
+            DispatchQueue.main.async { [weak self] in
+                guard self?.incitoViewController == viewController else {
+                    return
+                }
+                
+                self?.searchResultsController.offers = offers
+            }
+        }
+    }
+}
+
+class SearchResultsViewController: UITableViewController {
+    
+    typealias OfferProperties = (title: String, desc: String?, id: ViewProperties.Identifier)
+    
+    var didSelectOffer: ((OfferProperties) -> Void)?
+    
+    var offers: [OfferProperties] = [] {
+        didSet {
+            updateFilteredResults()
+        }
+    }
+    var searchString: String = "" {
+        didSet {
+            updateFilteredResults()
+        }
+    }
+    var filteredResults: [OfferProperties] = []
+    
+    func updateFilteredResults() {
+        
+        DispatchQueue.main.async {
+            let normalizedSearch = self.searchString.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+            self.filteredResults = self.offers.filter {
+                $0.title.lowercased().contains(normalizedSearch) || ($0.desc?.lowercased().contains(normalizedSearch) ?? false)
+            }
+            self.tableView.reloadData()
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filteredResults.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "offerCell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "offerCell")
+        
+        let offer = filteredResults[indexPath.item]
+        cell.textLabel?.text = offer.title
+        cell.detailTextLabel?.text = offer.desc
+        
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let offer = filteredResults[indexPath.item]
+        
+        didSelectOffer?(offer)
+    }
+}
+extension SearchResultsViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        self.searchString = searchController.searchBar.text ?? ""
     }
 }

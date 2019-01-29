@@ -47,20 +47,20 @@ public enum ViewType {
 
 public struct StyleProperties {
     
-    var role: String?
-    var meta: [String: JSONValue]
+    public var role: String?
+    public var meta: [String: JSONValue]
     
-    var cornerRadius: Corners<Unit>
-    var shadow: Shadow? = nil
+    public var cornerRadius: Corners<Unit>
+    public var shadow: Shadow? = nil
     //    var stroke: Stroke? = nil
     
-    var link: String? // URI
-    var title: String?
-    var clipsChildren: Bool
+    public var link: String? // URI
+    public var title: String?
+    public var clipsChildren: Bool
     //    var accessibility: Accessibility? = nil
     
-    var backgroundColor: Color?
-    var backgroundImage: BackgroundImage?
+    public var backgroundColor: Color?
+    public var backgroundImage: BackgroundImage?
     
     static let empty = StyleProperties(
         role: nil,
@@ -251,7 +251,7 @@ public enum TextStyle: String {
     case boldItalic
 }
 
-struct Shadow {
+public struct Shadow {
     var color: Color
     var offset: Size<Double>
     var radius: Double
@@ -311,21 +311,21 @@ struct Accessibility {
     var hidden: Bool
 }
 
-struct BackgroundImage {
-    enum ScaleType: String, Decodable {
+public struct BackgroundImage {
+    public enum ScaleType: String, Decodable {
         case none // original size
         case centerCrop = "center_crop" // fill
         case centerInside = "center_inside" // fit
     }
     
-    enum TileMode: String, Decodable {
+    public enum TileMode: String, Decodable {
         case none
         case repeatX = "repeat_x"
         case repeatY = "repeat_y"
         case repeatXY = "repeat"
     }
     
-    enum Position: String, Decodable {
+    public enum Position: String, Decodable {
         case leftTop = "left_top"
         case leftCenter = "left_center"
         case leftBottom = "left_bottom"
@@ -337,8 +337,8 @@ struct BackgroundImage {
         case rightBottom = "right_bottom"
     }
     
-    var source: URL
-    var scale: ScaleType
-    var position: Position
-    var tileMode: TileMode
+    public var source: URL
+    public var scale: ScaleType
+    public var position: Position
+    public var tileMode: TileMode
 }

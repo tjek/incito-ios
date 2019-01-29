@@ -1,10 +1,11 @@
 //
-//  AppDelegate.swift
-//  Incito-Demo
+//  ┌────┬─┐         ┌─────┐
+//  │  ──┤ └─┬───┬───┤  ┌──┼─┬─┬───┐
+//  ├──  │ ╷ │ · │ · │  ╵  │ ╵ │ ╷ │
+//  └────┴─┴─┴───┤ ┌─┴─────┴───┴─┴─┘
+//               └─┘
 //
-//  Created by Laurie Hufford on 28/01/2019.
-//  Copyright © 2019 ShopGun. All rights reserved.
-//
+//  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import UIKit
 

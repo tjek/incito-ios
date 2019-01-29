@@ -9,11 +9,12 @@
 
 import UIKit
 
+public protocol IncitoLoaderViewControllerDelegate: IncitoViewControllerDelegate { }
 
 /**
  A utility view controller that allows for an incito to be loaded asyncronously, using an IncitoLoader. It shows loading/error views depending on the loading process.
  */
-open class LoadedIncitoViewController: UIViewController {
+open class IncitoLoaderViewController: UIViewController {
     
     enum State {
         case loading
@@ -21,7 +22,14 @@ open class LoadedIncitoViewController: UIViewController {
         case error(Error)
     }
     
-    private(set) public var incitoViewController: IncitoViewController?
+    public weak var delegate: IncitoLoaderViewControllerDelegate?
+    
+    public var incitoViewController: IncitoViewController? {
+        guard case let .success(incitoVC) = self.state else {
+            return nil
+        }
+        return incitoVC
+    }
     
     private(set) var state: State = .loading {
         didSet {
@@ -38,7 +46,7 @@ open class LoadedIncitoViewController: UIViewController {
     private var reloadId: Int = 0
     
     /// Given an IncitoLoader, we will start reloading the IncitoViewController.
-    public func reload(_ loader: IncitoLoader, completion: @escaping () -> Void = {}) {
+    public func reload(_ loader: IncitoLoader, completion: @escaping (Result<IncitoViewController>) -> Void = { _ in }) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
@@ -49,20 +57,23 @@ open class LoadedIncitoViewController: UIViewController {
             
             loader.load { renderableDocResult in
                 DispatchQueue.main.async { [weak self] in
-                    guard self?.reloadId == currReloadId else { return }
+                    guard let self = self else { return }
+                    guard self.reloadId == currReloadId else { return }
                     
                     switch renderableDocResult {
                     case let .error(err):
-                        self?.state = .error(err)
+                        self.state = .error(err)                        
+                        completion(.error(err))
                     case let .success(renderableDocument):
                         
                         let incitoVC = IncitoViewController()
+                        incitoVC.delegate = self.delegate
                         incitoVC.update(renderableDocument: renderableDocument)
                         
-                        self?.state = .success(incitoVC)
+                        self.state = .success(incitoVC)
+                        
+                        completion(.success(incitoVC))
                     }
-                    
-                    completion()
                 }
             }
         }
@@ -75,12 +86,12 @@ open class LoadedIncitoViewController: UIViewController {
         switch state {
         case .loading:
             newVC = UIViewController()
+            newVC.view.backgroundColor = .orange
         case .error(let error):
             print("Reload error", error)
-            
             newVC = UIViewController()
+            newVC.view.backgroundColor = .red
         case .success(let incitoVC):
-            self.incitoViewController = incitoVC
             newVC = incitoVC
         }
         

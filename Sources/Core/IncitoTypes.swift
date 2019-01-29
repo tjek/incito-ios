@@ -10,14 +10,14 @@
 public typealias FontAssetName = String
 public typealias FontFamily = [FontAssetName]
 
-struct Color: Equatable {
+public struct Color: Equatable {
     // 0-1 Doubles
     var r, g, b, a: Double
 }
 
 // MARK: - Dimensions
 
-enum Unit {
+public enum Unit {
     case pts(Double)
     case percent(Double)
 }

@@ -16,16 +16,14 @@ public typealias RenderableIncitoDocument = IncitoDocument<RenderableView>
  possible delegate methods:
  - configure scrollView
  */
-protocol IncitoViewControllerDelegate: class {
+public protocol IncitoViewControllerDelegate: class {
     // incito did load
     // viewDidAppear/viewDidDisappear
     func viewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
     func viewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
     
-    /// Called _once_ for every view element when the incito document is loaded.
-    /// It is an opportunity to index the properties of the views.
-    func viewElementLoaded(viewProperties: ViewProperties, incito: RenderableIncitoDocument, in viewController: IncitoViewController)
-    func documentLoaded(incito: RenderableIncitoDocument, in viewController: IncitoViewController)
+    /// Called whenever a document is updated.
+    func incitoDocumentLoaded(in viewController: IncitoViewController)
 }
 
 public class IncitoViewController: UIViewController {
@@ -48,12 +46,6 @@ public class IncitoViewController: UIViewController {
     
 //    var printDebugLayout: Bool = false
 //    var printDebugLayoutDetails: Bool = true
-    
-    public func update(renderableDocument: RenderableIncitoDocument) {
-        self.renderableDocument = renderableDocument
-        
-        initializeRootView(parentSize: self.view.frame.size)
-    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,8 +81,21 @@ public class IncitoViewController: UIViewController {
         renderVisibleViews()
     }
     
-    // Must be performed on main queue
-    func initializeRootView(parentSize: CGSize) {
+    /// Must be called on main queue
+    public func update(renderableDocument: RenderableIncitoDocument) {
+        guard Thread.isMainThread else {
+            fatalError("update(renderableDocument:) must be called on the main queue.")
+        }
+        
+        self.renderableDocument = renderableDocument
+        
+        self.delegate?.incitoDocumentLoaded(in: self)
+        
+        initializeRootView(parentSize: self.view.frame.size)
+    }
+    
+    /// Must be performed on main queue
+    private func initializeRootView(parentSize: CGSize) {
         
         scrollView.backgroundColor = renderableDocument?.theme?.bgColor?.uiColor ?? .white
         
@@ -120,8 +125,6 @@ public class IncitoViewController: UIViewController {
         
         renderVisibleViews()
     }
-    
-    
     
     
     
@@ -219,7 +222,10 @@ public class IncitoViewController: UIViewController {
 //        }
 //    }
     
+    // MARK: - Rendering
+    
     private var lastRenderedWindow: CGRect = .null
+    private let renderWindowInsets = UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0)
     
     func renderVisibleViews(forced: Bool = false) {
         
@@ -233,7 +239,7 @@ public class IncitoViewController: UIViewController {
                 .inset(by: UIEdgeInsets(top: height * 0.1, left: 0, bottom: height * 0.15, right: 0))
         } else {
             scrollVisibleWindow = scrollView.bounds
-                .inset(by: UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0))
+                .inset(by: renderWindowInsets)
         }
         
         // in RootView coord space
@@ -329,7 +335,20 @@ extension IncitoViewController: UIScrollViewDelegate {
 }
 
 extension IncitoViewController {
-    func firstView(at point: CGPoint, where predicate: (UIView?, ViewProperties) -> Bool) -> (UIView, ViewProperties)? {
+    
+    /// Walk through all the loaded elements.
+    public func iterateViewElements(_ body: @escaping (ViewProperties) -> Void) {
+        guard let rootNode = self.renderableDocument?.rootView else { return }
+        
+        rootNode.forEachNode { (renderableNode, depth, stopWalkingBranch, stop) in
+            
+            let renderableView = renderableNode.value
+            
+            body(renderableView.layout.viewProperties)
+        }
+    }
+    
+    public func firstView(at point: CGPoint, where predicate: (UIView?, ViewProperties) -> Bool) -> (UIView, ViewProperties)? {
         
         let treeLocation = self.view.convert(point, to: self.scrollView)
         
@@ -356,8 +375,8 @@ extension IncitoViewController {
         }
     }
     
-    
-    func scrollToElement(withId elementId: ViewProperties.Identifier, animated: Bool) {
+    // TODO: option where on screen to scroll element to.
+    public func scrollToElement(withId elementId: ViewProperties.Identifier, animated: Bool) {
         
         guard let root = self.rootView else { return }
         

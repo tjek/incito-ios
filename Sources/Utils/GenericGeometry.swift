@@ -264,18 +264,18 @@ extension Edges: CustomDebugStringConvertible where Value: Equatable {
 // MARK: - Corners
 ////////////////////////////
 
-struct Corners<Value> {
+public struct Corners<Value> {
     var topLeft, topRight, bottomLeft, bottomRight: Value
 }
 
 extension Corners {
-    init(_ val: Value) {
+    public init(_ val: Value) {
         self.init(topLeft: val, topRight: val, bottomLeft: val, bottomRight: val)
     }
 }
 
 extension Corners: Equatable where Value: Equatable {
-    static func == (lhs: Corners<Value>, rhs: Corners<Value>) -> Bool {
+    public static func == (lhs: Corners<Value>, rhs: Corners<Value>) -> Bool {
         return lhs.topLeft == rhs.topLeft
             && lhs.topRight == rhs.topRight
             && lhs.bottomLeft == rhs.bottomLeft
@@ -283,7 +283,7 @@ extension Corners: Equatable where Value: Equatable {
     }
     
     /// If all corner values are the same.
-    var isUniform: Bool {
+    public var isUniform: Bool {
         return self.topLeft == self.topRight
             && self.topRight == self.bottomRight
             && self.bottomRight == self.bottomLeft
@@ -291,13 +291,13 @@ extension Corners: Equatable where Value: Equatable {
 }
 
 extension Corners where Value: Numeric {
-    static var zero: Corners {
+    public static var zero: Corners {
         return Corners(topLeft: 0, topRight: 0, bottomLeft: 0, bottomRight: 0)
     }
 }
 
 extension Corners: CustomDebugStringConvertible where Value: Equatable {
-    var debugDescription: String {
+    public var debugDescription: String {
         if isUniform {
             return "{ \(topLeft) }"
         } else {

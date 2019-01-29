@@ -356,7 +356,7 @@ extension TextViewProperties: Decodable {
 }
 
 extension Unit: Decodable {
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.singleValueContainer()
         
         if let num = try? c.decode(Double.self) {
@@ -421,7 +421,7 @@ extension FlexBasis: Decodable where Value: Decodable {
 
 extension Color: Decodable {
     
-    init?(string: String) {
+    public init?(string: String) {
         let cleanedStrVal = string.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard let color = cleanedStrVal.starts(with: "rgb") ? Color.scanRGBColorStr(cleanedStrVal) : Color.scanHexColorStr(cleanedStrVal) else {
@@ -431,7 +431,7 @@ extension Color: Decodable {
         self = color
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let c = try decoder.singleValueContainer()
         
         let strVal = (try c.decode(String.self))
