@@ -60,6 +60,7 @@ open class IncitoLoaderViewController: UIViewController {
     }
     
     private var reloadId: Int = 0
+    private var lastLoader: IncitoLoader?
     
     /// Given an IncitoLoader, we will start reloading the IncitoViewController.
     public func reload(_ loader: IncitoLoader, completion: @escaping (Result<IncitoViewController>) -> Void = { _ in }) {
@@ -67,6 +68,7 @@ open class IncitoLoaderViewController: UIViewController {
             guard let self = self else { return }
             
             self.state = .loading
+            self.lastLoader = loader
             
             self.reloadId += 1
             let currReloadId = self.reloadId
@@ -107,7 +109,14 @@ open class IncitoLoaderViewController: UIViewController {
         case .loading:
             newVC = delegate?.loadingViewController(in: self) ?? DefaultLoadingViewController.build(backgroundColor: view.backgroundColor ?? .white)
         case .error(let error):
-            newVC = delegate?.errorViewController(for: error, in: self) ?? DefaultErrorViewController.build(for: error)
+            if let delegateVC = delegate?.errorViewController(for: error, in: self) {
+                newVC = delegateVC
+            } else {
+                newVC = buildDefaultErrorViewController(for: error, backgroundColor: view.backgroundColor ?? .white) { [weak self] in
+                    guard let loader = self?.lastLoader else { return }
+                    self?.reload(loader)
+                }
+            }
         case .success(let incitoVC):
             newVC = incitoVC
         }
