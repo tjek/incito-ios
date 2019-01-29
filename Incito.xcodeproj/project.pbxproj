@@ -46,6 +46,8 @@
 		AE582B0221FF3729009F4D8A /* SVGKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582A9A21FF2E49009F4D8A /* SVGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE582B0321FF372F009F4D8A /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE582B1021FF4EA8009F4D8A /* IncitoLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */; };
+		AECF0E902200795B00E7A64A /* DefaultErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */; };
+		AECF0E9222007C5900E7A64A /* DefaultLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +195,8 @@
 		AE582B0521FF37A9009F4D8A /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoLoader.swift; sourceTree = "<group>"; };
 		AE675820219C2593006BEA9C /* IncitoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IncitoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultErrorViewController.swift; sourceTree = "<group>"; };
+		AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +263,8 @@
 				AE582A5921FF1736009F4D8A /* IncitoViewController.swift */,
 				AE582A5F21FF1736009F4D8A /* IncitoLoaderViewController.swift */,
 				AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */,
+				AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */,
+				AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */,
 				AE582A5421FF1736009F4D8A /* RenderableView.swift */,
 				AE582A5521FF1736009F4D8A /* ImageLoader.swift */,
 				AE582A5621FF1736009F4D8A /* FontAssetLoader+UIKit.swift */,
@@ -555,9 +561,11 @@
 				AE582AB521FF2FCD009F4D8A /* Measure.swift in Sources */,
 				AE582A7321FF1736009F4D8A /* FontAssetLoader+UIKit.swift in Sources */,
 				AE582A7521FF1736009F4D8A /* UIColor+Hex.swift in Sources */,
+				AECF0E902200795B00E7A64A /* DefaultErrorViewController.swift in Sources */,
 				AE582A8121FF1736009F4D8A /* IncitoLayout.swift in Sources */,
 				AE582A7B21FF1736009F4D8A /* UIView+IncitoViews.swift in Sources */,
 				AE582A7821FF1736009F4D8A /* UIView+RoundedCorners.swift in Sources */,
+				AECF0E9222007C5900E7A64A /* DefaultLoadingViewController.swift in Sources */,
 				AE582A7121FF1736009F4D8A /* RenderableView.swift in Sources */,
 				AE582A7021FF1736009F4D8A /* GenericIdentifier.swift in Sources */,
 				AE582A7921FF1736009F4D8A /* UIImage+Sizing.swift in Sources */,

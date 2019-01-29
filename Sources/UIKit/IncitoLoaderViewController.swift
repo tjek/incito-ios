@@ -9,7 +9,19 @@
 
 import UIKit
 
-public protocol IncitoLoaderViewControllerDelegate: IncitoViewControllerDelegate { }
+public protocol IncitoLoaderViewControllerDelegate: IncitoViewControllerDelegate {
+    func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController?
+    func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController?
+}
+
+extension IncitoLoaderViewControllerDelegate {
+    public func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController? {
+        return nil
+    }
+    public func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController? {
+        return nil
+    }
+}
 
 /**
  A utility view controller that allows for an incito to be loaded asyncronously, using an IncitoLoader. It shows loading/error views depending on the loading process.
@@ -39,6 +51,10 @@ open class IncitoLoaderViewController: UIViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
+        
+        stateContainerView.frame = self.view.bounds
+        stateContainerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(stateContainerView)
         
         updateViewState()
     }
@@ -79,29 +95,31 @@ open class IncitoLoaderViewController: UIViewController {
         }
     }
     
+    private var currentStateViewController: UIViewController?
+    private var stateContainerView = UIView()
+    
     private func updateViewState() {
         
-        let newVC: UIViewController
+        let oldVC = currentStateViewController
         
+        let newVC: UIViewController
         switch state {
         case .loading:
-            newVC = UIViewController()
-            newVC.view.backgroundColor = .orange
+            newVC = delegate?.loadingViewController(in: self) ?? DefaultLoadingViewController.build()
         case .error(let error):
-            print("Reload error", error)
-            newVC = UIViewController()
-            newVC.view.backgroundColor = .red
+            newVC = delegate?.errorViewController(for: error, in: self) ?? DefaultErrorViewController.build(for: error)
         case .success(let incitoVC):
             newVC = incitoVC
         }
         
+        self.currentStateViewController = newVC
         self.cycleFromViewController(
-            oldViewController: self.children.first,
-            toViewController: newVC
+            oldViewController: oldVC,
+            toViewController: newVC,
+            in: stateContainerView
         )
     }
 }
-
 
 extension UIViewController {
     func cycleFromViewController(oldViewController: UIViewController?, toViewController newViewController: UIViewController, in container: UIView? = nil) {
