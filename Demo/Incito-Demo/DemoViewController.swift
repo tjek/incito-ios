@@ -145,11 +145,11 @@ extension ViewProperties {
 }
 
 extension DemoViewController: IncitoLoaderViewControllerDelegate {
-    func viewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
+    func incitoViewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
         
     }
     
-    func viewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
+    func incitoViewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
         
     }
     
@@ -159,7 +159,7 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
             var offers: [SearchResultsViewController.OfferProperties] = []
             
             // walk through all the view elements, indexing all the offers.
-            viewController.iterateViewElements { viewProperties in
+            viewController.iterateViewElements { viewProperties, _ in
                 guard viewProperties.isOffer else {
                     return
                 }

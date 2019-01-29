@@ -17,21 +17,22 @@ public typealias RenderableIncitoDocument = IncitoDocument<RenderableView>
  - configure scrollView
  */
 public protocol IncitoViewControllerDelegate: class {
-    // incito did load
-    // viewDidAppear/viewDidDisappear
-    func viewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
-    func viewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
     
     /// Called whenever a document is updated.
     func incitoDocumentLoaded(in viewController: IncitoViewController)
+    
+    /// Called whenever a view element is rendered (triggered while scrolling, so this must not do heavy work)
+    func incitoViewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
+    
+    /// Called whenever a view element is about to be removed from the view hierarchy (triggered while scrolling, so this must not do heavy work)
+    func incitoViewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
 }
 
 public class IncitoViewController: UIViewController {
     weak var delegate: IncitoViewControllerDelegate?
     
-    let scrollView = UIScrollView()
-    var rootView: UIView?
-    
+    public let scrollView = UIScrollView()
+    private var rootView: UIView?
     private(set) var renderableDocument: RenderableIncitoDocument? = nil
     
     public struct Debug {
@@ -264,7 +265,7 @@ public class IncitoViewController: UIViewController {
             visibleRootViewWindow: renderWindow,
             didRender: { [weak self] renderableView, view in
                 guard let self = self else { return }
-                self.delegate?.viewDidRender(
+                self.delegate?.incitoViewDidRender(
                     view: view,
                     with: renderableView.layout.viewProperties,
                     in: self
@@ -272,7 +273,7 @@ public class IncitoViewController: UIViewController {
             },
             didUnrender: { [weak self] renderableView, view in
                 guard let self = self else { return }
-                self.delegate?.viewDidUnrender(
+                self.delegate?.incitoViewDidUnrender(
                     view: view,
                     with: renderableView.layout.viewProperties,
                     in: self
@@ -337,14 +338,14 @@ extension IncitoViewController: UIScrollViewDelegate {
 extension IncitoViewController {
     
     /// Walk through all the loaded elements.
-    public func iterateViewElements(_ body: @escaping (ViewProperties) -> Void) {
+    public func iterateViewElements(_ body: @escaping (ViewProperties, _ stop: inout Bool) -> Void) {
         guard let rootNode = self.renderableDocument?.rootView else { return }
         
-        rootNode.forEachNode { (renderableNode, depth, stopWalkingBranch, stop) in
+        rootNode.forEachNode { (renderableNode, _, _, stop) in
             
             let renderableView = renderableNode.value
             
-            body(renderableView.layout.viewProperties)
+            body(renderableView.layout.viewProperties, &stop)
         }
     }
     
