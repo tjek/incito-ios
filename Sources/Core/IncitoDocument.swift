@@ -10,7 +10,6 @@
 import Foundation
 
 public struct IncitoDocument<ViewTreeNode> {
-    public typealias Identifier = GenericIdentifier<IncitoDocument<Void>>
     public var id: Identifier
     public var version: String
     public var rootView: TreeNode<ViewTreeNode>
@@ -19,6 +18,10 @@ public struct IncitoDocument<ViewTreeNode> {
     public var theme: Theme?
     public var meta: [String: JSONValue]
     public var fontAssets: [FontAssetName: FontAsset]
+}
+
+extension IncitoDocument {
+    public typealias Identifier = GenericIdentifier<IncitoDocument<Void>>
 }
 
 /// An incitoDocument with ViewProperties for the ViewNodes
