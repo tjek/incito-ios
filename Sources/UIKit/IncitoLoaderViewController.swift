@@ -105,7 +105,7 @@ open class IncitoLoaderViewController: UIViewController {
         let newVC: UIViewController
         switch state {
         case .loading:
-            newVC = delegate?.loadingViewController(in: self) ?? DefaultLoadingViewController.build()
+            newVC = delegate?.loadingViewController(in: self) ?? DefaultLoadingViewController.build(backgroundColor: view.backgroundColor ?? .white)
         case .error(let error):
             newVC = delegate?.errorViewController(for: error, in: self) ?? DefaultErrorViewController.build(for: error)
         case .success(let incitoVC):
