@@ -125,7 +125,7 @@ func resolveLayoutProperties(
     
     return ResolvedLayoutProperties(
         layoutProperties,
-        in: relativeToSize.unwrapped(or: .zero).clamped(min: .zero, max: .zero)
+        in: relativeToSize.unwrapped(or: .zero).clamped(min: .zero, max: Size(Double.infinity))
     )
 }
 
