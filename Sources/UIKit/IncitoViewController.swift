@@ -38,15 +38,14 @@ public class IncitoViewController: UIViewController {
     public struct Debug {
         public var showOutlines: Bool = false
         public var showRenderWindows: Bool = false
+        public var printLayout: Bool = false
+        public var printLayoutDetails: Bool = false
     }
     public var debug: Debug = Debug() {
         didSet {
             self.renderVisibleViews(forced: true)
         }
     }
-    
-//    var printDebugLayout: Bool = false
-//    var printDebugLayoutDetails: Bool = true
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +92,25 @@ public class IncitoViewController: UIViewController {
         self.delegate?.incitoDocumentLoaded(in: self)
         
         initializeRootView(parentSize: self.view.frame.size)
+        
+        if self.debug.printLayout {
+            let debugTree: TreeNode<String> = renderableDocument.rootView.mapValues { renderableView, _, idx in
+                let layout = renderableView.layout
+                let name = layout.viewProperties.name ?? ""
+                let position = layout.position
+                let size = layout.size
+                
+                var res = "\(idx)) \(name): [\(position)\(size)]"
+                if self.debug.printLayoutDetails {
+                    res += "\n\t dimensions: \(layout.dimensions)\n"
+                }
+                
+                return res
+            }
+            
+            print("\(debugTree)")
+        }
+        
     }
     
     /// Must be performed on main queue

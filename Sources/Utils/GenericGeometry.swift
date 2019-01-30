@@ -78,6 +78,12 @@ extension Size where Value: Numeric {
 }
 
 extension Size where Value: Numeric {
+    var optional: Size<Optional<Value>> {
+        return Size<Optional<Value>>(width: width, height: height)
+    }
+}
+
+extension Size where Value: Numeric {
     func multipling(by value: Value) -> Size {
         return Size(width: width * value,
                     height: height * value)

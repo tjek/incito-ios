@@ -21,12 +21,41 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
      - parameter parentSize: This is the size into which we placing the current node - for the root node this would be the size of the screen.
      */
     func sizingPass(parentSize: Size<Double>) -> TreeNode<ViewLayout> {
-
+        
         let parent = self.parent?.value
         
         let parentLayoutType = parent?.properties.type.layoutType ?? .block
         let parentPadding = parent?.dimensions.layoutProperties.padding ?? .zero
         let parentContentSize = parent?.dimensions.contentsSize ?? Size.init(nil)
+        
+        var dimensions = self.value.dimensions
+        
+        // recalculate the view's absolute layout properties
+        let resolvedLayoutProperties = resolveLayoutProperties(
+            self.value.properties.layout,
+            parentSize: parentSize.optional,
+            parentPadding: parentPadding,
+            parentLayoutType: parentLayoutType
+        )
+        
+        // check if anything has changed (because it was relative to a different parent size.
+        if self.value.dimensions.layoutProperties != resolvedLayoutProperties {
+            
+            // if there was a change in the layout properties, we might need to recalculate all the dimensions
+            dimensions.layoutProperties = resolvedLayoutProperties
+            
+            dimensions.concreteSize = calculateConcreteSize(
+                parentLayoutType: parentLayoutType,
+                parentSize: parentSize.optional,
+                layoutConcreteSize: resolvedLayoutProperties.size,
+                layoutPosition: resolvedLayoutProperties.position,
+                layoutMargins: resolvedLayoutProperties.margins,
+                flexBasisSize: resolvedLayoutProperties.flexBasisSize
+                )
+                .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
+            
+            // TODO: maybe need to recalculate the contents size? only if no concrete size? too intensive?
+        }
         
         // calculate the final size of the current node
         let actualSize = calculateActualSize(
@@ -34,20 +63,20 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
             parentSize: parentSize,
             parentPadding: parentPadding,
             parentContentsSize: parentContentSize,
-            dimensions: self.value.dimensions,
+            dimensions: dimensions,
             layoutProperties: self.value.properties.layout,
             siblings: self.siblings(excludeSelf: true).map({ $0.value })
             )
             .clamped(
-                min: self.value.dimensions.layoutProperties.minSize,
-                max: self.value.dimensions.layoutProperties.maxSize
+                min: dimensions.layoutProperties.minSize,
+                max: dimensions.layoutProperties.maxSize
         )
         
         let viewLayout = ViewLayout(
             size: actualSize,
             position: .zero,
             viewProperties: self.value.properties,
-            dimensions: self.value.dimensions,
+            dimensions: dimensions,
             transform: self.value.properties.layout.transform.absolute(viewSize: actualSize)
         )
         

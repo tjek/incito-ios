@@ -19,21 +19,26 @@ extension TreeNode where T == ViewProperties {
      - parameter intrinsicSizerBuilder: A function that returns a function that returns the intrinsic-size of the view (This is the actual contents (not the children) of the node, eg. text size). This allows for injection of a function that depends on platform-specific implementations.
      */
     func viewDimensioningPass(
-        parentRoughInnerSize: Size<Double?>,
+        parentRoughSize: Size<Double?>,
+        parentPadding: Edges<Double> = .zero,
         parentLayoutType: LayoutType,
         intrinsicSizerBuilder: @escaping (ViewProperties) -> IntrinsicSizer
         ) -> TreeNode<(properties: ViewProperties, dimensions: ViewDimensions)> {
         
-        // make the view's layout properties absolute (in relation to the parent's inner-size)
-        let resolvedLayoutProperties = ResolvedLayoutProperties(
+        let parentRoughInnerSize = parentRoughSize.inset(parentPadding)
+        
+        // make the view's layout properties absolute
+        let resolvedLayoutProperties = resolveLayoutProperties(
             self.value.layout,
-            in: parentRoughInnerSize.unwrapped(or: .zero)
+            parentSize: parentRoughSize,
+            parentPadding: parentPadding,
+            parentLayoutType: parentLayoutType
         )
         
         // calculate concrete-size (depends on node's layout-type)
         let concreteSize = calculateConcreteSize(
             parentLayoutType: parentLayoutType,
-            parentSize: parentRoughInnerSize,
+            parentSize: parentRoughSize,
             layoutConcreteSize: resolvedLayoutProperties.size,
             layoutPosition: resolvedLayoutProperties.position,
             layoutMargins: resolvedLayoutProperties.margins,
@@ -60,7 +65,8 @@ extension TreeNode where T == ViewProperties {
         // use that rough-size to calculate the contents-sizes (the size of the child based on only its own content) of all the child-nodes. do this by calling "pass-1" recursively on all each child (this could be done in parallel).
         let childNodes = self.children.map {
             $0.viewDimensioningPass(
-                parentRoughInnerSize: roughInnerSize,
+                parentRoughSize: roughSize,
+                parentPadding: resolvedLayoutProperties.padding,
                 parentLayoutType: self.value.type.layoutType,
                 intrinsicSizerBuilder: intrinsicSizerBuilder
             )
@@ -97,6 +103,33 @@ extension TreeNode where T == ViewProperties {
 // MARK: - Dimensions Calculators
 
 /**
+ Converts the possibly %-based layoutProperties into concrete layout properties, relative to the parent's size.
+ Depending on the layout-type of the parent, it is relative to either the inner or main size of the parent.
+ */
+func resolveLayoutProperties(
+    _ layoutProperties: LayoutProperties,
+    parentSize: Size<Double?>,
+    parentPadding: Edges<Double>,
+    parentLayoutType: LayoutType
+    ) -> ResolvedLayoutProperties {
+    
+    let relativeToSize: Size<Double?>
+    
+    switch parentLayoutType {
+    case .absolute:
+        relativeToSize = parentSize
+    case .block,
+         .flex:
+        relativeToSize = parentSize.inset(parentPadding)
+    }
+    
+    return ResolvedLayoutProperties(
+        layoutProperties,
+        in: relativeToSize.unwrapped(or: .zero).clamped(min: .zero, max: .zero)
+    )
+}
+
+/**
  Calculate the 'concrete' size of a view. This is the size that is defined in the layout properties (size/position). It is excluding margins, but including padding). If the view has a flex-basis, and is the child of a flexlayout, then the flex-basis overrides any layout property sizes.
  
  - parameter parentLayoutType: The view's parent's layout type (block/abs/flex)
@@ -106,7 +139,7 @@ extension TreeNode where T == ViewProperties {
  - parameter layoutMargins: The view's margins, as defined in the layout properties.
  - parameter flexBasisSize: The flex basis of the view. It is a size as if it was a % it may be different in different directions depending on the size of the parent.
  */
-private func calculateConcreteSize(
+func calculateConcreteSize(
     parentLayoutType: LayoutType,
     parentSize: Size<Double?>,
     layoutConcreteSize: Size<Double?>,

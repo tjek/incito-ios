@@ -55,7 +55,8 @@ extension TreeNode where T == ViewProperties {
         
         let contentSizedTree = measure("   ‣ 📦 Dimensioning Pass", timeScale: .milliseconds) {
             wrapperNode.viewDimensioningPass(
-                parentRoughInnerSize: Size(width: rootSize.width, height: rootSize.height),
+                parentRoughSize: rootSize.optional,
+                parentPadding: .zero,
                 parentLayoutType: .block,
                 intrinsicSizerBuilder: intrinsicSizerBuilder
             )
@@ -124,7 +125,7 @@ struct ViewDimensions {
 /**
  These are the absolute versions of the LayoutProperties. Some of the `LayoutProperties` values can be percentages of their parent's size. This resolves that relativity, making the values absolute.
  */
-struct ResolvedLayoutProperties {
+struct ResolvedLayoutProperties: Equatable {
     var position: Edges<Double?>
     var margins: Edges<Double>
     var padding: Edges<Double>
