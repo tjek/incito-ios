@@ -111,8 +111,7 @@ class ErrorView: UIView {
     let retryButton: UIButton = {
         let button = UIButton()
         
-        // TODO: localize
-        button.setTitle(NSLocalizedString("Retry", comment: ""), for: .normal)
+        button.setTitle(Assets.ErrorView.retryButton, for: .normal)
 
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         button.titleLabel?.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -162,8 +161,6 @@ class ErrorView: UIView {
         stackView.addGestureRecognizer(tapGR)
         
         addSubview(stackView)
-        
-//        retryButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

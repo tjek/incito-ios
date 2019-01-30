@@ -53,7 +53,7 @@ class DemoViewController: IncitoLoaderViewController {
         
         loadNextIncito()
         
-//        self.registerForPreviewing(with: self, sourceView: view)
+        self.registerForPreviewing(with: self, sourceView: view)
         
         let searchController = UISearchController(searchResultsController: self.searchResultsController)
         searchController.searchResultsUpdater = searchResultsController
@@ -183,6 +183,77 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
         }
     }
 }
+
+// MARK: - Previewing
+
+extension DemoViewController: UIViewControllerPreviewingDelegate {
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        
+        guard let incito = incitoViewController else { return nil }
+        
+        let incitoVCLocation = previewingContext.sourceView.convert(location, to: incito.view)
+        
+        // get first offer view
+        let firstView = incito.firstView(at: incitoVCLocation) { $1.isOffer }
+        
+        guard let view = firstView?.0 else { return nil }
+        
+        previewingContext.sourceRect = view.convert(view.bounds, to: previewingContext.sourceView)
+        
+        // TODO: use the previewingContext.sourceView to include bgColor.
+        
+        let vc = OfferPreviewViewController()
+        let screenImage = view.asImage()
+        let imageView = UIImageView(image: screenImage)
+        vc.addSnapshot(imageView)
+        
+        return vc
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        //        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
+    }
+}
+
+extension UIView {
+    
+    // Using a function since `var image` might conflict with an existing variable
+    // (like on `UIImageView`)
+    func asImage() -> UIImage {
+        if #available(iOS 10.0, *) {
+            let renderer = UIGraphicsImageRenderer(bounds: bounds)
+            return renderer.image { rendererContext in
+                layer.render(in: rendererContext.cgContext)
+            }
+        } else {
+            UIGraphicsBeginImageContext(self.frame.size)
+            self.layer.render(in:UIGraphicsGetCurrentContext()!)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return UIImage(cgImage: image!.cgImage!)
+        }
+    }
+}
+
+class OfferPreviewViewController: UIViewController {
+    func addSnapshot(_ snapshot: UIView) {
+        view.backgroundColor = .white
+        view.addSubview(snapshot)
+        
+        self.preferredContentSize = snapshot.frame.size
+    }
+    
+    override var previewActionItems: [UIPreviewActionItem] {
+        let listsAction = UIPreviewAction(title: "Add to List", style: .default) { previewAction, viewController in
+            print("Added to list!")
+        }
+        return [
+            listsAction
+        ]
+    }
+}
+
+// MARK: - Search
 
 class SearchResultsViewController: UITableViewController {
     
