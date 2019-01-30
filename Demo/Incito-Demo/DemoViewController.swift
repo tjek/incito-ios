@@ -37,6 +37,9 @@ class DemoViewController: IncitoLoaderViewController {
     
     let searchResultsController = SearchResultsViewController()
     
+    var refImageView = UIImageView()
+    var refImageButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,8 +50,12 @@ class DemoViewController: IncitoLoaderViewController {
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem.init(barButtonSystemItem: .fastForward, target: self, action: #selector(loadNextIncito))
         ]
+        
+        refImageButton = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(toggleReferenceImage))
+        
         navigationItem.leftBarButtonItems = [
-            UIBarButtonItem.init(title: "Debug", style: .plain, target: self, action: #selector(openDebugMenu))
+            UIBarButtonItem.init(title: "∙∙∙", style: .plain, target: self, action: #selector(openDebugMenu)),
+            refImageButton
         ]
         
         loadNextIncito()
@@ -96,6 +103,9 @@ class DemoViewController: IncitoLoaderViewController {
         print("🌈 Loading '\(filename)'…")
         
         self.title = filename
+        self.refImageView.removeFromSuperview()
+        self.refImageView.image = nil
+        self.refImageButton.isEnabled = false
         
         self.searchResultsController.offers = []
         
@@ -108,7 +118,22 @@ class DemoViewController: IncitoLoaderViewController {
             queue: DispatchQueue(label: "DemoLoaderQueue", qos: .userInitiated)
         )
         
-        self.reload(loader)
+        self.reload(loader) { result in
+            guard let refImage = refImage, case .success(let vc) = result else { return }
+            
+            // add the refImageView
+            vc.scrollView.addSubview(self.refImageView)
+            
+            self.refImageView.image = refImage
+            self.refImageView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                self.refImageView.centerXAnchor.constraint(equalTo: vc.scrollView.centerXAnchor),
+                self.refImageView.topAnchor.constraint(equalTo: vc.scrollView.topAnchor)
+                ])
+            self.refImageView.alpha = 0
+            self.refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
+            self.refImageButton.isEnabled = true
+        }
     }
     
     @objc
@@ -135,6 +160,21 @@ class DemoViewController: IncitoLoaderViewController {
         )
         
         present(alert, animated: true)
+    }
+    
+    @objc
+    func toggleReferenceImage() {
+        switch refImageView.alpha {
+        case 0:
+            refImageView.alpha = 0.5
+            refImageButton.tintColor = UIColor.orange.withAlphaComponent(1)
+        case 0.5:
+            refImageView.alpha = 1
+            refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.3)
+        default:
+            refImageView.alpha = 0
+            refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
+        }
     }
 }
 

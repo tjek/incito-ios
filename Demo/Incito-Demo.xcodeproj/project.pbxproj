@@ -70,9 +70,7 @@
 		AE582AC321FF3126009F4D8A /* Scratchpad.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Scratchpad.playground; sourceTree = "<group>"; };
 		AE582AC421FF3126009F4D8A /* incito-superbrugsen-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-small-375.json"; sourceTree = "<group>"; };
 		AE582AC521FF3126009F4D8A /* incito-superbrugsen-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-superbrugsen-375.json"; sourceTree = "<group>"; };
-		AE582AC621FF3126009F4D8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE582AC721FF3126009F4D8A /* incito-videotest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-videotest-375.json"; sourceTree = "<group>"; };
-		AE582AC821FF3126009F4D8A /* DemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		AE582AC921FF3126009F4D8A /* incito-elgiganten-legacy-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-legacy-375.json"; sourceTree = "<group>"; };
 		AE582ACE21FF3126009F4D8A /* simple-incito-static.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-static.json"; sourceTree = "<group>"; };
 		AE582ACF21FF3126009F4D8A /* incito-fakta-1200.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-1200.json"; sourceTree = "<group>"; };
@@ -80,8 +78,6 @@
 		AE582AD221FF3126009F4D8A /* incito-blocktest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-blocktest-375.json"; sourceTree = "<group>"; };
 		AE582AD321FF3126009F4D8A /* incito-fakta-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-small-375.json"; sourceTree = "<group>"; };
 		AE582AD421FF3126009F4D8A /* simple-incito-absolute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-absolute.json"; sourceTree = "<group>"; };
-		AE582AD821FF3126009F4D8A /* UIColor+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Debug.swift"; sourceTree = "<group>"; };
-		AE582AD921FF3126009F4D8A /* UIView+RecursiveSubviews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+RecursiveSubviews.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +95,7 @@
 		AE582A0321FF10DC009F4D8A = {
 			isa = PBXGroup;
 			children = (
+				AE582AC321FF3126009F4D8A /* Scratchpad.playground */,
 				AE582A0E21FF10DC009F4D8A /* Incito-Demo */,
 				AE582A0D21FF10DC009F4D8A /* Products */,
 				AE582A3321FF13AC009F4D8A /* Frameworks */,
@@ -119,7 +116,6 @@
 				AE582A0F21FF10DC009F4D8A /* AppDelegate.swift */,
 				AE582A1121FF10DC009F4D8A /* DemoViewController.swift */,
 				AE582AFA21FF31C8009F4D8A /* Test-Incitos */,
-				AE582AB921FF3126009F4D8A /* Old */,
 				AE582A1321FF10DC009F4D8A /* Main.storyboard */,
 				AE582A1621FF10DD009F4D8A /* Assets.xcassets */,
 				AE582A1821FF10DD009F4D8A /* LaunchScreen.storyboard */,
@@ -134,26 +130,6 @@
 				AE582A4621FF1675009F4D8A /* Incito.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		AE582AB921FF3126009F4D8A /* Old */ = {
-			isa = PBXGroup;
-			children = (
-				AE582AC321FF3126009F4D8A /* Scratchpad.playground */,
-				AE582AC621FF3126009F4D8A /* Assets.xcassets */,
-				AE582AC821FF3126009F4D8A /* DemoViewController.swift */,
-				AE582AD621FF3126009F4D8A /* Debug */,
-			);
-			path = Old;
-			sourceTree = "<group>";
-		};
-		AE582AD621FF3126009F4D8A /* Debug */ = {
-			isa = PBXGroup;
-			children = (
-				AE582AD821FF3126009F4D8A /* UIColor+Debug.swift */,
-				AE582AD921FF3126009F4D8A /* UIView+RecursiveSubviews.swift */,
-			);
-			path = Debug;
 			sourceTree = "<group>";
 		};
 		AE582AFA21FF31C8009F4D8A /* Test-Incitos */ = {
