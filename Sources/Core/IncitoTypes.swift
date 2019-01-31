@@ -20,6 +20,20 @@ public struct Color: Equatable {
 public enum Unit {
     case pts(Double)
     case percent(Double)
+    
+    var isPercentage: Bool {
+        return asPercentage != nil
+    }
+    
+    var asPercentage: Double? {
+        if case .percent(let pct) = self { return pct }
+        else { return nil }
+    }
+    
+    var asPoints: Double? {
+        if case .pts(let pts) = self { return pts }
+        else { return nil }
+    }
 }
 
 enum LayoutSize {
@@ -53,14 +67,24 @@ extension Unit {
 }
 
 extension LayoutSize {
-    func absolute(in parentSize: Double) -> Double? {
+    var wrapsContent: Bool {
+        if case .wrapContent = self { return true }
+        else { return false }
+    }
+    
+    func absolute(in parentSize: Double) -> (relative: Double?, concrete: Double?, wraps: Bool) {
         switch self {
         case .wrapContent:
-            return nil
+            return (relative: nil, concrete: nil, wraps: true)
         case .matchParent:
-            return parentSize
+            return (relative: parentSize, concrete: nil, wraps: false)
         case let .unit(unit):
-            return unit.absolute(in: parentSize)
+            
+            if unit.isPercentage {
+                return (relative: unit.absolute(in: parentSize), concrete: nil, wraps: false)
+            } else {
+                return (relative: nil, concrete: unit.absolute(in: parentSize), wraps: false)
+            }            
         }
     }
 }

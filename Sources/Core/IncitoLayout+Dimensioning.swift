@@ -39,18 +39,29 @@ extension TreeNode where T == ViewProperties {
         let concreteSize = calculateConcreteSize(
             parentLayoutType: parentLayoutType,
             parentSize: parentRoughSize,
-            layoutConcreteSize: resolvedLayoutProperties.size,
+            layoutConcreteSize: resolvedLayoutProperties.concreteSize,
             layoutPosition: resolvedLayoutProperties.position,
             layoutMargins: resolvedLayoutProperties.margins,
             flexBasisSize: resolvedLayoutProperties.flexBasisSize
             )
             .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
         
+        let relativeSize = calculateConcreteSize(
+            parentLayoutType: parentLayoutType,
+            parentSize: parentRoughSize,
+            layoutConcreteSize: resolvedLayoutProperties.relativeSize,
+            layoutPosition: resolvedLayoutProperties.position,
+            layoutMargins: resolvedLayoutProperties.margins,
+            flexBasisSize: resolvedLayoutProperties.flexBasisSize
+            )
+            .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
+
         // calculate a node's rough-size (combine concrete-size and/or parent's rough-size). No child size used.
         let roughSize = calculateRoughSize(
             parentLayoutType: parentLayoutType,
             parentRoughInnerSize: parentRoughInnerSize,
             concreteSize: concreteSize,
+            relativeSize: relativeSize,
             layoutMargins: resolvedLayoutProperties.margins
             )
             .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
@@ -85,6 +96,7 @@ extension TreeNode where T == ViewProperties {
         // return the rough-size, concrete-size, intrinsic-size, and contents-size, of the node
         let result = ViewDimensions(
             concreteSize: concreteSize,
+            relativeSize: relativeSize,
             roughSize: roughSize,
             intrinsicSize: intrinsicSize,
             contentsSize: contentsSize,
@@ -217,6 +229,7 @@ private func calculateRoughSize(
     parentLayoutType: LayoutType,
     parentRoughInnerSize: Size<Double?>,
     concreteSize: Size<Double?>,
+    relativeSize: Size<Double?>,
     layoutMargins: Edges<Double>
     ) -> Size<Double?> {
     
@@ -225,14 +238,14 @@ private func calculateRoughSize(
         // set the size to be either the concrete size or the parent's inner size (minus the view's margins)
         // we only do use the parent-size for the width, not the height (as the block's final height is defined by the content)
         return Size(
-            width: concreteSize.width ?? parentRoughInnerSize.inset(layoutMargins).width,
+            width: concreteSize.width ?? relativeSize.width ?? parentRoughInnerSize.inset(layoutMargins).width,
             height: concreteSize.height
         )
     case .absolute,
          .flex:
         // set the size to be either the concrete size or the parent's inner size.
         return Size(
-            width: concreteSize.width ?? parentRoughInnerSize.width,
+            width: concreteSize.width ?? relativeSize.width ?? parentRoughInnerSize.width,
             height: concreteSize.height ?? parentRoughInnerSize.height
         )
     }
@@ -284,10 +297,18 @@ private func calculateBlockContentsSize(
             
             let childPaddedContentsSize = childDims.contentsSize.outset(childDims.layoutProperties.padding)
             
-            let childPossibleSize = Size(
+            var childPossibleSize = Size(
                 width: childDims.concreteSize.width ?? childPaddedContentsSize.width,
                 height: childDims.concreteSize.height ?? childPaddedContentsSize.height
             )
+            
+            // if a child has a relative dimension, dont use that in calculating the size of the child.
+            if childDims.relativeSize.width != nil {
+                childPossibleSize.width = nil
+            }
+            if childDims.relativeSize.height != nil {
+                childPossibleSize.height = nil
+            }
             
             // The child has a contentsSize width... use that to calculate the maxWidth
             if let childContentsWidth = childPossibleSize.width {
@@ -343,10 +364,18 @@ private func calculateFlexContentsSize(
                 
                 let childPaddedContentsSize = childDims.contentsSize.outset(childDims.layoutProperties.padding)
                 
-                let childPossibleSize = Size(
+                var childPossibleSize = Size(
                     width: childDims.concreteSize.width ?? childPaddedContentsSize.width,
                     height: childDims.concreteSize.height ?? childPaddedContentsSize.height
                 )
+                
+                // if a child has a relative dimension, dont use that in calculating the size of the child.
+                if childDims.relativeSize.width != nil {
+                    childPossibleSize.width = nil
+                }
+                if childDims.relativeSize.height != nil {
+                    childPossibleSize.height = nil
+                }
                 
                 // The child has a contentsSize width... use that to calculate the maxWidth
                 if let childContentsWidth = childPossibleSize.width {
@@ -383,10 +412,18 @@ private func calculateFlexContentsSize(
                 
                 let childPaddedContentsSize = childDims.contentsSize.outset(childDims.layoutProperties.padding)
                 
-                let childPossibleSize = Size(
+                var childPossibleSize = Size(
                     width: childDims.concreteSize.width ?? childPaddedContentsSize.width,
                     height: childDims.concreteSize.height ?? childPaddedContentsSize.height
                 )
+                
+                // if a child has a relative dimension, dont use that in calculating the size of the child.
+                if childDims.relativeSize.width != nil {
+                    childPossibleSize.width = nil
+                }
+                if childDims.relativeSize.height != nil {
+                    childPossibleSize.height = nil
+                }
                 
                 // The child has a contentsSize height... use that to calculate the maxHeight
                 if let childContentsHeight = childPossibleSize.height {

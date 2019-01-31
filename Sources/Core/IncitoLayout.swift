@@ -115,10 +115,12 @@ extension ViewType {
  They are used to calculate the actual size of the node in the next pass.
  */
 struct ViewDimensions {
-    var concreteSize: Size<Double?>
-    var roughSize: Size<Double?>
-    var intrinsicSize: Size<Double?>
-    var contentsSize: Size<Double?>
+    var concreteSize: Size<Double?> /// the size as defined in the layout properties, if they are absolute.
+    var relativeSize: Size<Double?> /// the size that is based on the parent's size (this may change as the parent's size is re-calculated)
+    var roughSize: Size<Double?> /// The initial estimate of the size of the view, based only on the parent's size
+    var intrinsicSize: Size<Double?> /// The size based on the actual content of the view (eg. text view)
+    var contentsSize: Size<Double?> /// The size based on the ViewDimensions of all the the view's children.
+    
     var layoutProperties: ResolvedLayoutProperties
 }
 
@@ -133,7 +135,9 @@ struct ResolvedLayoutProperties: Equatable {
     var maxSize: Size<Double>
     var minSize: Size<Double>
     
-    var size: Size<Double?> // nil if fitting to child
+    var concreteSize: Size<Double?> // nil if fitting to child
+    var relativeSize: Size<Double?> // nil if fitting to child
+    var wrapsContent: Size<Bool>
     
     var flexBasisSize: Size<Double>? // nil if auto
     
@@ -147,9 +151,22 @@ struct ResolvedLayoutProperties: Equatable {
             width: properties.minSize.width?.absolute(in: parentSize.width) ?? 0,
             height: properties.minSize.height?.absolute(in: parentSize.height) ?? 0
         )
-        self.size = Size(
+        
+        let absoluteSizes = Size(
             width: properties.size.width?.absolute(in: parentSize.width),
             height: properties.size.height?.absolute(in: parentSize.height)
+        )
+        self.concreteSize = Size(
+            width: absoluteSizes.width?.concrete,
+            height: absoluteSizes.height?.concrete
+        )        
+        self.relativeSize = Size(
+            width: absoluteSizes.width?.relative,
+            height: absoluteSizes.height?.relative
+        )
+        self.wrapsContent = Size(
+            width: absoluteSizes.width?.wraps ?? false,
+            height: absoluteSizes.height?.wraps ?? false
         )
         
         self.position = properties.position.absolute(in: parentSize)

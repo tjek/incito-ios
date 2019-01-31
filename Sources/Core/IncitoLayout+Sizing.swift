@@ -47,12 +47,23 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
             dimensions.concreteSize = calculateConcreteSize(
                 parentLayoutType: parentLayoutType,
                 parentSize: parentSize.optional,
-                layoutConcreteSize: resolvedLayoutProperties.size,
+                layoutConcreteSize: resolvedLayoutProperties.concreteSize,
                 layoutPosition: resolvedLayoutProperties.position,
                 layoutMargins: resolvedLayoutProperties.margins,
                 flexBasisSize: resolvedLayoutProperties.flexBasisSize
                 )
                 .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
+
+            // for some reason web renderers only re-calculate the width, not the height.
+            dimensions.relativeSize.width = calculateConcreteSize(
+                parentLayoutType: parentLayoutType,
+                parentSize: parentSize.optional,
+                layoutConcreteSize: resolvedLayoutProperties.relativeSize,
+                layoutPosition: resolvedLayoutProperties.position,
+                layoutMargins: resolvedLayoutProperties.margins,
+                flexBasisSize: resolvedLayoutProperties.flexBasisSize
+                )
+                .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize).width
             
             // TODO: maybe need to recalculate the contents size? only if no concrete size? too intensive?
         }
@@ -110,9 +121,11 @@ private func calculateActualSize(
             parentSize: parentSize,
             parentPadding: parentPadding,
             concreteSize: dimensions.concreteSize,
+            relativeSize: dimensions.relativeSize,
             contentsSize: dimensions.contentsSize,
             padding: dimensions.layoutProperties.padding,
-            margins: dimensions.layoutProperties.margins
+            margins: dimensions.layoutProperties.margins,
+            wrapsContent: dimensions.layoutProperties.wrapsContent
         )
     case .absolute:
         return calculateAbsoluteChildActualSize(
@@ -127,6 +140,7 @@ private func calculateActualSize(
             parentContentsSize: parentContentsSize,
             flexProperties: flexProperties,
             concreteSize: dimensions.concreteSize,
+            relativeSize: dimensions.relativeSize,
             contentsSize: dimensions.contentsSize,
             padding: dimensions.layoutProperties.padding,
             margins: dimensions.layoutProperties.margins,
@@ -144,17 +158,19 @@ private func calculateBlockChildActualSize(
     parentSize: Size<Double>,
     parentPadding: Edges<Double>,
     concreteSize: Size<Double?>,
+    relativeSize: Size<Double?>,
     contentsSize: Size<Double?>,
     padding: Edges<Double>,
-    margins: Edges<Double>
+    margins: Edges<Double>,
+    wrapsContent: Size<Bool>
     ) -> Size<Double> {
     
     let paddedContentsSize = contentsSize.unwrapped(or: .zero).outset(padding)
     let parentInnerSize = parentSize.inset(parentPadding).inset(margins)
     
     return Size(
-        width: concreteSize.width ?? parentInnerSize.width,
-        height: concreteSize.height ?? paddedContentsSize.height
+        width: concreteSize.width ?? relativeSize.width ?? (wrapsContent.width ? paddedContentsSize.width : parentInnerSize.width),
+        height: concreteSize.height ?? relativeSize.height ?? paddedContentsSize.height
     )
 }
 
@@ -184,6 +200,7 @@ private func calculateFlexChildActualSize(
     parentContentsSize: Size<Double?>,
     flexProperties: FlexLayoutProperties,
     concreteSize: Size<Double?>,
+    relativeSize: Size<Double?>,
     contentsSize: Size<Double?>,
     padding: Edges<Double>,
     margins: Edges<Double>,
@@ -193,7 +210,9 @@ private func calculateFlexChildActualSize(
     ) -> Size<Double> {
     
     let paddedContentsSize = contentsSize.unwrapped(or: .zero).outset(padding)
-    let actualSize = concreteSize.unwrapped(or: paddedContentsSize)
+    let actualSize = concreteSize
+        .unwrapped(or: relativeSize)
+        .unwrapped(or: paddedContentsSize)
     
     // flex-shrink is actually handled slightly differently than flex-grow.
     // flex-shrink is normalized relative to a scaled version.
@@ -203,7 +222,9 @@ private func calculateFlexChildActualSize(
     let scaledShrink = actualSize.multipling(by: flexShrink)
     let (totalGrow, totalScaledShrink) = siblings.reduce((flexGrow, scaledShrink)) {
         let siblingPaddedContentsSize = $1.1.contentsSize.unwrapped(or: .zero).outset($1.1.layoutProperties.padding)
-        let siblingActualSize = $1.1.concreteSize.unwrapped(or: siblingPaddedContentsSize)
+        let siblingActualSize = $1.1.concreteSize
+            .unwrapped(or: $1.1.relativeSize)
+            .unwrapped(or: siblingPaddedContentsSize)
         
         return (
             $0.0 + $1.0.layout.flexGrow,
@@ -222,6 +243,8 @@ private func calculateFlexChildActualSize(
         let width: Double = {
             if let concreteWidth = concreteSize.width {
                 return concreteWidth
+            } else if let relativeWidth = relativeSize.width {
+                return relativeWidth
             } else if flexProperties.itemAlignment == .stretch {
                 return parentSize
                     .inset(parentPadding)
@@ -253,6 +276,8 @@ private func calculateFlexChildActualSize(
         let height: Double = {
             if let concreteHeight = concreteSize.height {
                 return concreteHeight
+            } else if let relativeHeight = relativeSize.height {
+                return relativeHeight
             } else if flexProperties.itemAlignment == .stretch {
                 return parentSize
                     .inset(parentPadding)

@@ -177,6 +177,14 @@ extension Size where Value == Double? {
             height: self.height ?? fallbackSize.height
         )
     }
+    
+    /// Use the width or height if not nil, otherwise fallback to the provided size's dimensions.
+    func unwrapped(or fallbackSize: Size<Double?>) -> Size<Double?> {
+        return Size<Double?>(
+            width: self.width ?? fallbackSize.width,
+            height: self.height ?? fallbackSize.height
+        )
+    }
 }
 
 extension Size: CustomDebugStringConvertible {
