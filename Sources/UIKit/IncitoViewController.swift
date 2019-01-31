@@ -26,6 +26,8 @@ public protocol IncitoViewControllerDelegate: class {
     
     /// Called whenever a view element is about to be removed from the view hierarchy (triggered while scrolling, so this must not do heavy work)
     func incitoViewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
+    
+    func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController)
 }
 
 public class IncitoViewController: UIViewController {
@@ -127,6 +129,10 @@ public class IncitoViewController: UIViewController {
         let rootSize = rootRenderableView.layout.size.cgSize
         
         let wrapper = UIView()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapRootView))
+        wrapper.addGestureRecognizer(tap)
+        
         rootView = wrapper
         scrollView.insertSubview(wrapper, at: 0)
         
@@ -145,8 +151,14 @@ public class IncitoViewController: UIViewController {
         renderVisibleViews()
     }
     
-    
-    
+    @objc
+    func didTapRootView(_ tap: UITapGestureRecognizer) {
+        
+        guard let delegate = self.delegate else { return }
+        
+        let point = tap.location(in: self.view)
+        delegate.incitoDidReceiveTap(at: point, in: self)
+    }
     
     
     
@@ -367,7 +379,11 @@ extension IncitoViewController {
         }
     }
     
-    public func firstView(at point: CGPoint, where predicate: (UIView?, ViewProperties) -> Bool) -> (UIView, ViewProperties)? {
+    /**
+     - parameter point: The point in the receiver's `view`'s coordinate space.
+     - parameter predicate: A predicate to decide which view under the specified point to return.
+     */
+    public func firstView(at point: CGPoint, where predicate: (UIView?, ViewProperties) -> Bool) -> (view: UIView, properties: ViewProperties)? {
         
         let treeLocation = self.view.convert(point, to: self.scrollView)
         
@@ -384,10 +400,9 @@ extension IncitoViewController {
             return predicate(renderableView.renderedView, renderableView.layout.viewProperties)
         }
         
-        if let renderableNode = renderableViewNode {
-            
-            let renderedViews = renderableNode.renderAllChildNodes(didRender: { _, _ in }, didUnrender: { _, _ in })
+        if let renderableNode = renderableViewNode {            
             // make sure the view is rendered
+            let renderedViews = renderableNode.renderAllChildNodes(didRender: { _, _ in }, didUnrender: { _, _ in })
             return (renderedViews, renderableNode.value.layout.viewProperties)
         } else {
             return nil

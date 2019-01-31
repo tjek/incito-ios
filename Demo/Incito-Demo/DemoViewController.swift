@@ -119,20 +119,26 @@ class DemoViewController: IncitoLoaderViewController {
         )
         
         self.reload(loader) { result in
-            guard let refImage = refImage, case .success(let vc) = result else { return }
+            guard case .success(let vc) = result else { return }
             
-            // add the refImageView
-            vc.scrollView.addSubview(self.refImageView)
+            // add an example custom gesture recognizer to the incito's view
+            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(DemoViewController.didLongPress))
+            vc.view.addGestureRecognizer(longPress)
             
-            self.refImageView.image = refImage
-            self.refImageView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                self.refImageView.centerXAnchor.constraint(equalTo: vc.scrollView.centerXAnchor),
-                self.refImageView.topAnchor.constraint(equalTo: vc.scrollView.topAnchor)
-                ])
-            self.refImageView.alpha = 0
-            self.refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
-            self.refImageButton.isEnabled = true
+            if let refImage = refImage {
+                // add the refImageView
+                vc.scrollView.addSubview(self.refImageView)
+                
+                self.refImageView.image = refImage
+                self.refImageView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    self.refImageView.centerXAnchor.constraint(equalTo: vc.scrollView.centerXAnchor),
+                    self.refImageView.topAnchor.constraint(equalTo: vc.scrollView.topAnchor)
+                    ])
+                self.refImageView.alpha = 0
+                self.refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
+                self.refImageButton.isEnabled = true
+            }
         }
     }
     
@@ -175,6 +181,20 @@ class DemoViewController: IncitoLoaderViewController {
             refImageView.alpha = 0
             refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
         }
+    }
+    
+    @objc
+    func didLongPress(_ longPress: UILongPressGestureRecognizer) {
+        guard longPress.state == .began else { return }
+        
+        guard let incitoVC = self.incitoViewController else { return }
+        let point = longPress.location(in: incitoVC.view)
+        
+        guard let firstOffer = incitoVC.firstView(at: point, where: { $1.isOffer }) else { return }
+        
+        let properties = firstOffer.properties
+        
+        print("LONG-PRESSED '\(properties.style.meta["title"]?.stringValue ?? "")': '\(properties.style.meta["description"]?.stringValue ?? "")'")
     }
 }
 
@@ -221,6 +241,15 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
                 self?.searchResultsController.offers = offers
             }
         }
+    }
+    
+    func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController) {
+        
+        guard let firstOffer = viewController.firstView(at: point, where: { $1.isOffer }) else { return }
+        
+        let properties = firstOffer.properties
+        
+        print("TAPPED '\(properties.style.meta["title"]?.stringValue ?? "")': '\(properties.style.meta["description"]?.stringValue ?? "")'")
     }
 }
 
