@@ -65,7 +65,7 @@ open class IncitoLoaderViewController: UIViewController {
     private var loaderQueue = DispatchQueue(label: "IncitoLoaderQueue", qos: .userInitiated)
     
     /// Given an IncitoLoader, we will start reloading the IncitoViewController.
-    public func reload(_ loader: IncitoLoader, completion: ((Result<IncitoViewController>) -> Void)?) {
+    public func reload(_ loader: IncitoLoader, completion: ((Result<IncitoViewController>) -> Void)? = nil) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
