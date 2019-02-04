@@ -61,27 +61,31 @@ open class IncitoLoaderViewController: UIViewController {
     
     private var reloadId: Int = 0
     private var lastLoader: IncitoLoader?
+    private var lastReloadCompletion: ((Result<IncitoViewController>) -> Void)?
+    private var loaderQueue = DispatchQueue(label: "IncitoLoaderQueue", qos: .userInitiated)
     
     /// Given an IncitoLoader, we will start reloading the IncitoViewController.
-    public func reload(_ loader: IncitoLoader, completion: @escaping (Result<IncitoViewController>) -> Void = { _ in }) {
+    public func reload(_ loader: IncitoLoader, completion: ((Result<IncitoViewController>) -> Void)?) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
             self.state = .loading
             self.lastLoader = loader
+            self.lastReloadCompletion = completion
             
             self.reloadId += 1
             let currReloadId = self.reloadId
             
-            loader.run { renderableDocResult in
-                DispatchQueue.main.async { [weak self] in
+            loader
+                .async(on: self.loaderQueue, completesOn: .main)
+                .run({ [weak self] renderableDocResult in
                     guard let self = self else { return }
                     guard self.reloadId == currReloadId else { return }
                     
                     switch renderableDocResult {
                     case let .error(err):
                         self.state = .error(err)                        
-                        completion(.error(err))
+                        completion?(.error(err))
                     case let .success(renderableDocument):
                         
                         let incitoVC = IncitoViewController()
@@ -90,10 +94,9 @@ open class IncitoLoaderViewController: UIViewController {
                         
                         self.state = .success(incitoVC)
                         
-                        completion(.success(incitoVC))
+                        completion?(.success(incitoVC))
                     }
-                }
-            }
+                })
         }
     }
     
@@ -114,7 +117,7 @@ open class IncitoLoaderViewController: UIViewController {
             } else {
                 newVC = buildDefaultErrorViewController(for: error, backgroundColor: view.backgroundColor ?? .white) { [weak self] in
                     guard let loader = self?.lastLoader else { return }
-                    self?.reload(loader)
+                    self?.reload(loader, completion: self?.lastReloadCompletion)
                 }
             }
         case .success(let incitoVC):

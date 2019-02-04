@@ -61,6 +61,15 @@ extension Future {
     public func zipWith<B, C>(_ other: Future<B>, _ combine: @escaping (A, B) -> C) -> Future<C> {
         return self.zip(other).map(combine)
     }
+    
+    public func observe(_ callback: @escaping (A) -> Void) -> Future<A> {
+        return Future { cb in
+            self.run { a in
+                callback(a)
+                cb(a)
+            }
+        }
+    }
 }
 
 extension Future {
@@ -110,5 +119,15 @@ extension Future {
         _ other: Future<Result<T>>
         ) -> Future<Result<(S, T)>> where A == Result<S> {
         return self.zipWith(other) { $0.zip($1) }
+    }
+
+    public func compactMap<S, T>(
+        _ transform: @escaping (S) -> Result<T>
+        ) -> Future<Result<T>> where A == Result<S> {
+        return Future<Result<T>> { cb in
+            self.run { s in
+                cb(s.flatMap(transform))
+            }
+        }
     }
 }

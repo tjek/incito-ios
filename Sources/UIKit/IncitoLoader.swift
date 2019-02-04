@@ -11,22 +11,31 @@ import UIKit
 
 public typealias IncitoLoader = Future<Result<RenderableIncitoDocument>>
 
-public func IncitoJSONFileLoader(filename: String, bundle: Bundle = .main, size: CGSize, queue: DispatchQueue = .global(qos: .userInitiated)) -> IncitoLoader {
+public func IncitoJSONFileLoader(
+    filename: String,
+    bundle: Bundle = .main,
+    size: CGSize
+    ) -> IncitoLoader {
+    
     // - open the specified file
     // - decode the json into an IncitoPropertiesDocument
     // - convert into a RenderableIncitoDocument, using the size
     // - make sure this all happens asyncronously
     return openFile(filename: filename, bundle: bundle)
         .flatMap(IncitoPropertiesDocument.decode(from:))
-        .flatMap({ buildRenderableDocument(document: $0, size: size) })
-        .async(on: queue, completesOn: .main)
+        .flatMap({ IncitoDocumentLoader(document: $0, size: size) })
 }
 
-public func IncitoDocumentLoader(document: IncitoPropertiesDocument, size: CGSize, queue: DispatchQueue = .global(qos: .userInitiated)) -> IncitoLoader {
+public func IncitoDocumentLoader(
+    document: IncitoPropertiesDocument,
+    size: CGSize
+    ) -> IncitoLoader {
     
-    return
-        buildRenderableDocument(document: document, size: size)
-            .async(on: queue, completesOn: .main)
+    let fontLoader = FontAssetLoader.uiKitFontAssetLoader() // injectable?
+    
+    return fontLoader
+        .loadAndRegisterFontAssets(document.fontAssets)
+        .flatMap({ buildRenderableDocument(document: document, size: size, loadedAssets: $0) })
 }
 
 enum IncitoLoaderError: Error {
@@ -86,16 +95,6 @@ func buildRenderableDocument(document: IncitoPropertiesDocument, size: CGSize, l
         )
         completion(.success(renderableDocument))
     }
-}
-
-func buildRenderableDocument(document: IncitoPropertiesDocument, size: CGSize) -> Future<Result<RenderableIncitoDocument>> {
-    
-    // load fonts
-    let fontLoader = FontAssetLoader.uiKitFontAssetLoader() // injectable?
-    
-    return fontLoader
-        .loadAndRegisterFontAssets(document.fontAssets)
-        .flatMap({ buildRenderableDocument(document: document, size: size, loadedAssets: $0) })
 }
 
 

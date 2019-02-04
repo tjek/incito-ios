@@ -115,11 +115,20 @@ class DemoViewController: IncitoLoaderViewController {
         
         let loader = IncitoJSONFileLoader(
             filename: filename,
-            size: size,
-            queue: DispatchQueue(label: "DemoLoaderQueue", qos: .userInitiated)
+            size: size
         )
         
+        let start = Date.timeIntervalSinceReferenceDate
         self.reload(loader) { result in
+            let end = Date.timeIntervalSinceReferenceDate
+            switch result {
+            case .success:
+                print("   ✅ in \(round((end - start) * 1000) / 1000)s")
+            case .error(let error):
+                print("   ❌ in \(round((end - start) * 1000) / 1000)s: \(error)")
+            }
+            print("-----------------")
+            
             guard case .success(let vc) = result else { return }
             
             // add an example custom gesture recognizer to the incito's view
