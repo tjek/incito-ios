@@ -63,24 +63,17 @@ func buildRenderableDocument(document: IncitoPropertiesDocument, size: CGSize, l
             textDefaults: defaultTextProperties
         )
         
-        print(" ⇢ 🚧 Building LayoutTree...")
-        let layoutTree: TreeNode<ViewLayout> = measure("   Total", timeScale: .milliseconds) {
-            
-            rootPropertiesNode.layout(
+        let layoutTree = rootPropertiesNode
+            .layout(
                 rootSize: Size(cgSize: size),
                 intrinsicSizerBuilder: intrinsicSizer
-            )
-            
-            }.result
+        )
         
-        let renderableTree: RenderableViewTree = measure(" ⇢ 🚧 Renderable Tree", timeScale: .milliseconds) {
-            
-            layoutTree.buildRenderableViewTree(
+        let renderableTree = layoutTree
+            .buildRenderableViewTree(
                 rendererProperties: renderer,
                 nodeBuilt: { _ in }
-            )
-            
-            }.result
+        )
         
         let renderableDocument = RenderableIncitoDocument(
             id:  document.id,

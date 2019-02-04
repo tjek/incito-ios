@@ -74,9 +74,7 @@ extension UIView {
         
         let size = self.bounds.size
         let transform: (UIImage) -> UIImage = { oldImage in
-            //            measure("⏱ Resize Img \(oldImage.size) x\(oldImage.scale) -> \(size)", timeScale: .milliseconds) {
             oldImage.resized(scalingType: .centerCrop, into: size)
-            //            }.result
         }
         
         let imageLoadReq = ImageViewLoadRequest(url: imageProperties.source, transform: transform) { [weak self] loadedImageView in
@@ -164,9 +162,7 @@ extension UIView {
             
             let size = self.bounds.size
             let transform: (UIImage) -> UIImage = { oldImage in
-                //                measure("⏱ Resize BGImg \(oldImage.size) x\(oldImage.scale) -> \(size)", timeScale: .milliseconds) {
                 oldImage.resized(scalingType: bgImage.scale, into: size)
-                //                }.result
             }
             
             imageLoadReq = ImageViewLoadRequest(url: bgImage.source, transform: transform) { [weak self] loadedImageView in

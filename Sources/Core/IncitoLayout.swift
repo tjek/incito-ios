@@ -53,22 +53,19 @@ extension TreeNode where T == ViewProperties {
         
         wrapperNode.add(child: self)
         
-        let contentSizedTree = measure("   ‣ 📦 Dimensioning Pass", timeScale: .milliseconds) {
-            wrapperNode.viewDimensioningPass(
+        let contentSizedTree = wrapperNode
+            .viewDimensioningPass(
                 parentRoughSize: rootSize.optional,
                 parentPadding: .zero,
                 parentLayoutType: .block,
                 intrinsicSizerBuilder: intrinsicSizerBuilder
-            )
-        }.result
+        )
         
-        let actualSizedTree = measure("   ‣ 📏 Sizing Pass", timeScale: .milliseconds) {
-            contentSizedTree.sizingPass(parentSize: rootSize)
-        }.result
+        let actualSizedTree = contentSizedTree
+            .sizingPass(parentSize: rootSize)
         
-        let positionedTree = measure("   ‣ 📐 Positioning Pass", timeScale: .milliseconds) {
-            actualSizedTree.positioningPass()
-        }.result
+        let positionedTree = actualSizedTree
+            .positioningPass()
         
         return positionedTree.children.first!
     }
