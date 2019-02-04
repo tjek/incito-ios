@@ -115,7 +115,7 @@ func decodeJSON<B: Decodable>(data: Data) -> Future<Result<B>> {
 }
 
 extension Decodable {
-    static func decode(from data: Data) -> Future<Result<Self>> {
+    public static func decode(from data: Data) -> Future<Result<Self>> {
         return decodeJSON(data: data)
     }
 }

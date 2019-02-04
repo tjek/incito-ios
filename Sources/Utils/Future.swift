@@ -10,15 +10,11 @@
 import Foundation
 
 public struct Future<A> {
-    typealias Callback = (A) -> Void
-    let _run: (@escaping Callback) -> Void
+    public typealias Callback = (A) -> Void
+    let run: (@escaping Callback) -> Void
     
-    init(run: @escaping (@escaping Callback) -> Void) {
-        self._run = run
-    }
-    
-    func run(_ completion: @escaping Callback) {
-        _run(completion)
+    public init(run: @escaping (@escaping Callback) -> Void) {
+        self.run = run
     }
 }
 
@@ -81,48 +77,7 @@ extension Future {
     }
 }
 
-//extension Future {
-//    init(_ work: @autoclosure @escaping () -> A) {
-//        self = Future { callback in
-//            DispatchQueue.global().async {
-//                callback(work())
-//            }
-//        }
-//    }
-//}
-
-/////////////////////////
-
-
-//func zip<A, B, E>(
-//    _ lhs: Parallel<Result<A, E>>,
-//    _ rhs: Parallel<Result<B, E>>
-//    ) -> Parallel<Result<(A, B), E>> {
-//
-//    return zip(with: zip)(lhs, rhs)
-//
-//    //  return zip(lhs, rhs).map { resultA, resultB in
-//    //    zip(resultA, resultB)
-//    //  }
-//}
-//
-//func flatMap<A, B>(
-//    _ f: @escaping (A) -> Future<Result<B>>
-//    ) -> (Future<Result<A>>) -> Future<Result<B>> {
-//
-//    return { futureResultA in
-//        futureResultA.flatMap { resultA in
-//            Future<Result<B>> { callback in
-//                switch resultA {
-//                case let .success(a):
-//                    f(a).run { resultB in callback(resultB) }
-//                case let .error(error):
-//                    callback(.error(error))
-//                }
-//            }
-//        }
-//    }
-//}
+// Future + Result extensions
 
 extension Future {
     
@@ -136,7 +91,7 @@ extension Future {
         }
     }
     
-    func flatMap<S, T>(
+    public func flatMap<S, T>(
         _ transform: @escaping (S) -> Future<Result<T>>
         ) -> Future<Result<T>> where A == Result<S> {
         return self.flatMap { (resultS: Result<S>) in
@@ -150,32 +105,12 @@ extension Future {
             }
         }
     }
-    
-//    public func flatMapResult<T, B>(_ transform: @escaping (T) -> Future<Result<B>>) -> Future<Result<B>> where A == Result<T> {
-//        return Future<Result<B>> { callbackB in
-//            self.run { resultT in
-//                switch resultT {
-//                case let .success(valueT):
-//                    transform(valueT).run(callbackB)
-//                case let .error(error):
-//                    callbackB(.error(error))
-//                }
-//            }
-//        }
-//    }
 
     public func zip<S, T>(
         _ other: Future<Result<T>>
         ) -> Future<Result<(S, T)>> where A == Result<S> {
         return self.zipWith(other) { $0.zip($1) }
     }
-    
-//    public func zipWith<S, T>(
-//        _ other: Future<Result<T>>
-//        
-//        ) -> Future<Result<(S, T)>> where A == Result<S> {
-//        return self.zipWith(other) { $0.zip($1) }
-//    }
     
     public func zipResultWith<T, B, C>(_ other: Future<Result<B>>, _ combine: @escaping (Result<T>, Result<B>) -> Result<C>) -> Future<Result<C>> where A == Result<T> {
         return Future<Result<C>> { callbackC in
