@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE4BF82222048DEF0048671D /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4BF82122048DEF0048671D /* Future.swift */; };
 		AE582A2521FF118A009F4D8A /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A2221FF118A009F4D8A /* DecodableTests.swift */; };
 		AE582A2D21FF1266009F4D8A /* Incito.h in Headers */ = {isa = PBXBuildFile; fileRef = AE582A2B21FF1252009F4D8A /* Incito.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AE582A2E21FF131D009F4D8A /* Incito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5829D821FF1000009F4D8A /* Incito.framework */; };
@@ -158,6 +159,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AE4BF82122048DEF0048671D /* Future.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		AE5829D821FF1000009F4D8A /* Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE582A2221FF118A009F4D8A /* DecodableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
 		AE582A2321FF118A009F4D8A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 				AE582A5221FF1735009F4D8A /* GenericIdentifier.swift */,
 				AE582AB421FF2FCD009F4D8A /* Measure.swift */,
 				AE8450D222019D270000A8D8 /* Bundle+Incito.swift */,
+				AE4BF82122048DEF0048671D /* Future.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -565,6 +568,7 @@
 				AE582A7721FF1736009F4D8A /* IncitoTypes+UIKit.swift in Sources */,
 				AE582B1021FF4EA8009F4D8A /* IncitoLoader.swift in Sources */,
 				AE8450C82200F8530000A8D8 /* CopyableLabel.swift in Sources */,
+				AE4BF82222048DEF0048671D /* Future.swift in Sources */,
 				AE582A7621FF1736009F4D8A /* IncitoViewController.swift in Sources */,
 				AE582A6D21FF1736009F4D8A /* GenericGeometry.swift in Sources */,
 				AE582A7F21FF1736009F4D8A /* IncitoLayout+Sizing.swift in Sources */,

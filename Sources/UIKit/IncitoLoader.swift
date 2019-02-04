@@ -9,166 +9,113 @@
 
 import UIKit
 
-public struct IncitoLoader {
-    public let load: (@escaping (Result<RenderableIncitoDocument>) -> Void) -> Void
+public typealias IncitoLoader = Future<Result<RenderableIncitoDocument>>
+
+public func IncitoJSONFileLoader(filename: String, bundle: Bundle = .main, size: CGSize, queue: DispatchQueue = .global(qos: .userInitiated)) -> IncitoLoader {
+    // - open the specified file
+    // - decode the json into an IncitoPropertiesDocument
+    // - convert into a RenderableIncitoDocument, using the size
+    // - make sure this all happens asyncronously
+    return openFile(filename: filename, bundle: bundle)
+        .flatMap(IncitoPropertiesDocument.decode(from:))
+        .flatMap({ buildRenderableDocument(document: $0, size: size) })
+        .async(on: queue, completesOn: .main)
+}
+
+public func IncitoDocumentLoader(document: IncitoPropertiesDocument, size: CGSize, queue: DispatchQueue = .global(qos: .userInitiated)) -> IncitoLoader {
     
-    public init(_ load: @escaping (@escaping (Result<RenderableIncitoDocument>) -> Void) -> Void) {
-        self.load = load
-    }
+    return
+        buildRenderableDocument(document: document, size: size)
+            .async(on: queue, completesOn: .main)
 }
 
 enum IncitoLoaderError: Error {
     case unavailableFile(filename: String)
 }
 
-public func IncitoJSONFileLoader(filename: String, bundle: Bundle = .main, size: CGSize, queue: DispatchQueue = .global(qos: .userInitiated)) -> IncitoLoader {
-    return IncitoLoader { completion in
-        queue.async {
-            do {
-                guard let jsonFile = bundle.url(forResource: filename, withExtension: nil) else {
-                    throw IncitoLoaderError.unavailableFile(filename: filename)
-                }
-                
-                let jsonData = try Data(contentsOf: jsonFile)
-                
-                let dataLoader = IncitoJSONDataLoader(
-                    data: jsonData,
-                    size: size,
-                    queue: queue
-                )
-                dataLoader.load(completion)
-            } catch {
-                completion(.error(error))
+func openFile(filename: String, bundle: Bundle = .main) -> Future<Result<Data>> {
+    return Future<Result<Data>> { completion in
+        completion(Result {
+            guard let fileURL = bundle.url(forResource: filename, withExtension: nil) else {
+                throw IncitoLoaderError.unavailableFile(filename: filename)
             }
-        }
-    }
-}
-
-public func IncitoJSONDataLoader(data: Data, size: CGSize, queue: DispatchQueue = .global(qos: .userInitiated)) -> IncitoLoader {
-    return IncitoLoader { completion in
-        queue.async {
-            do {
-                let start = Date.timeIntervalSinceReferenceDate
-                
-                let incitoDocument = try JSONDecoder().decode(
-                    IncitoPropertiesDocument.self,
-                    from: data
-                )
-                
-                let end = Date.timeIntervalSinceReferenceDate
-                print(" ⇢ 🤖 Decoded JSON document: \(String(format:"%.2f", Double(data.count) / 1024 / 1024)) Mb in \(round((end - start) * 1000))ms")
-                
-                let documentLoader = IncitoDocumentLoader(
-                    document: incitoDocument,
-                    size: size,
-                    queue: queue
-                )
-                documentLoader.load(completion)
-                
-            } catch {
-                completion(.error(error))
-            }
-        }
-    }
-}
-
-public func IncitoDocumentLoader(document: IncitoPropertiesDocument, size: CGSize, queue: DispatchQueue = .global(qos: .userInitiated)) -> IncitoLoader {
-    return IncitoLoader { completion in
-        
-        queue.async {
             
-            var renderer = IncitoRenderer(
-                fontProvider: UIFont.systemFont(forFamily:size:),
-                imageViewLoader: loadImageView,
-                theme: document.theme
+            return try Data(contentsOf: fileURL)
+        })
+    }
+}
+
+func buildRenderableDocument(document: IncitoPropertiesDocument, size: CGSize, loadedAssets: [LoadedFontAsset]) -> Future<Result<RenderableIncitoDocument>> {
+    return Future { completion in
+        let fontProvider = loadedAssets.font(forFamily:size:)
+        
+        let renderer = IncitoRenderer(
+            fontProvider: fontProvider,
+            imageViewLoader: loadImageView,
+            theme: document.theme
+        )
+        
+        let rootPropertiesNode = document.rootView
+        let defaultTextProperties = document.theme?.textDefaults ?? .empty
+        
+        let intrinsicSizer = uiKitViewSizer(
+            fontProvider: fontProvider,
+            textDefaults: defaultTextProperties
+        )
+        
+        print(" ⇢ 🚧 Building LayoutTree...")
+        let layoutTree: TreeNode<ViewLayout> = measure("   Total", timeScale: .milliseconds) {
+            
+            rootPropertiesNode.layout(
+                rootSize: Size(cgSize: size),
+                intrinsicSizerBuilder: intrinsicSizer
             )
             
-            // load fonts
-            let fontLoader = FontAssetLoader.uiKitFontAssetLoader() // injectable?
-            let fontAssets = document.fontAssets
+            }.result
+        
+        let renderableTree: RenderableViewTree = measure(" ⇢ 🚧 Renderable Tree", timeScale: .milliseconds) {
             
-            fontLoader.loadAndRegisterFontAssets(fontAssets) { (loadedAssets) in
-                queue.async {
-                    
-                    // TODO: fail if font-load fails? or show crappy fonts?
-                    let fontProvider = loadedAssets.font(forFamily:size:)
-                    
-                    // update the renderer's fontProvider
-                    renderer.fontProvider = fontProvider
-                    
-                    let rootPropertiesNode = document.rootView
-                    let defaultTextProperties = document.theme?.textDefaults ?? .empty
-                    
-                    let intrinsicSizer = uiKitViewSizer(
-                        fontProvider: fontProvider,
-                        textDefaults: defaultTextProperties
-                    )
-                    
-                    print(" ⇢ 🚧 Building LayoutTree...")
-                    let layoutTree: TreeNode<ViewLayout> = measure("   Total", timeScale: .milliseconds) {
-                        
-                        rootPropertiesNode.layout(
-                            rootSize: Size(cgSize: size),
-                            intrinsicSizerBuilder: intrinsicSizer
-                        )
-                        
-                        }.result
-                    
-                    let renderableTree: RenderableViewTree = measure(" ⇢ 🚧 Renderable Tree", timeScale: .milliseconds) {
-                        
-                        layoutTree.buildRenderableViewTree(
-                            rendererProperties: renderer,
-                            nodeBuilt: { _ in
-                                // TODO: a pass on setting up the incito
-                                //                    [weak self] renderableView in
-                                //                    guard let self = self else { return }
-                                //                    self.delegate?.viewElementLoaded(
-                                //                        viewProperties: renderableView.layout.viewProperties,
-                                //                        incito: self.incitoDocument,
-                                //                        in: self
-                                //                    )
-                        }
-                        )
-                        
-                        }.result
-                    
-                    //        self.delegate?.documentLoaded(incito: self.incitoDocument, in: self)
-                    //
-                    //        if self.printDebugLayout {
-                    //            let debugTree: TreeNode<String> = layoutTree.mapValues { layout, _, idx in
-                    //
-                    //                let name = layout.viewProperties.name ?? ""
-                    //                let position = layout.position
-                    //                let size = layout.size
-                    //
-                    //                var res = "\(idx)) \(name): [\(position)\(size)]"
-                    //                if printDebugLayoutDetails {
-                    //                    res += "\n\t dimensions: \(layout.dimensions)\n"
-                    //                }
-                    //
-                    //                return res
-                    //            }
-                    //
-                    //            print("\(debugTree)")
-                    //        }
-                    //        DispatchQueue.main.async { [weak self] in
-                    //            self?.initializeRootView(parentSize: parentSize.cgSize)
-                    //        }
-                    
-                    let renderableDocument = RenderableIncitoDocument(
-                        id:  document.id,
-                        version: document.version,
-                        rootView: renderableTree,
-                        locale: document.locale,
-                        theme: document.theme,
-                        meta: document.meta,
-                        fontAssets: document.fontAssets
-                    )
-                    
-                    // TODO: push completion to main?
-                    completion(.success(renderableDocument))
-                }
-            }
-        }
+            layoutTree.buildRenderableViewTree(
+                rendererProperties: renderer,
+                nodeBuilt: { _ in }
+            )
+            
+            }.result
+        
+        let renderableDocument = RenderableIncitoDocument(
+            id:  document.id,
+            version: document.version,
+            rootView: renderableTree,
+            locale: document.locale,
+            theme: document.theme,
+            meta: document.meta,
+            fontAssets: document.fontAssets
+        )
+        completion(.success(renderableDocument))
+    }
+}
+
+func buildRenderableDocument(document: IncitoPropertiesDocument, size: CGSize) -> Future<Result<RenderableIncitoDocument>> {
+    
+    // load fonts
+    let fontLoader = FontAssetLoader.uiKitFontAssetLoader() // injectable?
+    
+    return fontLoader
+        .loadAndRegisterFontAssets(document.fontAssets)
+        .flatMap({ buildRenderableDocument(document: document, size: size, loadedAssets: $0) })
+}
+
+
+func decodeJSON<B: Decodable>(data: Data) -> Future<Result<B>> {
+    return Future<Result<B>> { completion in
+        completion(Result {
+            try JSONDecoder().decode(B.self, from: data)
+        })
+    }
+}
+
+extension Decodable {
+    static func decode(from data: Data) -> Future<Result<Self>> {
+        return decodeJSON(data: data)
     }
 }

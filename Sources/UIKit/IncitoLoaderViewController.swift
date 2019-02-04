@@ -73,7 +73,7 @@ open class IncitoLoaderViewController: UIViewController {
             self.reloadId += 1
             let currReloadId = self.reloadId
             
-            loader.load { renderableDocResult in
+            loader.run { renderableDocResult in
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     guard self.reloadId == currReloadId else { return }
