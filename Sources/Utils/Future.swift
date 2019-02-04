@@ -42,8 +42,8 @@ extension Future {
         }
     }
     
-    public func zipWith<B, C>(_ other: Future<B>, _ combine: @escaping (A,B) -> C) -> Future<C> {
-        return Future<C> { callbackC in
+    public func zip<B>(_ other: Future<B>) -> Future<(A, B)> {
+        return Future<(A, B)> { callback in
             let group = DispatchGroup()
             var resultA: A!
             var resultB: B!
@@ -53,13 +53,13 @@ extension Future {
             other.run { resultB = $0; group.leave() }
             
             group.notify(queue: .global(), execute: {
-                callbackC(combine(resultA, resultB))
+                callback((resultA, resultB))
             })
         }
     }
     
-    public func zip<B>(_ other: Future<B>) -> Future<(A, B)> {
-        return zipWith(other) { ($0, $1) }
+    public func zipWith<B, C>(_ other: Future<B>, _ combine: @escaping (A, B) -> C) -> Future<C> {
+        return self.zip(other).map(combine)
     }
 }
 
@@ -111,26 +111,4 @@ extension Future {
         ) -> Future<Result<(S, T)>> where A == Result<S> {
         return self.zipWith(other) { $0.zip($1) }
     }
-    
-    public func zipResultWith<T, B, C>(_ other: Future<Result<B>>, _ combine: @escaping (Result<T>, Result<B>) -> Result<C>) -> Future<Result<C>> where A == Result<T> {
-        return Future<Result<C>> { callbackC in
-            let group = DispatchGroup()
-            var resultA: Result<T>!
-            var resultB: Result<B>!
-            group.enter()
-            self.run { resultA = $0; group.leave() }
-            group.enter()
-            other.run { resultB = $0; group.leave() }
-
-            group.notify(queue: .global(), execute: {
-                callbackC(combine(resultA, resultB))
-            })
-        }
-    }
-    
-    public func zipResultValueWith<T, B, C>(_ other: Future<Result<B>>, _ combine: @escaping (T, B) -> C) -> Future<Result<C>> where A == Result<T> {
-        return self.zipWith(other) { $0.zipWith($1, combine) }
-    }
 }
-
-

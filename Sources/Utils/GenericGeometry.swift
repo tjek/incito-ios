@@ -10,6 +10,7 @@
 import Foundation
 
 extension Comparable {
+    /// Allow any comparable value to be clamped between a min & max value
     func clamped(min: Self, max: Self) -> Self {
         return Swift.min(Swift.max(self, min), max)
     }
@@ -19,18 +20,21 @@ extension Comparable {
 // MARK: - Point
 ////////////////////////////
 
+/// A 2d coordinate. The type of value it contains is generic
 struct Point<Value> {
     var x, y: Value
 }
 typealias PointDbl = Point<Double>
 
 extension Point {
+    /// A simple initializer allowing the Point to be created with the same x/y value.
     init(_ val: Value) {
         self.init(x: val, y: val)
     }
 }
 
 extension Point: Equatable where Value: Equatable {
+    /// Make Point equatable if it's values are equatable.
     static func == (lhs: Point<Value>, rhs: Point<Value>) -> Bool {
         return lhs.x == rhs.x
             && lhs.y == rhs.y
@@ -38,12 +42,14 @@ extension Point: Equatable where Value: Equatable {
 }
 
 extension Point where Value: Numeric {
+    /// The identity of point with 0,0 x/y values
     static var zero: Point {
         return Point(x: 0, y: 0)
     }
 }
 
 extension Point: CustomDebugStringConvertible {
+    /// Print out an attractive
     var debugDescription: String {
         return "{ x:\(x), y:\(y) }"
     }
@@ -77,7 +83,7 @@ extension Size where Value: Numeric {
     }
 }
 
-extension Size where Value: Numeric {
+extension Size {
     var optional: Size<Optional<Value>> {
         return Size<Optional<Value>>(width: width, height: height)
     }
@@ -127,9 +133,8 @@ extension Size where Value: Numeric {
     }
 }
 
-// TODO: Would like to do this on Optional<Numeric>, but no clear way of doing that.
-extension Size where Value == Double? {
-    func inset(_ edges: Edges<Double>) -> Size {
+extension Size {
+    func inset<A: Numeric>(_ edges: Edges<A>) -> Size where Value == Optional<A> {
         var insetSize = self
         if let w = insetSize.width {
             insetSize.width = w - edges.left - edges.right
@@ -139,7 +144,8 @@ extension Size where Value == Double? {
         }
         return insetSize
     }
-    func outset(_ edges: Edges<Double>) -> Size {
+    
+    func outset<A: Numeric>(_ edges: Edges<A>) -> Size where Value == Optional<A> {
         return inset(edges.negated)
     }
 }
@@ -155,9 +161,8 @@ extension Size where Value: Comparable {
     }
 }
 
-// TODO: Would like to do this on Optional<Comparable>, but no clear way of doing that.
-extension Size where Value == Double? {
-    func clamped(min: Size<Double>, max: Size<Double>) -> Size<Double?> {
+extension Size {
+    func clamped<A: Comparable>(min: Size<A>, max: Size<A>) -> Size where Value == Optional<A> {
         var clampedSize = self
         if let w = clampedSize.width {
             clampedSize.width = w.clamped(min: min.width, max: max.width)
@@ -169,18 +174,18 @@ extension Size where Value == Double? {
     }
 }
 
-extension Size where Value == Double? {
+extension Size {
     /// Use the width or height if not nil, otherwise fallback to the provided size's dimensions.
-    func unwrapped(or fallbackSize: Size<Double>) -> Size<Double> {
-        return Size<Double>(
+    func unwrapped<A>(or fallbackSize: Size<A>) -> Size<A> where Value == Optional<A> {
+        return Size<A>(
             width: self.width ?? fallbackSize.width,
             height: self.height ?? fallbackSize.height
         )
     }
     
     /// Use the width or height if not nil, otherwise fallback to the provided size's dimensions.
-    func unwrapped(or fallbackSize: Size<Double?>) -> Size<Double?> {
-        return Size<Double?>(
+    func unwrapped<A>(or fallbackSize: Size<A?>) -> Size<A?> where Value == Optional<A> {
+        return Size<A?>(
             width: self.width ?? fallbackSize.width,
             height: self.height ?? fallbackSize.height
         )
