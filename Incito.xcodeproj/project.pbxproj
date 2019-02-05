@@ -47,6 +47,11 @@
 		AE582B0221FF3729009F4D8A /* SVGKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582A9A21FF2E49009F4D8A /* SVGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE582B0321FF372F009F4D8A /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE582B1021FF4EA8009F4D8A /* IncitoLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */; };
+		AE6094EF2209B26600952B8E /* incito-blocktest-375.dimensions.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094EC2209B26000952B8E /* incito-blocktest-375.dimensions.json */; };
+		AE6094F02209B26600952B8E /* incito-blocktest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094EB2209B26000952B8E /* incito-blocktest-375.json */; };
+		AE6094F22209B3E700952B8E /* LayoutComparisonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6094F12209B3E700952B8E /* LayoutComparisonTests.swift */; };
+		AE6094F52209F4DF00952B8E /* incito-transformtest-375.dimensions.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094F42209F4DF00952B8E /* incito-transformtest-375.dimensions.json */; };
+		AE6094F62209F53600952B8E /* incito-transformtest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094F32209F4A300952B8E /* incito-transformtest-375.json */; };
 		AE8450C82200F8530000A8D8 /* CopyableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450C72200F8530000A8D8 /* CopyableLabel.swift */; };
 		AE8450CF22019C680000A8D8 /* Incito.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE8450D122019C680000A8D8 /* Incito.strings */; };
 		AE8450D322019D270000A8D8 /* Bundle+Incito.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450D222019D270000A8D8 /* Bundle+Incito.swift */; };
@@ -200,6 +205,11 @@
 		AE582B0421FF37A9009F4D8A /* Incito.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Incito.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		AE582B0521FF37A9009F4D8A /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoLoader.swift; sourceTree = "<group>"; };
+		AE6094EB2209B26000952B8E /* incito-blocktest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-blocktest-375.json"; sourceTree = "<group>"; };
+		AE6094EC2209B26000952B8E /* incito-blocktest-375.dimensions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-blocktest-375.dimensions.json"; sourceTree = "<group>"; };
+		AE6094F12209B3E700952B8E /* LayoutComparisonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutComparisonTests.swift; sourceTree = "<group>"; };
+		AE6094F32209F4A300952B8E /* incito-transformtest-375.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "incito-transformtest-375.json"; sourceTree = "<group>"; };
+		AE6094F42209F4DF00952B8E /* incito-transformtest-375.dimensions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-transformtest-375.dimensions.json"; sourceTree = "<group>"; };
 		AE675820219C2593006BEA9C /* IncitoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IncitoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE8450C72200F8530000A8D8 /* CopyableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyableLabel.swift; sourceTree = "<group>"; };
 		AE8450D022019C680000A8D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Incito.strings; sourceTree = "<group>"; };
@@ -235,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				AE582A2221FF118A009F4D8A /* DecodableTests.swift */,
+				AE6094E32209B23500952B8E /* LayoutTests */,
 				AE582A2321FF118A009F4D8A /* Info.plist */,
 			);
 			path = Tests;
@@ -342,6 +353,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		AE6094E32209B23500952B8E /* LayoutTests */ = {
+			isa = PBXGroup;
+			children = (
+				AE6094F12209B3E700952B8E /* LayoutComparisonTests.swift */,
+				AE6094F42209F4DF00952B8E /* incito-transformtest-375.dimensions.json */,
+				AE6094F32209F4A300952B8E /* incito-transformtest-375.json */,
+				AE6094EC2209B26000952B8E /* incito-blocktest-375.dimensions.json */,
+				AE6094EB2209B26000952B8E /* incito-blocktest-375.json */,
+			);
+			path = LayoutTests;
+			sourceTree = "<group>";
+		};
 		AE675803219C2591006BEA9C = {
 			isa = PBXGroup;
 			children = (
@@ -440,7 +463,6 @@
 					};
 					AE67581F219C2593006BEA9C = {
 						CreatedOnToolsVersion = 10.1;
-						TestTargetID = AE67580B219C2591006BEA9C;
 					};
 				};
 			};
@@ -552,6 +574,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE6094F62209F53600952B8E /* incito-transformtest-375.json in Resources */,
+				AE6094EF2209B26600952B8E /* incito-blocktest-375.dimensions.json in Resources */,
+				AE6094F52209F4DF00952B8E /* incito-transformtest-375.dimensions.json in Resources */,
+				AE6094F02209B26600952B8E /* incito-blocktest-375.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,6 +631,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE6094F22209B3E700952B8E /* LayoutComparisonTests.swift in Sources */,
 				AE582A2521FF118A009F4D8A /* DecodableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -823,7 +850,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MN86AVA6GX;
 				INFOPLIST_FILE = Tests/Info.plist;
@@ -836,7 +862,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Incito.app/Incito";
 			};
 			name = Debug;
 		};
@@ -844,7 +869,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MN86AVA6GX;
 				INFOPLIST_FILE = Tests/Info.plist;
@@ -857,7 +881,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Incito.app/Incito";
 			};
 			name = Release;
 		};

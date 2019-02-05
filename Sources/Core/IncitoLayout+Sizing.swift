@@ -55,7 +55,7 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
                 .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
 
             // for some reason web renderers only re-calculate the width, not the height.
-            dimensions.relativeSize.width = calculateConcreteSize(
+            dimensions.relativeSize = calculateConcreteSize(
                 parentLayoutType: parentLayoutType,
                 parentSize: parentSize.optional,
                 layoutConcreteSize: resolvedLayoutProperties.relativeSize,
@@ -63,7 +63,7 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
                 layoutMargins: resolvedLayoutProperties.margins,
                 flexBasisSize: resolvedLayoutProperties.flexBasisSize
                 )
-                .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize).width
+                .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
             
             // TODO: maybe need to recalculate the contents size? only if no concrete size? too intensive?
         }
@@ -130,6 +130,7 @@ private func calculateActualSize(
     case .absolute:
         return calculateAbsoluteChildActualSize(
             concreteSize: dimensions.concreteSize,
+            relativeSize: dimensions.relativeSize,
             contentsSize: dimensions.contentsSize,
             padding: dimensions.layoutProperties.padding
         )
@@ -179,6 +180,7 @@ private func calculateBlockChildActualSize(
  */
 private func calculateAbsoluteChildActualSize(
     concreteSize: Size<Double?>,
+    relativeSize: Size<Double?>,
     contentsSize: Size<Double?>,
     padding: Edges<Double>
     ) -> Size<Double> {
@@ -186,8 +188,8 @@ private func calculateAbsoluteChildActualSize(
     let paddedContentsSize = contentsSize.unwrapped(or: .zero).outset(padding)
     
     return Size(
-        width: concreteSize.width ?? paddedContentsSize.width,
-        height: concreteSize.height ?? paddedContentsSize.height
+        width: concreteSize.width ?? relativeSize.width ?? paddedContentsSize.width,
+        height: concreteSize.height ?? relativeSize.height ?? paddedContentsSize.height
     )
 }
 

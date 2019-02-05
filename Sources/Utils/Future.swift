@@ -120,6 +120,13 @@ extension Future {
         ) -> Future<Result<(S, T)>> where A == Result<S> {
         return self.zipWith(other) { $0.zip($1) }
     }
+    
+    public func zipWith<S, T, U>(
+        _ other: Future<Result<T>>,
+        _ combine: @escaping (S, T) -> U
+        ) -> Future<Result<U>> where A == Result<S> {
+        return self.zipWith(other) { $0.zipWith($1, combine) }
+    }
 
     public func compactMap<S, T>(
         _ transform: @escaping (S) -> Result<T>

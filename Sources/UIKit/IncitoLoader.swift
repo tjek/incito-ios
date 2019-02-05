@@ -14,7 +14,7 @@ public typealias IncitoLoader = Future<Result<RenderableIncitoDocument>>
 public func IncitoJSONFileLoader(
     filename: String,
     bundle: Bundle = .main,
-    size: CGSize
+    width: Double
     ) -> IncitoLoader {
     
     // - open the specified file
@@ -23,19 +23,19 @@ public func IncitoJSONFileLoader(
     // - make sure this all happens asyncronously
     return openFile(filename: filename, bundle: bundle)
         .flatMap(IncitoPropertiesDocument.decode(from:))
-        .flatMap({ IncitoDocumentLoader(document: $0, size: size) })
+        .flatMap({ IncitoDocumentLoader(document: $0, width: width) })
 }
 
 public func IncitoDocumentLoader(
     document: IncitoPropertiesDocument,
-    size: CGSize
+    width: Double
     ) -> IncitoLoader {
     
     let fontLoader = FontAssetLoader.uiKitFontAssetLoader() // injectable?
     
     return fontLoader
         .loadAndRegisterFontAssets(document.fontAssets)
-        .flatMap({ buildRenderableDocument(document: document, size: size, loadedAssets: $0) })
+        .flatMap({ buildRenderableDocument(document: document, width: width, loadedAssets: $0) })
 }
 
 enum IncitoLoaderError: Error {
@@ -54,7 +54,11 @@ func openFile(filename: String, bundle: Bundle = .main) -> Future<Result<Data>> 
     }
 }
 
-func buildRenderableDocument(document: IncitoPropertiesDocument, size: CGSize, loadedAssets: [LoadedFontAsset]) -> Future<Result<RenderableIncitoDocument>> {
+func buildRenderableDocument(
+    document: IncitoPropertiesDocument,
+    width: Double,
+    loadedAssets: [LoadedFontAsset]
+    ) -> Future<Result<RenderableIncitoDocument>> {
     return Future { completion in
         let fontProvider = loadedAssets.font(forFamily:size:)
         
@@ -74,7 +78,7 @@ func buildRenderableDocument(document: IncitoPropertiesDocument, size: CGSize, l
         
         let layoutTree = rootPropertiesNode
             .layout(
-                rootSize: Size(cgSize: size),
+                rootSize: Size(width: width, height: 0),
                 intrinsicSizerBuilder: intrinsicSizer
         )
         
