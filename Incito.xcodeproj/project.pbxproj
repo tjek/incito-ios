@@ -52,6 +52,8 @@
 		AE6094F22209B3E700952B8E /* LayoutComparisonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6094F12209B3E700952B8E /* LayoutComparisonTests.swift */; };
 		AE6094F52209F4DF00952B8E /* incito-transformtest-350.dimensions.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094F42209F4DF00952B8E /* incito-transformtest-350.dimensions.json */; };
 		AE6094F62209F53600952B8E /* incito-transformtest-350.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094F32209F4A300952B8E /* incito-transformtest-350.json */; };
+		AE6094F8220AD8A400952B8E /* incito-flextest-375.dimensions.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094F7220AD8A400952B8E /* incito-flextest-375.dimensions.json */; };
+		AE6094FA220AD8B000952B8E /* incito-flextest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094F9220AD8B000952B8E /* incito-flextest-375.json */; };
 		AE8450C82200F8530000A8D8 /* CopyableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450C72200F8530000A8D8 /* CopyableLabel.swift */; };
 		AE8450CF22019C680000A8D8 /* Incito.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE8450D122019C680000A8D8 /* Incito.strings */; };
 		AE8450D322019D270000A8D8 /* Bundle+Incito.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450D222019D270000A8D8 /* Bundle+Incito.swift */; };
@@ -210,6 +212,8 @@
 		AE6094F12209B3E700952B8E /* LayoutComparisonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutComparisonTests.swift; sourceTree = "<group>"; };
 		AE6094F32209F4A300952B8E /* incito-transformtest-350.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "incito-transformtest-350.json"; sourceTree = "<group>"; };
 		AE6094F42209F4DF00952B8E /* incito-transformtest-350.dimensions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-transformtest-350.dimensions.json"; sourceTree = "<group>"; };
+		AE6094F7220AD8A400952B8E /* incito-flextest-375.dimensions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-flextest-375.dimensions.json"; sourceTree = "<group>"; };
+		AE6094F9220AD8B000952B8E /* incito-flextest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-flextest-375.json"; sourceTree = "<group>"; };
 		AE675820219C2593006BEA9C /* IncitoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IncitoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE8450C72200F8530000A8D8 /* CopyableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyableLabel.swift; sourceTree = "<group>"; };
 		AE8450D022019C680000A8D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Incito.strings; sourceTree = "<group>"; };
@@ -361,6 +365,8 @@
 				AE6094F32209F4A300952B8E /* incito-transformtest-350.json */,
 				AE6094EC2209B26000952B8E /* incito-blocktest-375.dimensions.json */,
 				AE6094EB2209B26000952B8E /* incito-blocktest-375.json */,
+				AE6094F7220AD8A400952B8E /* incito-flextest-375.dimensions.json */,
+				AE6094F9220AD8B000952B8E /* incito-flextest-375.json */,
 			);
 			path = LayoutTests;
 			sourceTree = "<group>";
@@ -575,6 +581,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE6094F62209F53600952B8E /* incito-transformtest-350.json in Resources */,
+				AE6094F8220AD8A400952B8E /* incito-flextest-375.dimensions.json in Resources */,
+				AE6094FA220AD8B000952B8E /* incito-flextest-375.json in Resources */,
 				AE6094EF2209B26600952B8E /* incito-blocktest-375.dimensions.json in Resources */,
 				AE6094F52209F4DF00952B8E /* incito-transformtest-350.dimensions.json in Resources */,
 				AE6094F02209B26600952B8E /* incito-blocktest-375.json in Resources */,

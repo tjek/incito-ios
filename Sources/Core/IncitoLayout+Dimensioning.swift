@@ -52,7 +52,7 @@ extension TreeNode where T == ViewProperties {
             layoutConcreteSize: resolvedLayoutProperties.relativeSize,
             layoutPosition: resolvedLayoutProperties.position,
             layoutMargins: resolvedLayoutProperties.margins,
-            flexBasisSize: resolvedLayoutProperties.flexBasisSize
+            flexBasisSize: nil
             )
             .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
 

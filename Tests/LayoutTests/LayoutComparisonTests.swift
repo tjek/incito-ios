@@ -39,7 +39,8 @@ struct TestLayoutDimensions: Decodable {
 class LayoutComparisonTests: XCTestCase {
     let testComparisons: [(filename: String, dimensionsFilename: String, width: Double)] = [
         ("incito-blocktest-375.json", "incito-blocktest-375.dimensions.json", 375),
-        ("incito-transformtest-350.json", "incito-transformtest-350.dimensions.json", 350)
+        ("incito-transformtest-350.json", "incito-transformtest-350.dimensions.json", 350),
+        ("incito-flextest-375.json", "incito-flextest-375.dimensions.json", 375),
     ]
     
     func testLayoutChecks() {
@@ -76,7 +77,7 @@ class LayoutComparisonTests: XCTestCase {
                 case let .success((incitoRectTree, dimensionsTree)):
                     
                     if let comparisonError = compareLayoutTrees(incitoRectTree, dimensionsTree) {
-                        XCTFail("Incorrect Layout \(comparisonError)")
+                        XCTFail("Incorrect Layout \(filename)\n\(comparisonError)")
                     }
                 }
                 expect.fulfill()

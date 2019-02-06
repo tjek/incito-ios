@@ -1,0 +1,126 @@
+{
+    "version": "1.0.0",
+    "id": "flex-test-375",
+    "theme": {
+        "background_color": "#5c5c5c"
+    },
+    "root_view": {
+        "id": "a",
+        "layout_width": 375,
+        "gravity": "center_horizontal",
+        "child_views": [
+            {
+                "id": "b",
+                "view_name": "FlexLayout",
+                "layout_flex_direction": "column",
+                "layout_flex_align_items": "stretch",
+                "layout_width": 350,
+                "layout_height": 200,
+                "padding": 10,
+                "gravity": "center_horizontal",
+                "background_color": "#ffffff",
+                "child_views": [
+                    {
+                        "id": "c",
+                        "layout_width": 100,
+                        "layout_height": 100,
+                        "layout_flex_grow": 1,
+                        "layout_flex_shrink": 2,
+                        "layout_flex_basis": 50,
+                        "background_color": "#aa00ff"
+                    },
+                    {
+                        "id": "d",
+                        "layout_flex_grow": 2,
+                        "layout_flex_shrink": 0,
+                        "layout_flex_basis": "50%",
+                        "background_color": "#ff00aa",
+                        "child_views": [
+                            {
+                                "id": "e",
+                                "layout_width": 30,
+                                "layout_height": 50,
+                                "background_color": "#ffaa00"
+                            },
+                            {
+                                "id": "f",
+                                "layout_width": "50%",
+                                "layout_height": "30%",
+                                "background_color": "#00ff00"
+                            },
+                            {
+                                "id": "g",
+                                "layout_width": 80,
+                                "layout_height": 20,
+                                "background_color": "#0000ff"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "h",
+                        "layout_width": 300,
+                        "layout_height": 100,
+                        "layout_flex_shrink": 2,
+                        "background_color": "#00ffaa"
+                    }
+                ]
+            },
+
+            {
+                "id": "i",
+                "view_name": "FlexLayout",
+                "layout_flex_direction": "row",
+                "layout_flex_align_items": "stretch",
+                "layout_height": 200,
+                "padding": 10,
+                "gravity": "center_horizontal",
+                "background_color": "#ffffff",
+                "child_views": [
+                    {
+                        "id": "j",
+                        "layout_width": 100,
+                        "layout_margin": 10,
+                        "layout_flex_grow": 1,
+                        "layout_flex_shrink": 2,
+                        "layout_flex_basis": 50,
+                        "background_color": "#aa00ff"
+                    },
+                    {
+                        "id": "k",
+                        "layout_flex_grow": 2,
+                        "layout_flex_shrink": 0,
+                        "layout_flex_basis": "50%",
+                        "background_color": "#ff00aa",
+                        "child_views": [
+                            {
+                                "id": "l",
+                                "layout_width": 30,
+                                "layout_height": 50,
+                                "background_color": "#ffaa00"
+                            },
+                            {
+                                "id": "m",
+                                "layout_width": "50%",
+                                "layout_height": "30%",
+                                "background_color": "#00ff00"
+                            },
+                            {
+                                "id": "n",
+                                "layout_width": 80,
+                                "layout_height": 20,
+                                "background_color": "#0000ff"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "o",
+                        "layout_width": 100,
+                        "layout_height": 100,
+                        "layout_flex_shrink": 2,
+                        "background_color": "#00ffaa"
+                    }
+                ]
+            }
+        ]
+    }
+}
