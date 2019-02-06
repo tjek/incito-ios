@@ -14,6 +14,14 @@ typealias TestLayoutTree = TreeNode<(String?, TestLayoutRect)>
 
 struct TestLayoutRect: Decodable, Equatable {
     var x: Double, y: Double, width: Double, height: Double
+    
+    func prettyMuchEqual(_ other: TestLayoutRect) -> Bool {
+        let epsilon = 0.001
+        return abs(x - other.x) < epsilon
+            && abs(y - other.y) < epsilon
+            && abs(width - other.width) < epsilon
+            && abs(height - other.height) < epsilon
+    }
 }
 
 struct TestLayoutDimensions: Decodable {
@@ -31,7 +39,7 @@ struct TestLayoutDimensions: Decodable {
 class LayoutComparisonTests: XCTestCase {
     let testComparisons: [(filename: String, dimensionsFilename: String, width: Double)] = [
         ("incito-blocktest-375.json", "incito-blocktest-375.dimensions.json", 375),
-        ("incito-transformtest-375.json", "incito-transformtest-375.dimensions.json", 375)
+        ("incito-transformtest-350.json", "incito-transformtest-350.dimensions.json", 350)
     ]
     
     func testLayoutChecks() {
@@ -81,14 +89,16 @@ enum LayoutTestError: Error {
 }
 
 func compareLayoutTrees(_ lhs: TreeNode<(String?, TestLayoutRect, RenderableView)>, _ rhs: TestLayoutTree) -> Error? {
-    guard lhs.value.1 == rhs.value.1 else {
+    let actualRect = lhs.value.1
+    let expectedRect = rhs.value.1
+    guard actualRect.prettyMuchEqual(expectedRect) else {
         print("❌ Misaligned!", lhs.value.1, rhs.value.1)
         print("   ", lhs.value.2.layout.dimensions)
         
         return LayoutTestError.incorrectLayout(
             id: lhs.value.0 ?? rhs.value.0,
-            expected: lhs.value.1,
-            actual: rhs.value.1
+            expected: expectedRect,
+            actual: actualRect
         )
     }
     

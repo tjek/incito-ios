@@ -145,7 +145,7 @@ public class IncitoViewController: UIViewController {
             wrapper.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             
             wrapper.heightAnchor.constraint(equalToConstant: rootSize.height),
-            wrapper.widthAnchor.constraint(equalToConstant: rootSize.width)
+            wrapper.widthAnchor.constraint(equalToConstant: parentSize.width)
             ])
         
         renderVisibleViews()
@@ -159,99 +159,6 @@ public class IncitoViewController: UIViewController {
         let point = tap.location(in: self.view)
         delegate.incitoDidReceiveTap(at: point, in: self)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // loadFonts -> buildLayout -> buildCallbacks
-//
-//    let queue = DispatchQueue(label: "IncitoViewControllerQueue", qos: .userInitiated)
-//
-//    func loadFonts(fontAssets: [FontAssetName: FontAsset], completion: @escaping () -> Void) {
-//
-//        let fontLoader = FontAssetLoader.uiKitFontAssetLoader()
-//
-//        let startFontLoad = Date.timeIntervalSinceReferenceDate
-//        fontLoader.loadAndRegisterFontAssets(fontAssets) { [weak self] (loadedAssets) in
-//
-//            let endFontLoad = Date.timeIntervalSinceReferenceDate
-//            print(" ⇢ 🔠 Downloaded font assets: \(loadedAssets.count) in \(round((endFontLoad - startFontLoad) * 1_000))ms")
-//            loadedAssets.forEach { asset in
-//                print("    ‣ '\(asset.assetName)': \(asset.fontName)")
-//            }
-//
-//            self?.queue.async { [weak self] in
-//                // update the renderer's fontProvider
-//                self?.renderer.fontProvider = loadedAssets.font(forFamily:size:)
-//
-//                completion()
-//            }
-//        }
-//    }
-//
-//    func buildLayout(parentSize: Size<Double>) {
-//
-//        let rootIncitoView: ViewNode = incitoDocument.rootView
-//        let fontProvider = self.renderer.fontProvider
-//        let defaultTextProperties = incitoDocument.theme?.textDefaults ?? .empty
-//
-//        let intrinsicSizer = uiKitViewSizer(
-//            fontProvider: fontProvider,
-//            textDefaults: defaultTextProperties
-//        )
-//
-//        var layoutTree: TreeNode<ViewLayout>!
-//        print(" ⇢ 🚧 Building LayoutTree...")
-//        measure("   Total", timeScale: .milliseconds) {
-//            layoutTree = rootIncitoView.layout(
-//                rootSize: parentSize,
-//                intrinsicSizerBuilder: intrinsicSizer
-//            )
-//        }
-//
-//        measure(" ⇢ 🚧 Renderable Tree", timeScale: .milliseconds) {
-//            self.renderableTree = layoutTree.buildRenderableViewTree(
-//                rendererProperties: self.renderer,
-//                nodeBuilt: { [weak self] renderableView in
-//                    guard let self = self else { return }
-//                    self.delegate?.viewElementLoaded(
-//                        viewProperties: renderableView.layout.viewProperties,
-//                        incito: self.incitoDocument,
-//                        in: self
-//                    )
-//                }
-//            )
-//        }
-//
-//        self.delegate?.documentLoaded(incito: self.incitoDocument, in: self)
-//
-//        if self.printDebugLayout {
-//            let debugTree: TreeNode<String> = layoutTree.mapValues { layout, _, idx in
-//
-//                let name = layout.viewProperties.name ?? ""
-//                let position = layout.position
-//                let size = layout.size
-//
-//                var res = "\(idx)) \(name): [\(position)\(size)]"
-//                if printDebugLayoutDetails {
-//                    res += "\n\t dimensions: \(layout.dimensions)\n"
-//                }
-//
-//                return res
-//            }
-//
-//            print("\(debugTree)")
-//        }
-//        DispatchQueue.main.async { [weak self] in
-//            self?.initializeRootView(parentSize: parentSize.cgSize)
-//        }
-//    }
     
     // MARK: - Rendering
     
