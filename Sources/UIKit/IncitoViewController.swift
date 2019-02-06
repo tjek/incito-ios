@@ -28,10 +28,17 @@ public protocol IncitoViewControllerDelegate: class {
     func incitoViewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
     
     func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController)
+    
+    func incitoDidScroll(progress: Double, in viewController: IncitoViewController)
 }
 
 public class IncitoViewController: UIViewController {
     weak var delegate: IncitoViewControllerDelegate?
+    
+    /// 0-1 percentage of the screen that we are currently scrolled to. Can be <0 or >1 when over-scrolling.
+    public var scrollProgress: Double {
+        return scrollView.percentageProgress
+    }
     
     public let scrollView = UIScrollView()
     private var rootView: UIView?
@@ -269,6 +276,25 @@ public class IncitoViewController: UIViewController {
 extension IncitoViewController: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         renderVisibleViews()
+        
+        self.delegate?.incitoDidScroll(progress: self.scrollProgress, in: self)
+    }
+}
+
+extension UIScrollView {
+    var percentageProgress: Double {
+        let adjustedInset: UIEdgeInsets
+        if #available(iOS 11.0, *) {
+            adjustedInset = self.adjustedContentInset
+        } else {
+            adjustedInset = self.contentInset
+        }
+        let totalHeight = self.contentSize.height + adjustedInset.top + adjustedInset.bottom - bounds.size.height
+        guard totalHeight > 0 else { return 0 }
+        
+        let topOffset = self.contentOffset.y + adjustedInset.top
+        
+        return Double(topOffset / totalHeight)
     }
 }
 

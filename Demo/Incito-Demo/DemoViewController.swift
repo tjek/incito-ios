@@ -215,6 +215,10 @@ extension ViewProperties {
 }
 
 extension DemoViewController: IncitoLoaderViewControllerDelegate {
+    func incitoDidScroll(progress: Double, in viewController: IncitoViewController) {
+        
+    }
+    
     func incitoViewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
         
     }
