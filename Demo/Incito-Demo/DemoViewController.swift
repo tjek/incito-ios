@@ -264,6 +264,8 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
         let properties = firstOffer.properties
         
         print("TAPPED '\(properties.style.meta["title"]?.stringValue ?? "")': '\(properties.style.meta["description"]?.stringValue ?? "")'")
+        
+        viewController.scrollToElement(withId: properties.id, position: .top, animated: true)
     }
 }
 

@@ -342,8 +342,32 @@ extension IncitoViewController {
         }
     }
     
-    // TODO: option where on screen to scroll element to.
-    public func scrollToElement(withId elementId: ViewProperties.Identifier, animated: Bool) {
+    public enum ScrollPosition {
+        case top
+        case centeredVertically
+        case centeredVerticallyWithin(topMargin: CGFloat, bottomMargin: CGFloat)
+        case bottom
+    }
+    
+    /**
+     Scrolls to incito to show the element with the specified id. If the element doesnt exist this is a no-op. See parameters for different ways of positioning the scroll.
+     
+     - parameter elementId: The id of the element to scroll to.
+     - parameter position: Where within the screen the element should be positioned. Defaults to `.top`.
+     - parameter useContentInsets: Whether the position is relative to the scrollView's adjustedContentInsets. If false the top/bottom of the scroll view is used. Defaults to `true`.
+     - parameter extraOffset: Scrolls further down by this amount. Defaults to `0`.
+     - parameter clampOffset: If true it clamps the offset so that we do not scroll further than you could by dragging. Defaults to `true`.
+     - parameter keepTopVisible: If true it stops the top of the specified element going above the top of the visible area (taking into account the `useContentInsets` parameter). This can happen if the element's bounds are larger than the visible area. Defaults to `true`.
+     - parameter animated: If true the scrolling to the element will be animated.
+     */
+    public func scrollToElement(
+        withId elementId: ViewProperties.Identifier,
+        position: ScrollPosition = .top,
+        useContentInsets: Bool = true,
+        extraOffset: CGFloat = 0,
+        clampOffset: Bool = true,
+        keepTopVisible: Bool = true,
+        animated: Bool) {
         
         guard let root = self.rootView else { return }
         
@@ -359,14 +383,60 @@ extension IncitoViewController {
         // the view's rect within the scrollview
         let scrollRect =  root.convert(renderableView.absoluteRect, to: self.scrollView)
         
-        // TODO: tweak so that it is the size of the frame, centered around the scrollRect
-        let centeredRect = CGRect(
-            x: scrollRect.origin.x + scrollRect.size.width/2.0 - self.scrollView.frame.size.width/2.0,
-            y: scrollRect.origin.y + scrollRect.size.height/2.0 - self.scrollView.frame.size.height/2.0,
-            width: self.scrollView.frame.size.width,
-            height: self.scrollView.frame.size.height
-        )
+        let inset: UIEdgeInsets = {
+            if #available(iOS 11.0, *) {
+                return scrollView.adjustedContentInset
+            } else {
+                return scrollView.contentInset
+            }
+        }()
         
-        self.scrollView.scrollRectToVisible(centeredRect, animated: animated)
+        var offsetY = scrollRect.origin.y
+        offsetY -= extraOffset
+        
+        switch position {
+        case .top:
+            if useContentInsets {
+                offsetY -= inset.top
+            }
+        case .centeredVertically:
+            if useContentInsets {
+                offsetY -= (inset.top - inset.bottom)/2
+            }
+            offsetY -= (self.scrollView.frame.size.height) / 2
+            offsetY += (scrollRect.size.height / 2)
+        case .bottom:
+            if useContentInsets {
+                offsetY += inset.bottom
+            }
+            offsetY -= (self.scrollView.frame.size.height)
+            offsetY += scrollRect.size.height
+        case let .centeredVerticallyWithin(topMargin, bottomMargin):
+            if useContentInsets {
+                offsetY -= (inset.top - inset.bottom)/2
+            }
+        
+            offsetY -= (topMargin - bottomMargin)/2
+            offsetY -= (self.scrollView.frame.size.height) / 2
+            offsetY += (scrollRect.size.height / 2)
+        }
+        
+        if keepTopVisible {
+            var topLimit = scrollRect.origin.y
+            if useContentInsets {
+                topLimit -= inset.top
+            }
+            
+            offsetY = min(offsetY, topLimit)
+        }
+
+        if clampOffset {
+            offsetY = offsetY.clamped(
+                min: -inset.top,
+                max: scrollView.contentSize.height - scrollView.frame.size.height + inset.bottom
+            )
+        }
+        
+        self.scrollView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: animated)
     }
 }
