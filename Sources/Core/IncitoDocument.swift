@@ -56,7 +56,7 @@ public struct StyleProperties {
     
     public var cornerRadius: Corners<Unit>
     public var shadow: Shadow? = nil
-    //    var stroke: Stroke? = nil
+    public var stroke: Stroke? = nil
     
     public var link: String? // URI
     public var title: String?
@@ -71,6 +71,7 @@ public struct StyleProperties {
         meta: [:],
         cornerRadius: .zero,
         shadow: nil,
+        stroke: nil,
         link: nil,
         title: nil,
         clipsChildren: true,
@@ -261,19 +262,22 @@ public struct Shadow {
     var radius: Double
 }
 
-struct Stroke {
-    enum Style {
+public struct Stroke {
+    public enum Style: String, Decodable {
         case solid
         case dotted
         case dashed
     }
     
-    struct Properties {
-        var width: Unit
-        var color: Color
-    }
+    public var style: Style
+    public var width: Edges<Double>
+    public var color: Edges<Color>
     
-    var top, left, bottom, right: Properties
+    public init(style: Style, width: Edges<Double>, color: Edges<Color>) {
+        self.style = style
+        self.width = width
+        self.color = color
+    }
 }
 
 /// `TranslateValue` is the value used by the translate point property

@@ -231,18 +231,25 @@ extension Rect: CustomDebugStringConvertible {
 // MARK: - Edges
 ////////////////////////////
 
-struct Edges<Value> {
-    var top, left, bottom, right: Value
+public struct Edges<Value> {
+    public var top, left, bottom, right: Value
+    
+    public init(top: Value, left: Value, bottom: Value, right: Value) {
+        self.top = top
+        self.left = left
+        self.bottom = bottom
+        self.right = right
+    }
 }
 
 extension Edges {
-    init(_ val: Value) {
+    public init(_ val: Value) {
         self.init(top: val, left: val, bottom: val, right: val)
     }
 }
 
 extension Edges: Equatable where Value: Equatable {
-    static func == (lhs: Edges<Value>, rhs: Edges<Value>) -> Bool {
+    public static func == (lhs: Edges<Value>, rhs: Edges<Value>) -> Bool {
         return lhs.top == rhs.top
             && lhs.left == rhs.left
             && lhs.bottom == rhs.bottom
@@ -250,7 +257,7 @@ extension Edges: Equatable where Value: Equatable {
     }
     
     /// If all edge values are the same.
-    var isUniform: Bool {
+    public var isUniform: Bool {
         return self.top == self.right
             && self.right == self.bottom
             && self.bottom == self.left
@@ -258,19 +265,19 @@ extension Edges: Equatable where Value: Equatable {
 }
 
 extension Edges where Value: Numeric {
-    static var zero: Edges {
+    public static var zero: Edges {
         return Edges(top: 0, left: 0, bottom: 0, right: 0)
     }
 }
 
 extension Edges where Value: Numeric {
-    var negated: Edges {
+    public var negated: Edges {
         return Edges(top: self.top * -1, left: self.left * -1, bottom: self.bottom * -1, right: self.right * -1)
     }
 }
 
 extension Edges: CustomDebugStringConvertible where Value: Equatable {
-    var debugDescription: String {
+    public var debugDescription: String {
         if isUniform {
             return "{ \(top) }"
         } else {
@@ -284,7 +291,14 @@ extension Edges: CustomDebugStringConvertible where Value: Equatable {
 ////////////////////////////
 
 public struct Corners<Value> {
-    var topLeft, topRight, bottomLeft, bottomRight: Value
+    public var topLeft, topRight, bottomLeft, bottomRight: Value
+    
+    public init(topLeft: Value, topRight: Value, bottomLeft: Value, bottomRight: Value) {
+        self.topLeft = topLeft
+        self.topRight = topRight
+        self.bottomLeft = bottomLeft
+        self.bottomRight = bottomRight
+    }
 }
 
 extension Corners {

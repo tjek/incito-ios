@@ -240,6 +240,20 @@ extension StyleProperties: Decodable {
         case cornerRadiusBottomLeft = "corner_bottom_left_radius"
         case cornerRadiusBottomRight = "corner_bottom_right_radius"
         
+        case strokeWidth = "stroke_width"
+        case strokeWidthTop = "stroke_top_width"
+        case strokeWidthRight = "stroke_right_width"
+        case strokeWidthLeft = "stroke_left_width"
+        case strokeWidthBottom = "stroke_bottom_width"
+        
+        case strokeColor = "stroke_color"
+        case strokeColorTop = "stroke_top_color"
+        case strokeColorRight = "stroke_right_color"
+        case strokeColorLeft = "stroke_left_color"
+        case strokeColorBottom = "stroke_bottom_color"
+        
+        case strokeStyle = "stroke_style"
+        
         case backgroundImage = "background_image"
         case backgroundImageTileMode = "background_tile_mode"
         case backgroundImagePosition = "background_image_position"
@@ -270,6 +284,32 @@ extension StyleProperties: Decodable {
             bottomLeft: try c.decodeIfPresent(.cornerRadiusBottomLeft) ?? baseCornerRadius,
             bottomRight: try c.decodeIfPresent(.cornerRadiusBottomRight) ?? baseCornerRadius
         )
+        
+        let baseStrokeWidth: Double = try c.decodeIfPresent(.strokeWidth) ?? 0
+        let strokeWidth = Edges<Double>(
+            top: try c.decodeIfPresent(.strokeWidthTop) ?? baseStrokeWidth,
+            left: try c.decodeIfPresent(.strokeWidthLeft) ?? baseStrokeWidth,
+            bottom: try c.decodeIfPresent(.strokeWidthBottom) ?? baseStrokeWidth,
+            right: try c.decodeIfPresent(.strokeWidthRight) ?? baseStrokeWidth
+        )
+        // if there is any stroke width, get the other properties
+        if !(strokeWidth.isUniform && strokeWidth.top == 0) {
+            let baseStrokeColor: Color = try c.decodeIfPresent(.strokeColor) ?? Color(r: 0, g: 0, b: 0, a: 1)
+            let strokeColor = Edges<Color>(
+                top: try c.decodeIfPresent(.strokeColorTop) ?? baseStrokeColor,
+                left: try c.decodeIfPresent(.strokeColorLeft) ?? baseStrokeColor,
+                bottom: try c.decodeIfPresent(.strokeColorBottom) ?? baseStrokeColor,
+                right: try c.decodeIfPresent(.strokeColorRight) ?? baseStrokeColor
+            )
+            
+            let strokeStyle: Stroke.Style = (try? c.decodeIfPresent(.strokeStyle) ?? .solid) ?? .solid
+            
+            self.stroke = Stroke(
+                style: strokeStyle,
+                width: strokeWidth,
+                color: strokeColor
+            )
+        }
         
         if let bgImageSrc: URL = try c.decodeIfPresent(.backgroundImage) {
             let scaleType: BackgroundImage.ScaleType = try c.decodeIfPresent(.backgroundImageScaleType) ?? .centerCrop
@@ -477,6 +517,9 @@ extension Color: Decodable {
         color.g = (components[1] ?? 0)
         color.b = (components[2] ?? 0)
         
+        // rgba values come in with `a` as a 0-1 value
+        // therefore, the code above will have scaled it by /255.
+        // so here we are *255 to get it back to 0-1 scale.
         if components.count >= 4 {
             color.a = (components[3] ?? 255.0) * 255
         }

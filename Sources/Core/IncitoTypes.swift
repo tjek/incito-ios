@@ -12,7 +12,7 @@ public typealias FontFamily = [FontAssetName]
 
 public struct Color: Equatable {
     // 0-1 Doubles
-    var r, g, b, a: Double
+    public var r, g, b, a: Double
 }
 
 // MARK: - Dimensions

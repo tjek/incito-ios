@@ -13,7 +13,7 @@ import UIKit
 
 extension UIView {
     @discardableResult
-    func roundCorners(topLeft: CGFloat = 0, topRight: CGFloat = 0, bottomLeft: CGFloat = 0, bottomRight: CGFloat = 0) -> CGPath {
+    public func roundCorners(topLeft: CGFloat = 0, topRight: CGFloat = 0, bottomLeft: CGFloat = 0, bottomRight: CGFloat = 0) -> CGPath {
         let maskPath = UIBezierPath(
             roundedRect: bounds,
             topLeft: topLeft,
@@ -51,13 +51,13 @@ extension UIBezierPath {
         let bottomRight = CGPoint(x: rect.maxX, y: rect.maxY)
         let bottomLeft = CGPoint(x: rect.minX, y: rect.maxY)
         
-        if topLeftRadius != .zero{
+        if topLeftRadius != .zero {
             path.move(to: CGPoint(x: topLeft.x + topLeftRadius.width, y: topLeft.y))
         } else {
             path.move(to: topLeft)
         }
         
-        if topRightRadius != .zero{
+        if topRightRadius != .zero {
             path.addLine(to: CGPoint(x: topRight.x - topRightRadius.width, y: topRight.y))
             path.addCurve(
                 to: CGPoint(x: topRight.x, y: topRight.y + topRightRadius.height),

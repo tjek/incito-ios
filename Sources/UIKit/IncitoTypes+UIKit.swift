@@ -10,7 +10,7 @@
 import UIKit
 
 extension Color {
-    var uiColor: UIColor {
+    public var uiColor: UIColor {
         return UIColor(red: CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: CGFloat(a))
     }
 }
