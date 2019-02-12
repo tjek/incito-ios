@@ -23,6 +23,11 @@ extension Comparable {
 /// A 2d coordinate. The type of value it contains is generic
 public struct Point<Value> {
     public var x, y: Value
+    
+    public init(x: Value, y: Value) {
+        self.x = x
+        self.y = y
+    }
 }
 public typealias PointDbl = Point<Double>
 
@@ -70,6 +75,11 @@ extension Point: CustomDebugStringConvertible {
 
 public struct Size<Value> {
     public var width, height: Value
+    
+    public init(width: Value, height: Value) {
+        self.width = width
+        self.height = height
+    }
 }
 public typealias SizeDbl = Size<Double>
 
@@ -220,6 +230,15 @@ extension Size: CustomDebugStringConvertible {
 public struct Rect<Value> {
     public var origin: Point<Value>
     public var size: Size<Value>
+    
+    public init(origin: Point<Value>, size: Size<Value>) {
+        self.origin = origin
+        self.size = size
+    }
+    public init(x: Value, y: Value, width: Value, height: Value) {
+        self.init(origin: .init(x: x, y: y),
+                  size: .init(width: width, height: height))
+    }
 }
 public typealias RectDbl = Rect<Double>
 
@@ -257,6 +276,13 @@ extension Rect: CustomDebugStringConvertible {
 
 public struct Edges<Value> {
     public var top, left, bottom, right: Value
+    
+    public init(top: Value, left: Value, bottom: Value, right: Value) {
+        self.top = top
+        self.left = left
+        self.bottom = bottom
+        self.right = right
+    }
 }
 public typealias EdgesDbl = Edges<Double>
 
@@ -321,6 +347,13 @@ extension Edges: CustomDebugStringConvertible where Value: Equatable {
 
 public struct Corners<Value> {
     public var topLeft, topRight, bottomLeft, bottomRight: Value
+    
+    public init(topLeft: Value, topRight: Value, bottomLeft: Value, bottomRight: Value) {
+        self.topLeft = topLeft
+        self.topRight = topRight
+        self.bottomLeft = bottomLeft
+        self.bottomRight = bottomRight
+    }
 }
 public typealias CornersDbl = Corners<Double>
 
