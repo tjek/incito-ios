@@ -70,67 +70,80 @@ extension Corners where Value: BinaryInteger {
 // MARK: - Convert To/From CG counterparts
 
 extension Point where Value: BinaryFloatingPoint {
-    init(cgPoint: CGPoint) {
+    public init(cgPoint: CGPoint) {
         self.init(x: .init(cgPoint.x), y: .init(cgPoint.y))
     }
-    var cgPoint: CGPoint {
+    public var cgPoint: CGPoint {
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
 }
 extension Point where Value: BinaryInteger {
-    init(cgPoint: CGPoint) {
+    public init(cgPoint: CGPoint) {
         self.init(x: .init(cgPoint.x), y: .init(cgPoint.y))
     }
-    var cgPoint: CGPoint {
+    public var cgPoint: CGPoint {
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
 }
 
 extension Size where Value: BinaryFloatingPoint {
-    init(cgSize: CGSize) {
+    public init(cgSize: CGSize) {
         self.init(width: .init(cgSize.width), height: .init(cgSize.height))
     }
-    var cgSize: CGSize {
+    public var cgSize: CGSize {
         return CGSize(width: CGFloat(width), height: CGFloat(height))
     }
 }
 extension Size where Value: BinaryInteger {
-    init(cgSize: CGSize) {
+    public init(cgSize: CGSize) {
         self.init(width: .init(cgSize.width), height: .init(cgSize.height))
     }
-    var cgSize: CGSize {
+    public var cgSize: CGSize {
         return CGSize(width: CGFloat(width), height: CGFloat(height))
     }
 }
 
 extension Rect where Value: BinaryFloatingPoint {
-    init(cgRect: CGRect) {
+    public init(cgRect: CGRect) {
         self.init(origin: Point(cgPoint: cgRect.origin),
                   size: Size(cgSize: cgRect.size))
     }
-    var cgRect: CGRect {
+    public var cgRect: CGRect {
         return CGRect(origin: origin.cgPoint,
                       size: size.cgSize)
     }
 }
 extension Rect where Value: BinaryInteger {
-    init(cgRect: CGRect) {
+    public init(cgRect: CGRect) {
         self.init(origin: Point(cgPoint: cgRect.origin),
                   size: Size(cgSize: cgRect.size))
     }
-    var cgRect: CGRect {
+    public var cgRect: CGRect {
         return CGRect(origin: origin.cgPoint,
                       size: size.cgSize)
     }
 }
 
 extension Edges {
-    var cgRectEdges: [CGRectEdge: Value] {
+    public var cgRectEdges: [CGRectEdge: Value] {
         return [
             .minYEdge: self.top,
             .maxYEdge: self.bottom,
             .minXEdge: self.left,
             .maxXEdge: self.right
         ]
+    }
+    
+    public func value(forEdge edge: CGRectEdge) -> Value {
+        switch edge {
+        case .minXEdge: // left
+            return left
+        case .maxXEdge: // right
+            return right
+        case .minYEdge: // top
+            return top
+        case .maxYEdge: // bottom
+            return bottom
+        }
     }
 }

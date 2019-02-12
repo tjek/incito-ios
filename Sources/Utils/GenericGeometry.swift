@@ -45,6 +45,15 @@ extension Point {
             y: transform(y)
         )
     }
+    public func zip<A>(_ other: Point<A>) -> Point<(Value, A)> {
+        return Point<(Value, A)>(
+            x: (x, other.x),
+            y: (y, other.y)
+        )
+    }
+    public func zipWith<A, B>(_ other: Point<A>, _ combine: @escaping (Value, A) -> B) -> Point<B> {
+        return self.zip(other).map(combine)
+    }
 }
 
 extension Point: Equatable where Value: Equatable {
@@ -96,6 +105,15 @@ extension Size {
             height: transform(height)
         )
     }
+    public func zip<A>(_ other: Size<A>) -> Size<(Value, A)> {
+        return Size<(Value, A)>(
+            width: (width, other.width),
+            height: (height, other.height)
+        )
+    }
+    public func zipWith<A, B>(_ other: Size<A>, _ combine: @escaping (Value, A) -> B) -> Size<B> {
+        return self.zip(other).map(combine)
+    }
 }
 
 extension Size: Equatable where Value: Equatable {
@@ -122,16 +140,14 @@ extension Size where Value: Numeric {
         return self.map { $0 * value }
     }
     public func multipling(by other: Size) -> Size {
-        return Size(width: width * other.width,
-                    height: height * other.height)
+        return self.zipWith(other, *)
     }
     
     public func adding(_ value: Value) -> Size {
         return self.map { $0 - value }
     }
     public func adding(_ other: Size) -> Size {
-        return Size(width: width + other.width,
-                    height: height + other.height)
+        return self.zipWith(other, +)
     }
 }
 
@@ -141,8 +157,7 @@ extension Size where Value: FloatingPoint {
         return self.map { $0 / value }
     }
     public func dividing(by other: Size) -> Size {
-        return Size(width: other.width != 0 ? width / other.width : 0,
-                    height: other.height != 0 ? height / other.height : 0)
+        return self.zipWith(other) { $1 != 0 ? $0 / $1 : 0 }
     }
 }
 
@@ -249,6 +264,15 @@ extension Rect {
             size: size.map(transform)
         )
     }
+    public func zip<A>(_ other: Rect<A>) -> Rect<(Value, A)> {
+        return Rect<(Value, A)>(
+            origin: origin.zip(other.origin),
+            size: size.zip(other.size)
+        )
+    }
+    public func zipWith<A, B>(_ other: Rect<A>, _ combine: @escaping (Value, A) -> B) -> Rect<B> {
+        return self.zip(other).map(combine)
+    }
 }
 
 extension Rect: Equatable where Value: Equatable {
@@ -271,16 +295,16 @@ extension Rect where Value: Numeric {
             topLeft: origin,
             topRight: Point(x: origin.x + size.width,
                             y: origin.y),
-            bottomLeft: Point(x: origin.x + size.width,
+            bottomLeft: Point(x: origin.x,
                               y: origin.y + size.height),
-            bottomRight: Point(x: origin.x,
+            bottomRight: Point(x: origin.x + size.width,
                                y: origin.y + size.height)
         )
     }
 }
 
 extension Rect where Value: Numeric {
-    public func inset(_ edges: Edges<Value>) -> Rect<Value> {
+    public func inset(by edges: Edges<Value>) -> Rect<Value> {
         return Rect<Value>(
             x: origin.x + edges.left,
             y: origin.y + edges.top,
@@ -288,15 +312,15 @@ extension Rect where Value: Numeric {
             height: size.height - edges.top - edges.bottom
         )
     }
-    public func inset(_ val: Value) -> Rect<Value> {
-        return self.inset(.init(val))
+    public func inset(by val: Value) -> Rect<Value> {
+        return self.inset(by: .init(val))
     }
     
-    public func outset(_ edges: Edges<Value>) -> Rect<Value> {
-        return self.inset(edges.negated)
+    public func outset(by edges: Edges<Value>) -> Rect<Value> {
+        return self.inset(by: edges.negated)
     }
-    public func outset(_ val: Value) -> Rect<Value> {
-        return self.outset(.init(val))
+    public func outset(by val: Value) -> Rect<Value> {
+        return self.outset(by: .init(val))
     }
 }
 
@@ -336,6 +360,17 @@ extension Edges {
             bottom: transform(bottom),
             right: transform(right)
         )
+    }
+    public func zip<A>(_ other: Edges<A>) -> Edges<(Value, A)> {
+        return Edges<(Value, A)>(
+            top: (top, other.top),
+            left: (left, other.left),
+            bottom: (bottom, other.bottom),
+            right: (right, other.right)
+        )
+    }
+    public func zipWith<A, B>(_ other: Edges<A>, _ combine: @escaping (Value, A) -> B) -> Edges<B> {
+        return self.zip(other).map(combine)
     }
 }
 
@@ -407,6 +442,17 @@ extension Corners {
             bottomLeft: transform(bottomLeft),
             bottomRight: transform(bottomRight)
         )
+    }
+    public func zip<A>(_ other: Corners<A>) -> Corners<(Value, A)> {
+        return Corners<(Value, A)>(
+            topLeft: (topLeft, other.topLeft),
+            topRight: (topRight, other.topRight),
+            bottomLeft: (bottomLeft, other.bottomLeft),
+            bottomRight: (bottomRight, other.bottomRight)
+        )
+    }
+    public func zipWith<A, B>(_ other: Corners<A>, _ combine: @escaping (Value, A) -> B) -> Corners<B> {
+        return self.zip(other).map(combine)
     }
 }
 
