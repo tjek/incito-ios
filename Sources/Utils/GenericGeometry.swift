@@ -11,7 +11,7 @@ import Foundation
 
 extension Comparable {
     /// Allow any comparable value to be clamped between a min & max value
-    func clamped(min: Self, max: Self) -> Self {
+    public func clamped(min: Self, max: Self) -> Self {
         return Swift.min(Swift.max(self, min), max)
     }
 }
@@ -21,21 +21,30 @@ extension Comparable {
 ////////////////////////////
 
 /// A 2d coordinate. The type of value it contains is generic
-struct Point<Value> {
-    var x, y: Value
+public struct Point<Value> {
+    public var x, y: Value
 }
-typealias PointDbl = Point<Double>
+public typealias PointDbl = Point<Double>
 
 extension Point {
     /// A simple initializer allowing the Point to be created with the same x/y value.
-    init(_ val: Value) {
+    public init(_ val: Value) {
         self.init(x: val, y: val)
+    }
+}
+
+extension Point {
+    public func map<A>(_ transform: (Value) -> A) -> Point<A> {
+        return Point<A>(
+            x: transform(x),
+            y: transform(y)
+        )
     }
 }
 
 extension Point: Equatable where Value: Equatable {
     /// Make Point equatable if it's values are equatable.
-    static func == (lhs: Point<Value>, rhs: Point<Value>) -> Bool {
+    public static func == (lhs: Point<Value>, rhs: Point<Value>) -> Bool {
         return lhs.x == rhs.x
             && lhs.y == rhs.y
     }
@@ -43,14 +52,14 @@ extension Point: Equatable where Value: Equatable {
 
 extension Point where Value: Numeric {
     /// The identity of point with 0,0 x/y values
-    static var zero: Point {
+    public static var zero: Point {
         return Point(x: 0, y: 0)
     }
 }
 
 extension Point: CustomDebugStringConvertible {
     /// Print out an attractive
-    var debugDescription: String {
+    public var debugDescription: String {
         return "{ x:\(x), y:\(y) }"
     }
 }
@@ -59,63 +68,69 @@ extension Point: CustomDebugStringConvertible {
 // MARK: - Size
 ////////////////////////////
 
-struct Size<Value> {
-    var width, height: Value
+public struct Size<Value> {
+    public var width, height: Value
 }
-typealias SizeDbl = Size<Double>
+public typealias SizeDbl = Size<Double>
 
 extension Size {
-    init(_ val: Value) {
+    public init(_ val: Value) {
         self.init(width: val, height: val)
     }
 }
 
+extension Size {
+    public func map<A>(_ transform: (Value) -> A) -> Size<A> {
+        return Size<A>(
+            width: transform(width),
+            height: transform(height)
+        )
+    }
+}
+
 extension Size: Equatable where Value: Equatable {
-    static func == (lhs: Size<Value>, rhs: Size<Value>) -> Bool {
+    public static func == (lhs: Size<Value>, rhs: Size<Value>) -> Bool {
         return lhs.width == rhs.width
             && lhs.height == rhs.height
     }
 }
 
 extension Size where Value: Numeric {
-    static var zero: Size {
+    public static var zero: Size {
         return Size(width: 0, height: 0)
     }
 }
 
 extension Size {
-    var optional: Size<Optional<Value>> {
-        return Size<Optional<Value>>(width: width, height: height)
+    public var optional: Size<Optional<Value>> {
+        return self.map { $0 }
     }
 }
 
 extension Size where Value: Numeric {
-    func multipling(by value: Value) -> Size {
-        return Size(width: width * value,
-                    height: height * value)
+    public func multipling(by value: Value) -> Size {
+        return self.map { $0 * value }
     }
-    func multipling(by other: Size) -> Size {
+    public func multipling(by other: Size) -> Size {
         return Size(width: width * other.width,
                     height: height * other.height)
     }
     
-    func adding(_ value: Value) -> Size {
-        return Size(width: width + value,
-                    height: height + value)
+    public func adding(_ value: Value) -> Size {
+        return self.map { $0 - value }
     }
-    func adding(_ other: Size) -> Size {
+    public func adding(_ other: Size) -> Size {
         return Size(width: width + other.width,
                     height: height + other.height)
     }
 }
 
 extension Size where Value: FloatingPoint {
-    func dividing(by value: Value) -> Size {
+    public func dividing(by value: Value) -> Size {
         guard value != 0 else { return .zero }
-        return Size(width: width / value,
-                    height: height / value)
+        return self.map { $0 / value }
     }
-    func dividing(by other: Size) -> Size {
+    public func dividing(by other: Size) -> Size {
         return Size(width: other.width != 0 ? width / other.width : 0,
                     height: other.height != 0 ? height / other.height : 0)
     }
@@ -124,17 +139,17 @@ extension Size where Value: FloatingPoint {
 // MARK: Inset
 
 extension Size where Value: Numeric {
-    func inset(_ edges: Edges<Value>) -> Size {
+    public func inset(_ edges: Edges<Value>) -> Size {
         return Size(width: self.width - edges.left - edges.right,
                     height: self.height - edges.top - edges.bottom)
     }
-    func outset(_ edges: Edges<Value>) -> Size {
+    public func outset(_ edges: Edges<Value>) -> Size {
         return inset(edges.negated)
     }
 }
 
 extension Size {
-    func inset<A: Numeric>(_ edges: Edges<A>) -> Size where Value == Optional<A> {
+    public func inset<A: Numeric>(_ edges: Edges<A>) -> Size where Value == Optional<A> {
         var insetSize = self
         if let w = insetSize.width {
             insetSize.width = w - edges.left - edges.right
@@ -145,7 +160,7 @@ extension Size {
         return insetSize
     }
     
-    func outset<A: Numeric>(_ edges: Edges<A>) -> Size where Value == Optional<A> {
+    public func outset<A: Numeric>(_ edges: Edges<A>) -> Size where Value == Optional<A> {
         return inset(edges.negated)
     }
 }
@@ -153,7 +168,7 @@ extension Size {
 // MARK: Clamped
 
 extension Size where Value: Comparable {
-    func clamped(min: Size<Value>, max: Size<Value>) -> Size {
+    public func clamped(min: Size<Value>, max: Size<Value>) -> Size {
         return Size(
             width: self.width.clamped(min: min.width, max: max.width),
             height: self.height.clamped(min: min.height, max: max.height)
@@ -162,7 +177,7 @@ extension Size where Value: Comparable {
 }
 
 extension Size {
-    func clamped<A: Comparable>(min: Size<A>, max: Size<A>) -> Size where Value == Optional<A> {
+    public func clamped<A: Comparable>(min: Size<A>, max: Size<A>) -> Size where Value == Optional<A> {
         var clampedSize = self
         if let w = clampedSize.width {
             clampedSize.width = w.clamped(min: min.width, max: max.width)
@@ -176,7 +191,7 @@ extension Size {
 
 extension Size {
     /// Use the width or height if not nil, otherwise fallback to the provided size's dimensions.
-    func unwrapped<A>(or fallbackSize: Size<A>) -> Size<A> where Value == Optional<A> {
+    public func unwrapped<A>(or fallbackSize: Size<A>) -> Size<A> where Value == Optional<A> {
         return Size<A>(
             width: self.width ?? fallbackSize.width,
             height: self.height ?? fallbackSize.height
@@ -184,7 +199,7 @@ extension Size {
     }
     
     /// Use the width or height if not nil, otherwise fallback to the provided size's dimensions.
-    func unwrapped<A>(or fallbackSize: Size<A?>) -> Size<A?> where Value == Optional<A> {
+    public func unwrapped<A>(or fallbackSize: Size<A?>) -> Size<A?> where Value == Optional<A> {
         return Size<A?>(
             width: self.width ?? fallbackSize.width,
             height: self.height ?? fallbackSize.height
@@ -193,7 +208,7 @@ extension Size {
 }
 
 extension Size: CustomDebugStringConvertible {
-    var debugDescription: String {
+    public var debugDescription: String {
         return "{ w:\(width), h:\(height) }"
     }
 }
@@ -202,27 +217,36 @@ extension Size: CustomDebugStringConvertible {
 // MARK: - Rect
 ////////////////////////////
 
-struct Rect<Value> {
-    var origin: Point<Value>
-    var size: Size<Value>
+public struct Rect<Value> {
+    public var origin: Point<Value>
+    public var size: Size<Value>
 }
-typealias RectDbl = Rect<Double>
+public typealias RectDbl = Rect<Double>
+
+extension Rect {
+    public func map<A>(_ transform: (Value) -> A) -> Rect<A> {
+        return Rect<A>(
+            origin: origin.map(transform),
+            size: size.map(transform)
+        )
+    }
+}
 
 extension Rect: Equatable where Value: Equatable {
-    static func == (lhs: Rect<Value>, rhs: Rect<Value>) -> Bool {
+    public static func == (lhs: Rect<Value>, rhs: Rect<Value>) -> Bool {
         return lhs.origin == rhs.origin
             && lhs.size == rhs.size
     }
 }
 
 extension Rect where Value: Numeric {
-    static var zero: Rect {
+    public static var zero: Rect {
         return Rect(origin: .zero, size: .zero)
     }
 }
 
 extension Rect: CustomDebugStringConvertible {
-    var debugDescription: String {
+    public var debugDescription: String {
         return "{ x:\(origin.x), y:\(origin.y), w:\(size.width), h:\(size.height) }"
     }
 }
@@ -233,18 +257,23 @@ extension Rect: CustomDebugStringConvertible {
 
 public struct Edges<Value> {
     public var top, left, bottom, right: Value
-    
-    public init(top: Value, left: Value, bottom: Value, right: Value) {
-        self.top = top
-        self.left = left
-        self.bottom = bottom
-        self.right = right
-    }
 }
+public typealias EdgesDbl = Edges<Double>
 
 extension Edges {
     public init(_ val: Value) {
         self.init(top: val, left: val, bottom: val, right: val)
+    }
+}
+
+extension Edges {
+    public func map<A>(_ transform: (Value) -> A) -> Edges<A> {
+        return Edges<A>(
+            top: transform(top),
+            left: transform(left),
+            bottom: transform(bottom),
+            right: transform(right)
+        )
     }
 }
 
@@ -272,7 +301,7 @@ extension Edges where Value: Numeric {
 
 extension Edges where Value: Numeric {
     public var negated: Edges {
-        return Edges(top: self.top * -1, left: self.left * -1, bottom: self.bottom * -1, right: self.right * -1)
+        return self.map { $0 * -1 }
     }
 }
 
@@ -292,18 +321,23 @@ extension Edges: CustomDebugStringConvertible where Value: Equatable {
 
 public struct Corners<Value> {
     public var topLeft, topRight, bottomLeft, bottomRight: Value
-    
-    public init(topLeft: Value, topRight: Value, bottomLeft: Value, bottomRight: Value) {
-        self.topLeft = topLeft
-        self.topRight = topRight
-        self.bottomLeft = bottomLeft
-        self.bottomRight = bottomRight
-    }
 }
+public typealias CornersDbl = Corners<Double>
 
 extension Corners {
     public init(_ val: Value) {
         self.init(topLeft: val, topRight: val, bottomLeft: val, bottomRight: val)
+    }
+}
+
+extension Corners {
+    public func map<A>(_ transform: (Value) -> A) -> Corners<A> {
+        return Corners<A>(
+            topLeft: transform(topLeft),
+            topRight: transform(topRight),
+            bottomLeft: transform(bottomLeft),
+            bottomRight: transform(bottomRight)
+        )
     }
 }
 
