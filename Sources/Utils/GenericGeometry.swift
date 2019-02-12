@@ -264,6 +264,42 @@ extension Rect where Value: Numeric {
     }
 }
 
+extension Rect where Value: Numeric {
+    /// topLeft is origin, bottomRight is origin+size
+    public var cornerPoints: Corners<Point<Value>> {
+        return Corners<Point<Value>>(
+            topLeft: origin,
+            topRight: Point(x: origin.x + size.width,
+                            y: origin.y),
+            bottomLeft: Point(x: origin.x + size.width,
+                              y: origin.y + size.height),
+            bottomRight: Point(x: origin.x,
+                               y: origin.y + size.height)
+        )
+    }
+}
+
+extension Rect where Value: Numeric {
+    public func inset(_ edges: Edges<Value>) -> Rect<Value> {
+        return Rect<Value>(
+            x: origin.x + edges.left,
+            y: origin.y + edges.top,
+            width: size.width - edges.left - edges.right,
+            height: size.height - edges.top - edges.bottom
+        )
+    }
+    public func inset(_ val: Value) -> Rect<Value> {
+        return self.inset(.init(val))
+    }
+    
+    public func outset(_ edges: Edges<Value>) -> Rect<Value> {
+        return self.inset(edges.negated)
+    }
+    public func outset(_ val: Value) -> Rect<Value> {
+        return self.outset(.init(val))
+    }
+}
+
 extension Rect: CustomDebugStringConvertible {
     public var debugDescription: String {
         return "{ x:\(origin.x), y:\(origin.y), w:\(size.width), h:\(size.height) }"
