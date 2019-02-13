@@ -34,6 +34,7 @@ struct IncitoRenderer {
 /// Represents a request for a url-based image, and provides the UIView into which the image was rendered.
 struct ImageViewLoadRequest {
     let url: URL
+    let containerSize: CGSize
     let transform: ((UIImage) -> UIImage)?
     let completion: (UIImageView?) -> Void
 }

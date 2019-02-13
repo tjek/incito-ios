@@ -312,7 +312,7 @@ extension StyleProperties: Decodable {
         }
         
         if let bgImageSrc: URL = try c.decodeIfPresent(.backgroundImage) {
-            let scaleType: BackgroundImage.ScaleType = try c.decodeIfPresent(.backgroundImageScaleType) ?? .centerCrop
+            let scaleType: BackgroundImage.ScaleType = try c.decodeIfPresent(.backgroundImageScaleType) ?? .none
             let tileMode: BackgroundImage.TileMode = try c.decodeIfPresent(.backgroundImageTileMode) ?? .none
             let position: BackgroundImage.Position = try c.decodeIfPresent(.backgroundImagePosition) ?? .leftTop
             self.backgroundImage = BackgroundImage(

@@ -91,7 +91,6 @@ fileprivate func deg2rad<A: FloatingPoint>(_ number: A) -> A {
 extension Corners {
     /// clockwise order, so (topLeft, topRight), (bottomRight, bottomLeft) etc
     fileprivate func values(forEdge edge: CGRectEdge) -> (Value, Value) {
-        print(edge, self)
         switch edge {
         case .minYEdge: // top
             return (topLeft, topRight)

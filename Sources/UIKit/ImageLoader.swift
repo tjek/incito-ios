@@ -46,6 +46,17 @@ func loadImageView(_ request: ImageViewLoadRequest) {
                     }
                 case "image/svg+xml"?:
                     if let svgImage = SVGKImage(data: imageData) {
+                        if svgImage.hasSize(),
+                            request.containerSize.width != 0, request.containerSize.height != 0 {
+                            let currentSize = svgImage.size
+                            // scale to fit in container
+                            let scaleFactor = max(currentSize.width / request.containerSize.width,
+                                                  currentSize.height / request.containerSize.height)
+                            let newSize = CGSize(width: currentSize.width / scaleFactor,
+                                                 height: currentSize.height / scaleFactor)
+                            svgImage.size = newSize
+                        }
+                        
                         let image = SVGKExporterUIImage.export(asUIImage: svgImage)
                         return {
                             UIImageView(image: image)
