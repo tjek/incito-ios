@@ -402,6 +402,15 @@ extension Edges where Value: Numeric {
     }
 }
 
+extension Edges where Value: Numeric {
+    public func adding(_ value: Value) -> Edges {
+        return self.map { $0 + value }
+    }
+    public func adding(_ other: Edges) -> Edges {
+        return self.zipWith(other, +)
+    }
+}
+
 extension Edges: CustomDebugStringConvertible where Value: Equatable {
     public var debugDescription: String {
         if isUniform {

@@ -41,6 +41,7 @@ class LayoutComparisonTests: XCTestCase {
         ("incito-blocktest-375.json", "incito-blocktest-375.dimensions.json", 375),
         ("incito-transformtest-350.json", "incito-transformtest-350.dimensions.json", 350),
         ("incito-flextest-375.json", "incito-flextest-375.dimensions.json", 375),
+        ("incito-stroketest-375.json", "incito-stroketest-375.dimensions.json", 375),
     ]
     
     func testLayoutChecks() {

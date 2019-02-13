@@ -17,7 +17,7 @@ class RoundedShadowedView: UIView {
     private var contents: UIView?
     private var layerMask: CALayer? // used as a store if we disable/re-enable clipping
     
-    init(frame: CGRect, shadow: Shadow? = nil, cornerRadius: Corners<Double> = .zero) {
+    init(frame: CGRect, shadow: Shadow? = nil, cornerRadius: Corners<Double> = .zero, stroke: Stroke? = nil) {
         super.init(frame: frame)
         
         if let shadow = shadow {
@@ -61,6 +61,12 @@ class RoundedShadowedView: UIView {
             }
         }
         
+        // apply stroke
+        if let stroke = stroke {
+            let contentsView = contents ?? self
+
+            contentsView.layer.addStroke(stroke, cornerRadius: cornerRadius)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -110,7 +116,8 @@ extension RoundedShadowedView {
         self.init(
             frame: rect,
             shadow: style.shadow,
-            cornerRadius: cornerRadius
+            cornerRadius: cornerRadius,
+            stroke: style.stroke
         )
     }
 }

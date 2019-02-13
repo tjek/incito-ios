@@ -33,6 +33,7 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
         // recalculate the view's absolute layout properties
         let resolvedLayoutProperties = resolveLayoutProperties(
             self.value.properties.layout,
+            strokeWidth: self.value.properties.style.stroke?.width ?? .zero,
             parentSize: parentSize.optional,
             parentPadding: parentPadding,
             parentLayoutType: parentLayoutType

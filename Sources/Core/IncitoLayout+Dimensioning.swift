@@ -30,6 +30,7 @@ extension TreeNode where T == ViewProperties {
         // make the view's layout properties absolute
         let resolvedLayoutProperties = resolveLayoutProperties(
             self.value.layout,
+            strokeWidth: self.value.style.stroke?.width ?? .zero,
             parentSize: parentRoughSize,
             parentPadding: parentPadding,
             parentLayoutType: parentLayoutType
@@ -120,6 +121,7 @@ extension TreeNode where T == ViewProperties {
  */
 func resolveLayoutProperties(
     _ layoutProperties: LayoutProperties,
+    strokeWidth: Edges<Double>,
     parentSize: Size<Double?>,
     parentPadding: Edges<Double>,
     parentLayoutType: LayoutType
@@ -137,6 +139,7 @@ func resolveLayoutProperties(
     
     return ResolvedLayoutProperties(
         layoutProperties,
+        strokeWidth: strokeWidth,
         in: relativeToSize.unwrapped(or: .zero).clamped(min: .zero, max: Size(Double.infinity))
     )
 }

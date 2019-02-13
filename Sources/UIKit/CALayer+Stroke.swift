@@ -1,16 +1,96 @@
+//
+//  ┌────┬─┐         ┌─────┐
+//  │  ──┤ └─┬───┬───┤  ┌──┼─┬─┬───┐
+//  ├──  │ ╷ │ · │ · │  ╵  │ ╵ │ ╷ │
+//  └────┴─┴─┴───┤ ┌─┴─────┴───┴─┴─┘
+//               └─┘
+//
+//  Copyright (c) 2018 ShopGun. All rights reserved.
+
 import UIKit
-import PlaygroundSupport
 
-import Incito
+extension CALayer {
+    /// Given some Stroke properties, and corner radii, will add sublayers to the reciever that draw the strokes. If stroke & cornerRadii are uniform, will resort to using simple borderWidth/color on the current layer. Note that cornerRadius is not actually applied to the layer - that must be done elsewhere.
+    func addStroke(_ stroke: Stroke, cornerRadius: Corners<Double>) {
+        // if all stroke dimensions, and corner radii, are uniform, then dont do anything special
+        if cornerRadius.isUniform,
+            stroke.color.isUniform,
+            stroke.width.isUniform {
+            // use basic stroke. applying cornerRadius needs to be handled elsewhere
+            self.borderWidth = CGFloat(stroke.width.top)
+            self.borderColor = stroke.color.top.uiColor.cgColor
+            return
+        }
+        
+        let borderLayer = CALayer()
+        borderLayer.frame = self.bounds;
+        
+        let strokeWidths = stroke.width.withCGFloats
+        
+        let paths = pathsForRoundedRectEdges(
+            Rect(cgRect: borderLayer.frame),
+            cornerRadii: cornerRadius.withCGFloats,
+            strokeWidths: strokeWidths
+        )
+        
+        if let (path, _) = paths.top {
+            let lineWidth = strokeWidths.top
+            self.addSublayer(buildEdgeLayer(
+                path: path,
+                frame: self.bounds,
+                color: stroke.color.top.uiColor,
+                width: lineWidth,
+                style: stroke.style,
+                dashPhase: (lineWidth / 2)
+            ))
+        }
+        
+        if let (path, _) = paths.right {
+            let lineWidth = strokeWidths.right
+            self.addSublayer(buildEdgeLayer(
+                path: path,
+                frame: self.bounds,
+                color: stroke.color.right.uiColor,
+                width: lineWidth,
+                style: stroke.style,
+                dashPhase: (lineWidth / 2)
+            ))
+        }
+        
+        
+        if let (path, _) = paths.bottom {
+            let lineWidth = strokeWidths.bottom
+            self.addSublayer(buildEdgeLayer(
+                path: path,
+                frame: self.bounds,
+                color: stroke.color.bottom.uiColor,
+                width: lineWidth,
+                style: stroke.style,
+                dashPhase: (lineWidth / 2)
+            ))
+        }
+        
+        if let (path, _) = paths.left {
+            let lineWidth = strokeWidths.left
+            self.addSublayer(buildEdgeLayer(
+                path: path,
+                frame: self.bounds,
+                color: stroke.color.left.uiColor,
+                width: lineWidth,
+                style: stroke.style,
+                dashPhase: (lineWidth / 2)
+            ))
+        }
+    }
+}
 
-func deg2rad<A: FloatingPoint>(_ number: A) -> A {
+fileprivate func deg2rad<A: FloatingPoint>(_ number: A) -> A {
     return number * .pi / 180
 }
 
 extension Corners {
-    
     /// clockwise order, so (topLeft, topRight), (bottomRight, bottomLeft) etc
-    func values(forEdge edge: CGRectEdge) -> (Value, Value) {
+    fileprivate func values(forEdge edge: CGRectEdge) -> (Value, Value) {
         print(edge, self)
         switch edge {
         case .minYEdge: // top
@@ -28,7 +108,7 @@ extension Corners {
 extension CGRectEdge {
     
     /// In clockwise order
-    var next: CGRectEdge {
+    fileprivate var next: CGRectEdge {
         switch self {
         case .minYEdge: // top
             return .maxXEdge // -> right
@@ -41,7 +121,7 @@ extension CGRectEdge {
         }
     }
     /// Next in anti-clockwise order
-    var previous: CGRectEdge {
+    fileprivate var previous: CGRectEdge {
         switch self {
         case .minYEdge: // top
             return .minXEdge // -> left
@@ -56,7 +136,7 @@ extension CGRectEdge {
 }
 
 extension Stroke.Style {
-    func dashPattern(lineWidth: CGFloat) -> [CGFloat]? {
+    fileprivate func dashPattern(lineWidth: CGFloat) -> [CGFloat]? {
         switch self {
         case .solid:
             return nil
@@ -68,7 +148,8 @@ extension Stroke.Style {
     }
 }
 
-func buildPath(
+/// Returns a path/length pair for a specific edge.
+fileprivate func buildStrokeablePath(
     edge: CGRectEdge,
     cornerPoints: Corners<CGPoint>,
     cornerRadii: Corners<CGFloat>,
@@ -77,10 +158,10 @@ func buildPath(
     
     let lineWidth = lineWidths.value(forEdge: edge)
     guard lineWidth > 0 else { return nil }
-
+    
     let precedingLineWidth = lineWidths.value(forEdge: edge.previous)
     let followingLineWidth = lineWidths.value(forEdge: edge.next)
-
+    
     let startAngleDegs: CGFloat = Edges(
         top: -90,
         left: 180,
@@ -246,7 +327,7 @@ func buildPath(
 
 
 /// Given cornerRadii, and strokeWidths, will return optional path/length tuples for each edge. If an edge's strokeWidth is zero that edge's result is nil. Path is inset from the bounding rect by the stroke widths
-func pathsForRoundedRectEdges(
+fileprivate func pathsForRoundedRectEdges(
     _ rect: Rect<CGFloat>,
     cornerRadii: Corners<CGFloat>,
     strokeWidths: Edges<CGFloat>
@@ -260,36 +341,37 @@ func pathsForRoundedRectEdges(
     let cornerPoints: Corners<CGPoint> = insetRect.cornerPoints.map { $0.cgPoint }
     
     var edgePaths = Edges<(path: UIBezierPath, length: CGFloat)?>(nil)
-
-    edgePaths.top = buildPath(
+    
+    edgePaths.top = buildStrokeablePath(
         edge: .minYEdge,
         cornerPoints: cornerPoints,
         cornerRadii: cornerRadii,
         lineWidths: strokeWidths
     )
-    edgePaths.right = buildPath(
+    edgePaths.right = buildStrokeablePath(
         edge: .maxXEdge,
         cornerPoints: cornerPoints,
         cornerRadii: cornerRadii,
         lineWidths: strokeWidths
     )
-    edgePaths.bottom = buildPath(
+    edgePaths.bottom = buildStrokeablePath(
         edge: .maxYEdge,
         cornerPoints: cornerPoints,
         cornerRadii: cornerRadii,
         lineWidths: strokeWidths
     )
-    edgePaths.left = buildPath(
+    edgePaths.left = buildStrokeablePath(
         edge: .minXEdge,
         cornerPoints: cornerPoints,
         cornerRadii: cornerRadii,
         lineWidths: strokeWidths
     )
-
+    
     return edgePaths
 }
 
-func buildEdgeLayer(
+/// Creates a CALayer that is strokes the the specified path with the required stroke properties
+fileprivate func buildEdgeLayer(
     path: UIBezierPath,
     frame: CGRect,
     color: UIColor,
@@ -302,7 +384,7 @@ func buildEdgeLayer(
     edgeLayer.frame = frame
     edgeLayer.masksToBounds = true
     
-    edgeLayer.fillColor = UIColor.red.withAlphaComponent(0.2).cgColor // nil
+    edgeLayer.fillColor = nil
     edgeLayer.strokeColor = color.cgColor
     edgeLayer.lineWidth = width
     
@@ -323,101 +405,3 @@ func buildEdgeLayer(
     return edgeLayer
 }
 
-
-extension CALayer {
-    
-    func addStroke(_ stroke: Stroke, cornerRadius: Corners<Double>) {
-        // if all stroke dimensions, and corner radii, are uniform, then dont do anything special
-        if cornerRadius.isUniform,
-            stroke.color.isUniform,
-            stroke.width.isUniform {
-            // use basic stroke. applying cornerRadius needs to be handled elsewhere
-            self.borderWidth = CGFloat(stroke.width.top)
-            self.borderColor = stroke.color.top.uiColor.cgColor
-            return
-        }
-    
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.frame = self.bounds
-        shapeLayer.fillColor = UIColor.red.withAlphaComponent(0.3).cgColor
-        shapeLayer.strokeColor = UIColor.blue.withAlphaComponent(0.3).cgColor
-        shapeLayer.lineWidth = 1
-        
-        let outerPath = UIBezierPath(roundedRect: shapeLayer.bounds, cornerRadius: 50)
-        
-        let innerPath = UIBezierPath(roundedRect: shapeLayer.bounds.insetBy(dx: 30, dy: 10), cornerRadius: 30)
-        
-        let strokePath = outerPath
-        strokePath.append(innerPath.reversing())
-        
-        UIGraphicsBeginImageContext(self.bounds.size)
-        let ctx = UIGraphicsGetCurrentContext()!
-
-        ctx.setLineWidth(100)
-
-        ctx.setLineDash(phase: 0, lengths: [40, 20])
-        ctx.setLineCap(CGLineCap.butt)
-
-        ctx.addPath(innerPath.cgPath)
-
-        ctx.replacePathWithStrokedPath()
-        let dashedPath = UIBezierPath(cgPath: ctx.path!)
-
-        UIGraphicsEndImageContext()
-
-        let maskLayer = CAShapeLayer()
-        maskLayer.frame = shapeLayer.bounds
-        maskLayer.path = dashedPath.cgPath
-        
-//        shapeLayer.fillRule = .evenOdd
-        shapeLayer.path = strokePath.cgPath
-        shapeLayer.mask = maskLayer
-        self.addSublayer(shapeLayer)
-    }
-}
-
-let view = UIView()
-view.backgroundColor = UIColor(white: 0.8, alpha: 1)
-view.frame = CGRect(x: 50, y: 50, width: 400, height: 400)
-
-//view.layer.cornerRadius = 40
-//view.roundCorners(topLeft: 40, topRight: 0, bottomLeft: 20, bottomRight: 30)
-
-//view.layer.addStroke(
-//    Stroke(
-//        style: .dashed,
-//        width: Edges<Double>(top: 10, left: 10, bottom: 24, right: 50),
-//        color: Edges<Color>(
-//            top: Color(string: "#960911aa")!,
-//            left: Color(string: "#000911aa")!,
-//            bottom: Color(string: "#ff0900aa")!,
-//            right: Color(string: "#00ffaaaa")!
-//        )
-//    ),
-//    cornerRadius: Corners(topLeft: 20, topRight: 200, bottomLeft: 100, bottomRight: 200)
-//)
-
-view.backgroundColor = Color(string: "rgba(90%, 90%, 90%, 100%)")?.uiColor
-
-view.layer.addStroke(
-    Stroke(
-        style: .solid,
-        width: Edges<Double>(top: 10, left: 10, bottom: 20, right: 10),
-        color: Edges<Color>(Color(string: "#960911")!)
-    ),
-    cornerRadius: Corners(20)
-)
-
-
-let sizeMarker = UIView()
-sizeMarker.backgroundColor = UIColor.red.withAlphaComponent(0.2)
-sizeMarker.frame = view.frame
-
-
-let c = UIView()
-c.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
-c.backgroundColor = .white
-c.addSubview(sizeMarker)
-c.addSubview(view)
-
-PlaygroundPage.current.liveView = c

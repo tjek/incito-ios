@@ -139,7 +139,7 @@ struct ResolvedLayoutProperties: Equatable {
     var flexBasisSize: Size<Double>? // nil if auto
     
     /// parentSize is the container's inner size (size - padding)
-    init(_ properties: LayoutProperties, in parentSize: Size<Double>) {
+    init(_ properties: LayoutProperties, strokeWidth: Edges<Double>, in parentSize: Size<Double>) {
         self.maxSize = Size(
             width: properties.maxSize.width?.absolute(in: parentSize.width) ?? .infinity,
             height: properties.maxSize.height?.absolute(in: parentSize.height) ?? .infinity
@@ -171,7 +171,9 @@ struct ResolvedLayoutProperties: Equatable {
         // margins & padding are actually only relative to the width of the parent, not the height
         let widthOnlyParentSize = Size(width: parentSize.width, height: parentSize.width)
         self.margins = properties.margins.absolute(in: widthOnlyParentSize)
-        self.padding = properties.padding.absolute(in: widthOnlyParentSize)
+        self.padding = properties.padding
+            .absolute(in: widthOnlyParentSize)
+            .adding(strokeWidth)
         
         switch properties.flexBasis {
         case .auto:
