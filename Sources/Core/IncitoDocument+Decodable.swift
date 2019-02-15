@@ -263,6 +263,9 @@ extension StyleProperties: Decodable {
         case shadowOffsetX = "shadow_dx"
         case shadowOffsetY = "shadow_dy"
         case shadowColor = "shadow_color"
+        
+        case accessibilityHidden = "accessibility_hidden"
+        case accessibilityLabel = "accessibility_label"
     }
     
     public init(from decoder: Decoder) throws {
@@ -338,6 +341,11 @@ extension StyleProperties: Decodable {
                 radius: shadowRadius ?? 0
             )
         }
+        
+        self.accessibility = Accessibility(
+            label: try c.decodeIfPresent(.accessibilityLabel),
+            isHidden: try c.decodeIfPresent(.accessibilityHidden) ?? false
+        )
     }
 }
 

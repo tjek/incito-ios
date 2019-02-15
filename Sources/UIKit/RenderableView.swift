@@ -9,17 +9,11 @@
 
 import UIKit
 
-struct ViewInteractionProperties {
-    let tapCallback: ((UIView) -> Void)?
-    let peekable: Bool
-}
-
 public final class RenderableView {
     let layout: ViewLayout
     let absoluteTransform: CGAffineTransform // the sum of all the parent view's transformations. Includes the localPosition translation.
     let siblingIndex: Int // The index of this view in relation to its siblings
     let renderer: (RenderableView) -> UIView
-    let interactionProperties: ViewInteractionProperties?
     
     fileprivate(set) var renderedView: UIView? = nil
     
@@ -27,14 +21,12 @@ public final class RenderableView {
         layout: ViewLayout,
         absoluteTransform: CGAffineTransform,
         siblingIndex: Int,
-        renderer: @escaping (RenderableView) -> UIView,
-        interactionProperties: ViewInteractionProperties?
+        renderer: @escaping (RenderableView) -> UIView
         ) {
         self.layout = layout
         self.absoluteTransform = absoluteTransform
         self.siblingIndex = siblingIndex
         self.renderer = renderer
-        self.interactionProperties = interactionProperties
     }
     
     @discardableResult
@@ -45,13 +37,15 @@ public final class RenderableView {
         
         let view = renderer(self)
         
+        if layout.viewProperties.style.accessibility.isHidden {
+            view.isAccessibilityElement = false
+        } else if let a11yLbl = layout.viewProperties.style.accessibility.label {
+            view.isAccessibilityElement = true
+            view.accessibilityLabel = a11yLbl
+        }
+        
         self.renderedView = view
         view.tag = siblingIndex + 1 // add 1 so non-sibling subviews stay at the bottom
-        
-        if self.interactionProperties?.tapCallback != nil {
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
-            view.addGestureRecognizer(tapGesture)
-        }
         
         return view
     }
@@ -64,13 +58,6 @@ public final class RenderableView {
     var absoluteRect: CGRect {
         return CGRect(origin: .zero, size: layout.size.cgSize)
             .applying(absoluteTransform)
-    }
-    
-    @objc
-    func didTapView(_ tap: UITapGestureRecognizer) {
-        guard let tapCallback = self.interactionProperties?.tapCallback, let view = self.renderedView else { return }
-        
-        tapCallback(view)
     }
 }
 
@@ -146,23 +133,6 @@ typealias RenderableViewTree = TreeNode<RenderableView>
 extension TreeNode where T == ViewLayout {
     func buildRenderableViewTree(rendererProperties: IncitoRenderer, nodeBuilt: (RenderableView) -> Void) -> RenderableViewTree {
         
-        let interactionBuilder: (ViewProperties) -> ViewInteractionProperties? = { viewProperties in
-            let alphaTap: (UIView) -> Void = { view in
-                view.alpha = 1 + (0.5 - view.alpha)
-                print("Tapped Section!", view)
-            }
-            switch viewProperties.style.role {
-            case "section"?:
-                return ViewInteractionProperties(tapCallback: alphaTap, peekable: false)
-                
-            case "offer"?:
-                return ViewInteractionProperties(tapCallback: alphaTap, peekable: true)
-                
-            default:
-                return nil
-            }
-        }
-        
         return self.mapValues { (viewLayout, newParent, index) in
             
             let viewProperties = viewLayout.viewProperties
@@ -187,8 +157,7 @@ extension TreeNode where T == ViewLayout {
                 layout: viewLayout,
                 absoluteTransform: transform,
                 siblingIndex: index,
-                renderer: renderer,
-                interactionProperties: interactionBuilder(viewProperties)
+                renderer: renderer
             )
             
             nodeBuilt(renderableView)

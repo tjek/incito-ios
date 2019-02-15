@@ -61,7 +61,7 @@ public struct StyleProperties {
     public var link: String? // URI
     public var title: String?
     public var clipsChildren: Bool
-    //    var accessibility: Accessibility? = nil
+    public var accessibility: Accessibility
     
     public var backgroundColor: Color?
     public var backgroundImage: BackgroundImage?
@@ -75,6 +75,7 @@ public struct StyleProperties {
         link: nil,
         title: nil,
         clipsChildren: true,
+        accessibility: Accessibility(label: nil, isHidden: false),
         backgroundColor: nil,
         backgroundImage: nil
     )
@@ -314,9 +315,9 @@ enum HorizontalGravity: String, Decodable {
     case right  = "right_horizontal"
 }
 
-struct Accessibility {
-    var label: String
-    var hidden: Bool
+public struct Accessibility {
+    public var label: String?
+    public var isHidden: Bool
 }
 
 public struct BackgroundImage {
