@@ -58,7 +58,7 @@ public struct StyleProperties {
     public var shadow: Shadow? = nil
     public var stroke: Stroke? = nil
     
-    public var link: String? // URI
+    public var link: URL?
     public var title: String?
     public var clipsChildren: Bool
     public var accessibility: Accessibility

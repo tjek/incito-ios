@@ -214,18 +214,9 @@ extension ViewProperties {
     }
 }
 
+import SafariServices
+
 extension DemoViewController: IncitoLoaderViewControllerDelegate {
-    func incitoDidScroll(progress: Double, in viewController: IncitoViewController) {
-        
-    }
-    
-    func incitoViewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
-        
-    }
-    
-    func incitoViewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) {
-        
-    }
     
     func incitoDocumentLoaded(in viewController: IncitoViewController) {
         
@@ -257,8 +248,15 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
         }
     }
     
+    func incitoDidTapLink(_ url: URL, at point: CGPoint, in viewController: IncitoViewController) {
+        // An example of how to present an in-app view of the link.
+        let sfVC = SFSafariViewController(url: url)
+        viewController.present(sfVC, animated: true, completion: nil)
+    }
+    
     func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController) {
         
+        // An example of how to get the offer that was tapped.
         guard let firstOffer = viewController.firstView(at: point, where: { $1.isOffer }) else { return }
         
         let properties = firstOffer.properties

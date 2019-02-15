@@ -27,9 +27,32 @@ public protocol IncitoViewControllerDelegate: class {
     /// Called whenever a view element is about to be removed from the view hierarchy (triggered while scrolling, so this must not do heavy work)
     func incitoViewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
     
+    /// Called whenever the user scrolls the incito.
+    func incitoDidScroll(progress: Double, in viewController: IncitoViewController)
+    
+    /// Called when the user taps a location within the incito. The point is in the coordinate space of the `viewController`'s `view`. This will not be called if the tap is on a link.
     func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController)
     
-    func incitoDidScroll(progress: Double, in viewController: IncitoViewController)
+    /// Called when the user taps a link. The general `incitoDidReceiveTap` delegate method is not called if a link was tapped. If you do not implement this delegate method, the default behaviour is to simply open the url in Safari.
+    func incitoDidTapLink(_ url: URL, at point: CGPoint, in viewController: IncitoViewController)
+}
+
+public extension IncitoViewControllerDelegate {
+    
+    func incitoDocumentLoaded(in viewController: IncitoViewController) { }
+    
+    func incitoViewDidRender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) { }
+    
+    func incitoViewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController) { }
+    
+    func incitoDidScroll(progress: Double, in viewController: IncitoViewController) { }
+    
+    func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController) { }
+    
+    /// Default to opening the url when tapping a link.
+    func incitoDidTapLink(_ url: URL, at point: CGPoint, in viewController: IncitoViewController) {
+        UIApplication.shared.openURL(url)
+    }
 }
 
 public class IncitoViewController: UIViewController {
@@ -164,7 +187,13 @@ public class IncitoViewController: UIViewController {
         guard let delegate = self.delegate else { return }
         
         let point = tap.location(in: self.view)
-        delegate.incitoDidReceiveTap(at: point, in: self)
+        
+        if let firstLinkable = self.firstView(at: point, where: { $1.style.link != nil }),
+            let link = firstLinkable.properties.style.link {
+            delegate.incitoDidTapLink(link, at: point, in: self)
+        } else {
+            delegate.incitoDidReceiveTap(at: point, in: self)
+        }
     }
     
     // MARK: - Rendering
