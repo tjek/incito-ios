@@ -162,7 +162,12 @@ extension UIView {
             
             let size = self.bounds.size
             let transform: (UIImage) -> UIImage = { oldImage in
-                oldImage.resized(scalingType: bgImage.scale, into: size)
+                oldImage.resized(
+                    scalingType: bgImage.scale,
+                    tilingMode: bgImage.tileMode,
+                    position: bgImage.position,
+                    into: size
+                )
             }
             
             imageLoadReq = ImageViewLoadRequest(url: bgImage.source, containerSize: size, transform: transform) { [weak self] loadedImageView in
@@ -170,10 +175,10 @@ extension UIView {
                 guard let imageView = loadedImageView else { return }
                 
                 imageView.frame = self.bounds
-                imageView.applyBackground(
-                    position: bgImage.position,
-                    scalingType: bgImage.scale,
-                    tilingMode: bgImage.tileMode
+                
+                // use gravity to define the position
+                imageView.layer.contentsGravity = bgImage.position.contentsGravity(
+                    isFlipped: self.layer.contentsAreFlipped()
                 )
                 
                 imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

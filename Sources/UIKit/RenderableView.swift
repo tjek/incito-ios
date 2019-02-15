@@ -14,6 +14,7 @@ public final class RenderableView {
     let absoluteTransform: CGAffineTransform // the sum of all the parent view's transformations. Includes the localPosition translation.
     let siblingIndex: Int // The index of this view in relation to its siblings
     let renderer: (RenderableView) -> UIView
+    let absoluteRect: CGRect
     
     fileprivate(set) var renderedView: UIView? = nil
     
@@ -27,6 +28,8 @@ public final class RenderableView {
         self.absoluteTransform = absoluteTransform
         self.siblingIndex = siblingIndex
         self.renderer = renderer
+        self.absoluteRect = CGRect(origin: .zero, size: layout.size.cgSize)
+            .applying(absoluteTransform)
     }
     
     @discardableResult
@@ -53,11 +56,6 @@ public final class RenderableView {
     func unrender() {
         renderedView?.removeFromSuperview()
         renderedView = nil
-    }
-    
-    var absoluteRect: CGRect {
-        return CGRect(origin: .zero, size: layout.size.cgSize)
-            .applying(absoluteTransform)
     }
 }
 
