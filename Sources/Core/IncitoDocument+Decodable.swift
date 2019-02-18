@@ -472,11 +472,17 @@ extension Color: Decodable {
     public init?(string: String) {
         let cleanedStrVal = string.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         
-        guard let color = cleanedStrVal.starts(with: "rgb") ? Color.scanRGBColorStr(cleanedStrVal) : Color.scanHexColorStr(cleanedStrVal) else {
-            return nil
+        if cleanedStrVal == "transparent" {
+            self = Color(r: 0, g: 0, b: 0, a: 0)
+            return
         }
         
-        self = color
+        if let color = cleanedStrVal.starts(with: "rgb") ? Color.scanRGBColorStr(cleanedStrVal) : Color.scanHexColorStr(cleanedStrVal) {
+            self = color
+            return
+        }
+        
+        return nil
     }
     
     public init(from decoder: Decoder) throws {

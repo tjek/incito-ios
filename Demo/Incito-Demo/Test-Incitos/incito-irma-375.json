@@ -1,0 +1,778 @@
+{
+        "version": "1.0.0",
+        "theme": {
+          "text_color": "#ffffff",
+          "line_spacing_multiplier": 1.4,
+          "font_family": [
+            "incito-open-sans-condensed-regular",
+            "HelveticaNeue-CondensedBold",
+            "HelveticaNeueBoldCondensed",
+            "HelveticaNeue-Bold-Condensed",
+            "Helvetica Neue Bold Condensed",
+            "HelveticaNeueBold",
+            "HelveticaNeue-Bold",
+            "Helvetica Neue Bold",
+            "HelveticaNeue",
+            "Helvetica Neue",
+            "TeXGyreHerosCnBold",
+            "Helvetica",
+            "Tahoma",
+            "Geneva",
+            "Arial Narrow",
+            "Arial",
+            "sans-serif"
+          ],
+          "background_color": "#002878"
+        },
+        "root_view": {
+          "layout_width": 375,
+          "gravity": "center_horizontal",
+          "child_views": [
+            {
+              "role": "section",
+              "layout_margin_bottom": 16,
+              "id": "bb-offers-1",
+              "child_views": [
+                {
+                  "view_name": "AbsoluteLayout",
+                  "layout_width": 375,
+                  "layout_height": 903.4166666666667,
+                  "child_views": [
+                    {
+                      "view_name": "AbsoluteLayout",
+                      "role": "offer",
+                      "layout_width": 375,
+                      "layout_top": 0,
+                      "layout_left": 0,
+                      "layout_height": 404.6666666666667,
+                      "id": "1693493",
+                      "child_views": [
+                        {
+                          "stroke_width": 1,
+                          "stroke_style": "solid",
+                          "stroke_color": "#ffffff",
+                          "layout_width": 120,
+                          "layout_left": 19,
+                          "layout_height": 120,
+                          "layout_bottom": 19,
+                          "corner_radius": "100%",
+                          "child_views": [
+                            {
+                              "view_name": "FlexLayout",
+                              "layout_height": "62%",
+                              "layout_flex_justify_content": "flex-end",
+                              "layout_flex_direction": "column",
+                              "layout_flex_align_items": "center",
+                              "layout_flex_align_content": "center",
+                              "clip_children": false,
+                              "child_views": [
+                                {
+                                  "view_name": "TextView",
+                                  "text_size": 37.332,
+                                  "text_color": "#ffffff",
+                                  "text_alignment": "center",
+                                  "text": "50,-",
+                                  "spans": [],
+                                  "max_lines": 1,
+                                  "line_spacing_multiplier": 1.4,
+                                  "font_family": [
+                                    "incito-open-sans-condensed-bold",
+                                    "Helvetica",
+                                    "sans-serif"
+                                  ],
+                                  "clip_children": false,
+                                  "accessibility_label": "50 kr."
+                                }
+                              ]
+                            },
+                            {
+                              "view_name": "FlexLayout",
+                              "layout_height": "38%",
+                              "layout_flex_justify_content": "start",
+                              "layout_flex_direction": "column",
+                              "layout_flex_align_items": "center",
+                              "layout_flex_align_content": "start",
+                              "clip_children": false,
+                              "child_views": [
+                                {
+                                  "view_name": "TextView",
+                                  "text_size": 12.239999999999998,
+                                  "text_color": "#002878",
+                                  "text_all_caps": true,
+                                  "text_alignment": "center",
+                                  "text": "Flere farver",
+                                  "padding_top": 10,
+                                  "max_width": 100,
+                                  "line_spacing_multiplier": 1,
+                                  "font_family": [
+                                    "incito-open-sans-condensed-bold",
+                                    "Helvetica",
+                                    "sans-serif"
+                                  ],
+                                  "clip_children": false
+                                }
+                              ],
+                              "background_color": "#ffffff"
+                            }
+                          ]
+                        },
+                        {
+                          "view_name": "AbsoluteLayout",
+                          "transform_translate_y": 4.880000000000001,
+                          "transform_translate_x": 4.880000000000001,
+                          "transform_rotate": -90,
+                          "transform_origin": [
+                            "50%",
+                            "50%"
+                          ],
+                          "layout_width": 142,
+                          "layout_left": 8,
+                          "layout_height": 142,
+                          "layout_bottom": 8,
+                          "clip_children": false,
+                          "child_views": [
+                            {
+                              "transform_rotate": 0,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": null,
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 6,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": null,
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 12,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": null,
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 18,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": "#002878",
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 24,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": "#002878",
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 30,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": "#002878",
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 36,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": "#002878",
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 42,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": "#002878",
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 48,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": "#002878",
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 54,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": "#002878",
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 60,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": "#002878",
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 66,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": "#002878",
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 72,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": null,
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 78,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": null,
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+                            {
+                              "transform_rotate": 84,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "stroke_width": 0,
+                              "stroke_top_width": 12.239999999999998,
+                              "stroke_top_color": null,
+                              "stroke_style": "solid",
+                              "stroke_color": "transparent",
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142
+                            },
+
+
+                            
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 0,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": " ",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 6,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": " ",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 12,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": " ",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 18,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": " ",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 24,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": "1",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 30,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": " ",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 36,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": "b",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 42,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": "u",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 48,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": "n",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 54,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": "d",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 60,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": "t",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 66,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": " ",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 72,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": " ",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 78,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": " ",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            },
+                            {
+                              "view_name": "TextView",
+                              "transform_rotate": 84,
+                              "transform_origin": [
+                                "50%",
+                                "50%"
+                              ],
+                              "text_size": 12.239999999999998,
+                              "text_color": "#ffffff",
+                              "text_all_caps": true,
+                              "text_alignment": "center",
+                              "text": " ",
+                              "line_spacing_multiplier": 1,
+                              "layout_width": 18,
+                              "layout_top": 0,
+                              "layout_left": 62,
+                              "layout_height": 142,
+                              "font_family": [
+                                "incito-open-sans-condensed-bold",
+                                "Helvetica",
+                                "sans-serif"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "meta": {
+          "system": "bumblebee-v2.0.26",
+          "join": "Hi there! Want to build autogenerated publications with us? More details/apply: hello@shopgun.com / https://www.youtube.com/watch?v=OvTmGD7gd8g",
+          "build_time": 91,
+          "author": "ShopGun <hello@shopgun.com> (https://shopgun.com)"
+        },
+        "locale": "da_DK",
+        "id": "cpnbjcd5o5gf",
+        "font_assets": {
+          "incito-open-sans-condensed-regular": {
+            "weight": "normal",
+            "style": "normal",
+            "src": [
+              [
+                "woff",
+                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/OpenSans-CondLight-webfont.woff"
+              ],
+              [
+                "truetype",
+                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/OpenSans-CondLight-webfont.ttf"
+              ],
+              [
+                "embedded-opentype",
+                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/OpenSans-CondLight-webfont.eot"
+              ]
+            ]
+          },
+          "incito-open-sans-condensed-bold": {
+            "weight": "normal",
+            "style": "normal",
+            "src": [
+              [
+                "woff",
+                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/OpenSans-CondBold-webfont.woff"
+              ],
+              [
+                "truetype",
+                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/OpenSans-CondBold-webfont.ttf"
+              ],
+              [
+                "embedded-opentype",
+                "https://d3qnoxvhi29qvt.cloudfront.net/fonts/OpenSans-CondBold-webfont.eot"
+              ]
+            ]
+          }
+        }
+}
