@@ -26,10 +26,10 @@ extension IncitoDocument: Decodable where ViewTreeNode == ViewProperties {
         
         self.rootView = try c.decode(.rootView)
         
-        self.locale = try c.decodeIfPresent(.locale)
-        self.theme = try c.decodeIfPresent(.theme)
-        self.meta = try c.decodeIfPresent(.meta) ?? [:]
-        self.fontAssets = try c.decodeIfPresent(.fontAssets) ?? [:]
+        self.locale = (try? c.decode(.locale)) ?? self.locale
+        self.theme = (try? c.decode(.theme)) ?? self.theme
+        self.meta = (try? c.decode(.meta)) ?? self.meta
+        self.fontAssets = (try? c.decode(.fontAssets)) ?? self.fontAssets
     }
 }
 
@@ -76,7 +76,7 @@ extension TreeNode: Decodable where T == ViewProperties {
             case "AbsoluteLayout"?:
                 return .absoluteLayout
             case "FlexLayout"?:
-                let flexProperties = (try? propertiesContainer.decode(FlexLayoutProperties.self)) ?? FlexLayoutProperties()
+                let flexProperties = try propertiesContainer.decode(FlexLayoutProperties.self)
                 return .flexLayout(flexProperties)
             case "TextView"?:
                 let textProperties = try propertiesContainer.decode(TextViewProperties.self)
@@ -161,64 +161,64 @@ extension LayoutProperties: Decodable {
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
-        let defualts = LayoutProperties.empty
+        let defaults = LayoutProperties.empty
         
         self.position = .init(
-            top: try c.decodeIfPresent(.positionTop),
-            left: try c.decodeIfPresent(.positionLeft),
-            bottom: try c.decodeIfPresent(.positionBottom),
-            right: try c.decodeIfPresent(.positionRight)
+            top: try? c.decode(.positionTop),
+            left: try? c.decode(.positionLeft),
+            bottom: try? c.decode(.positionBottom),
+            right: try? c.decode(.positionRight)
         )
         
-        let basePadding: Unit = try c.decodeIfPresent(.padding) ?? .pts(0)
+        let basePadding: Unit = (try? c.decode(.padding)) ?? .pts(0)
         self.padding = UnitEdges(
-            top: try c.decodeIfPresent(.paddingTop) ?? basePadding,
-            left: try c.decodeIfPresent(.paddingLeft) ?? basePadding,
-            bottom: try c.decodeIfPresent(.paddingBottom) ?? basePadding,
-            right: try c.decodeIfPresent(.paddingRight) ?? basePadding
+            top: (try? c.decode(.paddingTop)) ?? basePadding,
+            left: (try? c.decode(.paddingLeft)) ?? basePadding,
+            bottom: (try? c.decode(.paddingBottom)) ?? basePadding,
+            right: (try? c.decode(.paddingRight)) ?? basePadding
         )
         
-        let baseMargin: Unit = try c.decodeIfPresent(.margin) ?? .pts(0)
+        let baseMargin: Unit = (try? c.decode(.margin)) ?? .pts(0)
         self.margins = UnitEdges(
-            top: try c.decodeIfPresent(.marginTop) ?? baseMargin,
-            left: try c.decodeIfPresent(.marginLeft) ?? baseMargin,
-            bottom: try c.decodeIfPresent(.marginBottom) ?? baseMargin,
-            right: try c.decodeIfPresent(.marginRight) ?? baseMargin
+            top: (try? c.decode(.marginTop)) ?? baseMargin,
+            left: (try? c.decode(.marginLeft)) ?? baseMargin,
+            bottom: (try? c.decode(.marginBottom)) ?? baseMargin,
+            right: (try? c.decode(.marginRight)) ?? baseMargin
         )
         
         self.size = Size(
-            width: try c.decodeIfPresent(.width),
-            height: try c.decodeIfPresent(.height)
+            width: try? c.decode(.width),
+            height: try? c.decode(.height)
         )
         self.minSize = Size(
-            width: try c.decodeIfPresent(.minWidth),
-            height: try c.decodeIfPresent(.minHeight)
+            width: try? c.decode(.minWidth),
+            height: try? c.decode(.minHeight)
         )
         self.maxSize = Size(
-            width: try c.decodeIfPresent(.maxWidth),
-            height: try c.decodeIfPresent(.maxHeight)
+            width: try? c.decode(.maxWidth),
+            height: try? c.decode(.maxHeight)
         )
         
-        self.gravity = try c.decodeIfPresent(.gravity)
+        self.gravity = try? c.decode(.gravity)
         
-        self.flexShrink = try c.decodeIfPresent(.flexShrink) ?? defualts.flexShrink
-        self.flexGrow = try c.decodeIfPresent(.flexGrow) ?? defualts.flexGrow
-        self.flexBasis = try c.decodeIfPresent(.flexBasis) ?? defualts.flexBasis
+        self.flexShrink = (try? c.decode(.flexShrink)) ?? defaults.flexShrink
+        self.flexGrow = (try? c.decode(.flexGrow)) ?? defaults.flexGrow
+        self.flexBasis = (try? c.decode(.flexBasis)) ?? defaults.flexBasis
         
-        var transform = defualts.transform
-        if let scale: Double = try c.decodeIfPresent(.transformScale) {
+        var transform = defaults.transform
+        if let scale: Double = try? c.decode(.transformScale) {
             transform.scale = scale
         }
-        if let translateX: Unit = try c.decodeIfPresent(.transformTranslateX) {
+        if let translateX: Unit = try? c.decode(.transformTranslateX) {
             transform.translate.x = translateX
         }
-        if let translateY: Unit = try c.decodeIfPresent(.transformTranslateY) {
+        if let translateY: Unit = try? c.decode(.transformTranslateY) {
             transform.translate.y = translateY
         }
-        if let rotateDegs: Double = try c.decodeIfPresent(.transformRotate) {
+        if let rotateDegs: Double = try? c.decode(.transformRotate) {
             transform.rotate = rotateDegs * .pi / 180
         }
-        if let originVals: [Unit] = try c.decodeIfPresent(.transformOrigin),
+        if let originVals: [Unit] = try? c.decode(.transformOrigin),
             originVals.count > 1 {
             transform.origin = Point(x: originVals[0], y: originVals[1])
         }
@@ -271,41 +271,41 @@ extension StyleProperties: Decodable {
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.role = try c.decodeIfPresent(.role)
-        self.meta = (try c.decodeIfPresent(.meta)) ?? [:]
+        self.role = try? c.decode(.role)
+        self.meta = (try? c.decode(.meta)) ?? [:]
         
-        self.link = try c.decodeIfPresent(.link)
-        self.title = try c.decodeIfPresent(.title)
+        self.link = try? c.decode(.link)
+        self.title = try? c.decode(.title)
         
-        self.clipsChildren = try c.decodeIfPresent(.clipsChildren) ?? true
-        self.backgroundColor = try c.decodeIfPresent(.backgroundColor)
+        self.clipsChildren = (try? c.decode(.clipsChildren)) ?? true
+        self.backgroundColor = try? c.decode(.backgroundColor)
         
-        let baseCornerRadius: Unit = try c.decodeIfPresent(.cornerRadius) ?? .pts(0)
+        let baseCornerRadius: Unit = (try? c.decode(.cornerRadius)) ?? .pts(0)
         self.cornerRadius = Corners<Unit>(
-            topLeft: try c.decodeIfPresent(.cornerRadiusTopLeft) ?? baseCornerRadius,
-            topRight: try c.decodeIfPresent(.cornerRadiusTopRight) ?? baseCornerRadius,
-            bottomLeft: try c.decodeIfPresent(.cornerRadiusBottomLeft) ?? baseCornerRadius,
-            bottomRight: try c.decodeIfPresent(.cornerRadiusBottomRight) ?? baseCornerRadius
+            topLeft: (try? c.decode(.cornerRadiusTopLeft)) ?? baseCornerRadius,
+            topRight: (try? c.decode(.cornerRadiusTopRight)) ?? baseCornerRadius,
+            bottomLeft: (try? c.decode(.cornerRadiusBottomLeft)) ?? baseCornerRadius,
+            bottomRight: (try? c.decode(.cornerRadiusBottomRight)) ?? baseCornerRadius
         )
         
-        let baseStrokeWidth: Double = try c.decodeIfPresent(.strokeWidth) ?? 0
+        let baseStrokeWidth: Double = (try? c.decode(.strokeWidth)) ?? 0
         let strokeWidth = Edges<Double>(
-            top: try c.decodeIfPresent(.strokeWidthTop) ?? baseStrokeWidth,
-            left: try c.decodeIfPresent(.strokeWidthLeft) ?? baseStrokeWidth,
-            bottom: try c.decodeIfPresent(.strokeWidthBottom) ?? baseStrokeWidth,
-            right: try c.decodeIfPresent(.strokeWidthRight) ?? baseStrokeWidth
+            top: (try? c.decode(.strokeWidthTop)) ?? baseStrokeWidth,
+            left: (try? c.decode(.strokeWidthLeft)) ?? baseStrokeWidth,
+            bottom: (try? c.decode(.strokeWidthBottom)) ?? baseStrokeWidth,
+            right: (try? c.decode(.strokeWidthRight)) ?? baseStrokeWidth
         )
         // if there is any stroke width, get the other properties
         if !(strokeWidth.isUniform && strokeWidth.top == 0) {
-            let baseStrokeColor: Color = try c.decodeIfPresent(.strokeColor) ?? Color(r: 0, g: 0, b: 0, a: 1)
+            let baseStrokeColor: Color = (try? c.decode(.strokeColor)) ?? Color(r: 0, g: 0, b: 0, a: 1)
             let strokeColor = Edges<Color>(
-                top: try c.decodeIfPresent(.strokeColorTop) ?? baseStrokeColor,
-                left: try c.decodeIfPresent(.strokeColorLeft) ?? baseStrokeColor,
-                bottom: try c.decodeIfPresent(.strokeColorBottom) ?? baseStrokeColor,
-                right: try c.decodeIfPresent(.strokeColorRight) ?? baseStrokeColor
+                top: (try? c.decode(.strokeColorTop)) ?? baseStrokeColor,
+                left: (try? c.decode(.strokeColorLeft)) ?? baseStrokeColor,
+                bottom: (try? c.decode(.strokeColorBottom)) ?? baseStrokeColor,
+                right: (try? c.decode(.strokeColorRight)) ?? baseStrokeColor
             )
             
-            let strokeStyle: Stroke.Style = (try? c.decodeIfPresent(.strokeStyle) ?? .solid) ?? .solid
+            let strokeStyle: Stroke.Style = (try? c.decode(.strokeStyle)) ?? .solid
             
             self.stroke = Stroke(
                 style: strokeStyle,
@@ -314,37 +314,33 @@ extension StyleProperties: Decodable {
             )
         }
         
-        if let bgImageSrc: URL = try c.decodeIfPresent(.backgroundImage) {
-            let scaleType: BackgroundImage.ScaleType = try c.decodeIfPresent(.backgroundImageScaleType) ?? .none
-            let tileMode: BackgroundImage.TileMode = try c.decodeIfPresent(.backgroundImageTileMode) ?? .none
-            let position: BackgroundImage.Position = try c.decodeIfPresent(.backgroundImagePosition) ?? .leftTop
-            self.backgroundImage = BackgroundImage(
-                source: bgImageSrc,
-                scale: scaleType,
-                position: position,
-                tileMode: tileMode
-            )
+        if let bgImageSrc: URL = try? c.decode(.backgroundImage) {
+            var bgImage = BackgroundImage(source: bgImageSrc)
+            bgImage.scale = (try? c.decode(.backgroundImageScaleType)) ?? bgImage.scale
+            bgImage.position = (try? c.decode(.backgroundImagePosition)) ?? bgImage.position
+            bgImage.tileMode = (try? c.decode(.backgroundImageTileMode)) ?? bgImage.tileMode
+            self.backgroundImage = bgImage
         } else {
             self.backgroundImage = nil
         }
         
-        if let shadowColor: Color = try c.decodeIfPresent(.shadowColor) {
-         
-            let shadowRadius: Double? = try c.decodeIfPresent(.shadowRadius)
-            let shadowOffsetX: Double? = try c.decodeIfPresent(.shadowOffsetX)
-            let shadowOffsetY: Double? = try c.decodeIfPresent(.shadowOffsetY)
-            
+        let shadowColor: Color? = try? c.decode(.shadowColor)
+        let shadowRadius: Double = (try? c.decode(.shadowRadius)) ?? 0
+        let shadowOffset = Size<Double>(
+            width: (try? c.decode(.shadowOffsetX)) ?? 0,
+            height: (try? c.decode(.shadowOffsetY)) ?? 0
+        )
+        if shadowColor != nil || shadowRadius > 0 || shadowOffset.width > 0 || shadowOffset.height > 0 {
             self.shadow = Shadow(
-                color: shadowColor,
-                offset: Size(width: shadowOffsetX ?? 0,
-                             height: shadowOffsetY ?? 0),
-                radius: shadowRadius ?? 0
+                color: shadowColor ?? Color(r: 0, g: 0, b: 0, a: 1),
+                offset: shadowOffset,
+                radius: shadowRadius
             )
         }
         
         self.accessibility = Accessibility(
-            label: try c.decodeIfPresent(.accessibilityLabel),
-            isHidden: try c.decodeIfPresent(.accessibilityHidden) ?? false
+            label: try? c.decode(.accessibilityLabel),
+            isHidden: (try? c.decode(.accessibilityHidden)) ?? false
         )
     }
 }
@@ -358,7 +354,6 @@ extension TextViewProperties: Decodable {
         case textColor      = "text_color"
         case textAlignment  = "text_alignment"
         case textSize       = "text_size"
-        case fontStretch    = "font_stretch"
         case textStyle      = "text_style"
         case preventWidow   = "text_prevent_widow"
         case lineHeightMultiplier = "line_spacing_multiplier"
@@ -375,29 +370,28 @@ extension TextViewProperties: Decodable {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         self.text = try c.decode(.text)
-        self.allCaps = try c.decodeIfPresent(.allCaps) ?? false
-        self.fontFamily = try c.decodeIfPresent(.fontFamily) ?? []
-        self.textColor = try c.decodeIfPresent(.textColor)
-        self.textAlignment = try c.decodeIfPresent(.textAlignment)
-        self.textSize = try c.decodeIfPresent(.textSize)
-        self.fontStretch = try c.decodeIfPresent(.fontStretch)
-        self.textStyle = try c.decodeIfPresent(.textStyle)
-        self.preventWidow = try c.decodeIfPresent(.preventWidow) ?? false
-        self.lineHeightMultiplier = try c.decodeIfPresent(.lineHeightMultiplier)
-        self.spans = try c.decodeIfPresent(.spans) ?? []
-        self.maxLines = try c.decodeIfPresent(.maxLines) ?? 0
+        self.allCaps = (try? c.decode(.allCaps)) ?? self.allCaps
+        self.fontFamily = (try? c.decode(.fontFamily)) ?? self.fontFamily
+        self.textColor = (try? c.decode(.textColor)) ?? self.textColor
+        self.textAlignment = (try? c.decode(.textAlignment)) ?? self.textAlignment
+        self.textSize = (try? c.decode(.textSize)) ?? self.textSize
+        self.textStyle = (try? c.decode(.textStyle)) ?? self.textStyle
+        self.preventWidow = (try? c.decode(.preventWidow)) ?? self.preventWidow
+        self.lineHeightMultiplier = (try? c.decode(.lineHeightMultiplier)) ?? self.lineHeightMultiplier
+        self.spans = (try? c.decode(.spans)) ?? self.spans
+        self.maxLines = (try? c.decode(.maxLines)) ?? self.maxLines
         
-        if let shadowColor: Color = try c.decodeIfPresent(.textShadowColor) {
-            
-            let shadowRadius: Double? = try c.decodeIfPresent(.textShadowRadius)
-            let shadowOffsetX: Double? = try c.decodeIfPresent(.textShadowOffsetX)
-            let shadowOffsetY: Double? = try c.decodeIfPresent(.textShadowOffsetY)
-            
+        let shadowColor: Color? = try? c.decode(.textShadowColor)
+        let shadowRadius: Double = (try? c.decode(.textShadowRadius)) ?? 0
+        let shadowOffset = Size<Double>(
+            width: (try? c.decode(.textShadowOffsetX)) ?? 0,
+            height: (try? c.decode(.textShadowOffsetY)) ?? 0
+        )
+        if shadowColor != nil || shadowRadius > 0 || shadowOffset.width > 0 || shadowOffset.height > 0 {
             self.shadow = Shadow(
-                color: shadowColor,
-                offset: Size(width: shadowOffsetX ?? 0,
-                             height: shadowOffsetY ?? 0),
-                radius: shadowRadius ?? 0
+                color: shadowColor ?? Color(r: 0, g: 0, b: 0, a: 1),
+                offset: shadowOffset,
+                radius: shadowRadius
             )
         }
     }
@@ -655,13 +649,13 @@ extension FlexLayoutProperties: Decodable {
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
-        if let dir: Direction = try c.decodeIfPresent(.direction) {
+        if let dir: Direction = try? c.decode(.direction) {
             self.direction = dir
         }
-        if let itemAlign: ItemAlignment = try c.decodeIfPresent(.itemAlignment) {
+        if let itemAlign: ItemAlignment = try? c.decode(.itemAlignment) {
             self.itemAlignment = itemAlign
         }
-        if let contentJustification: ContentJustification = try c.decodeIfPresent(.contentJustification) {
+        if let contentJustification: ContentJustification = try? c.decode(.contentJustification) {
             self.contentJustification = contentJustification
         }
     }
@@ -683,13 +677,13 @@ extension VideoViewProperties: Decodable {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         
         self.source = try c.decode(.source)
-        self.autoplay = try c.decodeIfPresent(.autoplay) ?? self.autoplay
-        self.loop = try c.decodeIfPresent(.loop) ?? self.loop
-        self.controls = try c.decodeIfPresent(.controls) ?? self.controls
-        self.mime = try c.decodeIfPresent(.mime)
+        self.autoplay = (try? c.decode(.autoplay)) ?? self.autoplay
+        self.loop = (try? c.decode(.loop)) ?? self.loop
+        self.controls = (try? c.decode(.controls)) ?? self.controls
+        self.mime = try? c.decode(.mime)
         
-        if let w: Double = try c.decodeIfPresent(.videoWidth),
-            let h: Double = try c.decodeIfPresent(.videoHeight) {
+        if let w: Double = try? c.decode(.videoWidth),
+            let h: Double = try? c.decode(.videoHeight) {
             self.videoSize = Size(width: w, height: h)
         }
     }
@@ -708,8 +702,8 @@ extension VideoEmbedViewProperties: Decodable {
         
         self.source = try c.decode(.source)
 
-        if let w: Double = try c.decodeIfPresent(.videoWidth),
-            let h: Double = try c.decodeIfPresent(.videoHeight) {
+        if let w: Double = try? c.decode(.videoWidth),
+            let h: Double = try? c.decode(.videoHeight) {
             self.videoSize = Size(width: w, height: h)
         }
     }

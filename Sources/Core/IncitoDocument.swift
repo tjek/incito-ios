@@ -19,10 +19,10 @@ public struct IncitoDocument<ViewTreeNode> {
     public var version: String
     public var rootView: TreeNode<ViewTreeNode>
 
-    public var locale: String?
-    public var theme: Theme?
-    public var meta: [String: JSONValue]
-    public var fontAssets: [FontAssetName: FontAsset]
+    public var locale: String? = nil
+    public var theme: Theme? = nil
+    public var meta: [String: JSONValue] = [:]
+    public var fontAssets: [FontAssetName: FontAsset] = [:]
 }
 
 /// An incitoDocument with ViewProperties for the ViewNodes
@@ -80,7 +80,6 @@ public struct StyleProperties {
         backgroundImage: nil
     )
 }
-
 
 enum FlexBasis<Value> {
     case auto
@@ -141,17 +140,16 @@ public struct TextViewProperties {
     
     var text: String
     
-    var allCaps: Bool
-    var fontFamily: FontFamily
-    var textColor: Color?
-    var textAlignment: TextAlignment?
-    var textSize: Double?
-    var fontStretch: String? // todo: what?
-    var textStyle: TextStyle?
-    var preventWidow: Bool
-    var lineHeightMultiplier: Double?
-    var spans: [Span]
-    var maxLines: Int
+    var allCaps: Bool = false
+    var fontFamily: FontFamily = []
+    var textColor: Color? = nil
+    var textAlignment: TextAlignment? = nil
+    var textSize: Double? = nil
+    var textStyle: TextStyle? = nil
+    var preventWidow: Bool = false
+    var lineHeightMultiplier: Double? = nil
+    var spans: [Span] = []
+    var maxLines: Int = 0
     var shadow: Shadow? = nil
 }
 
@@ -183,15 +181,14 @@ public struct FlexLayoutProperties {
 }
 
 public struct ImageViewProperties: Decodable {
-    var source: URL // URI
-    var caption: String?
+    var source: URL
+    var caption: String? // TODO: apply to imageviews
     
     enum CodingKeys: String, CodingKey {
         case source = "src"
         case caption = "label"
     }
 }
-
 
 public struct VideoViewProperties {
     var source: URL
@@ -270,7 +267,7 @@ public struct Stroke {
         case dashed
     }
     
-    public var style: Style
+    public var style: Style = .solid
     public var width: Edges<Double>
     public var color: Edges<Color>
     
@@ -347,7 +344,11 @@ public struct BackgroundImage {
     }
     
     public var source: URL
-    public var scale: ScaleType
-    public var position: Position
-    public var tileMode: TileMode
+    public var scale: ScaleType = .none
+    public var position: Position = .leftTop
+    public var tileMode: TileMode = .none
+    
+    init(source: URL) {
+        self.source = source
+    }
 }

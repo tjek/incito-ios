@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE246F3E221AB8F800662E9B /* incito-irma-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE246F3C221AB8F700662E9B /* incito-irma-375.json */; };
 		AE4BF75A220448E60048671D /* incito-kvickly-feb2019-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE4BF759220448E60048671D /* incito-kvickly-feb2019-375.json */; };
 		AE582A1021FF10DC009F4D8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A0F21FF10DC009F4D8A /* AppDelegate.swift */; };
 		AE582A1221FF10DC009F4D8A /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A1121FF10DC009F4D8A /* DemoViewController.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AE246F3C221AB8F700662E9B /* incito-irma-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-irma-375.json"; sourceTree = "<group>"; };
 		AE4BF759220448E60048671D /* incito-kvickly-feb2019-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-kvickly-feb2019-375.json"; sourceTree = "<group>"; };
 		AE582A0C21FF10DC009F4D8A /* Incito-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Incito-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE582A0F21FF10DC009F4D8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 		AE582AFA21FF31C8009F4D8A /* Test-Incitos */ = {
 			isa = PBXGroup;
 			children = (
+				AE246F3C221AB8F700662E9B /* incito-irma-375.json */,
 				AE4BF759220448E60048671D /* incito-kvickly-feb2019-375.json */,
 				AE582ABA21FF3126009F4D8A /* incito-flextest-375.json */,
 				AE582ABB21FF3126009F4D8A /* incito-transformtest-375.json */,
@@ -227,6 +230,7 @@
 				AE582ADE21FF3127009F4D8A /* incito-imagetest-375.json in Resources */,
 				AE582AEB21FF3127009F4D8A /* simple-incito-static.json in Resources */,
 				AE582AF821FF3198009F4D8A /* LaunchScreen.storyboard in Resources */,
+				AE246F3E221AB8F800662E9B /* incito-irma-375.json in Resources */,
 				AE582AE621FF3127009F4D8A /* incito-videotest-375.json in Resources */,
 				AE582AE321FF3127009F4D8A /* incito-superbrugsen-small-375.json in Resources */,
 				AE582ADA21FF3127009F4D8A /* incito-flextest-375.json in Resources */,
