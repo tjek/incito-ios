@@ -139,7 +139,7 @@ extension FontAssetLoader {
                     
                     dispatchGroup.enter()
                     let urlReq = URLRequest(url: sourceURL,
-                                            timeoutInterval: 2.0)
+                                            timeoutInterval: 10.0)
                     let task = urlSession.dataTask(with: urlReq) { (data, response, error) in
                         
                         defer {

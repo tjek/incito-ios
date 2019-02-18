@@ -35,7 +35,7 @@ public func IncitoDocumentLoader(
     
     return fontLoader
         .loadAndRegisterFontAssets(document.fontAssets)
-        .flatMap({ buildRenderableDocument(document: document, width: width, loadedAssets: $0) })
+        .flatMap({ buildRenderableDocument(document: document, width: width, loadedAssets: $0.assets) })
 }
 
 enum IncitoLoaderError: Error {

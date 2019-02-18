@@ -36,7 +36,7 @@ struct LoadedFontAsset {
 
 extension FontAssetLoader {
     
-    func loadAndRegisterFontAssets(_ fontAssets: [String: FontAsset]) -> Future<Result<[LoadedFontAsset]>> {
+    func loadAndRegisterFontAssets(_ fontAssets: [String: FontAsset]) -> Future<(assets: [LoadedFontAsset], errors: [Error])> {
         
         // build an array of Future<Result<[LoadedFontAsset]>>
         // each of these futures would go out and load the fontAsset
@@ -45,12 +45,13 @@ extension FontAssetLoader {
                 self.loadAndRegisterFontAsset($0.value, assetName: $0.key)
             })
         
-        return Future<Result<[LoadedFontAsset]>> { cb in
+        return Future<(assets: [LoadedFontAsset], errors: [Error])> { cb in
             let queue = DispatchQueue(label: "FontLoadingCompletionQ")
 
             let group = DispatchGroup()
-            var result: Result<[LoadedFontAsset]> = .success([])
-            
+
+            var loadedAssets: [LoadedFontAsset] = []
+            var errors: [Error] = []
             for future in assetFutures {
                 group.enter()
                 
@@ -58,22 +59,18 @@ extension FontAssetLoader {
                 future
                     .async(on: .global(), completesOn: queue)
                     .run {
-                        defer { group.leave() }
-                        guard case .success(let loadedAssets) = result else {
-                            return
-                        }
-                        
                         switch $0 {
                         case let .success(loadedAsset):
-                            result = .success(loadedAssets + [loadedAsset])
+                            loadedAssets += [loadedAsset]
                         case let .error(error):
-                            result = .error(error)
+                            errors += [error]
                         }
+                        group.leave()
                 }
             }
             group.wait()
             
-            cb(result)
+            cb((loadedAssets, errors))
         }
     }
 
