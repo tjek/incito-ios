@@ -17,7 +17,7 @@ typealias Image = UIImage
 #endif
 
 /// Given a FontFamily and a size, it will return a font
-typealias FontProvider = (FontFamily, Double) -> Font
+typealias FontProvider = (FontFamily, Double, TextStyle) -> Font
 
 /// All things platform-specific that are needed
 struct IncitoRenderer {
@@ -76,6 +76,7 @@ extension TextViewProperties {
         let textColor = self.textColor ?? defaults.textColor
         let lineHeightMultiplier = CGFloat(self.lineHeightMultiplier ?? defaults.lineHeightMultiplier)
         let alignment = (self.textAlignment ?? .left).nsTextAlignment
+        let style = self.textStyle ?? .normal
         
         var string = self.text
         if self.allCaps {
@@ -86,7 +87,7 @@ extension TextViewProperties {
             string = string.withoutWidows
         }
         
-        let font = fontProvider(fontFamily, textSize)
+        let font = fontProvider(fontFamily, textSize, style)
         
         /*
          There are 2 problems when getting multi-line text rendered on iOS to be sized/positioned the same as on web - calculating the correct scaled line-height, and vertically-aligning the text within the lines correctly
@@ -128,7 +129,7 @@ extension TextViewProperties {
                 case .superscript:
                     return [
                         .baselineOffset: floor(textSize * 0.3),
-                        .font: fontProvider(fontFamily, ceil(textSize * 0.6))
+                        .font: fontProvider(fontFamily, ceil(textSize * 0.6), style)
                     ]
                 }
             }()

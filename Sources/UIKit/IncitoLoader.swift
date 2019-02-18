@@ -60,7 +60,7 @@ func buildRenderableDocument(
     loadedAssets: [LoadedFontAsset]
     ) -> Future<Result<RenderableIncitoDocument>> {
     return Future { completion in
-        let fontProvider = loadedAssets.font(forFamily:size:)
+        let fontProvider = loadedAssets.font(forFamily:size:style:)
         
         let renderer = IncitoRenderer(
             fontProvider: fontProvider,

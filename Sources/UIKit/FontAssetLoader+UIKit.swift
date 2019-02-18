@@ -32,27 +32,51 @@ extension UIFont {
     }
 }
 
+extension TextStyle {
+    var symbolicTraits: UIFontDescriptor.SymbolicTraits {
+        switch self {
+        case .normal:
+            return []
+        case .bold:
+            return .traitBold
+        case .italic:
+            return .traitItalic
+        case .boldItalic:
+            return [.traitBold, .traitItalic]
+        }
+    }
+}
+
+extension UIFont {
+    func withSymbolicTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
+        if !traits.isEmpty,
+            let fontDesc = self.fontDescriptor.withSymbolicTraits(traits) {
+            return UIFont(descriptor: fontDesc, size: 0.0)
+        } else {
+            return self
+        }
+    }
+}
+
 extension Collection where Element == LoadedFontAsset {
-    func font(forFamily family: FontFamily, size: Double) -> UIFont {
+    func font(forFamily family: FontFamily, size: Double, style: TextStyle = .normal) -> UIFont {
+        
         let size = CGFloat(size)
+        let traits = style.symbolicTraits
         
         for familyName in family {
-            // try to get the asset with the family name
-            if let asset = self.first(where: { $0.assetName == familyName }) {
-                // The asset exists, but the font isnt loadable for some reason, go to the next family
-                guard let font = asset.font(size: size) else {
-                    continue
-                }
-                return font
+            
+            let fontName = self.first(where: { $0.assetName == familyName })?.fontName ?? familyName
+
+            guard let matchingFont = UIFont(name: fontName, size: size)?.withSymbolicTraits(traits) else {
+                continue
             }
-            else if let systemFont = UIFont(name: familyName, size: size) {
-                // try to use the family name to load a system font.
-                return systemFont
-            }
+            
+            return matchingFont
         }
         
-        // nothing loadable, just use base system font (maybe take weight/style into account?)
-        return UIFont.systemFont(ofSize: size)
+        // nothing loadable, just use base system font.
+        return UIFont.systemFont(ofSize: size).withSymbolicTraits(traits)
     }
 }
 
