@@ -137,6 +137,20 @@ extension Future {
             }
         }
     }
+    
+    public func onError<S>(_ other: Future<A>) -> Future<A> where A == Result<S> {
+        return Future { cb in
+            self.run { a in
+                switch a {
+                case .success:
+                    cb(a)
+                case .error:
+                    other.run(cb)
+                }
+            }
+            
+        }
+    }    
 }
 
 // Future + Optional extensions
@@ -194,6 +208,19 @@ extension Future {
             self.run { s in
                 cb(s.flatMap(transform))
             }
+        }
+    }
+    
+    public func onNil<S>(_ other: Future<A>) -> Future<A> where A == S? {
+        return Future { cb in
+            self.run { a in
+                if a == nil {
+                    other.run(cb)
+                } else {
+                    cb(a)
+                }
+            }
+            
         }
     }
 }

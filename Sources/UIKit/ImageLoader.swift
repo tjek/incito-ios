@@ -31,7 +31,9 @@ func loadImageView(request: ImageViewLoadRequest) {
 extension ImageLoaderProtocol {
     func imageData(forURL url: URL) -> Future<(data: Data, mimeType: String?)?> {
         return Future { cb in
-            self.imageData(forURL: url, completion: cb)
+            self.imageData(forURL: url) {
+                cb($0.value)
+            }
         }
     }
 }

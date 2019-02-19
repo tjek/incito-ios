@@ -116,90 +116,30 @@ extension UIFont {
 
 extension FontAssetLoader {
     // TODO: allow for different urlSession/cache properties
-    static func uiKitFontAssetLoader() -> FontAssetLoader {
-      
-        // TODO: A real cache
-        let fontCache = FontAssetLoader.Cache(
-            get: { _, completion in completion(nil) },
-            set: { _, _ in }
-        )
-        
-        let fontNetworkReq: FontAssetLoader.NetworkRequest = { sources, completion in
+    static let uiKitFontAssetLoader = FontAssetLoader(
+        registrator: UIFont.register(data:),
+        supportedFontTypes: {
+            // The order of these types defines the order we try to fetch them.
+            var supportedTypes: [FontAsset.SourceType] = []
             
-            let queue = DispatchQueue(label: "FontLoadingNetworkQ")
-            let urlSession = URLSession.shared
+            // .woff_ only supported >= iOS 10
+            // Unfortunately .woff_ has some weird unexpected buggy behaviour.
+            // In some fonts `.postScriptName` is the same for multiple weights.
+            // This means that only 1 of the weights is available with that name.
+            // Maybe at some future point try to figure a solution, but for now just skip.
+            //                if #available(iOS 10.0, *) {
+            //                    supportedTypes += [
+            //                        .woff2, // ✅ 23.2kb / -
+            //                        .woff, // ✅ 29.4kb / 30.9kb
+            //                    ]
+            //                }
             
-            queue.async {
-                let dispatchGroup = DispatchGroup()
-                var complete: Bool = false
-                for (source, sourceURL) in sources {
-                    guard complete == false else {
-                        return
-                    }
-                    
-                    dispatchGroup.enter()
-                    let urlReq = URLRequest(url: sourceURL,
-                                            timeoutInterval: 10.0)
-                    let task = urlSession.dataTask(with: urlReq) { (data, response, error) in
-                        
-                        defer {
-                            dispatchGroup.leave()
-                        }
-                        
-                        // TODO: what if timeout error?
-                        guard let loadedData = data else {
-                            if let err = error {
-                                complete = true
-                                completion(.error(err))
-                            }
-                            return
-                        }
-                        
-                        complete = true
-                        completion(.success((loadedData, (source, sourceURL))))
-                    }
-                    
-                    task.resume()
-                    
-                    dispatchGroup.wait()
-                }
-                
-                if complete == false {
-                    completion(.error(FontLoadingError.unknownError))
-                }
-            }
-        }
-        
-        let fontLoader = FontAssetLoader(
-            cache: fontCache,
-            network: fontNetworkReq,
-            registrator: UIFont.register(data:),
-            supportedFontTypes: {
-                // The order of these types defines the order we try to fetch them.
-                var supportedTypes: [FontAsset.SourceType] = []
-
-                // .woff_ only supported >= iOS 10
-                // Unfortunately .woff_ has some weird unexpected buggy behaviour.
-                // In some fonts `.postScriptName` is the same for multiple weights.
-                // This means that only 1 of the weights is available with that name.
-                // Maybe at some future point try to figure a solution, but for now just skip.
-//                if #available(iOS 10.0, *) {
-//                    supportedTypes += [
-//                        .woff2, // ✅ 23.2kb / -
-//                        .woff, // ✅ 29.4kb / 30.9kb
-//                    ]
-//                }
-                
-                // .otf & .ttf are default types, but larger than .woff
-                supportedTypes += [
-                    .opentype,
-                    .truetype
-                ]
-                
-                return supportedTypes
-            }
-        )
-        
-        return fontLoader
-    }
+            // .otf & .ttf are default types, but larger than .woff
+            supportedTypes += [
+                .opentype,
+                .truetype
+            ]
+            
+            return supportedTypes
+    })
 }

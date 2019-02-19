@@ -11,15 +11,7 @@ import Foundation
 
 struct FontAssetLoader {
     typealias Registrator = (Data) throws -> String
-    typealias NetworkRequest = ([FontAsset.FontSource], @escaping (Result<(Data, FontAsset.FontSource)>) -> Void) -> Void
     
-    struct Cache {
-        var get: ([FontAsset.FontSource], ((Data, FontAsset.FontSource)?) -> Void) -> Void
-        var set: (Data, FontAsset.FontSource) -> Void
-    }
-    
-    var cache: Cache
-    var network: NetworkRequest
     var registrator: Registrator
     
     /// the order here is the order we prioritize when fetching
@@ -77,53 +69,54 @@ extension FontAssetLoader {
     func loadAndRegisterFontAsset(_ asset: FontAsset, assetName: String) -> Future<Result<LoadedFontAsset>> {
         return Future { completion in
             
+            // get all the supported source files
             let sources: [FontAsset.FontSource] = self.supportedFontTypes().compactMap { sourceType in
                 return asset.sources.first(where: { $0.0 == sourceType })
             }
             
-            let fontDataLoaded: (Result<(Data, FontAsset.FontSource)>) -> Void = {
+            let dispatchGroup = DispatchGroup()
+            var complete: Bool = false
+            var lastError: Error? = nil
+            
+            for (source, sourceURL) in sources {
+                dispatchGroup.enter()
                 
-                switch $0 {
-                case let .error(err):
-                    completion(.error(err))
-                case let .success((loadedData, source)):
-                    do {
-                        let registeredName = try self.registrator(loadedData)
-                        
-                        let loadedAsset = LoadedFontAsset(
-                            assetName: assetName,
-                            fontName: registeredName,
-                            source: source,
-                            asset: asset
-                        )
-                        completion(.success(loadedAsset))
-                    } catch {
-                        completion(.error(error))
+                IncitoEnvironment.current.fontLoader.fontData(forURL: sourceURL) { result in
+                    defer {
+                        dispatchGroup.leave()
                     }
+                    
+                    switch result {
+                    case let .success(loadedData):
+                        do {
+                            let registeredName = try self.registrator(loadedData)
+                            
+                            let loadedAsset = LoadedFontAsset(
+                                assetName: assetName,
+                                fontName: registeredName,
+                                source: (source, sourceURL),
+                                asset: asset
+                            )
+                            complete = true
+                            completion(.success(loadedAsset))
+                        } catch {
+                            lastError = error
+                        }
+                        
+                    case let .error(error):
+                        lastError = error
+                    }
+                }
+                
+                dispatchGroup.wait()
+                // no more looping if we have called completion
+                if complete {
+                    return
                 }
             }
             
-            // try to get the data from the cache.
-            self.cache.get(sources) { cacheResult in
-                if let cacheSuccess = cacheResult {
-                    fontDataLoaded(.success(cacheSuccess))
-                    return
-                }
-                
-                // if that fails, try to get it from the network
-                self.network(sources) { networkResult in
-                    
-                    switch networkResult {
-                    case let .error(err):
-                        fontDataLoaded(.error(err))
-                    case let .success((loadedData, source)):
-                        
-                        self.cache.set(loadedData, source)
-                        
-                        fontDataLoaded(.success((loadedData, source)))
-                    }
-                }
-            }
+            // we made it to the end without loading any of the sources. Error!
+            completion(.error(lastError ?? FontLoadingError.unknownError))
         }
     }
 }

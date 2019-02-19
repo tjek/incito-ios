@@ -31,7 +31,7 @@ public func IncitoDocumentLoader(
     width: Double
     ) -> IncitoLoader {
     
-    let fontLoader = FontAssetLoader.uiKitFontAssetLoader() // injectable?
+    let fontLoader = FontAssetLoader.uiKitFontAssetLoader
     
     return fontLoader
         .loadAndRegisterFontAssets(document.fontAssets)

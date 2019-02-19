@@ -20,6 +20,7 @@ Pod::Spec.new do |s|
     s.subspec 'Core' do |ss|
         ss.source_files = ["Sources/Core/**/*.swift", "Sources/Utils/**/*.swift"]
         ss.frameworks   = "Foundation"
+        ss.dependency "Cache"
     end
 
     s.subspec 'UIKit' do |ss|

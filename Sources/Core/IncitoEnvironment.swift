@@ -9,44 +9,39 @@
 
 import Foundation
 
+/**
+ If you wish to use your own image data cache/loader, implement this protocol and assign it to the IncitoEnvironment.
+ */
+public protocol ImageLoaderProtocol {
+    func imageData(forURL url: URL, completion: @escaping (Result<(data: Data, mimeType: String?)>) -> Void)
+}
+
+/**
+ If you wish to use your own font data cache/loader, implement this protocol and assign it to the IncitoEnvironment.
+ */
+public protocol FontLoaderProtocol {
+    func fontData(forURL url: URL, completion: @escaping (Result<Data>) -> Void)
+}
+
 public struct IncitoEnvironment {
     /// A list of all the incito schema versions supported by this library.
     public static let supportedVersions: [String] = ["1.0.0"]
 
     /**
-     This is used by the Incito renderer to download url-based images.
+     This is used by the Incito renderer to download url-based image data. The mimeType is needed to decide how to render the image.
      
-     The default implementation performs a simple URLSession request. You can replace this with your own cached image loader if you desire.
+     The default implementation uses `IncitoDataStore.shared`. This has a disk & memory cache.
      */
-    public var imageLoader: ImageLoaderProtocol = BasicImageLoader()
+    public var imageLoader: ImageLoaderProtocol = IncitoDataStore.shared
+    
+    /**
+     This is used by the Incito renderer to download url-based font data.
+     
+     The default implementation uses `IncitoDataStore.shared`. This has a disk & memory cache.
+     */
+    public var fontLoader: FontLoaderProtocol = IncitoDataStore.shared
 }
 
 extension IncitoEnvironment {
     public static var current = IncitoEnvironment()
-}
-
-// MARK: - Image Loader
-
-public protocol ImageLoaderProtocol {
-    func imageData(forURL url: URL, completion: @escaping ((data: Data, mimeType: String?)?) -> Void)
-}
-
-/**
- A very simple ImageLoader that, when given a url, makes a data request to the shared URLSession and calls the completion handler with the response data. There is no disk cache (to come)
- */
-struct BasicImageLoader: ImageLoaderProtocol {
-    
-    func imageData(forURL url: URL, completion: @escaping ((data: Data, mimeType: String?)?) -> Void) {
-        let urlSession = URLSession.shared
-        let urlReq = URLRequest(url: url, timeoutInterval: 10)
-        let task = urlSession.dataTask(with: urlReq) { data, response, error in
-            guard let imageData = data else {
-                completion(nil)
-                return
-            }
-
-            completion((imageData, response?.mimeType))
-        }
-        task.resume()
-    }
 }

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		AE246F43221B525B00662E9B /* IncitoEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE246F42221B525B00662E9B /* IncitoEnvironment.swift */; };
+		AE246F65221C061800662E9B /* Cache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE246F58221C05F400662E9B /* Cache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE246F66221C063C00662E9B /* Cache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE246F58221C05F400662E9B /* Cache.framework */; };
+		AE246F68221C436800662E9B /* IncitoDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE246F67221C436700662E9B /* IncitoDataStore.swift */; };
 		AE4BF82222048DEF0048671D /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4BF82122048DEF0048671D /* Future.swift */; };
 		AE582A2521FF118A009F4D8A /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A2221FF118A009F4D8A /* DecodableTests.swift */; };
 		AE582A2D21FF1266009F4D8A /* Incito.h in Headers */ = {isa = PBXBuildFile; fileRef = AE582A2B21FF1252009F4D8A /* Incito.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -69,6 +72,55 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		AE246F57221C05F400662E9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE246F4E221C05F400662E9B /* Cache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5DC59E01C20593E003BD79B;
+			remoteInfo = "Cache-iOS";
+		};
+		AE246F59221C05F400662E9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE246F4E221C05F400662E9B /* Cache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5291D181C2837DB00B702C9;
+			remoteInfo = "Cache-iOS-Tests";
+		};
+		AE246F5B221C05F400662E9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE246F4E221C05F400662E9B /* Cache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5291D601C283B5300B702C9;
+			remoteInfo = "Cache-Mac";
+		};
+		AE246F5D221C05F400662E9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE246F4E221C05F400662E9B /* Cache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5291D691C283B5400B702C9;
+			remoteInfo = "Cache-Mac-Tests";
+		};
+		AE246F5F221C05F400662E9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE246F4E221C05F400662E9B /* Cache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BDEDD3561DBCE5B1007416A6;
+			remoteInfo = "Cache-tvOS";
+		};
+		AE246F61221C05F400662E9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE246F4E221C05F400662E9B /* Cache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BDEDD3781DBCEB8A007416A6;
+			remoteInfo = "Cache-tvOS-Tests";
+		};
+		AE246F63221C060D00662E9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE246F4E221C05F400662E9B /* Cache.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D5DC59DF1C20593E003BD79B;
+			remoteInfo = "Cache-iOS";
+		};
 		AE582A2821FF11B1009F4D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AE675804219C2591006BEA9C /* Project object */;
@@ -162,6 +214,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				AE246F65221C061800662E9B /* Cache.framework in Embed Frameworks */,
 				AE582B0321FF372F009F4D8A /* CocoaLumberjack.framework in Embed Frameworks */,
 				AE582B0221FF3729009F4D8A /* SVGKit.framework in Embed Frameworks */,
 				AE582AB221FF2EF9009F4D8A /* FLAnimatedImage.framework in Embed Frameworks */,
@@ -173,6 +226,8 @@
 
 /* Begin PBXFileReference section */
 		AE246F42221B525B00662E9B /* IncitoEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoEnvironment.swift; sourceTree = "<group>"; };
+		AE246F4E221C05F400662E9B /* Cache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cache.xcodeproj; path = External/Cache/Cache.xcodeproj; sourceTree = "<group>"; };
+		AE246F67221C436700662E9B /* IncitoDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDataStore.swift; sourceTree = "<group>"; };
 		AE4BF82122048DEF0048671D /* Future.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		AE5829D821FF1000009F4D8A /* Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE582A2221FF118A009F4D8A /* DecodableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
@@ -240,6 +295,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE246F66221C063C00662E9B /* Cache.framework in Frameworks */,
 				AE582B0121FF371E009F4D8A /* CocoaLumberjack.framework in Frameworks */,
 				AE582B0021FF3716009F4D8A /* SVGKit.framework in Frameworks */,
 				AE582AAB21FF2EAA009F4D8A /* FLAnimatedImage.framework in Frameworks */,
@@ -257,6 +313,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE246F4F221C05F400662E9B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE246F58221C05F400662E9B /* Cache.framework */,
+				AE246F5A221C05F400662E9B /* Cache-iOS-Tests.xctest */,
+				AE246F5C221C05F400662E9B /* Cache.framework */,
+				AE246F5E221C05F400662E9B /* Cache-Mac-Tests.xctest */,
+				AE246F60221C05F400662E9B /* Cache.framework */,
+				AE246F62221C05F400662E9B /* Cache-tvOS-Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		AE582A2121FF118A009F4D8A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -336,6 +405,7 @@
 				AE582A6821FF1736009F4D8A /* FontAssetLoader.swift */,
 				AE582A6921FF1736009F4D8A /* IncitoTypes.swift */,
 				AE246F42221B525B00662E9B /* IncitoEnvironment.swift */,
+				AE246F67221C436700662E9B /* IncitoDataStore.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -343,6 +413,7 @@
 		AE582A8921FF2E24009F4D8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE246F4E221C05F400662E9B /* Cache.xcodeproj */,
 				AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */,
 				AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */,
 				AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */,
@@ -446,6 +517,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				AE246F64221C060D00662E9B /* PBXTargetDependency */,
 				AE582AFF21FF3708009F4D8A /* PBXTargetDependency */,
 				AE582AAE21FF2EC2009F4D8A /* PBXTargetDependency */,
 			);
@@ -503,6 +575,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = AE246F4F221C05F400662E9B /* Products */;
+					ProjectRef = AE246F4E221C05F400662E9B /* Cache.xcodeproj */;
+				},
+				{
 					ProductGroup = AE582AA621FF2E6E009F4D8A /* Products */;
 					ProjectRef = AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */;
 				},
@@ -520,6 +596,48 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		AE246F58221C05F400662E9B /* Cache.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Cache.framework;
+			remoteRef = AE246F57221C05F400662E9B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE246F5A221C05F400662E9B /* Cache-iOS-Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Cache-iOS-Tests.xctest";
+			remoteRef = AE246F59221C05F400662E9B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE246F5C221C05F400662E9B /* Cache.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Cache.framework;
+			remoteRef = AE246F5B221C05F400662E9B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE246F5E221C05F400662E9B /* Cache-Mac-Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Cache-Mac-Tests.xctest";
+			remoteRef = AE246F5D221C05F400662E9B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE246F60221C05F400662E9B /* Cache.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Cache.framework;
+			remoteRef = AE246F5F221C05F400662E9B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE246F62221C05F400662E9B /* Cache-tvOS-Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Cache-tvOS-Tests.xctest";
+			remoteRef = AE246F61221C05F400662E9B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		AE582A9621FF2E49009F4D8A /* libSVGKit-iOS.2.1.0.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -640,6 +758,7 @@
 				AE582A8421FF1736009F4D8A /* FontAssetLoader.swift in Sources */,
 				AE582A7E21FF1736009F4D8A /* IncitoDocument.swift in Sources */,
 				AE582A6F21FF1736009F4D8A /* TreeNode.swift in Sources */,
+				AE246F68221C436800662E9B /* IncitoDataStore.swift in Sources */,
 				AE582A7421FF1736009F4D8A /* Incito+UIKit.swift in Sources */,
 				AE582AB521FF2FCD009F4D8A /* Measure.swift in Sources */,
 				AE582A7321FF1736009F4D8A /* FontAssetLoader+UIKit.swift in Sources */,
@@ -671,6 +790,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		AE246F64221C060D00662E9B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Cache-iOS";
+			targetProxy = AE246F63221C060D00662E9B /* PBXContainerItemProxy */;
+		};
 		AE582A2921FF11B1009F4D8A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = AE5829D721FF1000009F4D8A /* Incito-iOS */;
