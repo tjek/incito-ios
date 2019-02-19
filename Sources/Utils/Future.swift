@@ -138,3 +138,62 @@ extension Future {
         }
     }
 }
+
+// Future + Optional extensions
+
+extension Future {
+    
+    public func map<S, T>(
+        _ transform: @escaping (S) -> T
+        ) -> Future<T?> where A == S? {
+        return self.map { (optionalS: A) in
+            optionalS.map { s in
+                transform(s)
+            }
+        }
+    }
+    
+    public func flatMap<S, T>(
+        _ transform: @escaping (S) -> Future<T?>
+        ) -> Future<T?> where A == S? {
+        return self.flatMap { (optionalS: A) in
+            Future<T?> { callback in
+                if let s = optionalS {
+                    transform(s).run { optionalT in callback(optionalT) }
+                } else {
+                    callback(nil)
+                }
+            }
+        }
+    }
+    
+    public func zip<S, T>(
+        _ other: Future<T?>
+        ) -> Future<(S, T)?> where A == S? {
+        return self.zipWith(other) { ($0, $1) }
+    }
+    
+    public func zipWith<S, T, U>(
+        _ other: Future<T?>,
+        _ combine: @escaping (S, T) -> U
+        ) -> Future<U?> where A == S? {
+        return self.zipWith(other) { (opS: S?, opT: T?) -> U? in
+            switch (opS, opT) {
+            case let (s?, t?):
+                return combine(s, t)
+            default:
+                return nil
+            }
+        }
+    }
+    
+    public func compactMap<S, T>(
+        _ transform: @escaping (S) -> T?
+        ) -> Future<T?> where A == S? {
+        return Future<T?> { cb in
+            self.run { s in
+                cb(s.flatMap(transform))
+            }
+        }
+    }
+}

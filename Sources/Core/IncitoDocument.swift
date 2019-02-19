@@ -9,8 +9,6 @@
 
 import Foundation
 
-public let SupportedIncitoVersions: [String] = ["1.0.0"]
-
 public enum IncitoIdentifierType {}
 public typealias IncitoIdentifier = GenericIdentifier<IncitoIdentifierType>
 

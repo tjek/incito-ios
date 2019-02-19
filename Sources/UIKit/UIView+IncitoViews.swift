@@ -77,7 +77,9 @@ extension UIView {
             oldImage.resized(scalingType: .centerCrop, into: size)
         }
         
-        let imageLoadReq = ImageViewLoadRequest(url: imageProperties.source, containerSize: size, transform: transform) { [weak self] loadedImageView in
+        let stillVisibleCheck: () -> Bool = { [weak self] in self != nil }
+        
+        let imageLoadReq = ImageViewLoadRequest(url: imageProperties.source, containerSize: size, transform: transform, stillVisibleCheck: stillVisibleCheck) { [weak self] loadedImageView in
             guard let c = self else { return }
             guard let imageView = loadedImageView else { return }
             
@@ -169,8 +171,9 @@ extension UIView {
                     into: size
                 )
             }
+            let stillVisibleCheck: () -> Bool = { [weak self] in self != nil }
             
-            imageLoadReq = ImageViewLoadRequest(url: bgImage.source, containerSize: size, transform: transform) { [weak self] loadedImageView in
+            imageLoadReq = ImageViewLoadRequest(url: bgImage.source, containerSize: size, transform: transform, stillVisibleCheck: stillVisibleCheck) { [weak self] loadedImageView in
                 guard let self = self else { return }
                 guard let imageView = loadedImageView else { return }
                 

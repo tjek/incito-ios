@@ -24,7 +24,6 @@ struct IncitoRenderer {
     /// given a font family and a size it returns a Font
     var fontProvider: FontProvider
     /// given an image URL it returns the image in a completion handler.
-    // TODO: way to cancel image loads?
     var imageViewLoader: (ImageViewLoadRequest) -> Void
     
     // TODO: not like this.
@@ -36,6 +35,7 @@ struct ImageViewLoadRequest {
     let url: URL
     let containerSize: CGSize
     let transform: ((UIImage) -> UIImage)?
+    let stillVisibleCheck: () -> Bool
     let completion: (UIImageView?) -> Void
 }
 

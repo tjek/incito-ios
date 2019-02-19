@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE246F43221B525B00662E9B /* IncitoEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE246F42221B525B00662E9B /* IncitoEnvironment.swift */; };
 		AE4BF82222048DEF0048671D /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4BF82122048DEF0048671D /* Future.swift */; };
 		AE582A2521FF118A009F4D8A /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A2221FF118A009F4D8A /* DecodableTests.swift */; };
 		AE582A2D21FF1266009F4D8A /* Incito.h in Headers */ = {isa = PBXBuildFile; fileRef = AE582A2B21FF1252009F4D8A /* Incito.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -171,6 +172,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AE246F42221B525B00662E9B /* IncitoEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoEnvironment.swift; sourceTree = "<group>"; };
 		AE4BF82122048DEF0048671D /* Future.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		AE5829D821FF1000009F4D8A /* Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE582A2221FF118A009F4D8A /* DecodableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 				AE582A6721FF1736009F4D8A /* IncitoLayout+Positioning.swift */,
 				AE582A6821FF1736009F4D8A /* FontAssetLoader.swift */,
 				AE582A6921FF1736009F4D8A /* IncitoTypes.swift */,
+				AE246F42221B525B00662E9B /* IncitoEnvironment.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -622,6 +625,7 @@
 				AE4BF82222048DEF0048671D /* Future.swift in Sources */,
 				AE582A7621FF1736009F4D8A /* IncitoViewController.swift in Sources */,
 				AE582A6D21FF1736009F4D8A /* GenericGeometry.swift in Sources */,
+				AE246F43221B525B00662E9B /* IncitoEnvironment.swift in Sources */,
 				AE582A7F21FF1736009F4D8A /* IncitoLayout+Sizing.swift in Sources */,
 				AE582A8021FF1736009F4D8A /* IncitoDocument+Decodable.swift in Sources */,
 				AE582A7A21FF1736009F4D8A /* UIView+AnchorPoint.swift in Sources */,
