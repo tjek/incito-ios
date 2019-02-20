@@ -9,6 +9,8 @@
 
 import UIKit
 
+private var imageDataParserQueue = DispatchQueue(label: "ImageDataParserQueue", qos: .userInitiated)
+
 func loadImageView(request: ImageViewLoadRequest) {
     // how long to wait before first asking the request if we are still visible, and then doing the request.
     let debounceDelay: TimeInterval = 0.2
@@ -103,5 +105,5 @@ func buildImageView(imageData: Data, mimeType: String?, containerSize: CGSize, t
             let imageView = viewBuilder?()
             completion(imageView)
         }
-    }.async(on: .global(), completesOn: .main)
+    }.async(on: imageDataParserQueue, completesOn: .main)
 }

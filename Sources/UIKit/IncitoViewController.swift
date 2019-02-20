@@ -76,7 +76,10 @@ public class IncitoViewController: UIViewController {
         
         // configure the scrollView
         view.addSubview(scrollView)
-        
+        if #available(iOS 11.0, *) {
+            scrollView.contentInsetAdjustmentBehavior = .always
+        }
+
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -97,6 +100,9 @@ public class IncitoViewController: UIViewController {
             self.delegate?.incitoDidScroll(progress: self.scrollProgress, in: self)
         }
     }
+    deinit {
+        scrollViewScrollObserver = nil
+    }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -106,6 +112,17 @@ public class IncitoViewController: UIViewController {
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        // in < iOS 11.0 contentInset must be updated manually
+        if #available(iOS 11.0, *) { } else {
+            if self.automaticallyAdjustsScrollViewInsets {
+                scrollView.contentInset = UIEdgeInsets(top: self.topLayoutGuide.length,
+                                                       left: 0.0,
+                                                       bottom: self.bottomLayoutGuide.length,
+                                                       right: 0.0)
+                scrollView.scrollIndicatorInsets = scrollView.contentInset
+            }
+        }
         
         renderVisibleViews()
     }

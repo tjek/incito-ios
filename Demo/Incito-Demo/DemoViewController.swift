@@ -64,21 +64,17 @@ class DemoViewController: IncitoLoaderViewController {
         
         self.registerForPreviewing(with: self, sourceView: view)
         
-        let searchController = UISearchController(searchResultsController: self.searchResultsController)
-        searchController.searchResultsUpdater = searchResultsController
-        definesPresentationContext = true
         if #available(iOS 11.0, *) {
+            let searchController = UISearchController(searchResultsController: self.searchResultsController)
+            searchController.searchResultsUpdater = searchResultsController
+            definesPresentationContext = true
             navigationItem.hidesSearchBarWhenScrolling = false
             navigationItem.searchController = searchController
-        } else {
-            navigationItem.titleView = searchController.searchBar
-        }
-
-        searchResultsController.didSelectOffer = { [weak self] offer in
-            if #available(iOS 11.0, *) {
+            
+            searchResultsController.didSelectOffer = { [weak self] offer in
                 self?.navigationItem.searchController?.isActive = false
+                self?.incitoViewController?.scrollToElement(withId: offer.id, animated: false)
             }
-            self?.incitoViewController?.scrollToElement(withId: offer.id, animated: false)
         }
     }
     
@@ -208,7 +204,7 @@ class DemoViewController: IncitoLoaderViewController {
         
         let properties = firstOffer.properties
         
-        print("LONG-PRESSED '\(properties.style.meta["title"]?.stringValue ?? "")': '\(properties.style.meta["description"]?.stringValue ?? "")'")
+        print("👉 [Offer long-press] '\(properties.style.meta["title"]?.stringValue ?? "")': '\(properties.style.meta["description"]?.stringValue ?? "")'")
     }
 }
 
@@ -253,6 +249,9 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
     }
     
     func incitoDidTapLink(_ url: URL, at point: CGPoint, in viewController: IncitoViewController) {
+        
+        print("👉 [Link] '\(url)'")
+        
         // An example of how to present an in-app view of the link.
         let sfVC = SFSafariViewController(url: url)
         viewController.present(sfVC, animated: true, completion: nil)
@@ -265,7 +264,7 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
         
         let properties = firstOffer.properties
         
-        print("TAPPED '\(properties.style.meta["title"]?.stringValue ?? "")': '\(properties.style.meta["description"]?.stringValue ?? "")'")
+        print("👉 [Offer] '\(properties.style.meta["title"]?.stringValue ?? "")': '\(properties.style.meta["description"]?.stringValue ?? "")'")
         
         viewController.scrollToElement(withId: properties.id, position: .top, animated: true)
     }
