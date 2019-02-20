@@ -325,6 +325,24 @@ extension UIScrollView {
         
         return Double(topOffset / totalHeight)
     }
+    
+    func contentOffset(forPercentageProgress progress: Double) -> CGPoint {
+        
+        let adjustedInset: UIEdgeInsets
+        if #available(iOS 11.0, *) {
+            adjustedInset = self.adjustedContentInset
+        } else {
+            adjustedInset = self.contentInset
+        }
+        
+        let totalHeight = self.contentSize.height + adjustedInset.top + adjustedInset.bottom - bounds.size.height
+
+        let topOffset = CGFloat(progress) * totalHeight
+        
+        let offsetY = topOffset - adjustedInset.top
+
+        return CGPoint(x: 0, y: offsetY)
+    }
 }
 
 extension IncitoViewController {
@@ -379,7 +397,7 @@ extension IncitoViewController {
     }
     
     /**
-     Scrolls to incito to show the element with the specified id. If the element doesnt exist this is a no-op. See parameters for different ways of positioning the scroll.
+     Scrolls the incito to show the element with the specified id. If the element doesnt exist this is a no-op. See parameters for different ways of positioning the scroll.
      
      - parameter elementId: The id of the element to scroll to.
      - parameter position: Where within the screen the element should be positioned. Defaults to `.top`.
@@ -467,5 +485,14 @@ extension IncitoViewController {
         }
         
         self.scrollView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: animated)
+    }
+    
+    /**
+     Scrolls the incito to the specified progress (a value from 0-1).
+     */
+    public func scrollToProgress(_ progress: Double, animated: Bool) {
+        let contentOffset = self.scrollView.contentOffset(forPercentageProgress: progress)
+        
+        self.scrollView.setContentOffset(contentOffset, animated: animated)
     }
 }
