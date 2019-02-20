@@ -10,15 +10,15 @@
 import UIKit
 
 public protocol IncitoLoaderViewControllerDelegate: IncitoViewControllerDelegate {
+    /**
+     If you wish to customize the viewcontroller used to show the error state when loading the incito, implement this delegate method and return a view controller showing an error view.
+     */
     func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController
-    func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController
     
-    func transitionIncitoLoaderChildViewController(
-        from fromViewController: UIViewController?,
-        to toViewController: UIViewController,
-        in containerView: UIView,
-        for viewController: IncitoLoaderViewController
-    )
+    /**
+     If you wish to customize the viewcontroller used to show the loading activity when loading the incito, implement this delegate method and return a view controller showing a loading view. If you do not implement this method a default viewcontroller showing a loading spinner will be used.
+     */
+    func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController
 }
 
 public extension IncitoLoaderViewControllerDelegate {
@@ -31,20 +31,6 @@ public extension IncitoLoaderViewControllerDelegate {
     
     func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController {
          return DefaultLoadingViewController.build(backgroundColor: viewController.view.backgroundColor ?? .white)
-    }
-    
-    func transitionIncitoLoaderChildViewController(
-        from fromViewController: UIViewController?,
-        to toViewController: UIViewController,
-        in containerView: UIView,
-        for viewController: IncitoLoaderViewController
-        ) {
-        
-        viewController.cycleFromViewController(
-            oldViewController: fromViewController,
-            toViewController: toViewController,
-            in: containerView
-        )
     }
 }
 
@@ -149,11 +135,11 @@ open class IncitoLoaderViewController: UIViewController {
         }
         
         self.currentStateViewController = newVC
-        delegate.transitionIncitoLoaderChildViewController(
-            from: oldVC,
-            to: newVC,
-            in: stateContainerView,
-            for: self
+        
+        self.cycleFromViewController(
+            oldViewController: oldVC,
+            toViewController: newVC,
+            in: stateContainerView
         )
     }
 }
