@@ -10,16 +10,41 @@
 import UIKit
 
 public protocol IncitoLoaderViewControllerDelegate: IncitoViewControllerDelegate {
-    func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController?
-    func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController?
+    func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController
+    func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController
+    
+    func transitionIncitoLoaderChildViewController(
+        from fromViewController: UIViewController?,
+        to toViewController: UIViewController,
+        in containerView: UIView,
+        for viewController: IncitoLoaderViewController
+    )
 }
 
-extension IncitoLoaderViewControllerDelegate {
-    public func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController? {
-        return nil
+public extension IncitoLoaderViewControllerDelegate {
+    func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController {
+        return buildDefaultErrorViewController(for: error, backgroundColor: viewController.view.backgroundColor ?? .white) { [weak viewController] in
+            guard let loader = viewController?.lastLoader else { return }
+            viewController?.reload(loader, completion: viewController?.lastReloadCompletion)
+        }
     }
-    public func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController? {
-        return nil
+    
+    func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController {
+         return DefaultLoadingViewController.build(backgroundColor: viewController.view.backgroundColor ?? .white)
+    }
+    
+    func transitionIncitoLoaderChildViewController(
+        from fromViewController: UIViewController?,
+        to toViewController: UIViewController,
+        in containerView: UIView,
+        for viewController: IncitoLoaderViewController
+        ) {
+        
+        viewController.cycleFromViewController(
+            oldViewController: fromViewController,
+            toViewController: toViewController,
+            in: containerView
+        )
     }
 }
 
@@ -28,11 +53,26 @@ extension IncitoLoaderViewControllerDelegate {
  */
 open class IncitoLoaderViewController: UIViewController {
     
-    enum State {
+    fileprivate enum State {
         case loading
         case success(IncitoViewController)
         case error(Error)
     }
+    
+    fileprivate var reloadId: Int = 0
+    fileprivate var lastLoader: IncitoLoader?
+    fileprivate var lastReloadCompletion: ((Result<IncitoViewController>) -> Void)?
+    fileprivate var loaderQueue = DispatchQueue(label: "IncitoLoaderQueue", qos: .userInitiated)
+    
+    fileprivate var currentStateViewController: UIViewController?
+    fileprivate var stateContainerView = UIView()
+    fileprivate var state: State = .loading {
+        didSet {
+            updateViewState()
+        }
+    }
+
+    
     
     public weak var delegate: IncitoLoaderViewControllerDelegate?
     
@@ -41,12 +81,6 @@ open class IncitoLoaderViewController: UIViewController {
             return nil
         }
         return incitoVC
-    }
-    
-    private(set) var state: State = .loading {
-        didSet {
-            updateViewState()
-        }
     }
     
     override open func viewDidLoad() {
@@ -59,12 +93,9 @@ open class IncitoLoaderViewController: UIViewController {
         updateViewState()
     }
     
-    private var reloadId: Int = 0
-    private var lastLoader: IncitoLoader?
-    private var lastReloadCompletion: ((Result<IncitoViewController>) -> Void)?
-    private var loaderQueue = DispatchQueue(label: "IncitoLoaderQueue", qos: .userInitiated)
-    
-    /// Given an IncitoLoader, we will start reloading the IncitoViewController.
+    /**
+     Given an IncitoLoader, we will start reloading the IncitoViewController.
+     */
     public func reload(_ loader: IncitoLoader, completion: ((Result<IncitoViewController>) -> Void)? = nil) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -100,35 +131,29 @@ open class IncitoLoaderViewController: UIViewController {
         }
     }
     
-    private var currentStateViewController: UIViewController?
-    private var stateContainerView = UIView()
-    
     private func updateViewState() {
+        
+        class DefaultDelegate: IncitoLoaderViewControllerDelegate {}
+        let delegate: IncitoLoaderViewControllerDelegate = self.delegate ?? DefaultDelegate()
         
         let oldVC = currentStateViewController
         
         let newVC: UIViewController
         switch state {
         case .loading:
-            newVC = delegate?.loadingViewController(in: self) ?? DefaultLoadingViewController.build(backgroundColor: view.backgroundColor ?? .white)
+            newVC = delegate.loadingViewController(in: self)
         case .error(let error):
-            if let delegateVC = delegate?.errorViewController(for: error, in: self) {
-                newVC = delegateVC
-            } else {
-                newVC = buildDefaultErrorViewController(for: error, backgroundColor: view.backgroundColor ?? .white) { [weak self] in
-                    guard let loader = self?.lastLoader else { return }
-                    self?.reload(loader, completion: self?.lastReloadCompletion)
-                }
-            }
+            newVC = delegate.errorViewController(for: error, in: self)
         case .success(let incitoVC):
             newVC = incitoVC
         }
         
         self.currentStateViewController = newVC
-        self.cycleFromViewController(
-            oldViewController: oldVC,
-            toViewController: newVC,
-            in: stateContainerView
+        delegate.transitionIncitoLoaderChildViewController(
+            from: oldVC,
+            to: newVC,
+            in: stateContainerView,
+            for: self
         )
     }
 }
