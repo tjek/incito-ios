@@ -12,10 +12,6 @@ import UIKit
 /// A document whose viewNodes are RenderableViews
 public typealias RenderableIncitoDocument = IncitoDocument<RenderableView>
 
-/**
- possible delegate methods:
- - configure scrollView
- */
 public protocol IncitoViewControllerDelegate: class {
     
     /// Called whenever a document is updated.
@@ -27,7 +23,7 @@ public protocol IncitoViewControllerDelegate: class {
     /// Called whenever a view element is about to be removed from the view hierarchy (triggered while scrolling, so this must not do heavy work)
     func incitoViewDidUnrender(view: UIView, with viewProperties: ViewProperties, in viewController: IncitoViewController)
     
-    /// Called whenever the user scrolls the incito.
+    /// Called whenever the user scrolls the incito (or the incito is scrolled programatically).
     func incitoDidScroll(progress: Double, in viewController: IncitoViewController)
     
     /// Called when the user taps a location within the incito. The point is in the coordinate space of the `viewController`'s `view`. This will not be called if the tap is on a link.
@@ -37,6 +33,7 @@ public protocol IncitoViewControllerDelegate: class {
     func incitoDidTapLink(_ url: URL, at point: CGPoint, in viewController: IncitoViewController)
 }
 
+/// Default delegate method implementations
 public extension IncitoViewControllerDelegate {
     
     func incitoDocumentLoaded(in viewController: IncitoViewController) { }
@@ -55,28 +52,23 @@ public extension IncitoViewControllerDelegate {
     }
 }
 
+/**
+ A view controller for rendering an incito.
+ */
 public class IncitoViewController: UIViewController {
-    weak var delegate: IncitoViewControllerDelegate?
+    
+    fileprivate let scrollView = UIScrollView()
+    fileprivate var rootView: UIView?
+    fileprivate var renderableDocument: RenderableIncitoDocument? = nil
+    fileprivate var scrollViewScrollObserver: NSKeyValueObservation?
+    fileprivate var lastRenderedWindow: CGRect = .null
+    fileprivate let renderWindowInsets = UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0)
+    
+    public weak var delegate: IncitoViewControllerDelegate?
     
     /// 0-1 percentage of the screen that we are currently scrolled to. Can be <0 or >1 when over-scrolling.
     public var scrollProgress: Double {
         return scrollView.percentageProgress
-    }
-    
-    public let scrollView = UIScrollView()
-    private var rootView: UIView?
-    private(set) var renderableDocument: RenderableIncitoDocument? = nil
-    
-    public struct Debug {
-        public var showOutlines: Bool = false
-        public var showRenderWindows: Bool = false
-        public var printLayout: Bool = false
-        public var printLayoutDetails: Bool = false
-    }
-    public var debug: Debug = Debug() {
-        didSet {
-            self.renderVisibleViews(forced: true)
-        }
     }
     
     public override func viewDidLoad() {
@@ -85,11 +77,6 @@ public class IncitoViewController: UIViewController {
         // configure the scrollView
         view.addSubview(scrollView)
         
-        scrollView.alwaysBounceVertical = true
-        scrollView.delegate = self
-        if #available(iOS 11.0, *) {
-            scrollView.contentInsetAdjustmentBehavior = .always
-        }
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -99,6 +86,16 @@ public class IncitoViewController: UIViewController {
             ])
         
         initializeRootView(parentSize: self.view.frame.size)
+        
+        // observe changes to the contentOffset, and trigger a re-render if needed.
+        // we do this, rather than acting as delegate, as the users of the library may want to be the scrollview's delegate.
+        scrollViewScrollObserver = scrollView.observe(\.contentOffset, options: [.old, .new]) { [weak self] (_, change) in
+            guard let self = self, change.oldValue != change.newValue else { return }
+            
+            self.renderVisibleViews()
+            
+            self.delegate?.incitoDidScroll(progress: self.scrollProgress, in: self)
+        }
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -123,27 +120,12 @@ public class IncitoViewController: UIViewController {
         
         self.delegate?.incitoDocumentLoaded(in: self)
         
-        initializeRootView(parentSize: self.view.frame.size)
+        self.initializeRootView(parentSize: self.view.frame.size)
         
-        if self.debug.printLayout {
-            let debugTree: TreeNode<String> = renderableDocument.rootView.mapValues { renderableView, _, idx in
-                let layout = renderableView.layout
-                let name = layout.viewProperties.name ?? ""
-                let position = layout.position
-                let size = layout.size
-                
-                var res = "\(idx)) \(name): [\(position)\(size)]"
-                if self.debug.printLayoutDetails {
-                    res += "\n\t dimensions: \(layout.dimensions)\n"
-                }
-                
-                return res
-            }
-            
-            print("\(debugTree)")
-        }
-        
+        self._DEBUG_printLayout()
     }
+    
+    // MARK: - Initialization
     
     /// Must be performed on main queue
     private func initializeRootView(parentSize: CGSize) {
@@ -182,7 +164,7 @@ public class IncitoViewController: UIViewController {
     }
     
     @objc
-    func didTapRootView(_ tap: UITapGestureRecognizer) {
+    private func didTapRootView(_ tap: UITapGestureRecognizer) {
         
         guard let delegate = self.delegate else { return }
         
@@ -198,10 +180,7 @@ public class IncitoViewController: UIViewController {
     
     // MARK: - Rendering
     
-    private var lastRenderedWindow: CGRect = .null
-    private let renderWindowInsets = UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0)
-    
-    func renderVisibleViews(forced: Bool = false) {
+    fileprivate func renderVisibleViews(forced: Bool = false) {
         
         guard let rootView = self.rootView else { return }
         guard let renderableRootNode = self.renderableDocument?.rootView else { return }
@@ -219,9 +198,7 @@ public class IncitoViewController: UIViewController {
         // in RootView coord space
         let renderWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
         
-        if debug.showRenderWindows {
-            updateDebugWindowViews(in: lastRenderedWindow)
-        }
+        _DEBUG_updateWindowViews(in: lastRenderedWindow)
         
         // dont re-render if no significant change in render window, unless forced
         guard forced
@@ -255,6 +232,49 @@ public class IncitoViewController: UIViewController {
             rootView.addSubview(renderedRootView)
         }
         
+        _DEBUG_updateOutlineViews(rootView: rootView, renderableRootNode: renderableRootNode)
+    }
+    
+    // MARK: - Debug
+    
+    public struct Debug {
+        public var showOutlines: Bool = false
+        public var showRenderWindows: Bool = false
+        public var printLayout: Bool = false
+        public var printLayoutDetails: Bool = false
+    }
+    public var debug: Debug = Debug() {
+        didSet {
+            self.renderVisibleViews(forced: true)
+        }
+    }
+    
+    private var debugWindowViews = (top: UIView(), bottom: UIView())
+    private var debugOutlineViews: [UIView] = []
+    
+    private func _DEBUG_printLayout() {
+        guard self.debug.printLayout,
+            let renderableDocument = self.renderableDocument else { return }
+        
+        let debugTree: TreeNode<String> = renderableDocument.rootView.mapValues { renderableView, _, idx in
+            let layout = renderableView.layout
+            let name = layout.viewProperties.name ?? ""
+            let position = layout.position
+            let size = layout.size
+            
+            var res = "\(idx)) \(name): [\(position)\(size)]"
+            if self.debug.printLayoutDetails {
+                res += "\n\t dimensions: \(layout.dimensions)\n"
+            }
+            
+            return res
+        }
+        
+        print("\(debugTree)")
+    }
+    
+    private func _DEBUG_updateOutlineViews(rootView: UIView, renderableRootNode: TreeNode<RenderableView>) {
+        
         debugOutlineViews.forEach { $0.removeFromSuperview() }
         if (self.debug.showOutlines) {
             // shows a visibility-box around the the view
@@ -270,13 +290,10 @@ public class IncitoViewController: UIViewController {
             }
         }
     }
-    
-    // MARK: - Debug
-    
-    private var debugWindowViews = (top: UIView(), bottom: UIView())
-    private var debugOutlineViews: [UIView] = []
-    
-    func updateDebugWindowViews(in rootViewVisibleWindow: CGRect) {
+
+    private func _DEBUG_updateWindowViews(in rootViewVisibleWindow: CGRect) {
+        guard debug.showRenderWindows else { return }
+
         let overlayColor = UIColor.black.withAlphaComponent(0.2)
         
         view.addSubview(debugWindowViews.top)
@@ -302,48 +319,7 @@ public class IncitoViewController: UIViewController {
     }
 }
 
-extension IncitoViewController: UIScrollViewDelegate {
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        renderVisibleViews()
-        
-        self.delegate?.incitoDidScroll(progress: self.scrollProgress, in: self)
-    }
-}
-
-extension UIScrollView {
-    var percentageProgress: Double {
-        let adjustedInset: UIEdgeInsets
-        if #available(iOS 11.0, *) {
-            adjustedInset = self.adjustedContentInset
-        } else {
-            adjustedInset = self.contentInset
-        }
-        let totalHeight = self.contentSize.height + adjustedInset.top + adjustedInset.bottom - bounds.size.height
-        guard totalHeight > 0 else { return 0 }
-        
-        let topOffset = self.contentOffset.y + adjustedInset.top
-        
-        return Double(topOffset / totalHeight)
-    }
-    
-    func contentOffset(forPercentageProgress progress: Double) -> CGPoint {
-        
-        let adjustedInset: UIEdgeInsets
-        if #available(iOS 11.0, *) {
-            adjustedInset = self.adjustedContentInset
-        } else {
-            adjustedInset = self.contentInset
-        }
-        
-        let totalHeight = self.contentSize.height + adjustedInset.top + adjustedInset.bottom - bounds.size.height
-
-        let topOffset = CGFloat(progress) * totalHeight
-        
-        let offsetY = topOffset - adjustedInset.top
-
-        return CGPoint(x: 0, y: offsetY)
-    }
-}
+// MARK: - Accessors
 
 extension IncitoViewController {
     
@@ -388,11 +364,32 @@ extension IncitoViewController {
             return nil
         }
     }
+}
+
+// MARK: - Scrolling
+
+extension IncitoViewController {
     
+    /**
+     Provides an opportunity to configure the scrollView used by the incito. It is possible to assign yourself as the delegate of the scrollView, if you need.
+     - parameter configurator: A callback that is passed the scrollview used by the incito. You can perform any configurations of the scrollview in here.
+     */
+    public func configureScrollView(_ configurator: (UIScrollView) -> Void) {
+        let scrollView = self.scrollView
+        configurator(scrollView)
+    }
+    
+    /**
+     An enum that defines how you wish to position an element when scrolling to it.
+     */
     public enum ScrollPosition {
+        /// The element is at the top of the screen.
         case top
+        /// The element is centered vertically within the screen.
         case centeredVertically
+        /// The element is centered vertically within the screen, but the screen has additional top & bottom margins
         case centeredVerticallyWithin(topMargin: CGFloat, bottomMargin: CGFloat)
+        /// The element is at the bottom of the screen.
         case bottom
     }
     
@@ -488,11 +485,50 @@ extension IncitoViewController {
     }
     
     /**
-     Scrolls the incito to the specified progress (a value from 0-1).
+     Scrolls the incito to the specified % progress (a value from 0-1).
+     - parameter progress: A value of 0-1 defining what % of the incito to scroll to (0 being top, 1 being bottom)
+     - parameter animated: If true the scrolling to position will be animated.
      */
     public func scrollToProgress(_ progress: Double, animated: Bool) {
         let contentOffset = self.scrollView.contentOffset(forPercentageProgress: progress)
         
         self.scrollView.setContentOffset(contentOffset, animated: animated)
+    }
+}
+
+// MARK: - Utilities
+
+extension UIScrollView {
+    var percentageProgress: Double {
+        let adjustedInset: UIEdgeInsets
+        if #available(iOS 11.0, *) {
+            adjustedInset = self.adjustedContentInset
+        } else {
+            adjustedInset = self.contentInset
+        }
+        let totalHeight = self.contentSize.height + adjustedInset.top + adjustedInset.bottom - bounds.size.height
+        guard totalHeight > 0 else { return 0 }
+        
+        let topOffset = self.contentOffset.y + adjustedInset.top
+        
+        return Double(topOffset / totalHeight)
+    }
+    
+    func contentOffset(forPercentageProgress progress: Double) -> CGPoint {
+        
+        let adjustedInset: UIEdgeInsets
+        if #available(iOS 11.0, *) {
+            adjustedInset = self.adjustedContentInset
+        } else {
+            adjustedInset = self.contentInset
+        }
+        
+        let totalHeight = self.contentSize.height + adjustedInset.top + adjustedInset.bottom - bounds.size.height
+        
+        let topOffset = CGFloat(progress) * totalHeight
+        
+        let offsetY = topOffset - adjustedInset.top
+        
+        return CGPoint(x: 0, y: offsetY)
     }
 }

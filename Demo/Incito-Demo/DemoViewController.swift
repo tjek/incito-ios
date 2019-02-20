@@ -136,15 +136,19 @@ class DemoViewController: IncitoLoaderViewController {
             vc.view.addGestureRecognizer(longPress)
             
             if let refImage = refImage {
-                // add the refImageView
-                vc.scrollView.addSubview(self.refImageView)
-                
                 self.refImageView.image = refImage
                 self.refImageView.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    self.refImageView.centerXAnchor.constraint(equalTo: vc.scrollView.centerXAnchor),
-                    self.refImageView.topAnchor.constraint(equalTo: vc.scrollView.topAnchor)
-                    ])
+                
+                vc.configureScrollView { (scrollView) in
+                    // add the refImageView
+                    scrollView.addSubview(self.refImageView)
+                    
+                    NSLayoutConstraint.activate([
+                        self.refImageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+                        self.refImageView.topAnchor.constraint(equalTo: scrollView.topAnchor)
+                        ])
+                }
+                
                 self.refImageView.alpha = 0
                 self.refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
                 self.refImageButton.isEnabled = true
