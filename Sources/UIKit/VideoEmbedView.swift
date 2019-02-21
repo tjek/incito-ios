@@ -38,7 +38,6 @@ class VideoEmbedView: UIView {
 }
 extension VideoEmbedView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        print("VideoEmbedView did load", webView)
         UIView.animate(withDuration: 0.2) {
             self.webView.alpha = 1
         }
