@@ -137,8 +137,9 @@ public class IncitoViewController: UIViewController {
         
         self.delegate?.incitoDocumentLoaded(in: self)
         
-        self.initializeRootView(parentSize: self.view.frame.size)
-        
+        if self.isViewLoaded {
+            self.initializeRootView(parentSize: self.view.frame.size)
+        }
         self._DEBUG_printLayout()
     }
     
