@@ -9,7 +9,6 @@
 
 import UIKit
 import AVFoundation
-import WebKit
 
 extension UIView {
     
@@ -132,22 +131,8 @@ extension UIView {
     func addVideoEmbedView(
         videoProperties: VideoEmbedViewProperties
         ) {
-        
-        let size = self.bounds.size
-        
-        let config = WKWebViewConfiguration()
-        config.allowsInlineMediaPlayback = true
-        
-        let webView = WKWebView(frame: CGRect(origin: .zero, size: size),
-                                configuration: config)
-        self.addSubview(webView)
-        
-        // TODO: dynamic loading/show loading state
-        
-        webView.scrollView.isScrollEnabled = false
-        let request = URLRequest(url: videoProperties.source)
-        
-        webView.load(request)
+        let videoView = VideoEmbedView(frame: self.bounds, videoProperties: videoProperties)
+        self.insertSubview(videoView, at: 0)
     }
 }
 
