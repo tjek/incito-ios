@@ -181,11 +181,12 @@ public class IncitoViewController: UIViewController {
         renderVisibleViews()
     }
     
+    private class DefaultDelegate: IncitoViewControllerDelegate { }
+    
     @objc
     private func didTapRootView(_ tap: UITapGestureRecognizer) {
         
-        guard let delegate = self.delegate else { return }
-        
+        let delegate = self.delegate ?? DefaultDelegate()
         let point = tap.location(in: self.view)
         
         if let firstLinkable = self.firstView(at: point, where: { $1.style.link != nil }),
