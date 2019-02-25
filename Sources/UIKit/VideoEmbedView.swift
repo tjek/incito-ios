@@ -13,11 +13,13 @@ import WebKit
 class VideoEmbedView: UIView {
     
     let webView: WKWebView!
+    var didTapURL: ((URL) -> Void)?    
     
     init(frame: CGRect, videoProperties: VideoEmbedViewProperties) {
         
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
+        
         self.webView = WKWebView(frame: frame,
                                  configuration: config)
         webView.scrollView.isScrollEnabled = false
@@ -28,7 +30,21 @@ class VideoEmbedView: UIView {
         webView.alpha = 0
         webView.navigationDelegate = self
         
-        let request = URLRequest(url: videoProperties.source)
+        var targetURL = videoProperties.source
+        
+        // add "playsinline=1" as a query parameter
+        if var urlComponents = URLComponents(url: targetURL, resolvingAgainstBaseURL: false) {
+            var queryItems = urlComponents.queryItems ?? []
+            queryItems += [
+                URLQueryItem(name: "playsinline", value: "1")
+            ]
+            urlComponents.queryItems = queryItems
+            if let tweakedURL = urlComponents.url(relativeTo: nil) {
+                targetURL = tweakedURL
+            }
+        }
+        print(targetURL)
+        let request = URLRequest(url: targetURL)
         webView.load(request)
     }
     
@@ -40,6 +56,16 @@ extension VideoEmbedView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         UIView.animate(withDuration: 0.2) {
             self.webView.alpha = 1
+        }
+    }
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if navigationAction.navigationType == .linkActivated,
+            navigationAction.targetFrame == nil,
+            let url = navigationAction.request.url {
+            self.didTapURL?(url)
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.allow)
         }
     }
 }

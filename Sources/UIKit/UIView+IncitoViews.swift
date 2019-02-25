@@ -132,6 +132,9 @@ extension UIView {
         videoProperties: VideoEmbedViewProperties
         ) {
         let videoView = VideoEmbedView(frame: self.bounds, videoProperties: videoProperties)
+        videoView.didTapURL = { url in
+            UIApplication.shared.openURL(url)
+        }
         self.insertSubview(videoView, at: 0)
     }
 }
