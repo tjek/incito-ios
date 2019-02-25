@@ -28,7 +28,6 @@ Pod::Spec.new do |s|
         ss.frameworks   = "Foundation", "UIKit"
 
         ss.dependency "Incito/Core"
-        ss.dependency "SVGKit"
         ss.dependency "FLAnimatedImage", "~> 1.0"
     end
 end

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AE09D6B0221EBB1200C58E40 /* VideoEmbedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE09D6AF221EBB1200C58E40 /* VideoEmbedView.swift */; };
+		AE1C68012223E18C001D19C9 /* SVGImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB846FF221FEA5E00685F45 /* SVGImageRenderer.swift */; };
 		AE246F43221B525B00662E9B /* IncitoEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE246F42221B525B00662E9B /* IncitoEnvironment.swift */; };
 		AE246F65221C061800662E9B /* Cache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE246F58221C05F400662E9B /* Cache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE246F66221C063C00662E9B /* Cache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE246F58221C05F400662E9B /* Cache.framework */; };
@@ -47,10 +48,6 @@
 		AE582AAB21FF2EAA009F4D8A /* FLAnimatedImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AAA21FF2E6E009F4D8A /* FLAnimatedImage.framework */; };
 		AE582AB221FF2EF9009F4D8A /* FLAnimatedImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AAA21FF2E6E009F4D8A /* FLAnimatedImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE582AB521FF2FCD009F4D8A /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582AB421FF2FCD009F4D8A /* Measure.swift */; };
-		AE582B0021FF3716009F4D8A /* SVGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE582A9A21FF2E49009F4D8A /* SVGKit.framework */; };
-		AE582B0121FF371E009F4D8A /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */; };
-		AE582B0221FF3729009F4D8A /* SVGKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582A9A21FF2E49009F4D8A /* SVGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		AE582B0321FF372F009F4D8A /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE582B1021FF4EA8009F4D8A /* IncitoLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */; };
 		AE6094EF2209B26600952B8E /* incito-blocktest-375.dimensions.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094EC2209B26000952B8E /* incito-blocktest-375.dimensions.json */; };
 		AE6094F02209B26600952B8E /* incito-blocktest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094EB2209B26000952B8E /* incito-blocktest-375.json */; };
@@ -129,62 +126,6 @@
 			remoteGlobalIDString = AE5829D721FF1000009F4D8A;
 			remoteInfo = "Incito-iOS";
 		};
-		AE582A9521FF2E49009F4D8A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6639618E16145D0400E58CCA;
-			remoteInfo = "SVGKit-iOS";
-		};
-		AE582A9721FF2E49009F4D8A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55452BF119EC68A200B75A30;
-			remoteInfo = "SVGKit-iOS Tests";
-		};
-		AE582A9921FF2E49009F4D8A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 825CDAAF1BDA4BC0003C1C12;
-			remoteInfo = "SVGKitFramework-iOS";
-		};
-		AE582A9B21FF2E49009F4D8A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 825CDAB81BDA4BC0003C1C12;
-			remoteInfo = "SVGKitFramework-iOSTests";
-		};
-		AE582A9D21FF2E49009F4D8A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 825CDAD31BDA4D38003C1C12;
-			remoteInfo = "SVGKitFramework-tvOS";
-		};
-		AE582A9F21FF2E49009F4D8A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 825CDADC1BDA4D38003C1C12;
-			remoteInfo = "SVGKitFramework-tvOSTests";
-		};
-		AE582AA121FF2E49009F4D8A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 321EAA622171EC8700640504;
-			remoteInfo = "SVGKitFramework-OSX";
-		};
-		AE582AA321FF2E49009F4D8A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 32A1F09C21746F4700ABFCE1;
-			remoteInfo = "SVGKitFramework-OSXTests";
-		};
 		AE582AA921FF2E6E009F4D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */;
@@ -199,13 +140,6 @@
 			remoteGlobalIDString = 92C9BC0B1B199DC500D79B06;
 			remoteInfo = FLAnimatedImage;
 		};
-		AE582AFE21FF3708009F4D8A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 825CDAAE1BDA4BC0003C1C12;
-			remoteInfo = "SVGKitFramework-iOS";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -216,8 +150,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				AE246F65221C061800662E9B /* Cache.framework in Embed Frameworks */,
-				AE582B0321FF372F009F4D8A /* CocoaLumberjack.framework in Embed Frameworks */,
-				AE582B0221FF3729009F4D8A /* SVGKit.framework in Embed Frameworks */,
 				AE582AB221FF2EF9009F4D8A /* FLAnimatedImage.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -264,10 +196,8 @@
 		AE582A6721FF1736009F4D8A /* IncitoLayout+Positioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Positioning.swift"; sourceTree = "<group>"; };
 		AE582A6821FF1736009F4D8A /* FontAssetLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAssetLoader.swift; sourceTree = "<group>"; };
 		AE582A6921FF1736009F4D8A /* IncitoTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncitoTypes.swift; sourceTree = "<group>"; };
-		AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "SVGKit-iOS.xcodeproj"; path = "External/SVGKit/SVGKit-iOS.xcodeproj"; sourceTree = "<group>"; };
 		AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FLAnimatedImage.xcodeproj; path = External/FLAnimatedImage/FLAnimatedImage.xcodeproj; sourceTree = "<group>"; };
 		AE582AB421FF2FCD009F4D8A /* Measure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
-		AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "External/SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/iOS/CocoaLumberjack.framework"; sourceTree = "<group>"; };
 		AE582B0421FF37A9009F4D8A /* Incito.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Incito.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		AE582B0521FF37A9009F4D8A /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoLoader.swift; sourceTree = "<group>"; };
@@ -288,6 +218,7 @@
 		AE8450D022019C680000A8D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Incito.strings; sourceTree = "<group>"; };
 		AE8450D222019D270000A8D8 /* Bundle+Incito.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Incito.swift"; sourceTree = "<group>"; };
 		AE8450D42201A0960000A8D8 /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
+		AEB846FF221FEA5E00685F45 /* SVGImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageRenderer.swift; sourceTree = "<group>"; };
 		AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultErrorViewController.swift; sourceTree = "<group>"; };
 		AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -298,8 +229,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE246F66221C063C00662E9B /* Cache.framework in Frameworks */,
-				AE582B0121FF371E009F4D8A /* CocoaLumberjack.framework in Frameworks */,
-				AE582B0021FF3716009F4D8A /* SVGKit.framework in Frameworks */,
 				AE582AAB21FF2EAA009F4D8A /* FLAnimatedImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +318,7 @@
 				AE582A5E21FF1736009F4D8A /* UIView+IncitoViews.swift */,
 				AE582A6021FF1736009F4D8A /* RoundedShadowedView.swift */,
 				AE09D6AF221EBB1200C58E40 /* VideoEmbedView.swift */,
+				AEB846FF221FEA5E00685F45 /* SVGImageRenderer.swift */,
 				AE8450C72200F8530000A8D8 /* CopyableLabel.swift */,
 				AE820AD722130AC40090E3D1 /* CALayer+Stroke.swift */,
 				AE8450C922019BFE0000A8D8 /* Resources */,
@@ -418,25 +348,8 @@
 			children = (
 				AE246F4E221C05F400662E9B /* Cache.xcodeproj */,
 				AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */,
-				AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */,
-				AE582AB621FF30A3009F4D8A /* CocoaLumberjack.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		AE582A8B21FF2E48009F4D8A /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				AE582A9621FF2E49009F4D8A /* libSVGKit-iOS.2.1.0.a */,
-				AE582A9821FF2E49009F4D8A /* SVGKit-iOS Tests.xctest */,
-				AE582A9A21FF2E49009F4D8A /* SVGKit.framework */,
-				AE582A9C21FF2E49009F4D8A /* SVGKitFramework-iOSTests.xctest */,
-				AE582A9E21FF2E49009F4D8A /* SVGKit.framework */,
-				AE582AA021FF2E49009F4D8A /* SVGKitFramework-tvOSTests.xctest */,
-				AE582AA221FF2E49009F4D8A /* SVGKit.framework */,
-				AE582AA421FF2E49009F4D8A /* SVGKitFramework-OSXTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		AE582AA621FF2E6E009F4D8A /* Products */ = {
@@ -521,7 +434,6 @@
 			);
 			dependencies = (
 				AE246F64221C060D00662E9B /* PBXTargetDependency */,
-				AE582AFF21FF3708009F4D8A /* PBXTargetDependency */,
 				AE582AAE21FF2EC2009F4D8A /* PBXTargetDependency */,
 			);
 			name = "Incito-iOS";
@@ -585,10 +497,6 @@
 					ProductGroup = AE582AA621FF2E6E009F4D8A /* Products */;
 					ProjectRef = AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */;
 				},
-				{
-					ProductGroup = AE582A8B21FF2E48009F4D8A /* Products */;
-					ProjectRef = AE582A8A21FF2E48009F4D8A /* SVGKit-iOS.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -639,62 +547,6 @@
 			fileType = wrapper.cfbundle;
 			path = "Cache-tvOS-Tests.xctest";
 			remoteRef = AE246F61221C05F400662E9B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE582A9621FF2E49009F4D8A /* libSVGKit-iOS.2.1.0.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libSVGKit-iOS.2.1.0.a";
-			remoteRef = AE582A9521FF2E49009F4D8A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE582A9821FF2E49009F4D8A /* SVGKit-iOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SVGKit-iOS Tests.xctest";
-			remoteRef = AE582A9721FF2E49009F4D8A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE582A9A21FF2E49009F4D8A /* SVGKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SVGKit.framework;
-			remoteRef = AE582A9921FF2E49009F4D8A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE582A9C21FF2E49009F4D8A /* SVGKitFramework-iOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SVGKitFramework-iOSTests.xctest";
-			remoteRef = AE582A9B21FF2E49009F4D8A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE582A9E21FF2E49009F4D8A /* SVGKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SVGKit.framework;
-			remoteRef = AE582A9D21FF2E49009F4D8A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE582AA021FF2E49009F4D8A /* SVGKitFramework-tvOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SVGKitFramework-tvOSTests.xctest";
-			remoteRef = AE582A9F21FF2E49009F4D8A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE582AA221FF2E49009F4D8A /* SVGKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SVGKit.framework;
-			remoteRef = AE582AA121FF2E49009F4D8A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE582AA421FF2E49009F4D8A /* SVGKitFramework-OSXTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SVGKitFramework-OSXTests.xctest";
-			remoteRef = AE582AA321FF2E49009F4D8A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		AE582AAA21FF2E6E009F4D8A /* FLAnimatedImage.framework */ = {
@@ -776,6 +628,7 @@
 				AE582A7121FF1736009F4D8A /* RenderableView.swift in Sources */,
 				AE582A7021FF1736009F4D8A /* GenericIdentifier.swift in Sources */,
 				AE09D6B0221EBB1200C58E40 /* VideoEmbedView.swift in Sources */,
+				AE1C68012223E18C001D19C9 /* SVGImageRenderer.swift in Sources */,
 				AE8450D322019D270000A8D8 /* Bundle+Incito.swift in Sources */,
 				AE582A7921FF1736009F4D8A /* UIImage+Sizing.swift in Sources */,
 				AE582A7C21FF1736009F4D8A /* IncitoLoaderViewController.swift in Sources */,
@@ -809,11 +662,6 @@
 			name = FLAnimatedImage;
 			targetProxy = AE582AAD21FF2EC2009F4D8A /* PBXContainerItemProxy */;
 		};
-		AE582AFF21FF3708009F4D8A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "SVGKitFramework-iOS";
-			targetProxy = AE582AFE21FF3708009F4D8A /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -838,10 +686,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/External/SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -869,10 +714,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/External/SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (

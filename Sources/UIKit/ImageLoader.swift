@@ -9,8 +9,6 @@
 
 import UIKit
 
-private var imageDataParserQueue = DispatchQueue(label: "ImageDataParserQueue", qos: .userInitiated)
-
 func loadImageView(request: ImageViewLoadRequest) {
     // how long to wait before first asking the request if we are still visible, and then doing the request.
     let debounceDelay: TimeInterval = 0.2
@@ -25,8 +23,8 @@ func loadImageView(request: ImageViewLoadRequest) {
         }
     })
         .flatMap(IncitoEnvironment.current.imageLoader.imageData(forURL:))
-        .map({ (data: $0.data, mimeType: $0.mimeType, request.containerSize, request.transform) })
-        .flatMap(buildImageView(imageData:mimeType:containerSize:transform:))
+        .map({ (url: request.url, data: $0.data, mimeType: $0.mimeType, request.containerSize, request.transform) })
+        .flatMap(buildImageView(sourceURL:imageData:mimeType:containerSize:transform:))
         .run(request.completion)
 }
 
@@ -41,10 +39,9 @@ extension ImageLoaderProtocol {
 }
 
 import FLAnimatedImage
-import SVGKit
 
 // when run, the future's completion will be called on the main queue
-func buildImageView(imageData: Data, mimeType: String?, containerSize: CGSize, transform: ((UIImage) -> UIImage)?) -> Future<UIImageView?> {
+func buildImageView(sourceURL: URL, imageData: Data, mimeType: String?, containerSize: CGSize, transform: ((UIImage) -> UIImage)?) -> Future<UIImageView?> {
     
     return Future { completion in
         
@@ -68,21 +65,9 @@ func buildImageView(imageData: Data, mimeType: String?, containerSize: CGSize, t
                     }
                 }
             case "image/svg+xml"?:
-                if let svgImage = SVGKImage(data: imageData) {
-                    if svgImage.hasSize(),
-                        containerSize.width != 0, containerSize.height != 0 {
-                        let currentSize = svgImage.size
-                        // scale to fit in container
-                        let scaleFactor = max(currentSize.width / containerSize.width,
-                                              currentSize.height / containerSize.height)
-                        let newSize = CGSize(width: currentSize.width / scaleFactor,
-                                             height: currentSize.height / scaleFactor)
-                        svgImage.size = newSize
-                    }
-                    
-                    let image = SVGKExporterUIImage.export(asUIImage: svgImage)
+                if let svgImage = renderSVG(svgData: imageData, url: sourceURL, containerSize: containerSize) {
                     return {
-                        UIImageView(image: image)
+                        UIImageView(image: svgImage)
                     }
                 }
             default:
@@ -105,5 +90,5 @@ func buildImageView(imageData: Data, mimeType: String?, containerSize: CGSize, t
             let imageView = viewBuilder?()
             completion(imageView)
         }
-    }.async(on: imageDataParserQueue, completesOn: .main)
+    }.async(on: .global(qos: .userInitiated), completesOn: .main)
 }

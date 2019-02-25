@@ -1,9 +1,6 @@
 [submodule "External/FLAnimatedImage"]
 	path = External/FLAnimatedImage
 	url = https://github.com/Flipboard/FLAnimatedImage.git
-[submodule "External/SVGKit"]
-	path = External/SVGKit
-	url = https://github.com/SVGKit/SVGKit.git
 [submodule "External/Cache"]
 	path = External/Cache
 	url = https://github.com/hyperoslo/Cache.git
