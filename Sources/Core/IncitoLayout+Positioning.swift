@@ -18,7 +18,7 @@ extension TreeNode where T == ViewLayout {
 
      Finally, it recursively calls this function for each child, adding the returned positioned-child node as a child of the node created earlier.
      */
-    func positioningPass() -> TreeNode<ViewLayout> {
+    func positioningPass(systemGravity: HorizontalGravity) -> TreeNode<ViewLayout> {
         
         var viewLayout = self.value
         
@@ -43,14 +43,15 @@ extension TreeNode where T == ViewLayout {
             position: viewLayout.dimensions.layoutProperties.position,
             layoutProperties: viewLayout.viewProperties.layout,
             prevSiblings: prevSiblings,
-            nextSiblings: nextSiblings
+            nextSiblings: nextSiblings,
+            systemGravity: systemGravity
         )
         
         viewLayout.position = position
         
         let newNode = TreeNode<ViewLayout>(value: viewLayout)
         for child in self.children {
-            newNode.add(child: child.positioningPass())
+            newNode.add(child: child.positioningPass(systemGravity: systemGravity))
         }
         return newNode
     }
@@ -71,11 +72,9 @@ private func calculatePosition(
     position: Edges<Double?>,
     layoutProperties: LayoutProperties,
     prevSiblings: [(size: Size<Double>, dimensions: ViewDimensions)],
-    nextSiblings: [(size: Size<Double>, dimensions: ViewDimensions)]
+    nextSiblings: [(size: Size<Double>, dimensions: ViewDimensions)],
+    systemGravity: HorizontalGravity
     ) -> Point<Double> {
-    
-    // TODO: different default gravity if system is right-to-left layout
-    let gravity = layoutProperties.gravity ?? .left
     
     switch parentLayoutType {
     case .block:
@@ -85,7 +84,7 @@ private func calculatePosition(
             parentIntrinsicSize: parentIntrinsicSize,
             size: size,
             margins: margins,
-            gravity: gravity,
+            gravity: layoutProperties.gravity ?? systemGravity,
             prevSiblings: prevSiblings
         )
     case .absolute:
@@ -105,7 +104,7 @@ private func calculatePosition(
             nextSiblings: nextSiblings,
             size: size,
             margins: margins,
-            gravity: gravity
+            gravity: layoutProperties.gravity
         )
     }
 }
@@ -209,7 +208,7 @@ private func calculateFlexChildPosition(
     nextSiblings: [(size: Size<Double>, dimensions: ViewDimensions)],
     size: Size<Double>,
     margins: Edges<Double>,
-    gravity: HorizontalGravity
+    gravity: HorizontalGravity?
     ) -> Point<Double> {
     
     switch flexProperties.direction {
@@ -335,7 +334,7 @@ private func calculateFlexChildColumnPosition(
     nextSiblings: [(size: Size<Double>, dimensions: ViewDimensions)],
     size: Size<Double>,
     margins: Edges<Double>,
-    gravity: HorizontalGravity
+    gravity: HorizontalGravity?
     ) -> Point<Double> {
     
     let parentInnerSize = parentSize.inset(parentPadding)
@@ -390,27 +389,29 @@ private func calculateFlexChildColumnPosition(
     }()
     
     let originX: Double = {
-        switch itemAlignment {
-        case .center:
-            return parentPadding.left + (parentInnerSize.width / 2) - (outerSize.width / 2) + margins.left
-        case .stretch:
-            switch gravity {
-            case .left:
-                return parentPadding.left + margins.left
-            case .right:
-                return parentSize.width - parentPadding.right - margins.right - size.width
-            case .center:
-                
-                let parentInnerWidth = parentSize.width - parentPadding.left - parentPadding.right
-                let outerWidth = size.width + margins.left + margins.right
-                
-                return parentPadding.left + (parentInnerWidth / 2) - (outerWidth / 2) + margins.left
-            }
-        case .flexStart,
-             .baseline:
+        // when aligning horizontally, gravity trumps the flex itemAlignment property
+        switch gravity {
+        case .left?:
             return parentPadding.left + margins.left
-        case .flexEnd:
+        case .right?:
             return parentSize.width - parentPadding.right - margins.right - size.width
+        case .center?:
+            
+            let parentInnerWidth = parentSize.width - parentPadding.left - parentPadding.right
+            let outerWidth = size.width + margins.left + margins.right
+            
+            return parentPadding.left + (parentInnerWidth / 2) - (outerWidth / 2) + margins.left
+        case nil:
+            switch itemAlignment {
+            case .center:
+                return parentPadding.left + (parentInnerSize.width / 2) - (outerSize.width / 2) + margins.left
+            case .stretch,
+                 .flexStart,
+                 .baseline:
+                return parentPadding.left + margins.left
+            case .flexEnd:
+                return parentSize.width - parentPadding.right - margins.right - size.width
+            }
         }
     }()
     

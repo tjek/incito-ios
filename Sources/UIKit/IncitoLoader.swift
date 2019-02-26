@@ -76,10 +76,13 @@ func buildRenderableDocument(
             textDefaults: defaultTextProperties
         )
         
+        let systemGravity: HorizontalGravity = UIView.userInterfaceLayoutDirection(for: .unspecified) == .leftToRight ? .left : .right
+        
         let layoutTree = rootPropertiesNode
             .layout(
                 rootSize: Size(width: width, height: 0),
-                intrinsicSizerBuilder: intrinsicSizer
+                intrinsicSizerBuilder: intrinsicSizer,
+                systemGravity: systemGravity
         )
         
         let renderableTree = layoutTree

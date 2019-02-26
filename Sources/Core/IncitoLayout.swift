@@ -34,7 +34,8 @@ extension TreeNode where T == ViewProperties {
     
     func layout(
         rootSize: Size<Double>,
-        intrinsicSizerBuilder: @escaping (ViewProperties) -> IntrinsicSizer
+        intrinsicSizerBuilder: @escaping (ViewProperties) -> IntrinsicSizer,
+        systemGravity: HorizontalGravity
         ) -> TreeNode<ViewLayout> {
 
         var wrapperLayout = LayoutProperties.empty
@@ -65,7 +66,7 @@ extension TreeNode where T == ViewProperties {
             .sizingPass(parentSize: rootSize)
         
         let positionedTree = actualSizedTree
-            .positioningPass()
+            .positioningPass(systemGravity: systemGravity)
         
         return positionedTree.children.first!
     }
