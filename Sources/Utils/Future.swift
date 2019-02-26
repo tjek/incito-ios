@@ -90,7 +90,7 @@ extension Future {
 
 extension Future {
     
-    public func map<S, T>(
+    public func mapResult<S, T>(
         _ transform: @escaping (S) -> T
         ) -> Future<Result<T>> where A == Result<S> {
         return self.map { resultS in
@@ -100,7 +100,7 @@ extension Future {
         }
     }
     
-    public func flatMap<S, T>(
+    public func flatMapResult<S, T>(
         _ transform: @escaping (S) -> Future<Result<T>>
         ) -> Future<Result<T>> where A == Result<S> {
         return self.flatMap { (resultS: Result<S>) in
@@ -138,14 +138,14 @@ extension Future {
         }
     }
     
-    public func onError<S>(_ other: Future<A>) -> Future<A> where A == Result<S> {
+    public func onError<S>(_ other: @escaping @autoclosure () -> Future<A>) -> Future<A> where A == Result<S> {
         return Future { cb in
             self.run { a in
                 switch a {
                 case .success:
                     cb(a)
                 case .error:
-                    other.run(cb)
+                    other().run(cb)
                 }
             }
             

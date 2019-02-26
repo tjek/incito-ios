@@ -43,7 +43,7 @@ class VideoEmbedView: UIView {
                 targetURL = tweakedURL
             }
         }
-        print(targetURL)
+
         let request = URLRequest(url: targetURL)
         webView.load(request)
     }

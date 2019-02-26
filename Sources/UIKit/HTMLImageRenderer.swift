@@ -28,7 +28,7 @@ extension HTMLImageRenderer {
      
      Note: This can be rather slow (up to 500ms, esp for the first SVG), so it should be performed on a BG queue
      */
-    func renderSVG(_ svgData: Data, containerSize: CGSize, baseURL: URL?) -> UIImage? {
+    func renderSVG(_ svgData: Data, containerSize: Size<Double>, baseURL: URL?) -> UIImage? {
         
         guard containerSize.height > 0, containerSize.width > 0,
             let svgStr = String(data: svgData, encoding: .utf8) else {
@@ -37,7 +37,8 @@ extension HTMLImageRenderer {
         
         let htmlStr = "<div style='position: absolute;top: 0px;left: 0px;width: 100vw;height: 100vh;'>\(svgStr)</div>"
         
-        return self.render(htmlStr, containerSize: containerSize, baseURL: baseURL)
+        let image = self.render(htmlStr, containerSize: containerSize.cgSize, baseURL: baseURL)
+        return image
     }
 }
 

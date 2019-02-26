@@ -61,6 +61,7 @@ extension AsyncStorage {
 enum IncitoError: Error {
     case unknownImageRequestError
     case unknownFontRequestError
+    case unableToRenderSVG
 }
 
 extension URLSession {
@@ -98,20 +99,56 @@ extension URLSession {
     }
 }
 
+fileprivate func svgCacheKey(url: URL, containerSize: Size<Double>) -> String {
+    return "\(containerSize.width)x\(containerSize.height):\(url.absoluteString)"
+}
+
+fileprivate func imageLoadResponseTransform(_ image: IncitoDataStore.ImageStorageType, url: URL, containerSize: Size<Double>) -> Result<(image: IncitoDataStore.ImageStorageType, cacheKey: String)> {
+    
+    switch image.mimeType {
+    case "image/svg+xml"?:
+        if let svgImage = SharedHTMLImageRenderer.renderSVG(image.data, containerSize: containerSize, baseURL: url),
+            let pngData = svgImage.pngData() {
+            
+            let newImage = IncitoDataStore.ImageStorageType(data: pngData, mimeType: "image/png")
+            let newCacheKey = svgCacheKey(url: url, containerSize: containerSize)
+            
+            return .success((newImage, newCacheKey))
+        } else {
+            return .error(IncitoError.unableToRenderSVG)
+        }
+    default:
+        return .success((image, url.absoluteString))
+    }
+}
+
 extension IncitoDataStore: ImageLoaderProtocol {
-    public func imageData(forURL url: URL, completion: @escaping (Result<(data: Data, mimeType: String?)>) -> Void) {
+    public func imageData(forURL url: URL, containerSize: Size<Double>, completion: @escaping (Result<(data: Data, mimeType: String?)>) -> Void) {
         self.queue.async {
+            
+            // hit the cache with the url as the key
             self.imageStorage.async.object(forKey: url.absoluteString)
+                // if that fails use the url prefixed with the size as the key
+                .onError(self.imageStorage.async.object(forKey: svgCacheKey(url: url, containerSize: containerSize)))
+                // if that fails, do a network request
                 .onError(
                     URLSession.shared.imageRequest(url: url)
-                        .map({ (img: ImageStorageType) in
-                            try? self.imageStorage.setObject(img, forKey: url.absoluteString)
-                            return img
+                        // apply a transform to the network result
+                        .map({
+                            $0.flatMap({ imageProperties in
+                                imageLoadResponseTransform(imageProperties, url: url, containerSize: containerSize)
+                            })
+                        })
+                        // if that succeeds, save the result to the cache
+                        .mapResult({ (transformRes: (ImageStorageType, String)) -> ImageStorageType in
+                            let (transformedImg, newCacheKey) = transformRes
+                            
+                            try? self.imageStorage.setObject(transformedImg, forKey: newCacheKey)
+                            return transformedImg
                         })
                 )
-                .map({ (img: IncitoDataStore.ImageStorageType) in
-                    return (img.data, img.mimeType)
-                })
+                // convert from ImageStorageType to tuple
+                .mapResult({ ($0.data, $0.mimeType) })
                 .run(completion)
         }
     }
@@ -123,14 +160,12 @@ extension IncitoDataStore: FontLoaderProtocol {
             self.fontStorage.async.object(forKey: url.absoluteString)
                 .onError(
                     URLSession.shared.fontRequest(url: url)
-                        .map({ (font: FontStorageType) in
+                        .mapResult({ (font: FontStorageType) in
                             try! self.fontStorage.setObject(font, forKey: url.absoluteString)
                             return font
                         })
                 )
-                .map({ (font: IncitoDataStore.FontStorageType) in
-                    return font.data
-                })
+                .mapResult({ $0.data })
                 .run(completion)
         }
     }

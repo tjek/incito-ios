@@ -22,8 +22,8 @@ public func IncitoJSONFileLoader(
     // - convert into a RenderableIncitoDocument, using the size
     // - make sure this all happens asyncronously
     return openFile(filename: filename, bundle: bundle)
-        .flatMap(IncitoPropertiesDocument.decode(from:))
-        .flatMap({ IncitoDocumentLoader(document: $0, width: width) })
+        .flatMapResult(IncitoPropertiesDocument.decode(from:))
+        .flatMapResult({ IncitoDocumentLoader(document: $0, width: width) })
 }
 
 public func IncitoDocumentLoader(

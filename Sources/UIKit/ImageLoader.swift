@@ -13,25 +13,25 @@ func loadImageView(request: ImageViewLoadRequest) {
     // how long to wait before first asking the request if we are still visible, and then doing the request.
     let debounceDelay: TimeInterval = 0.2
     
-    Future<URL?>(run: { cb in
+    Future<(URL, Size<Double>)?>(run: { cb in
         DispatchQueue.main.asyncAfter(deadline: .now() + debounceDelay) {
             guard request.stillVisibleCheck() else {
                 cb(nil)
                 return
             }
-            cb(request.url)
+            cb((request.url, Size<Double>(cgSize: request.containerSize)))
         }
     })
-        .flatMap(IncitoEnvironment.current.imageLoader.imageData(forURL:))
+        .flatMap(IncitoEnvironment.current.imageLoader.imageData(forURL:containerSize:))
         .map({ (url: request.url, data: $0.data, mimeType: $0.mimeType, request.containerSize, request.transform) })
         .flatMap(buildImageView(sourceURL:imageData:mimeType:containerSize:transform:))
         .run(request.completion)
 }
 
 extension ImageLoaderProtocol {
-    func imageData(forURL url: URL) -> Future<(data: Data, mimeType: String?)?> {
+    func imageData(forURL url: URL, containerSize: Size<Double>) -> Future<(data: Data, mimeType: String?)?> {
         return Future { cb in
-            self.imageData(forURL: url) {
+            self.imageData(forURL: url, containerSize: containerSize) {
                 cb($0.value)
             }
         }
@@ -65,7 +65,8 @@ func buildImageView(sourceURL: URL, imageData: Data, mimeType: String?, containe
                     }
                 }
             case "image/svg+xml"?:
-                if let svgImage = SharedHTMLImageRenderer.renderSVG(imageData, containerSize: containerSize, baseURL: sourceURL) {
+                // if for some reason the imageloader cache transformer failed, render the SVG here.
+                if let svgImage = SharedHTMLImageRenderer.renderSVG(imageData, containerSize: Size<Double>(cgSize: containerSize), baseURL: sourceURL) {
                     return {
                         UIImageView(image: svgImage)
                     }
@@ -79,7 +80,7 @@ func buildImageView(sourceURL: URL, imageData: Data, mimeType: String?, containe
                         UIImageView(image: image)
                     }
                 } else {
-                    print(" ❌ image load failed - unknown data type '\(mimeType ?? "?")'")
+                    print(" ❌ image load failed - unknown data type '\(mimeType ?? "?")'", sourceURL)
                 }
             }
             
