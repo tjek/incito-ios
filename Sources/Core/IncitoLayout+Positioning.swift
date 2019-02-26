@@ -104,7 +104,8 @@ private func calculatePosition(
             prevSiblings: prevSiblings,
             nextSiblings: nextSiblings,
             size: size,
-            margins: margins
+            margins: margins,
+            gravity: gravity
         )
     }
 }
@@ -207,7 +208,8 @@ private func calculateFlexChildPosition(
     prevSiblings: [(size: Size<Double>, dimensions: ViewDimensions)],
     nextSiblings: [(size: Size<Double>, dimensions: ViewDimensions)],
     size: Size<Double>,
-    margins: Edges<Double>
+    margins: Edges<Double>,
+    gravity: HorizontalGravity
     ) -> Point<Double> {
     
     switch flexProperties.direction {
@@ -231,7 +233,8 @@ private func calculateFlexChildPosition(
             prevSiblings: prevSiblings,
             nextSiblings: nextSiblings,
             size: size,
-            margins: margins
+            margins: margins,
+            gravity: gravity
         )
     }
 }
@@ -331,7 +334,8 @@ private func calculateFlexChildColumnPosition(
     prevSiblings: [(size: Size<Double>, dimensions: ViewDimensions)],
     nextSiblings: [(size: Size<Double>, dimensions: ViewDimensions)],
     size: Size<Double>,
-    margins: Edges<Double>
+    margins: Edges<Double>,
+    gravity: HorizontalGravity
     ) -> Point<Double> {
     
     let parentInnerSize = parentSize.inset(parentPadding)
@@ -389,8 +393,20 @@ private func calculateFlexChildColumnPosition(
         switch itemAlignment {
         case .center:
             return parentPadding.left + (parentInnerSize.width / 2) - (outerSize.width / 2) + margins.left
-        case .stretch,
-             .flexStart,
+        case .stretch:
+            switch gravity {
+            case .left:
+                return parentPadding.left + margins.left
+            case .right:
+                return parentSize.width - parentPadding.right - margins.right - size.width
+            case .center:
+                
+                let parentInnerWidth = parentSize.width - parentPadding.left - parentPadding.right
+                let outerWidth = size.width + margins.left + margins.right
+                
+                return parentPadding.left + (parentInnerWidth / 2) - (outerWidth / 2) + margins.left
+            }
+        case .flexStart,
              .baseline:
             return parentPadding.left + margins.left
         case .flexEnd:
