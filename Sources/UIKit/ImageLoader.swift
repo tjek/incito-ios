@@ -65,7 +65,7 @@ func buildImageView(sourceURL: URL, imageData: Data, mimeType: String?, containe
                     }
                 }
             case "image/svg+xml"?:
-                if let svgImage = renderSVG(svgData: imageData, url: sourceURL, containerSize: containerSize) {
+                if let svgImage = SharedHTMLImageRenderer.renderSVG(imageData, containerSize: containerSize, baseURL: sourceURL) {
                     return {
                         UIImageView(image: svgImage)
                     }

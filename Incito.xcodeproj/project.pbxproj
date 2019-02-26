@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AE09D6B0221EBB1200C58E40 /* VideoEmbedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE09D6AF221EBB1200C58E40 /* VideoEmbedView.swift */; };
-		AE1C68012223E18C001D19C9 /* SVGImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB846FF221FEA5E00685F45 /* SVGImageRenderer.swift */; };
+		AE1C68012223E18C001D19C9 /* HTMLImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB846FF221FEA5E00685F45 /* HTMLImageRenderer.swift */; };
 		AE246F43221B525B00662E9B /* IncitoEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE246F42221B525B00662E9B /* IncitoEnvironment.swift */; };
 		AE246F65221C061800662E9B /* Cache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE246F58221C05F400662E9B /* Cache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE246F66221C063C00662E9B /* Cache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE246F58221C05F400662E9B /* Cache.framework */; };
@@ -218,7 +218,7 @@
 		AE8450D022019C680000A8D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Incito.strings; sourceTree = "<group>"; };
 		AE8450D222019D270000A8D8 /* Bundle+Incito.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Incito.swift"; sourceTree = "<group>"; };
 		AE8450D42201A0960000A8D8 /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
-		AEB846FF221FEA5E00685F45 /* SVGImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImageRenderer.swift; sourceTree = "<group>"; };
+		AEB846FF221FEA5E00685F45 /* HTMLImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLImageRenderer.swift; sourceTree = "<group>"; };
 		AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultErrorViewController.swift; sourceTree = "<group>"; };
 		AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -318,7 +318,7 @@
 				AE582A5E21FF1736009F4D8A /* UIView+IncitoViews.swift */,
 				AE582A6021FF1736009F4D8A /* RoundedShadowedView.swift */,
 				AE09D6AF221EBB1200C58E40 /* VideoEmbedView.swift */,
-				AEB846FF221FEA5E00685F45 /* SVGImageRenderer.swift */,
+				AEB846FF221FEA5E00685F45 /* HTMLImageRenderer.swift */,
 				AE8450C72200F8530000A8D8 /* CopyableLabel.swift */,
 				AE820AD722130AC40090E3D1 /* CALayer+Stroke.swift */,
 				AE8450C922019BFE0000A8D8 /* Resources */,
@@ -628,7 +628,7 @@
 				AE582A7121FF1736009F4D8A /* RenderableView.swift in Sources */,
 				AE582A7021FF1736009F4D8A /* GenericIdentifier.swift in Sources */,
 				AE09D6B0221EBB1200C58E40 /* VideoEmbedView.swift in Sources */,
-				AE1C68012223E18C001D19C9 /* SVGImageRenderer.swift in Sources */,
+				AE1C68012223E18C001D19C9 /* HTMLImageRenderer.swift in Sources */,
 				AE8450D322019D270000A8D8 /* Bundle+Incito.swift in Sources */,
 				AE582A7921FF1736009F4D8A /* UIImage+Sizing.swift in Sources */,
 				AE582A7C21FF1736009F4D8A /* IncitoLoaderViewController.swift in Sources */,
