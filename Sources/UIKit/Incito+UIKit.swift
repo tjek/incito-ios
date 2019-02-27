@@ -99,7 +99,7 @@ extension TextViewProperties {
          If we want to center it we need to modify the baseline offset to center the glyphs (using the possibly larger `font.lineHeight`) within the (possibly smaller, point-size-based) maxLineHeight-sized line.
          */
         let maxLineHeight = floor(font.pointSize * lineHeightMultiplier)
-        let baselineOffset: CGFloat = ((maxLineHeight / 2) - (font.lineHeight / 2)) / 2
+        let baselineOffset: CGFloat = ((maxLineHeight / 2) - (font.lineHeight / 2))
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0
