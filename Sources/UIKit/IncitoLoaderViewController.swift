@@ -19,6 +19,8 @@ public protocol IncitoLoaderViewControllerDelegate: IncitoViewControllerDelegate
      If you wish to customize the viewcontroller used to show the loading activity when loading the incito, implement this delegate method and return a view controller showing a loading view. If you do not implement this method a default viewcontroller showing a loading spinner will be used.
      */
     func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController
+    
+    func stateDidChange(from oldState: IncitoLoaderViewController.State, to newState: IncitoLoaderViewController.State, in viewController: IncitoLoaderViewController)
 }
 
 public extension IncitoLoaderViewControllerDelegate {
@@ -32,6 +34,8 @@ public extension IncitoLoaderViewControllerDelegate {
     func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController {
          return DefaultLoadingViewController.build(backgroundColor: viewController.view.backgroundColor ?? .white)
     }
+    
+    func stateDidChange(from oldState: IncitoLoaderViewController.State, to newState: IncitoLoaderViewController.State, in viewController: IncitoLoaderViewController) { }
 }
 
 /**
@@ -39,27 +43,42 @@ public extension IncitoLoaderViewControllerDelegate {
  */
 open class IncitoLoaderViewController: UIViewController {
     
-    fileprivate enum State {
+    public enum State: Equatable {
         case loading
         case success(IncitoViewController)
         case error(Error)
+        
+        public static func == (lhs: State, rhs: State) -> Bool {
+            switch (lhs, rhs) {
+            case (.loading, .loading):
+                return true
+            case let (.success(lhsVC), .success(rhsVC)):
+                return lhsVC === rhsVC
+            case let (.error(lhsErr), .error(rhsErr)):
+                return lhsErr.localizedDescription == rhsErr.localizedDescription
+            default:
+                return false
+            }
+        }
     }
     
-    fileprivate var reloadId: Int = 0
-    fileprivate var lastLoader: IncitoLoader?
-    fileprivate var lastReloadCompletion: ((Result<IncitoViewController>) -> Void)?
-    fileprivate var loaderQueue = DispatchQueue(label: "IncitoLoaderQueue", qos: .userInitiated)
-    
-    fileprivate var currentStateViewController: UIViewController?
-    fileprivate var stateContainerView = UIView()
-    fileprivate var state: State = .loading {
+    public fileprivate(set) var state: State = .loading {
         didSet {
             updateViewState()
+            
+            if state != oldValue {                
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.delegate?.stateDidChange(
+                        from: oldValue,
+                        to: self.state,
+                        in: self
+                    )
+                }
+            }
         }
     }
 
-    
-    
     public weak var delegate: IncitoLoaderViewControllerDelegate?
     
     public var incitoViewController: IncitoViewController? {
@@ -69,6 +88,22 @@ open class IncitoLoaderViewController: UIViewController {
         return incitoVC
     }
     
+    public var isLoading: Bool {
+        if case .loading = self.state {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    fileprivate var reloadId: Int = 0
+    fileprivate var lastLoader: IncitoLoader?
+    fileprivate var lastReloadCompletion: ((Result<IncitoViewController>) -> Void)?
+    fileprivate var loaderQueue = DispatchQueue(label: "IncitoLoaderQueue", qos: .userInitiated)
+    
+    fileprivate var currentStateViewController: UIViewController?
+    fileprivate var stateContainerView = UIView()
+
     override open func viewDidLoad() {
         super.viewDidLoad()
         
