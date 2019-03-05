@@ -37,20 +37,24 @@ func buildDefaultErrorViewController(
         return whiteComponent <= 0.6
     }
     
-    let tint: UIColor = isBGDark ? UIColor.white : UIColor(white: 0, alpha: 0.6)
-    
-    // TODO: different contents depending on the error
-    errorView.update(ErrorView.Contents(
-        image: nil,
-        title: "😢 Unable to Load".withoutWidows,
-        message: "Sorry, there was a problem. Please try again.".withoutWidows,
-        errorDetails: "\(error.localizedDescription)\n\(error)",
-        tint: tint,
-        isRetryable: true
-        )
-    )
+    errorView.update(error.errorViewContents(darkBG: isBGDark))
     
     return errorVC
+}
+
+private extension Error {
+    func errorViewContents(darkBG: Bool) -> ErrorView.Contents {
+        // TODO: different contents depending on the error type
+        let tint: UIColor = darkBG ? UIColor.white : UIColor(white: 0, alpha: 0.6)
+        return ErrorView.Contents(
+            image: nil,
+            title: Assets.ErrorView.defaultTitle.withoutWidows,
+            message: Assets.ErrorView.defaultMessage.withoutWidows,
+            errorDetails: "\(self.localizedDescription)\n\(self)",
+            tint: tint,
+            isRetryable: true
+        )
+    }
 }
 
 class ErrorView: UIView {

@@ -11,6 +11,13 @@ import Foundation
 
 struct Assets {
     struct ErrorView {
+        static var defaultTitle: String {
+            return localizedString("Unable to Load")
+        }
+        static var defaultMessage: String {
+            return localizedString("Sorry, there was a problem. Please try again.")
+        }
+
         static var retryButton: String {
             return localizedString("Try Again")
         }
