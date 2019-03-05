@@ -218,6 +218,16 @@
 		AE8450D022019C680000A8D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Incito.strings; sourceTree = "<group>"; };
 		AE8450D222019D270000A8D8 /* Bundle+Incito.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Incito.swift"; sourceTree = "<group>"; };
 		AE8450D42201A0960000A8D8 /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
+		AE90B045222EA4060090FB6C /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Incito.strings; sourceTree = "<group>"; };
+		AE90B046222EA4560090FB6C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Incito.strings; sourceTree = "<group>"; };
+		AE90B047222EA45F0090FB6C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Incito.strings; sourceTree = "<group>"; };
+		AE90B048222EA4670090FB6C /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Incito.strings; sourceTree = "<group>"; };
+		AE90B049222EA4700090FB6C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Incito.strings; sourceTree = "<group>"; };
+		AE90B04A222EA4790090FB6C /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Incito.strings; sourceTree = "<group>"; };
+		AE90B04B222EA4830090FB6C /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Incito.strings; sourceTree = "<group>"; };
+		AE90B04C222EA4910090FB6C /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Incito.strings; sourceTree = "<group>"; };
+		AE90B04D222EA49B0090FB6C /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Incito.strings; sourceTree = "<group>"; };
+		AE90B04E222EA4A30090FB6C /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Incito.strings; sourceTree = "<group>"; };
 		AEB846FF221FEA5E00685F45 /* HTMLImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLImageRenderer.swift; sourceTree = "<group>"; };
 		AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultErrorViewController.swift; sourceTree = "<group>"; };
 		AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadingViewController.swift; sourceTree = "<group>"; };
@@ -484,6 +494,16 @@
 			knownRegions = (
 				en,
 				Base,
+				da,
+				de,
+				es,
+				fi,
+				fr,
+				it,
+				nb,
+				nl,
+				pl,
+				sv,
 			);
 			mainGroup = AE675803219C2591006BEA9C;
 			productRefGroup = AE67580D219C2592006BEA9C /* Products */;
@@ -669,6 +689,16 @@
 			isa = PBXVariantGroup;
 			children = (
 				AE8450D022019C680000A8D8 /* en */,
+				AE90B045222EA4060090FB6C /* da */,
+				AE90B046222EA4560090FB6C /* de */,
+				AE90B047222EA45F0090FB6C /* es */,
+				AE90B048222EA4670090FB6C /* fi */,
+				AE90B049222EA4700090FB6C /* fr */,
+				AE90B04A222EA4790090FB6C /* it */,
+				AE90B04B222EA4830090FB6C /* nb */,
+				AE90B04C222EA4910090FB6C /* nl */,
+				AE90B04D222EA49B0090FB6C /* pl */,
+				AE90B04E222EA4A30090FB6C /* sv */,
 			);
 			name = Incito.strings;
 			sourceTree = "<group>";
@@ -736,6 +766,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -797,6 +828,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
