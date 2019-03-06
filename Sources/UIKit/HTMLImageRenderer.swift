@@ -23,6 +23,24 @@ var SharedHTMLImageRenderer: HTMLImageRenderer {
 }
 
 extension HTMLImageRenderer {
+    
+    /**
+     Given the URL of an image (svg is probably the main use-case), this will try to return a snapshot of at the specified size.
+     
+     Note: This can be rather slow (up to 500ms, esp for the first image), so it should be performed on a BG queue
+     */
+    func renderImageURL(_ imageURL: URL, containerSize: Size<Double>) -> UIImage? {
+        
+        guard containerSize.height > 0, containerSize.width > 0 else {
+            return nil
+        }
+        
+        let htmlStr = "<img style='position: absolute;top: 0px;left: 0px;width: 100vw;height: 100vh;' src='\(imageURL.absoluteString)'></img>"
+
+        let image = self.render(htmlStr, containerSize: containerSize.cgSize, baseURL: imageURL)
+        return image
+    }
+    
     /**
      Given some SVGData, this will try to return a snapshot of the SVG at the specified size.
      
@@ -35,9 +53,7 @@ extension HTMLImageRenderer {
                 return nil
         }
         
-        let htmlStr = "<div style='position: absolute;top: 0px;left: 0px;width: 100vw;height: 100vh;'>\(svgStr)</div>"
-        
-        let image = self.render(htmlStr, containerSize: containerSize.cgSize, baseURL: baseURL)
+        let image = self.render(svgStr, containerSize: containerSize.cgSize, baseURL: baseURL)
         return image
     }
 }

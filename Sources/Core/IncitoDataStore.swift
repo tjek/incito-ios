@@ -107,7 +107,7 @@ fileprivate func imageLoadResponseTransform(_ image: IncitoDataStore.ImageStorag
     
     switch image.mimeType {
     case "image/svg+xml"?:
-        if let svgImage = SharedHTMLImageRenderer.renderSVG(image.data, containerSize: containerSize, baseURL: url),
+        if let svgImage = SharedHTMLImageRenderer.renderImageURL(url, containerSize: containerSize),
             let pngData = svgImage.pngData() {
             
             let newImage = IncitoDataStore.ImageStorageType(data: pngData, mimeType: "image/png")
