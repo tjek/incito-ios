@@ -113,7 +113,7 @@ class WebKitHTMLImageRenderer: HTMLImageRenderer {
             self.completion = completion
         }
         
-        func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             webView.backgroundColor = .clear
             webView.scrollView.backgroundColor = .clear
             webView.isOpaque = false
