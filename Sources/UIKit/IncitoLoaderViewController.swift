@@ -60,6 +60,14 @@ open class IncitoLoaderViewController: UIViewController {
                 return false
             }
         }
+        
+        public var isSuccess: Bool {
+            if case .success = self {
+                return true
+            } else {
+                return false
+            }
+        }
     }
     
     public fileprivate(set) var state: State = .loading {
