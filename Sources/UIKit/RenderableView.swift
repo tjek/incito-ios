@@ -248,6 +248,10 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
         view.transform = view.transform
             .concatenating(renderableView.layout.transform.affineTransform)
         
+        if view.transform.isIdentity == false {
+            view.layer.allowsEdgeAntialiasing = true
+        }
+        
         return view
     }
 }
