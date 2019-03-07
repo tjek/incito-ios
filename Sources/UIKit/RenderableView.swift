@@ -15,6 +15,7 @@ public final class RenderableView {
     let siblingIndex: Int // The index of this view in relation to its siblings
     let renderer: (RenderableView) -> UIView
     let absoluteRect: CGRect
+    var isVisible: Bool = false
     
     fileprivate(set) var renderedView: UIView? = nil
     
@@ -61,30 +62,27 @@ public final class RenderableView {
 
 extension TreeNode where T == RenderableView {
     
-    func renderVisibleNodes(visibleRootViewWindow: CGRect, didRender: @escaping (RenderableView, UIView) -> Void, didUnrender: @escaping (RenderableView, UIView) -> Void) -> UIView? {
-        return self.renderAllChildNodes(where: { renderableView in
-            let absoluteRect = renderableView.absoluteRect
-            
-            // TODO: if it doesnt clip, build from sum of all children, incase the children are larger than the node?
-            
-            // only render if its visible
-            return visibleRootViewWindow.intersects(absoluteRect)
-            
-        }, didRender: didRender, didUnrender: didUnrender)
+    func renderVisibleNodes(renderableRootViewWindow: CGRect, visibleRootViewWindow: CGRect, didRender: @escaping (RenderableView, UIView) -> Void, didUnrender: @escaping (RenderableView, UIView) -> Void) -> UIView? {
+        return self.renderAllChildNodes(
+            where: { renderableRootViewWindow.intersects($0.absoluteRect) },
+            isVisible: { visibleRootViewWindow.intersects($0.absoluteRect) },
+            didRender: didRender, didUnrender: didUnrender)
     }
     
-    func renderAllChildNodes(where predicate: (RenderableView) -> Bool, didRender: @escaping (RenderableView, UIView) -> Void, didUnrender: @escaping (RenderableView, UIView) -> Void) -> UIView? {
+    func renderAllChildNodes(where predicate: (RenderableView) -> Bool, isVisible: (RenderableView) -> Bool, didRender: @escaping (RenderableView, UIView) -> Void, didUnrender: @escaping (RenderableView, UIView) -> Void) -> UIView? {
         
         guard predicate(self.value) else {
             self.unrenderAllChildNodes(didUnrender: didUnrender)
             return nil
         }
         
+        self.value.isVisible = isVisible(self.value)
+        
         let renderedView = self.value.render()
         didRender(self.value, renderedView)
         
         for childNode in self.children {
-            guard let childView = childNode.renderAllChildNodes(where: predicate, didRender: didRender, didUnrender: didUnrender) else {
+            guard let childView = childNode.renderAllChildNodes(where: predicate, isVisible: isVisible, didRender: didRender, didUnrender: didUnrender) else {
                 continue
             }
             
@@ -110,6 +108,7 @@ extension TreeNode where T == RenderableView {
     func unrenderAllChildNodes(didUnrender: @escaping (RenderableView, UIView) -> Void) {
         let oldView = self.value.renderedView
         
+        self.value.isVisible = false
         self.value.unrender()
         
         if let renderedView = oldView {
@@ -122,7 +121,7 @@ extension TreeNode where T == RenderableView {
     }
     
     func renderAllChildNodes(didRender: @escaping (RenderableView, UIView) -> Void, didUnrender: @escaping (RenderableView, UIView) -> Void) -> UIView {
-        return self.renderAllChildNodes(where: { _ in true }, didRender: didRender, didUnrender: didUnrender)!
+        return self.renderAllChildNodes(where: { _ in true }, isVisible: { _ in true }, didRender: didRender, didUnrender: didUnrender)!
     }
 }
 
@@ -193,7 +192,8 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
             
             // container must already have it's frame set correctly
             let imgReq = container.addImageView(
-                imageProperties: imageProperties
+                imageProperties: imageProperties,
+                renderableView: renderableView
             )
             
             renderProperties.imageViewLoader(imgReq)

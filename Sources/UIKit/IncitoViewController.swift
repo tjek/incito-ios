@@ -204,19 +204,19 @@ public class IncitoViewController: UIViewController {
         guard let rootView = self.rootView else { return }
         guard let renderableRootNode = self.renderableDocument?.rootView else { return }
         
-        let scrollVisibleWindow: CGRect
+        let scrollRenderWindow: CGRect
         if debug.showRenderWindows {
             let height = scrollView.bounds.size.height
-            scrollVisibleWindow = scrollView.bounds
+            scrollRenderWindow = scrollView.bounds
                 .inset(by: UIEdgeInsets(top: height * 0.1, left: 0, bottom: height * 0.15, right: 0))
         } else {
-            scrollVisibleWindow = scrollView.bounds
+            scrollRenderWindow = scrollView.bounds
                 .inset(by: renderWindowInsets)
         }
         
         // in RootView coord space
-        let renderWindow = scrollView.convert(scrollVisibleWindow, to: rootView)
-        
+        let renderWindow = scrollView.convert(scrollRenderWindow, to: rootView)
+
         _DEBUG_updateWindowViews(in: lastRenderedWindow)
         
         // dont re-render if no significant change in render window, unless forced
@@ -230,8 +230,11 @@ public class IncitoViewController: UIViewController {
         
         self.lastRenderedWindow = renderWindow
         
+        let visibleWindow = scrollView.convert(scrollView.bounds, to: rootView)
+        
         if let renderedRootView = renderableRootNode.renderVisibleNodes(
-            visibleRootViewWindow: renderWindow,
+            renderableRootViewWindow: renderWindow,
+            visibleRootViewWindow: visibleWindow,
             didRender: { [weak self] renderableView, view in
                 guard let self = self else { return }
                 self.delegate?.incitoViewDidRender(

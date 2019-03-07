@@ -67,7 +67,8 @@ extension UIView {
     
     
     func addImageView(
-        imageProperties: ImageViewProperties
+        imageProperties: ImageViewProperties,
+        renderableView: RenderableView
         ) -> ImageViewLoadRequest {
         
         let size = self.bounds.size
@@ -87,7 +88,12 @@ extension UIView {
             imageView.alpha = 0
             c.insertSubview(imageView, at: 0)
             
-            UIView.animate(withDuration: 0.2) {
+            // only fade it the renderable view is on screen
+            if renderableView.isVisible {
+                UIView.animate(withDuration: 0.2) {
+                    imageView.alpha = 1
+                }
+            } else {
                 imageView.alpha = 1
             }
         }
