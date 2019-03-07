@@ -67,6 +67,7 @@
 		AE8450D52201A0960000A8D8 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450D42201A0960000A8D8 /* Resources.swift */; };
 		AECF0E902200795B00E7A64A /* DefaultErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */; };
 		AECF0E9222007C5900E7A64A /* DefaultLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */; };
+		AEE097C622303B6500A14ED7 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE097C522303B6500A14ED7 /* VideoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -231,6 +232,7 @@
 		AEB846FF221FEA5E00685F45 /* HTMLImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLImageRenderer.swift; sourceTree = "<group>"; };
 		AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultErrorViewController.swift; sourceTree = "<group>"; };
 		AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadingViewController.swift; sourceTree = "<group>"; };
+		AEE097C522303B6500A14ED7 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,6 +330,7 @@
 				AE582A5E21FF1736009F4D8A /* UIView+IncitoViews.swift */,
 				AE582A6021FF1736009F4D8A /* RoundedShadowedView.swift */,
 				AE09D6AF221EBB1200C58E40 /* VideoEmbedView.swift */,
+				AEE097C522303B6500A14ED7 /* VideoView.swift */,
 				AEB846FF221FEA5E00685F45 /* HTMLImageRenderer.swift */,
 				AE8450C72200F8530000A8D8 /* CopyableLabel.swift */,
 				AE820AD722130AC40090E3D1 /* CALayer+Stroke.swift */,
@@ -629,6 +632,7 @@
 				AE582A8521FF1736009F4D8A /* IncitoTypes.swift in Sources */,
 				AE582A6A21FF1736009F4D8A /* JSONValue.swift in Sources */,
 				AE582A7221FF1736009F4D8A /* ImageLoader.swift in Sources */,
+				AEE097C622303B6500A14ED7 /* VideoView.swift in Sources */,
 				AE582A8321FF1736009F4D8A /* IncitoLayout+Positioning.swift in Sources */,
 				AE582A8421FF1736009F4D8A /* FontAssetLoader.swift in Sources */,
 				AE582A7E21FF1736009F4D8A /* IncitoDocument.swift in Sources */,

@@ -23,7 +23,7 @@
                 "layout_width": 375,
                 "layout_height": 211,
                 "src": "https://sgn-stg-bumblebee.s3.amazonaws.com/feed-images/8d9f7de0c5476038e40532cd77515a5d1c20fa51cbf970ae496b9b95f9ddacc22d37cf704809f346d590a228a911a15d7b453007bdedf7c8f9cd28e2ba54b842",
-                "mime": "",
+                "mime": "video/mp4",
                 "autoplay": true,
                 "controls": false,
                 "loop": true,

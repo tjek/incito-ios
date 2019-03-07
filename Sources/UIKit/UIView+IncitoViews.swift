@@ -8,7 +8,6 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import UIKit
-import AVFoundation
 
 extension UIView {
     
@@ -99,33 +98,8 @@ extension UIView {
     func addVideoView(
         videoProperties: VideoViewProperties
         ) {
-        
-        let size = self.bounds.size
-        
-        let player = AVPlayer(playerItem:
-            AVPlayerItem(
-                asset: AVAsset(url: videoProperties.source),
-                automaticallyLoadedAssetKeys: ["playable"])
-        )
-        let playerLayer = AVPlayerLayer(player: player)
-        playerLayer.videoGravity = .resizeAspectFill
-        playerLayer.frame = CGRect(origin: .zero, size: size)
-        
-        self.layer.addSublayer(playerLayer)
-        
-        if videoProperties.loop {
-            NotificationCenter.default.addObserver(
-                forName: .AVPlayerItemDidPlayToEndTime,
-                object: player.currentItem,
-                queue: .main) { [weak player] _ in
-                    player?.seek(to: CMTime.zero)
-                    player?.play()
-            }
-        }
-        
-        if videoProperties.autoplay == true {
-            playerLayer.player?.play()
-        }
+        let videoView = VideoView(frame: self.bounds, videoProperties: videoProperties)
+        self.insertSubview(videoView, at: 0)
     }
     
     func addVideoEmbedView(
