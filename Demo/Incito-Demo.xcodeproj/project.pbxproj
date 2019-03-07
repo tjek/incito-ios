@@ -35,6 +35,10 @@
 		AE582AF621FF3191009F4D8A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE582A1321FF10DC009F4D8A /* Main.storyboard */; };
 		AE582AF721FF3195009F4D8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE582A1621FF10DD009F4D8A /* Assets.xcassets */; };
 		AE582AF821FF3198009F4D8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE582A1821FF10DD009F4D8A /* LaunchScreen.storyboard */; };
+		AEE097C022302F4200A14ED7 /* Cache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE097BF22302F4200A14ED7 /* Cache.framework */; };
+		AEE097C122302F4200A14ED7 /* Cache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AEE097BF22302F4200A14ED7 /* Cache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AEE097C322302F4200A14ED7 /* FLAnimatedImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE097C222302F4200A14ED7 /* FLAnimatedImage.framework */; };
+		AEE097C422302F4200A14ED7 /* FLAnimatedImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AEE097C222302F4200A14ED7 /* FLAnimatedImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +49,8 @@
 			dstSubfolderSpec = 10;
 			files = (
 				AE582A4821FF1675009F4D8A /* Incito.framework in Embed Frameworks */,
+				AEE097C422302F4200A14ED7 /* FLAnimatedImage.framework in Embed Frameworks */,
+				AEE097C122302F4200A14ED7 /* Cache.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -82,6 +88,8 @@
 		AE582AD221FF3126009F4D8A /* incito-blocktest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-blocktest-375.json"; sourceTree = "<group>"; };
 		AE582AD321FF3126009F4D8A /* incito-fakta-small-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-fakta-small-375.json"; sourceTree = "<group>"; };
 		AE582AD421FF3126009F4D8A /* simple-incito-absolute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-absolute.json"; sourceTree = "<group>"; };
+		AEE097BF22302F4200A14ED7 /* Cache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Cache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEE097C222302F4200A14ED7 /* FLAnimatedImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FLAnimatedImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +98,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE582A4721FF1675009F4D8A /* Incito.framework in Frameworks */,
+				AEE097C322302F4200A14ED7 /* FLAnimatedImage.framework in Frameworks */,
+				AEE097C022302F4200A14ED7 /* Cache.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +109,8 @@
 		AE582A0321FF10DC009F4D8A = {
 			isa = PBXGroup;
 			children = (
+				AEE097C222302F4200A14ED7 /* FLAnimatedImage.framework */,
+				AEE097BF22302F4200A14ED7 /* Cache.framework */,
 				AE582AC321FF3126009F4D8A /* Scratchpad.playground */,
 				AE582A0E21FF10DC009F4D8A /* Incito-Demo */,
 				AE582A0D21FF10DC009F4D8A /* Products */,
