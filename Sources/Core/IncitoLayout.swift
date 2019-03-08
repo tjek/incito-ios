@@ -40,7 +40,7 @@ extension TreeNode where T == ViewProperties {
 
         var wrapperLayout = LayoutProperties.empty
         wrapperLayout.size.width = .unit(.pts(rootSize.width))
-        wrapperLayout.gravity = .center
+        wrapperLayout.gravity = .left
 
         let wrapperNode = TreeNode<ViewProperties>(
             value: ViewProperties(
@@ -68,7 +68,7 @@ extension TreeNode where T == ViewProperties {
         let positionedTree = actualSizedTree
             .positioningPass(systemGravity: systemGravity)
         
-        return positionedTree.children.first!
+        return positionedTree
     }
 }
 

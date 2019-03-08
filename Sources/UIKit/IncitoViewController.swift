@@ -170,12 +170,10 @@ public class IncitoViewController: UIViewController {
         NSLayoutConstraint.activate([
             wrapper.topAnchor.constraint(equalTo: scrollView.topAnchor),
             wrapper.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            wrapper.leftAnchor.constraint(greaterThanOrEqualTo: scrollView.leftAnchor),
-            wrapper.rightAnchor.constraint(lessThanOrEqualTo: scrollView.rightAnchor),
             wrapper.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             
             wrapper.heightAnchor.constraint(equalToConstant: rootSize.height),
-            wrapper.widthAnchor.constraint(equalToConstant: parentSize.width)
+            wrapper.widthAnchor.constraint(equalToConstant: rootSize.width)
             ])
         
         renderVisibleViews()
@@ -363,7 +361,7 @@ extension IncitoViewController {
      */
     public func firstView(at point: CGPoint, where predicate: (UIView?, ViewProperties) -> Bool) -> (view: UIView, properties: ViewProperties)? {
         
-        let treeLocation = self.view.convert(point, to: self.scrollView)
+        let treeLocation = self.view.convert(point, to: self.rootView)
         
         let renderableViewNode = self.renderableDocument?.rootView.first { (node, stopBranch) -> Bool in
             let renderableView = node.value
