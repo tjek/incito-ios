@@ -58,7 +58,6 @@ public struct StyleProperties {
     
     public var link: URL?
     public var title: String?
-    public var clipsChildren: Bool
     public var accessibility: Accessibility
     
     public var backgroundColor: Color?
@@ -72,7 +71,6 @@ public struct StyleProperties {
         stroke: nil,
         link: nil,
         title: nil,
-        clipsChildren: true,
         accessibility: Accessibility(label: nil, isHidden: false),
         backgroundColor: nil,
         backgroundImage: nil
@@ -100,6 +98,8 @@ public struct LayoutProperties {
     var flexBasis: FlexBasis<Unit>
     
     var transform: Transform<Unit>
+    
+    var clipsChildren: Bool
 
     static let empty = LayoutProperties(
         position: .init(nil),
@@ -112,7 +112,8 @@ public struct LayoutProperties {
         flexShrink: 1,
         flexGrow: 0,
         flexBasis: .auto,
-        transform: .identity
+        transform: .identity,
+        clipsChildren: true
     )
 }
 

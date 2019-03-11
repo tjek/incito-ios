@@ -125,7 +125,6 @@ extension UIView {
         
         // apply the layout.view properties
         backgroundColor = style.backgroundColor?.uiColor ?? .clear
-        clipsToBounds = style.clipsChildren
         
         var imageLoadReq: ImageViewLoadRequest? = nil
         if let bgImage = style.backgroundImage {

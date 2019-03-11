@@ -17,13 +17,12 @@ class RoundedShadowedView: UIView {
     private var contents: UIView?
     private var layerMask: CALayer? // used as a store if we disable/re-enable clipping
     
-    init(frame: CGRect, shadow: Shadow? = nil, cornerRadius: Corners<Double> = .zero, stroke: Stroke? = nil) {
+    init(frame: CGRect, shadow: Shadow? = nil, cornerRadius: Corners<Double> = .zero, stroke: Stroke? = nil, clipsChildren: Bool) {
         super.init(frame: frame)
         
         if let shadow = shadow {
             let contents = UIView(frame: self.bounds)
             contents.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            contents.clipsToBounds = true
             
             self.addSubview(contents)
             self.contents = contents
@@ -33,10 +32,11 @@ class RoundedShadowedView: UIView {
             self.layer.applyShadow(shadow)
         }
         
+        let contentsView = contents ?? self
+        contentsView.clipsToBounds = clipsChildren
+        
         // apply cornerRadius
         if cornerRadius != Corners<Double>.zero {
-            let contentsView = contents ?? self
-            
             if cornerRadius.isUniform {
                 contentsView.layer.cornerRadius = CGFloat(cornerRadius.topLeft)
             } else {
@@ -112,12 +112,14 @@ extension RoundedShadowedView {
         
         let style = renderableView.layout.viewProperties.style
         let cornerRadius = style.cornerRadius.absolute(in: min(size.width, size.height) / 2)
+        let clipsChildren = renderableView.layout.viewProperties.layout.clipsChildren
         
         self.init(
             frame: rect,
             shadow: style.shadow,
             cornerRadius: cornerRadius,
-            stroke: style.stroke
+            stroke: style.stroke,
+            clipsChildren: clipsChildren
         )
     }
 }

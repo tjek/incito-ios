@@ -146,6 +146,7 @@ extension LayoutProperties: Decodable {
         case paddingRight   = "padding_right"
         
         case gravity
+        case clipsChildren = "clip_children"
         
         case flexShrink     = "layout_flex_shrink"
         case flexGrow       = "layout_flex_grow"
@@ -201,7 +202,11 @@ extension LayoutProperties: Decodable {
         
         self.gravity = try? c.decode(.gravity)
         
-        self.flexShrink = (try? c.decode(.flexShrink)) ?? defaults.flexShrink
+        self.clipsChildren = (try? c.decode(.clipsChildren)) ?? defaults.clipsChildren
+        
+        // if we are not clipping children, that is the equivalent of setting shrink to 0
+        let defaultShrink = self.clipsChildren == false ? 0 : defaults.flexShrink
+        self.flexShrink = (try? c.decode(.flexShrink)) ?? defaultShrink
         self.flexGrow = (try? c.decode(.flexGrow)) ?? defaults.flexGrow
         self.flexBasis = (try? c.decode(.flexBasis)) ?? defaults.flexBasis
         
@@ -231,7 +236,6 @@ extension StyleProperties: Decodable {
 
     enum CodingKeys: String, CodingKey {
         case role, meta, link, title
-        case clipsChildren = "clip_children"
         case backgroundColor = "background_color"
         
         case cornerRadius = "corner_radius"
@@ -277,7 +281,6 @@ extension StyleProperties: Decodable {
         self.link = try? c.decode(.link)
         self.title = try? c.decode(.title)
         
-        self.clipsChildren = (try? c.decode(.clipsChildren)) ?? true
         self.backgroundColor = try? c.decode(.backgroundColor)
         
         let baseCornerRadius: Unit = (try? c.decode(.cornerRadius)) ?? .pts(0)
