@@ -221,7 +221,8 @@ private func calculateFlexChildPosition(
             prevSiblings: prevSiblings,
             nextSiblings: nextSiblings,
             size: size,
-            margins: margins
+            margins: margins,
+            gravity: gravity
         )
     case .column:
         return calculateFlexChildColumnPosition(
@@ -249,7 +250,8 @@ private func calculateFlexChildRowPosition(
     prevSiblings: [(size: Size<Double>, dimensions: ViewDimensions)],
     nextSiblings: [(size: Size<Double>, dimensions: ViewDimensions)],
     size: Size<Double>,
-    margins: Edges<Double>
+    margins: Edges<Double>,
+    gravity: HorizontalGravity?
     ) -> Point<Double> {
     
     let parentInnerSize = parentSize.inset(parentPadding)
@@ -267,39 +269,53 @@ private func calculateFlexChildRowPosition(
     let totalSiblingWidth = totalPrevSiblingWidth + outerSize.width + totalTrailingWidth
     
     let originX: Double = {
-        switch justification {
-        case .center:
-            let initialSpace = (parentInnerSize.width - totalSiblingWidth) / 2
-            return parentPadding.left + initialSpace + totalPrevSiblingWidth + margins.left
+        // when aligning horizontally, gravity trumps the flex justify-content property
+        switch gravity {
+        case .left?:
+            return parentPadding.left + margins.left
+        case .right?:
+            return parentSize.width - parentPadding.right - margins.right - size.width
+        case .center?:
             
-        case .flexStart:
-            return parentPadding.left + totalPrevSiblingWidth + margins.left
+            let parentInnerWidth = parentSize.width - parentPadding.left - parentPadding.right
+            let outerWidth = size.width + margins.left + margins.right
             
-        case .flexEnd:
-            return parentSize.width - parentPadding.right - totalTrailingWidth - outerSize.width + margins.left
-            
-        case .spaceBetween:
-            
-            let remainingSpace = parentInnerSize.width - totalSiblingWidth
-            
-            let numberOfSpaces = nextSiblings.count + prevSiblings.count
-            
-            let space = numberOfSpaces > 0 ? remainingSpace / Double(numberOfSpaces) : 0
-            
-            let numberPrevSpaces = prevSiblings.count
-            
-            return parentPadding.left + margins.left + totalPrevSiblingWidth + (space * Double(numberPrevSpaces))
-            
-        case .spaceAround:
-            let remainingSpace = parentInnerSize.width - totalSiblingWidth
-            
-            let numberOfSpaces = (nextSiblings.count + prevSiblings.count + 1) * 2
-            
-            let space = numberOfSpaces > 0 ? remainingSpace / Double(numberOfSpaces) : 0
-            
-            let numberPrevSpaces = (prevSiblings.count * 2) + 1
-            
-            return parentPadding.left + margins.left + totalPrevSiblingWidth + (space * Double(numberPrevSpaces))
+            return parentPadding.left + (parentInnerWidth / 2) - (outerWidth / 2) + margins.left
+        case nil:
+            switch justification {
+            case .center:
+                let initialSpace = (parentInnerSize.width - totalSiblingWidth) / 2
+                return parentPadding.left + initialSpace + totalPrevSiblingWidth + margins.left
+                
+            case .flexStart:
+                return parentPadding.left + totalPrevSiblingWidth + margins.left
+                
+            case .flexEnd:
+                return parentSize.width - parentPadding.right - totalTrailingWidth - outerSize.width + margins.left
+                
+            case .spaceBetween:
+                
+                let remainingSpace = parentInnerSize.width - totalSiblingWidth
+                
+                let numberOfSpaces = nextSiblings.count + prevSiblings.count
+                
+                let space = numberOfSpaces > 0 ? remainingSpace / Double(numberOfSpaces) : 0
+                
+                let numberPrevSpaces = prevSiblings.count
+                
+                return parentPadding.left + margins.left + totalPrevSiblingWidth + (space * Double(numberPrevSpaces))
+                
+            case .spaceAround:
+                let remainingSpace = parentInnerSize.width - totalSiblingWidth
+                
+                let numberOfSpaces = (nextSiblings.count + prevSiblings.count + 1) * 2
+                
+                let space = numberOfSpaces > 0 ? remainingSpace / Double(numberOfSpaces) : 0
+                
+                let numberPrevSpaces = (prevSiblings.count * 2) + 1
+                
+                return parentPadding.left + margins.left + totalPrevSiblingWidth + (space * Double(numberPrevSpaces))
+            }
         }
     }()
     
