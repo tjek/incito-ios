@@ -173,14 +173,16 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
     case let .text(textProperties):
         renderer = { renderableView in
             let container = RoundedShadowedView(renderableView: renderableView)
-            
+            let clipsChildren = renderableView.layout.viewProperties.layout.clipsChildren
+
             // container must already have it's frame set correctly
             container.addTextView(
                 textProperties: textProperties,
                 fontProvider: renderProperties.fontProvider,
                 textDefaults: renderProperties.theme?.textDefaults ?? .empty,
                 padding: renderableView.layout.dimensions.layoutProperties.padding,
-                intrinsicSize: renderableView.layout.dimensions.intrinsicSize
+                intrinsicSize: renderableView.layout.dimensions.intrinsicSize,
+                clipsChildren: clipsChildren
             )
             
             return container

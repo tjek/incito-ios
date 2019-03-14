@@ -13,6 +13,7 @@
 		AE246F65221C061800662E9B /* Cache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE246F58221C05F400662E9B /* Cache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE246F66221C063C00662E9B /* Cache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE246F58221C05F400662E9B /* Cache.framework */; };
 		AE246F68221C436800662E9B /* IncitoDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE246F67221C436700662E9B /* IncitoDataStore.swift */; };
+		AE467C642239166000F95D62 /* Incito+TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE467C632239166000F95D62 /* Incito+TextView.swift */; };
 		AE4BF82222048DEF0048671D /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4BF82122048DEF0048671D /* Future.swift */; };
 		AE582A2521FF118A009F4D8A /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A2221FF118A009F4D8A /* DecodableTests.swift */; };
 		AE582A2D21FF1266009F4D8A /* Incito.h in Headers */ = {isa = PBXBuildFile; fileRef = AE582A2B21FF1252009F4D8A /* Incito.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -163,6 +164,7 @@
 		AE246F42221B525B00662E9B /* IncitoEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoEnvironment.swift; sourceTree = "<group>"; };
 		AE246F4E221C05F400662E9B /* Cache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cache.xcodeproj; path = External/Cache/Cache.xcodeproj; sourceTree = "<group>"; };
 		AE246F67221C436700662E9B /* IncitoDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDataStore.swift; sourceTree = "<group>"; };
+		AE467C632239166000F95D62 /* Incito+TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+TextView.swift"; sourceTree = "<group>"; };
 		AE4BF82122048DEF0048671D /* Future.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		AE5829D821FF1000009F4D8A /* Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE582A2221FF118A009F4D8A /* DecodableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 				AE582A5521FF1736009F4D8A /* ImageLoader.swift */,
 				AE582A5621FF1736009F4D8A /* FontAssetLoader+UIKit.swift */,
 				AE582A5721FF1736009F4D8A /* Incito+UIKit.swift */,
+				AE467C632239166000F95D62 /* Incito+TextView.swift */,
 				AE582A5821FF1736009F4D8A /* UIColor+Hex.swift */,
 				AE582A5A21FF1736009F4D8A /* IncitoTypes+UIKit.swift */,
 				AE663AAB2212BCDF0099533E /* GenericGeometry+CoreGraphics.swift */,
@@ -646,6 +649,7 @@
 				AE582A7521FF1736009F4D8A /* UIColor+Hex.swift in Sources */,
 				AECF0E902200795B00E7A64A /* DefaultErrorViewController.swift in Sources */,
 				AE582A8121FF1736009F4D8A /* IncitoLayout.swift in Sources */,
+				AE467C642239166000F95D62 /* Incito+TextView.swift in Sources */,
 				AE582A7B21FF1736009F4D8A /* UIView+IncitoViews.swift in Sources */,
 				AE582A7821FF1736009F4D8A /* UIView+RoundedCorners.swift in Sources */,
 				AECF0E9222007C5900E7A64A /* DefaultLoadingViewController.swift in Sources */,

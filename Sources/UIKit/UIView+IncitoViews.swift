@@ -11,61 +11,6 @@ import UIKit
 
 extension UIView {
     
-    func addTextView(
-        textProperties: TextViewProperties,
-        fontProvider: FontProvider,
-        textDefaults: TextViewDefaultProperties,
-        padding: Edges<Double>,
-        intrinsicSize: Size<Double?>
-        ) {
-        
-        let size = Size<Double>(cgSize: self.bounds.size)
-        
-        let label = UILabel()
-        
-        if let s = textProperties.shadow {
-            label.layer.applyShadow(s)
-        }
-        
-        // TODO: cache these values from when doing the layout phase
-        let attributedString = textProperties.attributedString(
-            fontProvider: fontProvider,
-            defaults: textDefaults
-        )
-        
-        label.attributedText = attributedString
-        label.numberOfLines = textProperties.maxLines
-        
-        label.textAlignment = (textProperties.textAlignment ?? .left).nsTextAlignment
-        label.lineBreakMode = .byTruncatingTail
-        label.backgroundColor = .clear
-        
-        // labels are vertically aligned in incito, so add to a container view
-        self.insertSubview(label, at: 0)
-        
-        let containerInnerSize = size.inset(padding)
-        let textHeight: Double = {
-            if let h = intrinsicSize.height {
-                return h
-            }
-            // it may not have an intrinsic height calculated yet (eg. if the view container has absolute height specified)
-            return Double(ceil(label.sizeThatFits(CGSize(width: containerInnerSize.width, height: 0)).height))
-        }()
-        
-        label.frame = CGRect(
-            origin: CGPoint(
-                x: padding.left,
-                y: padding.top
-            ),
-            size: CGSize(
-                width: containerInnerSize.width,
-                height: textHeight
-            )
-        )
-        label.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
-    }
-    
-    
     func addImageView(
         imageProperties: ImageViewProperties,
         renderableView: RenderableView
