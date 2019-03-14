@@ -28,6 +28,7 @@ class VerticallyCenteredTextView: UITextView, NSLayoutManagerDelegate {
         self.textContainerInset = .zero
         self.textContainer.lineFragmentPadding = 0
         self.isScrollEnabled = false
+        self.isEditable = false
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -104,28 +105,53 @@ extension UIView {
         label.backgroundColor = .clear
         label.clipsToBounds = false
         
-        let containerInnerSize = size.inset(padding)
-        let textHeight: Double = {
-            if let h = intrinsicSize.height {
-                return h
+        let containerInnerSize = size.inset(padding).cgSize
+        
+        // it may not have an intrinsic height calculated yet (eg. if the view container has absolute height specified)
+        // in that case, we need to calculate how big the
+        let textSize: CGSize = {
+            if clipsChildren {
+                return containerInnerSize
             }
-            // it may not have an intrinsic height calculated yet (eg. if the view container has absolute height specified)
-            return Double(ceil(label.sizeThatFits(CGSize(width: containerInnerSize.width, height: 0)).height))
+            
+            if let h = intrinsicSize.height, let w = intrinsicSize.width {
+                return CGSize(width: w, height: h)
+            }
+            
+            // if text is a single line then dont apply constraints to it horizontally
+            let fittingSize = attributedString.size(
+                within: Size(width: textProperties.maxLines == 1 ? nil : Double(containerInnerSize.width), height: nil)
+            )
+            
+            return CGSize(width: intrinsicSize.width ?? Double(ceil(fittingSize.width)),
+                        height: intrinsicSize.height ?? Double(ceil(fittingSize.height)))
         }()
         
-        label.frame = CGRect(
-            origin: CGPoint(
-                x: padding.left,
-                y: padding.top
-            ),
-            size: CGSize(
-                width: containerInnerSize.width,
-                height: textHeight
-            )
+        var labelFrame = CGRect(
+            origin: CGPoint(x: padding.left, y: padding.top),
+            size: textSize
         )
-        label.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
-
-        // labels are vertically aligned in incito, so add to a container view
+        
+        // position vertically - center if label is taller than than container
+        if labelFrame.size.height > containerInnerSize.height {
+            labelFrame.origin.y += (containerInnerSize.height - labelFrame.size.height) / 2
+        }
+        
+        // position horizontally - if smaller than container then position using alignment
+        if labelFrame.size.width < containerInnerSize.width {
+            // TODO: support right-to-left systems, if text-alignment undefined
+            switch textProperties.textAlignment ?? .left {
+            case .left:
+                break
+            case .right:
+                labelFrame.origin.x += containerInnerSize.width - labelFrame.size.width
+            case .center:
+                labelFrame.origin.x += (containerInnerSize.width / 2) - (labelFrame.size.width / 2)
+            }
+        }
+            
+        label.frame = labelFrame
+        
         self.insertSubview(label, at: 0)
     }    
 }
@@ -243,9 +269,11 @@ extension NSAttributedString {
             options: [.usesLineFragmentOrigin],
             context: nil)
         
-        return Size(
+        let size = Size(
             width: Double(ceil(boundingBox.size.width)),
             height: Double(ceil(boundingBox.size.height))
         )
+        
+        return size
     }
 }

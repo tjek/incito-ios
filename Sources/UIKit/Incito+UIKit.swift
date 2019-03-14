@@ -52,7 +52,10 @@ func uiKitViewSizer(fontProvider: @escaping FontProvider, textDefaults: TextView
                     defaults: textDefaults,
                     truncateSingleLines: false
                 )
-                let size = attrString.size(within: constraintSize)
+                // if text is a single line then dont apply constraints to it horizontally
+                let size = attrString.size(
+                    within: text.maxLines == 1 ? Size(width: nil, height: nil) : constraintSize
+                )
                 return Size(width: size.width, height: size.height)
             case let .video(video):
                 return Size(width: video.videoSize?.width,
