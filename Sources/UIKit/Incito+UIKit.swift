@@ -71,3 +71,15 @@ func uiKitViewSizer(fontProvider: @escaping FontProvider, textDefaults: TextView
         }
     }
 }
+
+extension Shadow {
+    var nsShadow: NSShadow {
+        
+        let shadow = NSShadow()
+        shadow.shadowOffset = self.offset.cgSize
+        shadow.shadowBlurRadius = CGFloat(self.radius)
+        shadow.shadowColor = self.color.uiColor
+        
+        return shadow
+    }
+}

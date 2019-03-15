@@ -10,29 +10,63 @@
 import UIKit
 
 /**
- A UITextView subclass whose only job is to control the layoutmanager.
+ A UIView subclass for rendering attributedString text quickly.
  
  It will make sure that the line fragments match the desired lineHeight, and that the baseline offset within each linefragment is such that the text is vertically centered within each line (matching how CSS aligns the text)
  */
-class VerticallyCenteredTextView: UITextView, NSLayoutManagerDelegate {
+class AdjustedBaselineStringView: UIView, NSLayoutManagerDelegate {
     let desiredLineHeight: CGFloat
     let fontLineHeight: CGFloat
     
-    init(desiredLineHeight: CGFloat, fontLineHeight: CGFloat) {
+    private let textStorage: NSTextStorage
+    private let layoutManager: NSLayoutManager
+    private let textContainer: NSTextContainer
+    
+    var attributedText: NSAttributedString {
+        set {
+            textStorage.setAttributedString(newValue)
+        }
+        get {
+            return textStorage
+        }
+    }
+    
+    init(attributedString: NSAttributedString, desiredLineHeight: CGFloat, fontLineHeight: CGFloat) {
         self.desiredLineHeight = desiredLineHeight
         self.fontLineHeight = fontLineHeight
         
-        super.init(frame: .zero, textContainer: nil)
+        self.layoutManager = NSLayoutManager()
+        self.textStorage = NSTextStorage(attributedString: attributedString)
+        self.textContainer = NSTextContainer(size: .zero)
+        self.textContainer.lineFragmentPadding = 0
+        self.layoutManager.addTextContainer(self.textContainer)
+        self.textStorage.addLayoutManager(self.layoutManager)
+        
+        super.init(frame: .zero)
         
         self.layoutManager.delegate = self
-        self.textContainerInset = .zero
-        self.textContainer.lineFragmentPadding = 0
-        self.isScrollEnabled = false
-        self.isEditable = false
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+        let glyphRange = self.layoutManager.glyphRange(for: self.textContainer)
+        self.layoutManager.drawBackground(forGlyphRange: glyphRange, at: rect.origin)
+        self.layoutManager.drawGlyphs(forGlyphRange: glyphRange, at: rect.origin)
+    }
+    
+    override var frame: CGRect {
+        didSet {
+            self.textContainer.size = frame.size
+        }
+    }
+    
+    override var bounds: CGRect {
+        didSet {
+            self.textContainer.size = bounds.size
+        }
     }
     
     func layoutManager(
@@ -80,18 +114,9 @@ extension UIView {
         clipsChildren: Bool
         ) {
         
-        let size = Size<Double>(cgSize: self.bounds.size)
+        let containerInnerSize = self.bounds.inset(by: padding.uiEdgeInsets).size
         
         let font = textProperties.font(fontProvider: fontProvider, defaults: textDefaults)
-        
-        let label = VerticallyCenteredTextView(
-            desiredLineHeight: font.pointSize * CGFloat(textProperties.lineHeightMultiplier ?? textDefaults.lineHeightMultiplier),
-            fontLineHeight: font.lineHeight
-        )
-        
-        if let s = textProperties.shadow {
-            label.layer.applyShadow(s)
-        }
         
         // TODO: cache these values from when doing the layout phase
         let attributedString = textProperties.attributedString(
@@ -99,13 +124,6 @@ extension UIView {
             defaults: textDefaults,
             truncateSingleLines: clipsChildren
         )
-        
-        label.attributedText = attributedString
-        
-        label.backgroundColor = .clear
-        label.clipsToBounds = false
-        
-        let containerInnerSize = size.inset(padding).cgSize
         
         // it may not have an intrinsic height calculated yet (eg. if the view container has absolute height specified)
         // in that case, we need to calculate how big the
@@ -149,7 +167,21 @@ extension UIView {
                 labelFrame.origin.x += (containerInnerSize.width / 2) - (labelFrame.size.width / 2)
             }
         }
-            
+        
+        let label = AdjustedBaselineStringView(
+            attributedString: attributedString,
+            desiredLineHeight: font.pointSize * CGFloat(textProperties.lineHeightMultiplier ?? textDefaults.lineHeightMultiplier),
+            fontLineHeight: font.lineHeight
+        )
+        
+        label.backgroundColor = .clear
+        if labelFrame.width > self.bounds.width ||
+            labelFrame.height < self.bounds.height {
+            label.clipsToBounds = false
+        } else {
+            label.clipsToBounds = true
+        }
+        
         label.frame = labelFrame
         
         self.insertSubview(label, at: 0)
@@ -221,14 +253,18 @@ extension TextViewProperties {
             paragraphStyle.lineBreakMode = .byWordWrapping
         }
         
+        var attrs: [NSAttributedString.Key : Any] = [
+            .foregroundColor: textColor.uiColor,
+            .font: font,
+            .paragraphStyle: paragraphStyle
+        ]
+        attrs[.shadow] = self.shadow?.nsShadow
+        
         let attrStr = NSMutableAttributedString(
             string: string,
-            attributes: [
-                .foregroundColor: textColor.uiColor,
-                .font: font,
-                .paragraphStyle: paragraphStyle
-            ]
+            attributes: attrs
         )
+        
         let textSize = font.pointSize
         let superscriptFont = font.withSize(ceil(textSize * 0.6))
         
