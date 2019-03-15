@@ -16,6 +16,7 @@ class DemoViewController: IncitoLoaderViewController {
     let availableIncitos: [(json: String, refImg: String?)] = [
         ("incito-irma-375.json", nil),
         ("incito-kvickly-feb2019-375.json", nil),
+        ("incito-elgiganten-feb19-375.json", nil),
         ("incito-superbrugsen-mar18-375.json", nil),
         ("incito-videotest-375.json", nil),
         ("incito-elgiganten-375.json", nil),
@@ -30,6 +31,8 @@ class DemoViewController: IncitoLoaderViewController {
         ("incito-transformtest-375.json", nil),
         ("incito-flextest-375.json", nil),
         ("incito-imagetest-375.json", nil),
+        ("incito-texttest-375.json", nil),
+        
         
         //        ("incito-superbrugsen-mar18-768.json", nil),
         //        ("incito-elgiganten-768.json", nil),
