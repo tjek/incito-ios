@@ -1,8 +1,8 @@
 // Default Error Title
-"Unable to Load" = "Unable to Load";
+"Unable to Load" = "Ei voi Ladata";
 
 // Default Error Message
-"Sorry, there was a problem. Please try again." = "Sorry, there was a problem. Please try again.";
+"Sorry, there was a problem. Please try again." = "Pahoittelemme, ilmeni ongelma. Yritä uudelleen.";
 
 // Error Retry Button
-"Try Again" = "Try Again";
+"Try Again" = "Yritä Uudelleen";

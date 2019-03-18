@@ -1,8 +1,8 @@
 // Default Error Title
-"Unable to Load" = "Unable to Load";
+"Unable to Load" = "Caricamento impossibile";
 
 // Default Error Message
-"Sorry, there was a problem. Please try again." = "Sorry, there was a problem. Please try again.";
+"Sorry, there was a problem. Please try again." = "Spiacenti, si è verificato un problema. Riprova.";
 
 // Error Retry Button
-"Try Again" = "Try Again";
+"Try Again" = "Riprova";
