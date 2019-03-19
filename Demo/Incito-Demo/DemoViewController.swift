@@ -16,6 +16,7 @@ class DemoViewController: IncitoLoaderViewController {
     let availableIncitos: [(json: String, refImg: String?)] = [
         ("incito-irma-375.json", nil),
         ("incito-kvickly-feb2019-375.json", nil),
+        ("elgiganten-mar19-375.json", nil),
         ("incito-elgiganten-feb19-375.json", nil),
         ("incito-superbrugsen-mar18-375.json", nil),
         ("incito-videotest-375.json", nil),
@@ -47,6 +48,8 @@ class DemoViewController: IncitoLoaderViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        IncitoDataStore.shared.clearCache()
         
         self.delegate = self
         self.navigationController?.navigationBar.tintColor = .orange
