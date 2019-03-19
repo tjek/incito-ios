@@ -53,11 +53,12 @@ class LayoutComparisonTests: XCTestCase {
         let bundle = Bundle(for: LayoutComparisonTests.self)
         
         let dimensionsLoader = openFile(filename: dimensionsFilename, bundle: bundle)
-            .flatMap(TestLayoutDimensions.decode(from:))
-            .map { $0.treeify() }
+            .flatMapResult(TestLayoutDimensions.decode(from:))
+            .mapResult { $0.treeify() }
         let incitoLoader = IncitoJSONFileLoader(filename: filename, bundle: bundle, width: width)
-            .map({ (renderableDoc: RenderableIncitoDocument) -> TreeNode<(String?, TestLayoutRect, RenderableView)> in
-                renderableDoc.rootView.mapValues({ (renderableView: RenderableView, _, _) in
+            .mapResult({ (renderableDoc: RenderableIncitoDocument) -> TreeNode<(String?, TestLayoutRect, RenderableView)> in
+                // Incito's root view is a container, so we need to skip that
+                renderableDoc.rootView.children[0].mapValues({ (renderableView: RenderableView, _, _) in
                     let absRect = renderableView.absoluteRect
                     return (
                         renderableView.layout.viewProperties.name,
