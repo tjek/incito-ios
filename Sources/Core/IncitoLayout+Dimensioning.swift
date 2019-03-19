@@ -36,13 +36,15 @@ extension TreeNode where T == ViewProperties {
             parentLayoutType: parentLayoutType
         )
         
+        let absoluteMargins = resolvedLayoutProperties.absoluteMargins.map { $0 ?? 0 }
+        
         // calculate concrete-size (depends on node's layout-type)
         let concreteSize = calculateConcreteSize(
             parentLayoutType: parentLayoutType,
             parentSize: parentRoughSize,
             layoutConcreteSize: resolvedLayoutProperties.concreteSize,
             layoutPosition: resolvedLayoutProperties.position,
-            layoutMargins: resolvedLayoutProperties.margins,
+            layoutMargins: absoluteMargins,
             flexBasisSize: resolvedLayoutProperties.flexBasisSize
             )
             .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
@@ -52,7 +54,7 @@ extension TreeNode where T == ViewProperties {
             parentSize: parentRoughSize,
             layoutConcreteSize: resolvedLayoutProperties.relativeSize,
             layoutPosition: resolvedLayoutProperties.position,
-            layoutMargins: resolvedLayoutProperties.margins,
+            layoutMargins: absoluteMargins,
             flexBasisSize: nil
             )
             .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
@@ -63,7 +65,7 @@ extension TreeNode where T == ViewProperties {
             parentRoughInnerSize: parentRoughInnerSize,
             concreteSize: concreteSize,
             relativeSize: relativeSize,
-            layoutMargins: resolvedLayoutProperties.margins
+            layoutMargins: absoluteMargins
             )
             .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
         
@@ -313,22 +315,25 @@ private func calculateBlockContentsSize(
                 childPossibleSize.height = nil
             }
             
+            let childAbsoluteMargins = childDims.layoutProperties.absoluteMargins.map { $0 ?? 0 }
+            
             // The child has a contentsSize width... use that to calculate the maxWidth
             if let childContentsWidth = childPossibleSize.width {
                 maxWidth = max(
                     maxWidth ?? 0,
-                    childContentsWidth + childDims.layoutProperties.margins.left + childDims.layoutProperties.margins.right
+                    childContentsWidth
+                        + childAbsoluteMargins.left + childAbsoluteMargins.right
                 )
             }
             
-            let smallestSpacing = min(res.1, childDims.layoutProperties.margins.top)
+            let smallestSpacing = min(res.1, childAbsoluteMargins.top)
             
             let outerHeight = (childPossibleSize.height ?? 0)
-                + childDims.layoutProperties.margins.top + childDims.layoutProperties.margins.bottom
+                + childAbsoluteMargins.top + childAbsoluteMargins.bottom
             
             return (
                 height: res.0 + outerHeight - smallestSpacing,
-                prevMargin: childDims.layoutProperties.margins.bottom,
+                prevMargin: childAbsoluteMargins.bottom,
                 maxWidth: maxWidth
             )
     }
@@ -380,16 +385,19 @@ private func calculateFlexContentsSize(
                     childPossibleSize.height = nil
                 }
                 
+                let childAbsoluteMargins = childDims.layoutProperties.absoluteMargins.map { $0 ?? 0 }
+                
                 // The child has a contentsSize width... use that to calculate the maxWidth
                 if let childContentsWidth = childPossibleSize.width {
                     maxWidth = max(
                         maxWidth ?? 0,
-                        childContentsWidth + childDims.layoutProperties.margins.left + childDims.layoutProperties.margins.right
+                        childContentsWidth
+                            + childAbsoluteMargins.left + childAbsoluteMargins.right
                     )
                 }
                 
                 let outerHeight = (childPossibleSize.height ?? 0)
-                    + childDims.layoutProperties.margins.top + childDims.layoutProperties.margins.bottom
+                    + childAbsoluteMargins.top + childAbsoluteMargins.bottom
                 
                 return (
                     totalHeight: res.0 + outerHeight,
@@ -428,16 +436,19 @@ private func calculateFlexContentsSize(
                     childPossibleSize.height = nil
                 }
                 
+                let childAbsoluteMargins = childDims.layoutProperties.absoluteMargins.map { $0 ?? 0 }
+                
                 // The child has a contentsSize height... use that to calculate the maxHeight
                 if let childContentsHeight = childPossibleSize.height {
                     maxHeight = max(
                         maxHeight ?? 0,
-                        childContentsHeight + childDims.layoutProperties.margins.top + childDims.layoutProperties.margins.bottom
+                        childContentsHeight
+                            + childAbsoluteMargins.top + childAbsoluteMargins.bottom
                     )
                 }
                 
                 let outerWidth = (childPossibleSize.width ?? 0)
-                    + childDims.layoutProperties.margins.left + childDims.layoutProperties.margins.right
+                    + childAbsoluteMargins.left + childAbsoluteMargins.right
                 
                 return (
                     totalWidth: res.0 + outerWidth,

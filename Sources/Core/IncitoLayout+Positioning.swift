@@ -39,7 +39,7 @@ extension TreeNode where T == ViewLayout {
             parentIntrinsicSize: parentIntrinsicSize,
             
             size: viewLayout.size,
-            margins: viewLayout.dimensions.layoutProperties.margins,
+            margins: viewLayout.dimensions.layoutProperties.combinedMargins,
             position: viewLayout.dimensions.layoutProperties.position,
             layoutProperties: viewLayout.viewProperties.layout,
             prevSiblings: prevSiblings,
@@ -125,7 +125,7 @@ private func calculateBlockChildPosition(
     let originY: Double = {
         
         let (totalPrevSiblingHeight, prevBottomMargin) = prevSiblings.reduce((Double(0), Double(0))) { res, prevSibling in
-            let margins = prevSibling.dimensions.layoutProperties.margins
+            let margins = prevSibling.dimensions.layoutProperties.combinedMargins
             let siblingOuterHeight = prevSibling.size.height + margins.top + margins.bottom
             
             return (
@@ -259,11 +259,11 @@ private func calculateFlexChildRowPosition(
     
     // the width of all the preceding views
     let totalPrevSiblingWidth = prevSiblings.reduce(0, {
-        $0 + $1.size.outset($1.dimensions.layoutProperties.margins).width
+        $0 + $1.size.outset($1.dimensions.layoutProperties.combinedMargins).width
     })
     // the width of all the following views
     let totalTrailingWidth = nextSiblings.reduce(0, {
-        $0 + $1.size.outset($1.dimensions.layoutProperties.margins).width
+        $0 + $1.size.outset($1.dimensions.layoutProperties.combinedMargins).width
     })
     
     let totalSiblingWidth = totalPrevSiblingWidth + outerSize.width + totalTrailingWidth
@@ -358,11 +358,11 @@ private func calculateFlexChildColumnPosition(
     
     // the height of all the preceding views
     let totalPrevSiblingHeight = prevSiblings.reduce(0, {
-        $0 + $1.size.outset($1.dimensions.layoutProperties.margins).height
+        $0 + $1.size.outset($1.dimensions.layoutProperties.combinedMargins).height
     })
     // the height of all the following views
     let totalTrailingHeight = nextSiblings.reduce(0, {
-        $0 + $1.size.outset($1.dimensions.layoutProperties.margins).height
+        $0 + $1.size.outset($1.dimensions.layoutProperties.combinedMargins).height
     })
     // the combined height of all the views (including their margins)
     let totalSiblingHeight = totalPrevSiblingHeight + outerSize.height + totalTrailingHeight

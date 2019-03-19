@@ -127,7 +127,8 @@ struct ViewDimensions {
  */
 struct ResolvedLayoutProperties: Equatable {
     var position: Edges<Double?>
-    var margins: Edges<Double>
+    var absoluteMargins: Edges<Double?>
+    var relativeMargins: Edges<Double?> // nil if margins are absolute
     var padding: Edges<Double>
     
     var maxSize: Size<Double>
@@ -171,7 +172,12 @@ struct ResolvedLayoutProperties: Equatable {
         
         // margins & padding are actually only relative to the width of the parent, not the height
         let widthOnlyParentSize = Size(width: parentSize.width, height: parentSize.width)
-        self.margins = properties.margins.absolute(in: widthOnlyParentSize)
+        
+        self.absoluteMargins = properties.margins.map { $0.asPoints }
+        self.relativeMargins = properties.margins.map {
+            $0.asPercentage.map { pct in pct * parentSize.width }
+        }
+
         self.padding = properties.padding
             .absolute(in: widthOnlyParentSize)
             .adding(strokeWidth)
@@ -185,5 +191,10 @@ struct ResolvedLayoutProperties: Equatable {
                 height: unit.absolute(in: parentSize.height)
             )
         }
+    }
+    
+    /// Returns the absolute margins, and if those arent set, the relative, and if not those, then 0.
+    var combinedMargins: Edges<Double> {
+        return self.absoluteMargins.zipWith(self.relativeMargins) { $0 ?? $1 ?? 0 }
     }
 }

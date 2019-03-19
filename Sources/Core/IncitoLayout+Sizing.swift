@@ -45,12 +45,14 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
             // if there was a change in the layout properties, we might need to recalculate all the dimensions
             dimensions.layoutProperties = resolvedLayoutProperties
             
+            let margins = resolvedLayoutProperties.combinedMargins
+            
             dimensions.concreteSize = calculateConcreteSize(
                 parentLayoutType: parentLayoutType,
                 parentSize: parentSize.optional,
                 layoutConcreteSize: resolvedLayoutProperties.concreteSize,
                 layoutPosition: resolvedLayoutProperties.position,
-                layoutMargins: resolvedLayoutProperties.margins,
+                layoutMargins: margins,
                 flexBasisSize: resolvedLayoutProperties.flexBasisSize
                 )
                 .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
@@ -61,7 +63,7 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
                 parentSize: parentSize.optional,
                 layoutConcreteSize: resolvedLayoutProperties.relativeSize,
                 layoutPosition: resolvedLayoutProperties.position,
-                layoutMargins: resolvedLayoutProperties.margins,
+                layoutMargins: margins,
                 flexBasisSize: nil
                 )
                 .clamped(min: resolvedLayoutProperties.minSize, max: resolvedLayoutProperties.maxSize)
@@ -125,7 +127,7 @@ private func calculateActualSize(
             relativeSize: dimensions.relativeSize,
             contentsSize: dimensions.contentsSize,
             padding: dimensions.layoutProperties.padding,
-            margins: dimensions.layoutProperties.margins,
+            margins: dimensions.layoutProperties.combinedMargins,
             wrapsContent: dimensions.layoutProperties.wrapsContent
         )
     case .absolute:
@@ -145,7 +147,7 @@ private func calculateActualSize(
             relativeSize: dimensions.relativeSize,
             contentsSize: dimensions.contentsSize,
             padding: dimensions.layoutProperties.padding,
-            margins: dimensions.layoutProperties.margins,
+            margins: dimensions.layoutProperties.combinedMargins,
             flexGrow: layoutProperties.flexGrow,
             flexShrink: layoutProperties.flexShrink,
             siblings: siblings
