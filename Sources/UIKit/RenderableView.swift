@@ -237,7 +237,8 @@ func buildViewRenderer(_ renderProperties: IncitoRenderer, viewType: ViewType, p
         
         // apply the style properties to the view
         let imageRequest = view.applyStyle(
-            renderableView.layout.viewProperties.style
+            renderableView.layout.viewProperties.style,
+            renderableView: renderableView
         )
         
         // perform any image loading

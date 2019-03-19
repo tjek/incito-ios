@@ -35,7 +35,7 @@ extension UIView {
             
             // only fade it the renderable view is on screen
             if renderableView.isVisible {
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: 0.05) {
                     imageView.alpha = 1
                 }
             } else {
@@ -66,7 +66,10 @@ extension UIView {
 
 extension UIView {
     
-    func applyStyle(_ style: StyleProperties) -> ImageViewLoadRequest? {
+    func applyStyle(
+        _ style: StyleProperties,
+        renderableView: RenderableView
+        ) -> ImageViewLoadRequest? {
         
         // apply the layout.view properties
         backgroundColor = style.backgroundColor?.uiColor ?? .clear
@@ -100,7 +103,12 @@ extension UIView {
                 imageView.alpha = 0
                 self.insertSubview(imageView, at: 0)
                 
-                UIView.animate(withDuration: 0.2) {
+                // only fade it the renderable view is on screen
+                if renderableView.isVisible {
+                    UIView.animate(withDuration: 0.05) {
+                        imageView.alpha = 1
+                    }
+                } else {
                     imageView.alpha = 1
                 }
             }
