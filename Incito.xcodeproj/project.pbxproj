@@ -66,6 +66,7 @@
 		AE8450CF22019C680000A8D8 /* Incito.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE8450D122019C680000A8D8 /* Incito.strings */; };
 		AE8450D322019D270000A8D8 /* Bundle+Incito.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450D222019D270000A8D8 /* Bundle+Incito.swift */; };
 		AE8450D52201A0960000A8D8 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450D42201A0960000A8D8 /* Resources.swift */; };
+		AE98C8A122416C0900B4BD7A /* IncitoEnvironment+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE98C8A022416C0900B4BD7A /* IncitoEnvironment+UIKit.swift */; };
 		AECF0E902200795B00E7A64A /* DefaultErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */; };
 		AECF0E9222007C5900E7A64A /* DefaultLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */; };
 		AEE097C622303B6500A14ED7 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE097C522303B6500A14ED7 /* VideoView.swift */; };
@@ -231,6 +232,7 @@
 		AE90B04C222EA4910090FB6C /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Incito.strings; sourceTree = "<group>"; };
 		AE90B04D222EA49B0090FB6C /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Incito.strings; sourceTree = "<group>"; };
 		AE90B04E222EA4A30090FB6C /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Incito.strings; sourceTree = "<group>"; };
+		AE98C8A022416C0900B4BD7A /* IncitoEnvironment+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoEnvironment+UIKit.swift"; sourceTree = "<group>"; };
 		AEB846FF221FEA5E00685F45 /* HTMLImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLImageRenderer.swift; sourceTree = "<group>"; };
 		AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultErrorViewController.swift; sourceTree = "<group>"; };
 		AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLoadingViewController.swift; sourceTree = "<group>"; };
@@ -316,10 +318,13 @@
 				AE582A5921FF1736009F4D8A /* IncitoViewController.swift */,
 				AE582A5F21FF1736009F4D8A /* IncitoLoaderViewController.swift */,
 				AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */,
+				AE246F67221C436700662E9B /* IncitoDataStore.swift */,
+				AE98C8A022416C0900B4BD7A /* IncitoEnvironment+UIKit.swift */,
 				AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */,
 				AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */,
 				AE582A5421FF1736009F4D8A /* RenderableView.swift */,
 				AE582A5521FF1736009F4D8A /* ImageLoader.swift */,
+				AE582A6821FF1736009F4D8A /* FontAssetLoader.swift */,
 				AE582A5621FF1736009F4D8A /* FontAssetLoader+UIKit.swift */,
 				AE582A5721FF1736009F4D8A /* Incito+UIKit.swift */,
 				AE467C632239166000F95D62 /* Incito+TextView.swift */,
@@ -351,10 +356,8 @@
 				AE582A6321FF1736009F4D8A /* IncitoLayout+Sizing.swift */,
 				AE582A6621FF1736009F4D8A /* IncitoLayout+Dimensioning.swift */,
 				AE582A6721FF1736009F4D8A /* IncitoLayout+Positioning.swift */,
-				AE582A6821FF1736009F4D8A /* FontAssetLoader.swift */,
 				AE582A6921FF1736009F4D8A /* IncitoTypes.swift */,
 				AE246F42221B525B00662E9B /* IncitoEnvironment.swift */,
-				AE246F67221C436700662E9B /* IncitoDataStore.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				AE582A7721FF1736009F4D8A /* IncitoTypes+UIKit.swift in Sources */,
 				AE582B1021FF4EA8009F4D8A /* IncitoLoader.swift in Sources */,
 				AE8450C82200F8530000A8D8 /* CopyableLabel.swift in Sources */,
+				AE98C8A122416C0900B4BD7A /* IncitoEnvironment+UIKit.swift in Sources */,
 				AE4BF82222048DEF0048671D /* Future.swift in Sources */,
 				AE582A7621FF1736009F4D8A /* IncitoViewController.swift in Sources */,
 				AE582A6D21FF1736009F4D8A /* GenericGeometry.swift in Sources */,

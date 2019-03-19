@@ -7,7 +7,6 @@
 //
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
-// TODO: maybe as struct - do we need a parent?
 public final class TreeNode<T> {
     var value: T
     

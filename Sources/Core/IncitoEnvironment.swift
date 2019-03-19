@@ -32,16 +32,12 @@ public struct IncitoEnvironment {
      
      The default implementation uses `IncitoDataStore.shared`. This has a disk & memory cache.
      */
-    public var imageLoader: ImageLoaderProtocol = IncitoDataStore.shared
+    public var imageLoader: ImageLoaderProtocol
     
     /**
      This is used by the Incito renderer to download url-based font data.
      
      The default implementation uses `IncitoDataStore.shared`. This has a disk & memory cache.
      */
-    public var fontLoader: FontLoaderProtocol = IncitoDataStore.shared
-}
-
-extension IncitoEnvironment {
-    public static var current = IncitoEnvironment()
+    public var fontLoader: FontLoaderProtocol
 }

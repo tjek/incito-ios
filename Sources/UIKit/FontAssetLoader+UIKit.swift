@@ -80,13 +80,6 @@ extension Collection where Element == LoadedFontAsset {
     }
 }
 
-enum FontLoadingError: Error {
-    case invalidData // unable to convert data into a CGFont
-    case registrationFailed
-    case postscriptNameUnavailable
-    case unknownError
-}
-
 extension UIFont {
     /// Returns the name of the registered font, or nil if there is a problem.
     static func register(data: Data) throws -> String {

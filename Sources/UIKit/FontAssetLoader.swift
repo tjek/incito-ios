@@ -9,6 +9,13 @@
 
 import Foundation
 
+enum FontLoadingError: Error {
+    case invalidData // unable to convert data into a Font
+    case registrationFailed
+    case postscriptNameUnavailable
+    case unknownError
+}
+
 struct FontAssetLoader {
     typealias Registrator = (Data) throws -> String
     
