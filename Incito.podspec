@@ -17,17 +17,9 @@ Pod::Spec.new do |s|
 
     s.source       = { :git => "https://github.com/shopgun/incito-ios.git", :tag => "v#{s.version}" }
     
-    s.subspec 'Core' do |ss|
-        ss.source_files = ["Sources/Core/**/*.swift", "Sources/Utils/**/*.swift"]
-        ss.frameworks   = "Foundation"
-        ss.dependency "Cache"
-    end
-
-    s.subspec 'UIKit' do |ss|
-        ss.source_files = "Sources/UIKit/**/*.swift"
-        ss.frameworks   = "Foundation", "UIKit"
-
-        ss.dependency "Incito/Core"
-        ss.dependency "FLAnimatedImage", "~> 1.0"
-    end
+    s.source_files = "Sources/**/*.swift"
+    s.resources = ["Sources/**/Resources/**/*.strings"]
+    
+    s.dependency "FLAnimatedImage", "~> 1.0"
+    s.dependency "Cache"
 end
