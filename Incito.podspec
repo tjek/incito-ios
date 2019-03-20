@@ -21,5 +21,5 @@ Pod::Spec.new do |s|
     s.resources = ["Sources/**/Resources/**/*.strings"]
     
     s.dependency "FLAnimatedImage", "~> 1.0"
-    s.dependency "Cache"
+    s.dependency "Cache", "~> 5.2"
 end
