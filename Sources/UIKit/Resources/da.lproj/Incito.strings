@@ -1,8 +1,8 @@
 // Default Error Title
-"Unable to Load" = "Unable to Load";
+"Unable to Load" = "Kan ikke indlæses";
 
 // Default Error Message
-"Sorry, there was a problem. Please try again." = "Sorry, there was a problem. Please try again.";
+"Sorry, there was a problem. Please try again." = "Beklager, der opstod et problem. Prøv venligst igen.";
 
 // Error Retry Button
 "Try Again" = "Prøv igen";

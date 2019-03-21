@@ -1,8 +1,8 @@
 // Default Error Title
-"Unable to Load" = "Unable to Load";
+"Unable to Load" = "Laden lukt niet";
 
 // Default Error Message
-"Sorry, there was a problem. Please try again." = "Sorry, there was a problem. Please try again.";
+"Sorry, there was a problem. Please try again." = "Sorry, er was een probleem. Probeer het opnieuw.";
 
 // Error Retry Button
 "Try Again" = "Opnieuw Proberen";
