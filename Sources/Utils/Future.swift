@@ -19,8 +19,11 @@ public struct Future<A> {
 }
 
 extension Future {
-    init(value: A) {
+    public init(value: A) {
         self.init(run: { $0(value) })
+    }
+    public init(work: @escaping () -> A) {
+        self.init(run: { $0(work()) })
     }
 }
 
@@ -73,7 +76,12 @@ extension Future {
 }
 
 extension Future {
-    func async(on queue: DispatchQueue, completesOn completionQueue: DispatchQueue = .main) -> Future<A> {
+    
+    public func asyncOnMain() -> Future<A> {
+        return self.async(on: .main, completesOn: .main)
+    }
+    
+    public func async(on queue: DispatchQueue, completesOn completionQueue: DispatchQueue = .main) -> Future<A> {
         return Future { cb in
             queue.async {
                 self.run { value in
@@ -150,7 +158,29 @@ extension Future {
             }
             
         }
-    }    
+    }
+    
+    public func observeSuccess<S>(_ callback: @escaping (S) -> Void) -> Future<A> where A == Result<S> {
+        return Future { cb in
+            self.run { a in
+                if case let .success(s) = a {
+                    callback(s)
+                }
+                cb(a)
+            }
+        }
+    }
+    
+    public func observeError<S>(_ callback: @escaping (Error) -> Void) -> Future<A> where A == Result<S> {
+        return Future { cb in
+            self.run { a in
+                if case let .error(e) = a {
+                    callback(e)
+                }
+                cb(a)
+            }
+        }
+    }
 }
 
 // Future + Optional extensions

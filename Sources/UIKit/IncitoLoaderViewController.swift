@@ -26,8 +26,8 @@ public protocol IncitoLoaderViewControllerDelegate: IncitoViewControllerDelegate
 public extension IncitoLoaderViewControllerDelegate {
     func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController {
         return buildDefaultErrorViewController(for: error, backgroundColor: viewController.view.backgroundColor ?? .white) { [weak viewController] in
-            guard let loader = viewController?.lastLoader else { return }
-            viewController?.reload(loader, completion: viewController?.lastReloadCompletion)
+
+            viewController?.doReload?()
         }
     }
     
@@ -104,9 +104,10 @@ open class IncitoLoaderViewController: UIViewController {
         }
     }
     
+    /// The function that performs the last called reload request.
+    /// if `reload(_,completion:)` is called before viewDidLoad, the reload will not actually begin until the view has loaded.
+    fileprivate var doReload: (() -> Void)?
     fileprivate var reloadId: Int = 0
-    fileprivate var lastLoader: IncitoLoader?
-    fileprivate var lastReloadCompletion: ((Result<IncitoViewController>) -> Void)?
     fileprivate var loaderQueue = DispatchQueue(label: "IncitoLoaderQueue", qos: .userInitiated)
     
     fileprivate var currentStateViewController: UIViewController?
@@ -120,43 +121,61 @@ open class IncitoLoaderViewController: UIViewController {
         view.addSubview(stateContainerView)
         
         updateViewState()
+        
+        reload()
     }
     
+    
+    /// If you have previously called `load(loader:completion)`, this will re-trigger the loader/completion.
+    public func reload() {
+        doReload?()
+    }
+
     /**
      Given an IncitoLoader, we will start reloading the IncitoViewController.
+     
+     You may call this before the VC's ViewDidLoad is called - it will wait until the view is loaded before running the loader.
      */
-    public func reload(_ loader: IncitoLoader, completion: ((Result<IncitoViewController>) -> Void)? = nil) {
+    public func load(
+        _ loader: IncitoLoader,
+        completion: ((Result<IncitoViewController>) -> Void)? = nil) {
+        
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            
-            self.state = .loading
-            self.lastLoader = loader
-            self.lastReloadCompletion = completion
             
             self.reloadId += 1
             let currReloadId = self.reloadId
             
-            loader
-                .async(on: self.loaderQueue, completesOn: .main)
-                .run({ [weak self] renderableDocResult in
-                    guard let self = self else { return }
-                    guard self.reloadId == currReloadId else { return }
-                    
-                    switch renderableDocResult {
-                    case let .error(err):
-                        self.state = .error(err)                        
-                        completion?(.error(err))
-                    case let .success(renderableDocument):
+            self.doReload = { [weak self] in
+                guard let self = self else { return }
+                guard self.isViewLoaded else { return }
+                
+                self.state = .loading
+                
+                loader
+                    .async(on: self.loaderQueue, completesOn: .main)
+                    .run({ [weak self] renderableDocResult in
+                        guard let self = self else { return }
+                        guard self.reloadId == currReloadId else { return }
                         
-                        let incitoVC = IncitoViewController()
-                        incitoVC.delegate = self.delegate
-                        incitoVC.update(renderableDocument: renderableDocument)
-                        
-                        self.state = .success(incitoVC)
-                        
-                        completion?(.success(incitoVC))
-                    }
-                })
+                        switch renderableDocResult {
+                        case let .error(err):
+                            self.state = .error(err)
+                            completion?(.error(err))
+                        case let .success(renderableDocument):
+                            
+                            let incitoVC = IncitoViewController()
+                            incitoVC.delegate = self.delegate
+                            incitoVC.update(renderableDocument: renderableDocument)
+                            
+                            self.state = .success(incitoVC)
+                            
+                            completion?(.success(incitoVC))
+                        }
+                    })
+            }
+            
+            self.doReload?()
         }
     }
     
