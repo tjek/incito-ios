@@ -10,10 +10,10 @@
 import Foundation
 
 public enum IncitoIdentifierType {}
-public typealias IncitoIdentifier = GenericIdentifier<IncitoIdentifierType>
+public typealias IncitoDocumentIdentifier = GenericIdentifier<IncitoIdentifierType>
 
 public struct IncitoDocument<ViewTreeNode> {
-    public var id: IncitoIdentifier
+    public var id: IncitoDocumentIdentifier
     public var version: String
     public var rootView: TreeNode<ViewTreeNode>
 
