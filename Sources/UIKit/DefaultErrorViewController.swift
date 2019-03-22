@@ -9,62 +9,25 @@
 
 import UIKit
 
-func buildDefaultErrorViewController(
-    for error: Error,
-    backgroundColor: UIColor,
-    retryCallback: @escaping () -> Void
-    ) -> UIViewController {
-    
-    let errorVC = UIViewController()
-    errorVC.view.backgroundColor = backgroundColor
-    
-    let errorView = ErrorView()
-    errorView.didTapRetryCallback = retryCallback
-    
-    errorVC.view.addSubview(errorView)
-    errorView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-        errorView.topAnchor.constraint(equalTo: errorVC.view.topAnchor),
-        errorView.bottomAnchor.constraint(equalTo: errorVC.view.bottomAnchor),
-        errorView.leadingAnchor.constraint(equalTo: errorVC.view.leadingAnchor),
-        errorView.trailingAnchor.constraint(equalTo: errorVC.view.trailingAnchor),
-        ])
-    
-    var isBGDark: Bool {
-        var whiteComponent: CGFloat = 1.0
-        backgroundColor.getWhite(&whiteComponent, alpha: nil)
-        
-        return whiteComponent <= 0.6
-    }
-    
-    errorView.update(error.errorViewContents(darkBG: isBGDark))
-    
-    return errorVC
-}
-
 private extension Error {
-    func errorViewContents(darkBG: Bool) -> ErrorView.Contents {
-        // TODO: different contents depending on the error type
-        let tint: UIColor = darkBG ? UIColor.white : UIColor(white: 0, alpha: 0.6)
-        return ErrorView.Contents(
+    var errorViewContents: DefaultErrorViewController.Contents {
+        return DefaultErrorViewController.Contents(
             image: nil,
             title: Assets.ErrorView.defaultTitle.withoutWidows,
             message: Assets.ErrorView.defaultMessage.withoutWidows,
             errorDetails: "\(self.localizedDescription)\n\(self)",
-            tint: tint,
             isRetryable: true
         )
     }
 }
 
-class ErrorView: UIView {
+class DefaultErrorViewController: UIViewController {
     
     struct Contents {
         var image: UIImage?
         var title: String?
         var message: String?
         var errorDetails: String?
-        var tint: UIColor?
         var isRetryable: Bool
     }
 
@@ -139,8 +102,8 @@ class ErrorView: UIView {
         return imageView
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         retryButton.addTarget(self, action: #selector(didTapRetry(_:)), for: .touchUpInside)
         errorDescriptionLabel.isHidden = true
@@ -164,23 +127,19 @@ class ErrorView: UIView {
         tapGR.numberOfTapsRequired = 2
         stackView.addGestureRecognizer(tapGR)
         
-        addSubview(stackView)
+        view.addSubview(stackView)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.centerYAnchor.constraint(equalTo: self.layoutMarginsGuide.centerYAnchor),
-            stackView.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: self.view.layoutMarginsGuide.centerYAnchor),
+            stackView.centerXAnchor.constraint(equalTo: self.view.layoutMarginsGuide.centerXAnchor),
             
-            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: self.readableContentGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(lessThanOrEqualTo: self.readableContentGuide.trailingAnchor),
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.readableContentGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: self.view.readableContentGuide.trailingAnchor),
             stackView.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
             
-            stackView.topAnchor.constraint(greaterThanOrEqualTo: self.layoutMarginsGuide.topAnchor)
+            stackView.topAnchor.constraint(greaterThanOrEqualTo: self.view.layoutMarginsGuide.topAnchor)
             ])
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     func update(_ errorContents: Contents) {
@@ -189,20 +148,10 @@ class ErrorView: UIView {
         titleLabel.text = errorContents.title
         
         errorDescriptionLabel.text = errorContents.errorDetails
-        
         messageLabel.text = errorContents.message
-        iconImageView.tintColor = errorContents.tint
-        titleLabel.textColor = errorContents.tint
-        messageLabel.textColor = errorContents.tint
-        errorDescriptionLabel.textColor = errorContents.tint?.withAlphaComponent(0.8)
-        
-        retryButton.setTitleColor(errorContents.tint, for: .normal)
-        
-        retryButton.backgroundColor = errorContents.tint?.withAlphaComponent(0.05)
-        retryButton.layer.borderColor = errorContents.tint?.cgColor
         retryButton.isHidden = !errorContents.isRetryable
         
-        self.setNeedsLayout()
+        self.view.setNeedsLayout()
     }
     
     @objc
@@ -213,5 +162,46 @@ class ErrorView: UIView {
     @objc
     func handleTap(_ gesture: UITapGestureRecognizer) {
         errorDescriptionLabel.isHidden.toggle()
+    }
+}
+extension DefaultErrorViewController: ColorableChildVC {
+    func parentBackgroundColorDidChange(to parentBackgroundColor: UIColor?) {
+        let bgColor = parentBackgroundColor ?? .white
+        var isBGDark: Bool {
+            var whiteComponent: CGFloat = 1.0
+            bgColor.getWhite(&whiteComponent, alpha: nil)
+            
+            return whiteComponent <= 0.6
+        }
+
+        self.view.backgroundColor = bgColor
+        
+        let tint: UIColor = isBGDark ? UIColor.white : UIColor(white: 0, alpha: 0.6)
+        
+        iconImageView.tintColor = tint
+        titleLabel.textColor = tint
+        messageLabel.textColor = tint
+        errorDescriptionLabel.textColor = tint.withAlphaComponent(0.8)
+        
+        retryButton.setTitleColor(tint, for: .normal)
+        retryButton.backgroundColor = tint.withAlphaComponent(0.05)
+        retryButton.layer.borderColor = tint.cgColor
+    }
+}
+
+extension DefaultErrorViewController {
+    static func build(
+        for error: Error,
+        backgroundColor: UIColor,
+        retryCallback: @escaping () -> Void
+        ) -> DefaultErrorViewController {
+        
+        let errorVC = DefaultErrorViewController()
+        errorVC.didTapRetryCallback = retryCallback
+        errorVC.update(error.errorViewContents)
+        
+        errorVC.parentBackgroundColorDidChange(to: backgroundColor)
+        
+        return errorVC
     }
 }

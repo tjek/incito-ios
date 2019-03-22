@@ -13,26 +13,33 @@ public protocol IncitoLoaderViewControllerDelegate: IncitoViewControllerDelegate
     /**
      If you wish to customize the viewcontroller used to show the error state when loading the incito, implement this delegate method and return a view controller showing an error view.
      */
-    func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController
+    func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController & ColorableChildVC
     
     /**
      If you wish to customize the viewcontroller used to show the loading activity when loading the incito, implement this delegate method and return a view controller showing a loading view. If you do not implement this method a default viewcontroller showing a loading spinner will be used.
      */
-    func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController
+    func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController & ColorableChildVC
     
     func stateDidChange(from oldState: IncitoLoaderViewController.State, to newState: IncitoLoaderViewController.State, in viewController: IncitoLoaderViewController)
 }
 
-public extension IncitoLoaderViewControllerDelegate {
-    func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController {
-        return buildDefaultErrorViewController(for: error, backgroundColor: viewController.view.backgroundColor ?? .white) { [weak viewController] in
+public protocol ColorableChildVC {
+    func parentBackgroundColorDidChange(to parentBackgroundColor: UIColor?)
+}
 
-            viewController?.doReload?()
-        }
+public extension IncitoLoaderViewControllerDelegate {
+    func errorViewController(for error: Error, in viewController: IncitoLoaderViewController) -> UIViewController & ColorableChildVC {
+        return DefaultErrorViewController.build(
+            for: error,
+            backgroundColor: viewController.view.backgroundColor ?? .white,
+            retryCallback: { [weak viewController] in viewController?.doReload?() }
+        )
     }
     
-    func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController {
-         return DefaultLoadingViewController.build(backgroundColor: viewController.view.backgroundColor ?? .white)
+    func loadingViewController(in viewController: IncitoLoaderViewController) -> UIViewController & ColorableChildVC {
+         return DefaultLoadingViewController.build(
+            backgroundColor: viewController.view.backgroundColor ?? .white
+        )
     }
     
     func stateDidChange(from oldState: IncitoLoaderViewController.State, to newState: IncitoLoaderViewController.State, in viewController: IncitoLoaderViewController) { }
@@ -104,13 +111,24 @@ open class IncitoLoaderViewController: UIViewController {
         }
     }
     
+    /// You should use this property, rather than the `view.backgroundColor` property, as it will also change the tint of the loading/error views.
+    public var backgroundColor: UIColor? {
+        get {
+            return self.view.backgroundColor
+        }
+        set {
+            self.view.backgroundColor = newValue
+            self.currentStateViewController?.parentBackgroundColorDidChange(to: newValue)
+        }
+    }
+    
     /// The function that performs the last called reload request.
     /// if `reload(_,completion:)` is called before viewDidLoad, the reload will not actually begin until the view has loaded.
     fileprivate var doReload: (() -> Void)?
     fileprivate var reloadId: Int = 0
     fileprivate var loaderQueue = DispatchQueue(label: "IncitoLoaderQueue", qos: .userInitiated)
     
-    fileprivate var currentStateViewController: UIViewController?
+    fileprivate var currentStateViewController: (UIViewController & ColorableChildVC)?
     fileprivate var stateContainerView = UIView()
 
     override open func viewDidLoad() {
@@ -186,7 +204,7 @@ open class IncitoLoaderViewController: UIViewController {
         
         let oldVC = currentStateViewController
         
-        let newVC: UIViewController
+        let newVC: (UIViewController & ColorableChildVC)
         switch state {
         case .loading:
             newVC = delegate.loadingViewController(in: self)
@@ -248,4 +266,8 @@ extension UIViewController {
             subView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor)
             ])
     }
+}
+
+extension IncitoViewController: ColorableChildVC {
+    public func parentBackgroundColorDidChange(to parentBackgroundColor: UIColor?) { }
 }

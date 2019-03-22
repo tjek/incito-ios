@@ -39,20 +39,29 @@ class DefaultLoadingViewController: UIViewController {
     }
 }
 
-extension DefaultLoadingViewController {
-    static func build(backgroundColor: UIColor) -> DefaultLoadingViewController {
-        let loadingVC = DefaultLoadingViewController()
-        loadingVC.view.backgroundColor = backgroundColor
+extension DefaultLoadingViewController: ColorableChildVC {
+    func parentBackgroundColorDidChange(to parentBackgroundColor: UIColor?) {
+        
+        let bgColor = parentBackgroundColor ?? .white
         
         var isBGDark: Bool {
             var whiteComponent: CGFloat = 1.0
-            backgroundColor.getWhite(&whiteComponent, alpha: nil)
-
+            bgColor.getWhite(&whiteComponent, alpha: nil)
+            
             return whiteComponent <= 0.6
         }
-        
-        loadingVC.activityIndicator.color = isBGDark ? UIColor.white : UIColor(white: 0, alpha: 0.7)
 
+        self.view.backgroundColor = bgColor
+
+        self.activityIndicator.color = isBGDark ? UIColor.white : UIColor(white: 0, alpha: 0.7)
+    }
+}
+extension DefaultLoadingViewController {
+    static func build(backgroundColor: UIColor) -> DefaultLoadingViewController {
+        let loadingVC = DefaultLoadingViewController()
+        
+        loadingVC.parentBackgroundColorDidChange(to: backgroundColor)
+        
         return loadingVC
     }
 }
