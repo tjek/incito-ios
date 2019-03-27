@@ -58,7 +58,7 @@ public final class TreeNode<T> {
             return ([], [])
         }
         
-        guard let currIndex = allSiblings.index(where: { $0 === self}) else {
+        guard let currIndex = allSiblings.firstIndex(where: { $0 === self}) else {
             fatalError("Current node MUST be a child of its parent")
         }
         

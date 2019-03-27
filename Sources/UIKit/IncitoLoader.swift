@@ -9,7 +9,7 @@
 
 import UIKit
 
-public typealias IncitoLoader = Future<Result<RenderableIncitoDocument>>
+public typealias IncitoLoader = FutureResult<RenderableIncitoDocument>
 
 public func IncitoJSONFileLoader(
     filename: String,
@@ -42,8 +42,8 @@ enum IncitoLoaderError: Error {
     case unavailableFile(filename: String)
 }
 
-func openFile(filename: String, bundle: Bundle = .main) -> Future<Result<Data>> {
-    return Future<Result<Data>> { completion in
+func openFile(filename: String, bundle: Bundle = .main) -> FutureResult<Data> {
+    return FutureResult<Data> { completion in
         completion(Result {
             guard let fileURL = bundle.url(forResource: filename, withExtension: nil) else {
                 throw IncitoLoaderError.unavailableFile(filename: filename)
@@ -58,7 +58,7 @@ func buildRenderableDocument(
     document: IncitoPropertiesDocument,
     width: Double,
     loadedAssets: [LoadedFontAsset]
-    ) -> Future<Result<RenderableIncitoDocument>> {
+    ) -> Future<Result<RenderableIncitoDocument, Error>> {
     return Future { completion in
         let fontProvider = loadedAssets.font(forFamily:size:style:)
         
@@ -104,9 +104,8 @@ func buildRenderableDocument(
     }
 }
 
-
-func decodeJSON<B: Decodable>(data: Data) -> Future<Result<B>> {
-    return Future<Result<B>> { completion in
+func decodeJSON<B: Decodable>(data: Data) -> FutureResult<B> {
+    return FutureResult<B> { completion in
         completion(Result {
             try JSONDecoder().decode(B.self, from: data)
         })
@@ -114,7 +113,7 @@ func decodeJSON<B: Decodable>(data: Data) -> Future<Result<B>> {
 }
 
 extension Decodable {
-    public static func decode(from data: Data) -> Future<Result<Self>> {
+    public static func decode(from data: Data) -> FutureResult<Self> {
         return decodeJSON(data: data)
     }
 }

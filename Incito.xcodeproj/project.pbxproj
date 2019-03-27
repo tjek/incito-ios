@@ -490,9 +490,11 @@
 				TargetAttributes = {
 					AE5829D721FF1000009F4D8A = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 					AE67581F219C2593006BEA9C = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -739,7 +741,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Incito;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -767,7 +769,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Incito;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -906,7 +908,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.shopgun.IncitoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -925,7 +927,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.shopgun.IncitoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

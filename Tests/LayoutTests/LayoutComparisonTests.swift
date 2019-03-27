@@ -74,7 +74,7 @@ class LayoutComparisonTests: XCTestCase {
             .zip(dimensionsLoader)
             .run {
                 switch $0 {
-                case let .error(error):
+                case let .failure(error):
                     XCTFail("Unable to render Incito \(error)")
                 case let .success((incitoRectTree, dimensionsTree)):
                     

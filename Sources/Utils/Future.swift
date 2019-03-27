@@ -9,8 +9,8 @@
 
 import Foundation
 
-public struct Future<A> {
-    public typealias Callback = (A) -> Void
+public struct Future<Response> {
+    public typealias Callback = (Response) -> Void
     let run: (@escaping Callback) -> Void
     
     public init(run: @escaping (@escaping Callback) -> Void) {
@@ -19,69 +19,88 @@ public struct Future<A> {
 }
 
 extension Future {
-    public init(value: A) {
+    public init(value: Response) {
         self.init(run: { $0(value) })
     }
-    public init(work: @escaping () -> A) {
+    
+    public init(work: @escaping () -> Response) {
         self.init(run: { $0(work()) })
     }
 }
 
 extension Future {
     
-    public func map<B>(_ transform: @escaping (A) -> B) -> Future<B> {
-        return Future<B> { callbackB in
-            self.run { valueA in
-                callbackB(transform(valueA))
+    public func map<NewResponse>(
+        _ transform: @escaping (Response) -> NewResponse
+        ) -> Future<NewResponse> {
+        
+        return Future<NewResponse> { callback in
+            self.run {
+                callback(transform($0))
             }
         }
     }
     
-    public func flatMap<B>(_ transform: @escaping (A) -> Future<B>) -> Future<B> {
-        return Future<B> { callbackB in
-            self.run { valueA in
-                transform(valueA).run(callbackB)
+    public func flatMap<NewResponse>(
+        _ transform: @escaping (Response) -> Future<NewResponse>
+        ) -> Future<NewResponse> {
+        
+        return Future<NewResponse> { callback in
+            self.run {
+                transform($0).run(callback)
             }
         }
     }
     
-    public func zip<B>(_ other: Future<B>) -> Future<(A, B)> {
-        return Future<(A, B)> { callback in
+    public func zip<OtherResponse>(
+        _ other: Future<OtherResponse>
+        ) -> Future<(Response, OtherResponse)> {
+        
+        return Future<(Response, OtherResponse)> { callback in
             let group = DispatchGroup()
-            var resultA: A!
-            var resultB: B!
+            var response: Response!
+            var otherResponse: OtherResponse!
             group.enter()
-            self.run { resultA = $0; group.leave() }
+            self.run { response = $0; group.leave() }
             group.enter()
-            other.run { resultB = $0; group.leave() }
+            other.run { otherResponse = $0; group.leave() }
             
             group.notify(queue: .global(), execute: {
-                callback((resultA, resultB))
+                callback((response, otherResponse))
             })
         }
     }
     
-    public func zipWith<B, C>(_ other: Future<B>, _ combine: @escaping (A, B) -> C) -> Future<C> {
+    public func zipWith<OtherResponse, FinalResponse>(
+        _ other: Future<OtherResponse>,
+        _ combine: @escaping (Response, OtherResponse) -> FinalResponse
+        ) -> Future<FinalResponse> {
+        
         return self.zip(other).map(combine)
     }
     
-    public func observe(_ callback: @escaping (A) -> Void) -> Future<A> {
-        return Future { cb in
-            self.run { a in
-                callback(a)
-                cb(a)
-            }
+    public func observe(
+        _ callback: @escaping (Response) -> Void
+        ) -> Future {
+        
+        return self.map {
+            callback($0)
+            return $0
         }
     }
 }
 
 extension Future {
     
-    public func asyncOnMain() -> Future<A> {
+    public func asyncOnMain() -> Future {
         return self.async(on: .main, completesOn: .main)
     }
     
-    public func async(on queue: DispatchQueue, completesOn completionQueue: DispatchQueue = .main) -> Future<A> {
+    public func async(
+        on queue: DispatchQueue,
+        completesOn completionQueue: DispatchQueue = .main
+        ) -> Future {
+        
         return Future { cb in
             queue.async {
                 self.run { value in
@@ -96,90 +115,98 @@ extension Future {
 
 // Future + Result extensions
 
+public typealias FutureResult<Value> = Future<Swift.Result<Value, Error>>
+
 extension Future {
     
-    public func mapResult<S, T>(
-        _ transform: @escaping (S) -> T
-        ) -> Future<Result<T>> where A == Result<S> {
-        return self.map { resultS in
-            resultS.map { s in
-                transform(s)
-            }
-        }
-    }
-    
-    public func flatMapResult<S, T>(
-        _ transform: @escaping (S) -> Future<Result<T>>
-        ) -> Future<Result<T>> where A == Result<S> {
-        return self.flatMap { (resultS: Result<S>) in
-            Future<Result<T>> { callback in
-                switch resultS {
-                case let .success(s):
-                    transform(s).run { resultT in callback(resultT) }
-                case let .error(error):
-                    callback(.error(error))
-                }
-            }
-        }
-    }
-
-    public func zip<S, T>(
-        _ other: Future<Result<T>>
-        ) -> Future<Result<(S, T)>> where A == Result<S> {
-        return self.zipWith(other) { $0.zip($1) }
-    }
-    
-    public func zipWith<S, T, U>(
-        _ other: Future<Result<T>>,
-        _ combine: @escaping (S, T) -> U
-        ) -> Future<Result<U>> where A == Result<S> {
-        return self.zipWith(other) { $0.zipWith($1, combine) }
-    }
-
-    public func compactMap<S, T>(
-        _ transform: @escaping (S) -> Result<T>
-        ) -> Future<Result<T>> where A == Result<S> {
-        return Future<Result<T>> { cb in
-            self.run { s in
-                cb(s.flatMap(transform))
-            }
-        }
-    }
-    
-    public func onError<S>(_ other: @escaping @autoclosure () -> Future<A>) -> Future<A> where A == Result<S> {
-        return Future { cb in
-            self.run { a in
-                switch a {
-                case .success:
-                    cb(a)
-                case .error:
-                    other().run(cb)
-                }
-            }
+    public func mapResult<Success, NewSuccess, Failure>(
+        _ transform: @escaping (Success) -> NewSuccess
+        ) -> Future<Result<NewSuccess, Failure>>
+        where Response == Result<Success, Failure> {
             
-        }
+            return self.map { $0.map(transform) }
     }
     
-    public func observeSuccess<S>(_ callback: @escaping (S) -> Void) -> Future<A> where A == Result<S> {
-        return Future { cb in
-            self.run { a in
-                if case let .success(s) = a {
-                    callback(s)
-                }
-                cb(a)
-            }
-        }
+    public func mapResultError<Success, Failure, NewFailure>(
+        _ transform: @escaping (Failure) -> NewFailure
+        ) -> Future<Result<Success, NewFailure>>
+        where Response == Result<Success, Failure> {
+            
+            return self.map { $0.mapError(transform) }
     }
     
-    public func observeError<S>(_ callback: @escaping (Error) -> Void) -> Future<A> where A == Result<S> {
-        return Future { cb in
-            self.run { a in
-                if case let .error(e) = a {
-                    callback(e)
+    public func flatMapResult<Success, NewSuccess, Failure>(
+        _ transform: @escaping (Success) -> Future<Result<NewSuccess, Failure>>
+        ) -> Future<Result<NewSuccess, Failure>>
+        where Response == Result<Success, Failure> {
+            
+            return self.flatMap({ result in
+                Future<Result<NewSuccess, Failure>> { callback in
+                    switch result {
+                    case let .success(s):
+                        transform(s).run { callback($0) }
+                    case let .failure(error):
+                        callback(.failure(error))
+                    }
                 }
-                cb(a)
+            })
+    }
+    
+    public func flatMapResultError<Success, Failure, NewFailure>(
+        _ transform: @escaping (Failure) -> Future<Result<Success, NewFailure>>
+        ) -> Future<Result<Success, NewFailure>>
+        where Response == Result<Success, Failure> {
+            
+            return self.flatMap({ result in
+                Future<Result<Success, NewFailure>> { callback in
+                    switch result {
+                    case let .success(s):
+                        callback(.success(s))
+                    case let .failure(error):
+                        transform(error).run { callback($0) }
+                    }
+                }
+            })
+    }
+
+
+    public func zip<Success, OtherSuccess, Failure>(
+        _ other: Future<Result<OtherSuccess, Failure>>
+        ) -> Future<Result<(Success, OtherSuccess), Failure>>
+        where Response == Result<Success, Failure> {
+            
+            return self.zipWith(other) { $0.zip($1) }
+    }
+    
+    public func zipWith<Success, OtherSuccess, FinalSuccess, Failure>(
+        _ other: Future<Result<OtherSuccess, Failure>>,
+        _ combine: @escaping (Success, OtherSuccess) -> FinalSuccess
+        ) -> Future<Result<FinalSuccess, Failure>>
+        where Response == Result<Success, Failure> {
+            
+            return self.zipWith(other) { $0.zipWith($1, combine) }
+    }
+    
+    public func observeResultSuccess<Success, Failure>(
+        _ callback: @escaping (Success) -> Void
+        ) -> Future
+        where Response == Result<Success, Failure> {
+            
+            return self.mapResult {
+                callback($0)
+                return $0
             }
-        }
+    }
+    
+    public func observeResultError<Success, Failure>(
+        _ callback: @escaping (Failure) -> Void
+        ) -> Future
+        where Response == Result<Success, Failure> {
+            
+            return self.mapResultError {
+                callback($0)
+                return $0
+            }
     }
 }
 
@@ -187,70 +214,78 @@ extension Future {
 
 extension Future {
     
-    public func map<S, T>(
-        _ transform: @escaping (S) -> T
-        ) -> Future<T?> where A == S? {
-        return self.map { (optionalS: A) in
-            optionalS.map { s in
-                transform(s)
-            }
-        }
-    }
-    
-    public func flatMap<S, T>(
-        _ transform: @escaping (S) -> Future<T?>
-        ) -> Future<T?> where A == S? {
-        return self.flatMap { (optionalS: A) in
-            Future<T?> { callback in
-                if let s = optionalS {
-                    transform(s).run { optionalT in callback(optionalT) }
-                } else {
-                    callback(nil)
-                }
-            }
-        }
-    }
-    
-    public func zip<S, T>(
-        _ other: Future<T?>
-        ) -> Future<(S, T)?> where A == S? {
-        return self.zipWith(other) { ($0, $1) }
-    }
-    
-    public func zipWith<S, T, U>(
-        _ other: Future<T?>,
-        _ combine: @escaping (S, T) -> U
-        ) -> Future<U?> where A == S? {
-        return self.zipWith(other) { (opS: S?, opT: T?) -> U? in
-            switch (opS, opT) {
-            case let (s?, t?):
-                return combine(s, t)
-            default:
-                return nil
-            }
-        }
-    }
-    
-    public func compactMap<S, T>(
-        _ transform: @escaping (S) -> T?
-        ) -> Future<T?> where A == S? {
-        return Future<T?> { cb in
-            self.run { s in
-                cb(s.flatMap(transform))
-            }
-        }
-    }
-    
-    public func onNil<S>(_ other: Future<A>) -> Future<A> where A == S? {
-        return Future { cb in
-            self.run { a in
-                if a == nil {
-                    other.run(cb)
-                } else {
-                    cb(a)
-                }
-            }
+    public func mapOptional<Value, NewValue>(
+        _ transform: @escaping (Value) -> NewValue
+        ) -> Future<Optional<NewValue>>
+        where Response == Optional<Value> {
             
-        }
+            return self.map { $0.map(transform) }
+    }
+    
+    public func flatMapOptional<Value, NewValue>(
+        _ transform: @escaping (Value) -> Future<Optional<NewValue>>
+        ) -> Future<Optional<NewValue>>
+        where Response == Optional<Value> {
+            
+            return self.flatMap({ optional in
+                Future<Optional<NewValue>> { callback in
+                    if let value = optional {
+                        transform(value).run(callback)
+                    } else {
+                        callback(nil)
+                    }
+                }
+            })
+    }
+    
+    public func flatMapOptionalNone<Value>(
+        _ transform: @escaping () -> Future<Optional<Value>>
+        ) -> Future<Optional<Value>>
+        where Response == Optional<Value> {
+            
+            return self.flatMap({ optional in
+                Future<Optional<Value>> { callback in
+                    if let value = optional {
+                        callback(value)
+                    } else {
+                        transform().run(callback)
+                    }
+                }
+            })
+    }
+    
+    public func zip<Value, OtherValue>(
+        _ other: Future<Optional<OtherValue>>
+        ) -> Future<Optional<(Value, OtherValue)>>
+        where Response == Optional<Value> {
+            
+            return self.zipWith(other) { ($0, $1) }
+    }
+    
+    public func zipWith<Value, OtherValue, FinalValue>(
+        _ other: Future<Optional<OtherValue>>,
+        _ combine: @escaping (Value, OtherValue) -> FinalValue
+        ) -> Future<Optional<FinalValue>>
+        where Response == Optional<Value> {
+            
+            return self.zipWith(other) { (a: Value?, b: OtherValue?) -> FinalValue? in
+                switch (a, b) {
+                case let (value?, otherValue?):
+                    return combine(value, otherValue)
+                default:
+                    return nil
+                }
+            }
+    }
+    
+    public func observeOptionalSome<Value>(
+        _ callback: @escaping (Value) -> Void
+        ) -> Future
+        where Response == Optional<Value> {
+            
+            return self.mapOptional {
+                callback($0)
+                return $0
+            }
     }
 }
