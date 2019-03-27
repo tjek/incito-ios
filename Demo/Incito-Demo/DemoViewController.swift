@@ -121,7 +121,7 @@ class DemoViewController: IncitoLoaderViewController {
         )
         
         let start = Date.timeIntervalSinceReferenceDate
-        self.reload(loader) { result in
+        self.load(loader) { result in
             let end = Date.timeIntervalSinceReferenceDate
             switch result {
             case .success:
