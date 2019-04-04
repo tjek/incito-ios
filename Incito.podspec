@@ -22,8 +22,4 @@ Pod::Spec.new do |s|
     
     s.dependency "FLAnimatedImage", "~> 1.0"
     s.dependency "Cache", "~> 5.2"
-    
-    # As `Cache` is causing some problems in Xcode 10.2, this is a fix to avoid build-errors
-    # See https://github.com/hyperoslo/Cache/issues/238 & https://stackoverflow.com/a/55416737/318834
-    s.pod_target_xcconfig = { 'SWIFT_OPTIMIZATION_LEVEL' => '-Osize' }
 end
