@@ -51,6 +51,7 @@ public struct StyleProperties {
     
     public var role: String?
     public var meta: [String: JSONValue]
+    public var featureLabels: [String]
     
     public var cornerRadius: Corners<Unit>
     public var shadow: Shadow? = nil
@@ -66,6 +67,7 @@ public struct StyleProperties {
     static let empty = StyleProperties(
         role: nil,
         meta: [:],
+        featureLabels: [],
         cornerRadius: .zero,
         shadow: nil,
         stroke: nil,
