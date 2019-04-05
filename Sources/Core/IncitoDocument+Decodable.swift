@@ -236,6 +236,7 @@ extension StyleProperties: Decodable {
 
     enum CodingKeys: String, CodingKey {
         case role, meta, link, title
+        case featureLabels = "feature_labels"
         case backgroundColor = "background_color"
         
         case cornerRadius = "corner_radius"
@@ -277,6 +278,7 @@ extension StyleProperties: Decodable {
         
         self.role = try? c.decode(.role)
         self.meta = (try? c.decode(.meta)) ?? [:]
+        self.featureLabels = (try? c.decode(.featureLabels)) ?? []
         
         self.link = try? c.decode(.link)
         self.title = try? c.decode(.title)
