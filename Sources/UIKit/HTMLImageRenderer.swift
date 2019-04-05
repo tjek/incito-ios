@@ -9,6 +9,7 @@
 
 import UIKit
 import WebKit
+import GenericGeometry
 
 protocol HTMLImageRenderer {
     func render(_ htmlStr: String, containerSize: CGSize, baseURL: URL?) -> UIImage?

@@ -8,6 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import Foundation
+import GenericGeometry
 
 extension TreeNode where T == ViewLayout {
     

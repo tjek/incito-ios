@@ -8,6 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import Foundation
+import GenericGeometry
 
 public enum IncitoIdentifierType {}
 public typealias IncitoDocumentIdentifier = GenericIdentifier<IncitoIdentifierType>

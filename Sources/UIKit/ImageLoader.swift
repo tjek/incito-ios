@@ -8,6 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import UIKit
+import GenericGeometry
 
 func loadImageView(request: ImageViewLoadRequest) {
     // how long to wait before first asking the request if we are still visible, and then doing the request.

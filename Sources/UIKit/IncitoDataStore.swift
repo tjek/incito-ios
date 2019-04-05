@@ -9,6 +9,7 @@
 
 import Foundation
 import Cache
+import GenericGeometry
 
 public class IncitoDataStore {
     public static let shared = IncitoDataStore()

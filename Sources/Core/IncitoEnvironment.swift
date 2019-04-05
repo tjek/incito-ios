@@ -8,6 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import Foundation
+import GenericGeometry
 
 /**
  If you wish to use your own image data cache/loader, implement this protocol and assign it to the IncitoEnvironment.
