@@ -307,7 +307,7 @@ extension Transform where Value: Numeric {
     }
 }
 
-enum HorizontalGravity: String, Decodable {
+enum HorizontalGravity: String, RawRepresentable, Decodable {
     case left   = "left_horizontal"
     case center = "center_horizontal"
     case right  = "right_horizontal"
