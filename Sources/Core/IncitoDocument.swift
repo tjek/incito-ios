@@ -183,7 +183,7 @@ public struct FlexLayoutProperties {
 
 public struct ImageViewProperties: Decodable {
     var source: URL
-    var caption: String? // TODO: apply to imageviews
+    var caption: String? = nil// TODO: apply to imageviews
     
     enum CodingKeys: String, CodingKey {
         case source = "src"

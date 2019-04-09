@@ -57,16 +57,16 @@ extension IncitoDocument where ViewTreeNode == ViewProperties {
         self.id = .init(rawValue: id)
         self.version = version
         self.locale = jsonDict.getValueAs(JSONKeys.locale)
+        self.meta = (jsonDict.getValue(JSONKeys.meta, as: [String: Any?].self) ?? [:]).compactMapValues(JSONValue.init)
         self.theme = jsonDict.getValue(JSONKeys.theme, as: [String: Any].self)
             .map(Theme.init(jsonDict:))
         
+        self.fontAssets = jsonDict.getValue(JSONKeys.fontAssets, as: [String: [String: Any]].self)
+            .map({
+                $0.compactMapValues(FontAsset.init(jsonDict:))
+            }) ?? [:]
+        
         self.rootView = try TreeNode<ViewProperties>(jsonDict: rootViewDict)
-        
-        #warning("Make me")
-        // TODO:
-        //        self.meta = (try? c.decode(.meta)) ?? self.meta
-        //        self.fontAssets = (try? c.decode(.fontAssets)) ?? self.fontAssets
-        
     }
 }
 
@@ -102,6 +102,70 @@ extension TextViewDefaultProperties {
         self.lineHeightMultiplier = jsonDict.getValueAs(JSONKeys.lineHeightMultiplier) ?? defaults.lineHeightMultiplier
         
         self.fontFamily = jsonDict.getValueAs(JSONKeys.fontFamily) ?? defaults.fontFamily
+    }
+}
+
+extension FontAsset {
+    
+    enum JSONKeys: String {
+        case src, weight, style
+    }
+    
+    init(jsonDict: [String: Any]) {
+        
+        self.sources = (jsonDict.getValue(JSONKeys.src, as: [[String]].self) ?? [])
+            .compactMap({
+                guard $0.count == 2,
+                    let typeStr = $0.first,
+                    let type = SourceType(rawValue: typeStr),
+                    let urlStr = $0.last,
+                    let url = URL(string: urlStr) else {
+                        return nil
+                }
+                
+                return (type, url)
+            })
+        
+        self.weight = jsonDict.getValueAs(JSONKeys.weight)
+        
+        self.style = jsonDict.getValueAs(JSONKeys.style).flatMap(TextStyle.init(string:)) ?? .normal
+    }
+}
+
+extension TextStyle {
+    init?(string: String) {
+        if let type = TextStyle.init(rawValue: string) {
+            self = type
+        } else {
+            let names = string.split(separator: "|")
+            if Set(names) == Set(["bold", "italic"]) {
+                self = .boldItalic
+            } else {
+                return nil
+            }
+        }
+    }
+}
+
+extension JSONValue {
+    init?(_ any: Any?) {
+        if let dict = any as? [String: Any?] {
+            self = .object(dict.compactMapValues(JSONValue.init))
+        } else if let array = any as? [Any?] {
+            self = .array(array.compactMap(JSONValue.init))
+        } else if let string = any as? String {
+            self = .string(string)
+        } else if let bool = any as? Bool {
+            self = .bool(bool)
+        } else if let int = any as? Int {
+            self = .int(int)
+        } else if let number = any as? Float {
+            self = .number(number)
+        } else if any == nil {
+            self = .null
+        } else {
+            return nil
+        }
     }
 }
 
@@ -144,20 +208,408 @@ extension ViewProperties {
 }
 
 extension ViewType {
+    
+    enum JSONKeys: String {
+        case viewName = "view_name"
+    }
+    
     init(jsonDict: [String: Any]) throws {
-        #warning("Make me")
-        self = .view
+        
+        let viewName: String? = jsonDict.getValueAs(JSONKeys.viewName)
+        
+        switch viewName {
+        case "AbsoluteLayout"?:
+            self = .absoluteLayout
+        case "FlexLayout"?:
+            self = .flexLayout(FlexLayoutProperties(jsonDict: jsonDict))
+        case "TextView"?:
+            self = .text(try TextViewProperties(jsonDict: jsonDict))
+        case "ImageView"?:
+            self = .image(try ImageViewProperties(jsonDict: jsonDict))
+        case "VideoEmbedView"?:
+            self = .videoEmbed(try VideoEmbedViewProperties(jsonDict: jsonDict))
+        case "VideoView"?:
+            self = .video(try VideoViewProperties(jsonDict: jsonDict))
+        case "View"?,
+             nil:
+            fallthrough
+        default:
+            self = .view
+        }
+    }
+}
+
+extension FlexLayoutProperties {
+    
+    enum JSONKeys: String {
+        case direction            = "layout_flex_direction"
+        case itemAlignment        = "layout_flex_align_items"
+        case contentJustification = "layout_flex_justify_content"
+    }
+    
+    init(jsonDict: [String: Any]) {
+        
+        self.direction = jsonDict
+            .getValueAs(JSONKeys.direction)
+            .flatMap(Direction.init(rawValue:))
+            ?? self.direction
+
+        self.itemAlignment = jsonDict
+            .getValueAs(JSONKeys.itemAlignment)
+            .flatMap(ItemAlignment.init(rawValue:))
+            ?? self.itemAlignment
+
+        self.contentJustification = jsonDict
+            .getValueAs(JSONKeys.contentJustification)
+            .flatMap(ContentJustification.init(rawValue:))
+            ?? self.contentJustification
+    }
+}
+
+extension TextViewProperties {
+    
+    enum JSONKeys: String {
+        case text
+        case allCaps        = "text_all_caps"
+        case fontFamily     = "font_family"
+        case textColor      = "text_color"
+        case textAlignment  = "text_alignment"
+        case textSize       = "text_size"
+        case textStyle      = "text_style"
+        case preventWidow   = "text_prevent_widow"
+        case lineHeightMultiplier = "line_spacing_multiplier"
+        case spans
+        case maxLines       = "max_lines"
+        
+        case textShadowRadius = "text_shadow_radius"
+        case textShadowOffsetX = "text_shadow_dx"
+        case textShadowOffsetY = "text_shadow_dy"
+        case textShadowColor = "text_shadow_color"
+    }
+    
+    // TODO: take default values?
+    init(jsonDict: [String: Any]) throws {
+        guard let text: String = jsonDict.getValueAs(JSONKeys.text) else {
+            throw IncitoDecoderError.invalidJSON
+        }
+        
+        self.text = text
+        
+        self.allCaps = jsonDict.getValueAs(JSONKeys.allCaps) ?? self.allCaps
+        self.fontFamily = jsonDict.getValueAs(JSONKeys.fontFamily) ?? self.fontFamily
+        self.textColor = jsonDict
+            .getValueAs(JSONKeys.textColor)
+            .flatMap(Color.init(string:))
+            ?? self.textColor
+        self.textAlignment = jsonDict
+            .getValueAs(JSONKeys.textAlignment)
+            .flatMap(TextAlignment.init(rawValue:))
+            ?? self.textAlignment
+        self.textSize = jsonDict.getValueAs(JSONKeys.textSize) ?? self.textSize
+        self.textStyle = jsonDict
+            .getValueAs(JSONKeys.textStyle)
+            .flatMap(TextStyle.init(string:))
+            ?? self.textStyle
+        self.preventWidow = jsonDict.getValueAs(JSONKeys.preventWidow) ?? self.preventWidow
+        self.lineHeightMultiplier = jsonDict.getValueAs(JSONKeys.lineHeightMultiplier) ?? self.lineHeightMultiplier
+        self.spans = jsonDict
+            .getValue(JSONKeys.spans, as: [[String: Any]].self)
+            .flatMap({ $0.compactMap(Span.init(jsonDict:)) })
+            ?? self.spans
+        
+        self.maxLines = jsonDict.getValueAs(JSONKeys.maxLines) ?? self.maxLines
+        
+        self.shadow = Shadow(
+            jsonDict: jsonDict,
+            keys: (
+                color: JSONKeys.textShadowColor.rawValue,
+                radius: JSONKeys.textShadowRadius.rawValue,
+                offsetX: JSONKeys.textShadowOffsetX.rawValue,
+                offsetY: JSONKeys.textShadowOffsetY.rawValue
+            )
+        ) ?? self.shadow
+    }
+}
+
+extension TextViewProperties.Span {
+    
+    enum JSONKeys: String {
+        case name, start, end
+    }
+    
+    init?(jsonDict: [String: Any]) {
+        
+        guard let name = jsonDict.getValueAs(JSONKeys.name).flatMap(SpanType.init(rawValue:))
+            else {
+                return nil
+        }
+        
+        self.name = name
+        self.start = jsonDict.getValueAs(JSONKeys.start) ?? 0
+        self.end = jsonDict.getValueAs(JSONKeys.end) ?? 0
+    }
+}
+
+extension Shadow {
+    init?(jsonDict: [String: Any], keys: (color: String, radius: String, offsetX: String, offsetY: String)) {
+       
+        let color = (jsonDict[keys.color] as? String)            .flatMap(Color.init(string:))
+        
+        let radius = (jsonDict[keys.radius] as? Double) ?? 0
+        
+        let offset = Size<Double>(
+            width: (jsonDict[keys.offsetX] as? Double) ?? 0,
+            height: (jsonDict[keys.offsetY] as? Double) ?? 0
+        )
+        
+        if color != nil || radius > 0 || offset.width > 0 || offset.height > 0 {
+            self = Shadow(
+                color: color ?? Color(r: 0, g: 0, b: 0, a: 1),
+                offset: offset,
+                radius: radius
+            )
+        } else {
+            return nil
+        }
+    }
+}
+
+extension ImageViewProperties {
+    
+    enum JSONKeys: String {
+        case source = "src"
+        case caption = "label"
+    }
+    
+    init(jsonDict: [String: Any]) throws {
+        guard let source = jsonDict.getValueAs(JSONKeys.source).flatMap(URL.init(string:)) else {
+            throw IncitoDecoderError.invalidJSON
+        }
+       
+        self.source = source
+        self.caption = jsonDict.getValueAs(JSONKeys.caption) ?? self.caption
+    }
+}
+
+extension VideoEmbedViewProperties {
+    
+    enum JSONKeys: String {
+        case source = "src"
+        case videoWidth = "video_width"
+        case videoHeight = "video_height"
+    }
+    
+    init(jsonDict: [String: Any]) throws {
+        guard let source = jsonDict.getValueAs(JSONKeys.source).flatMap(URL.init(string:)) else {
+            throw IncitoDecoderError.invalidJSON
+        }
+        
+        self.source = source
+        
+        if let w: Double = jsonDict.getValueAs(JSONKeys.videoWidth),
+            let h: Double = jsonDict.getValueAs(JSONKeys.videoHeight) {
+            self.videoSize = Size(width: w, height: h)
+        }
+    }
+}
+
+extension VideoViewProperties {
+    
+    enum JSONKeys: String {
+        case source = "src"
+        case autoplay
+        case loop
+        case controls
+        case mime
+        case videoWidth = "video_width"
+        case videoHeight = "video_height"
+    }
+    
+    init(jsonDict: [String: Any]) throws {
+        guard let source = jsonDict.getValueAs(JSONKeys.source).flatMap(URL.init(string:)) else {
+            throw IncitoDecoderError.invalidJSON
+        }
+        
+        self.source = source
+        
+        self.autoplay = jsonDict.getValueAs(JSONKeys.autoplay) ?? self.autoplay
+        self.loop = jsonDict.getValueAs(JSONKeys.loop) ?? self.loop
+        self.controls = jsonDict.getValueAs(JSONKeys.controls) ?? self.controls
+        self.mime = jsonDict.getValueAs(JSONKeys.mime) ?? self.mime
+        
+        if let w: Double = jsonDict.getValueAs(JSONKeys.videoWidth),
+            let h: Double = jsonDict.getValueAs(JSONKeys.videoHeight) {
+            self.videoSize = Size(width: w, height: h)
+        }
     }
 }
 
 extension StyleProperties {
+    
+    enum JSONKeys: String {
+        case role, meta, link, title
+        case featureLabels = "feature_labels"
+        case backgroundColor = "background_color"
+        
+        case cornerRadius = "corner_radius"
+        case cornerRadiusTopLeft = "corner_top_left_radius"
+        case cornerRadiusTopRight = "corner_top_right_radius"
+        case cornerRadiusBottomLeft = "corner_bottom_left_radius"
+        case cornerRadiusBottomRight = "corner_bottom_right_radius"
+//
+//        case strokeWidth = "stroke_width"
+//        case strokeWidthTop = "stroke_top_width"
+//        case strokeWidthRight = "stroke_right_width"
+//        case strokeWidthLeft = "stroke_left_width"
+//        case strokeWidthBottom = "stroke_bottom_width"
+//
+//        case strokeColor = "stroke_color"
+//        case strokeColorTop = "stroke_top_color"
+//        case strokeColorRight = "stroke_right_color"
+//        case strokeColorLeft = "stroke_left_color"
+//        case strokeColorBottom = "stroke_bottom_color"
+//
+//        case strokeStyle = "stroke_style"
+//
+//        case backgroundImage = "background_image"
+//        case backgroundImageTileMode = "background_tile_mode"
+//        case backgroundImagePosition = "background_image_position"
+//        case backgroundImageScaleType = "background_image_scale_type"
+//
+        case shadowRadius = "shadow_radius"
+        case shadowOffsetX = "shadow_dx"
+        case shadowOffsetY = "shadow_dy"
+        case shadowColor = "shadow_color"
+        
+        case accessibilityHidden = "accessibility_hidden"
+        case accessibilityLabel = "accessibility_label"
+    }
+    
     init(jsonDict: [String: Any]) throws {
-        #warning("Make me")
-        self = .empty
-        self.backgroundColor = Color(r: 1, g: 0, b: 0, a: 0.2)
+        
+        let defaults = StyleProperties.empty
+        
+        self.role = jsonDict.getValueAs(JSONKeys.role) ?? defaults.role
+        self.meta = (jsonDict.getValue(JSONKeys.meta, as: [String: Any?].self) ?? [:]).compactMapValues(JSONValue.init)
+        self.featureLabels = jsonDict.getValueAs(JSONKeys.featureLabels) ?? defaults.featureLabels
+        
+        let baseCornerRadius = jsonDict.getValueFlatMap(JSONKeys.cornerRadius, Unit.init) ?? .pts(0)
+        self.cornerRadius = Corners<Unit>(
+            topLeft: jsonDict.getValueFlatMap(JSONKeys.cornerRadiusTopLeft, Unit.init) ?? baseCornerRadius,
+            topRight: jsonDict.getValueFlatMap(JSONKeys.cornerRadiusTopRight, Unit.init) ?? baseCornerRadius,
+            bottomLeft: jsonDict.getValueFlatMap(JSONKeys.cornerRadiusBottomLeft, Unit.init) ?? baseCornerRadius,
+            bottomRight: jsonDict.getValueFlatMap(JSONKeys.cornerRadiusBottomRight, Unit.init) ?? baseCornerRadius
+        )
+        
+        self.shadow = Shadow(
+            jsonDict: jsonDict,
+            keys: (
+                color: JSONKeys.shadowColor.rawValue,
+                radius: JSONKeys.shadowRadius.rawValue,
+                offsetX: JSONKeys.shadowOffsetX.rawValue,
+                offsetY: JSONKeys.shadowOffsetY.rawValue
+            )
+        ) ?? defaults.shadow
+        
+        self.stroke = Stroke(jsonDict: jsonDict) ?? defaults.stroke
+        
+        self.link = jsonDict.getValueAs(JSONKeys.link).flatMap(URL.init(string:)) ?? defaults.link
+        self.title = jsonDict.getValueAs(JSONKeys.title)
+        self.accessibility = Accessibility(
+            label: jsonDict.getValueAs(JSONKeys.accessibilityLabel) ?? defaults.accessibility.label,
+            isHidden: jsonDict.getValueAs(JSONKeys.accessibilityHidden) ?? defaults.accessibility.isHidden
+        )
+        
+        self.backgroundColor = jsonDict
+            .getValueAs(JSONKeys.backgroundColor)
+            .flatMap(Color.init(string:))
+            ?? defaults.backgroundColor
+        
+        self.backgroundImage = BackgroundImage(jsonDict: jsonDict) ?? defaults.backgroundImage
     }
 }
 
+extension Stroke {
+    
+    enum JSONKeys: String {
+        case strokeWidth = "stroke_width"
+        case strokeWidthTop = "stroke_top_width"
+        case strokeWidthRight = "stroke_right_width"
+        case strokeWidthLeft = "stroke_left_width"
+        case strokeWidthBottom = "stroke_bottom_width"
+        
+        case strokeColor = "stroke_color"
+        case strokeColorTop = "stroke_top_color"
+        case strokeColorRight = "stroke_right_color"
+        case strokeColorLeft = "stroke_left_color"
+        case strokeColorBottom = "stroke_bottom_color"
+        
+        case strokeStyle = "stroke_style"
+    }
+    
+    init?(jsonDict: [String: Any]) {
+        let baseWidth: Double = jsonDict.getValueAs(JSONKeys.strokeWidth) ?? 0
+        
+        let strokeWidth = Edges<Double>(
+            top: jsonDict.getValueAs(JSONKeys.strokeWidthTop) ?? baseWidth,
+            left: jsonDict.getValueAs(JSONKeys.strokeWidthLeft) ?? baseWidth,
+            bottom: jsonDict.getValueAs(JSONKeys.strokeWidthBottom) ?? baseWidth,
+            right: jsonDict.getValueAs(JSONKeys.strokeWidthRight) ?? baseWidth
+        )
+        
+        // if there is any stroke width, get the other properties
+        guard !(strokeWidth.isUniform && strokeWidth.top == 0) else {
+            return nil
+        }
+        
+        let baseColor: Color = jsonDict.getValueAs(JSONKeys.strokeColor).flatMap(Color.init(string:)) ?? Color(r: 0, g: 0, b: 0, a: 1)
+        let strokeColor = Edges<Color>(
+            top: jsonDict.getValueAs(JSONKeys.strokeColorTop).flatMap(Color.init(string:)) ?? baseColor,
+            left: jsonDict.getValueAs(JSONKeys.strokeColorLeft).flatMap(Color.init(string:)) ?? baseColor,
+            bottom: jsonDict.getValueAs(JSONKeys.strokeColorBottom).flatMap(Color.init(string:)) ?? baseColor,
+            right:  jsonDict.getValueAs(JSONKeys.strokeColorRight).flatMap(Color.init(string:)) ?? baseColor
+        )
+
+        let strokeStyle = jsonDict.getValueAs(JSONKeys.strokeStyle).flatMap(Style.init(rawValue:)) ?? .solid
+
+        self = Stroke(
+            style: strokeStyle,
+            width: strokeWidth,
+            color: strokeColor
+        )
+    }
+}
+
+extension BackgroundImage {
+    enum JSONKeys: String {
+        case source = "background_image"
+        case tileMode = "background_tile_mode"
+        case position = "background_image_position"
+        case scaleType = "background_image_scale_type"
+    }
+    
+    init?(jsonDict: [String: Any]) {
+        
+        guard let source = jsonDict.getValueAs(JSONKeys.source).flatMap(URL.init(string:)) else { return nil }
+        
+        self.source = source
+        
+        self.scale = jsonDict
+            .getValueAs(JSONKeys.scaleType)
+            .flatMap(ScaleType.init(rawValue:))
+            ?? self.scale
+
+        self.position = jsonDict
+            .getValueAs(JSONKeys.position)
+            .flatMap(Position.init(rawValue:))
+            ?? self.position
+        
+        self.tileMode = jsonDict
+            .getValueAs(JSONKeys.tileMode)
+            .flatMap(TileMode.init(rawValue:))
+            ?? self.tileMode
+    }
+}
 
 extension LayoutProperties {
     

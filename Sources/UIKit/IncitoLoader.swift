@@ -22,7 +22,7 @@ public func IncitoJSONFileLoader(
     // - convert into a RenderableIncitoDocument, using the size
     // - make sure this all happens asyncronously
     return openFile(filename: filename, bundle: bundle)
-        .flatMapResult(IncitoPropertiesDocument.decode(from:))
+        .flatMapResult(decodeIncitoDocument)
         .flatMapResult({ IncitoDocumentLoader(document: $0, width: width) })
 }
 
@@ -52,6 +52,12 @@ func openFile(filename: String, bundle: Bundle = .main) -> Future<Result<Data>> 
             return try Data(contentsOf: fileURL)
         })
     }
+}
+
+func decodeIncitoDocument(jsonData: Data) -> Future<Result<IncitoPropertiesDocument>> {
+    return Future(work: {
+        Result.init(catching: { try IncitoPropertiesDocument(jsonData: jsonData) })
+    })
 }
 
 func buildRenderableDocument(
