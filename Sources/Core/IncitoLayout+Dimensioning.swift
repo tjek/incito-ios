@@ -77,13 +77,21 @@ extension TreeNode where T == ViewProperties {
         let intrinsicSize = intrinsicSizerBuilder(self.value)(roughInnerSize)
         
         // use that rough-size to calculate the contents-sizes (the size of the child based on only its own content) of all the child-nodes. do this by calling "pass-1" recursively on all each child (this could be done in parallel).
-        let childNodes = self.children.map {
-            $0.viewDimensioningPass(
+        let childNodes: [TreeNode<(properties: ViewProperties, dimensions: ViewDimensions)>]
+        
+        func childMapper(child: TreeNode<ViewProperties>) -> TreeNode<(properties: ViewProperties, dimensions: ViewDimensions)> {
+            return child.viewDimensioningPass(
                 parentRoughSize: roughSize,
                 parentPadding: resolvedLayoutProperties.padding,
                 parentLayoutType: self.value.type.layoutType,
                 intrinsicSizerBuilder: intrinsicSizerBuilder
             )
+        }
+        
+        if self.children.count > concurrentlyMappedChildLimit {
+            childNodes = self.children.concurrentMap(childMapper)
+        } else {
+            childNodes = self.children.map(childMapper)
         }
         
         // calculate the node's contents size, based on the node's rough-size & concrete-size, the children's contents-sizes, and the parent's rough-size.
@@ -112,8 +120,6 @@ extension TreeNode where T == ViewProperties {
         return newNode
     }
 }
-
-
 
 // MARK: - Dimensions Calculators
 

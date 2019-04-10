@@ -49,10 +49,21 @@ extension TreeNode where T == ViewLayout {
         
         viewLayout.position = position
         
-        let newNode = TreeNode<ViewLayout>(value: viewLayout)
-        for child in self.children {
-            newNode.add(child: child.positioningPass(systemGravity: systemGravity))
+        let childNodes: [TreeNode<ViewLayout>]
+        
+        func childMapper(child: TreeNode<ViewLayout>) -> TreeNode<ViewLayout> {
+            return child.positioningPass(systemGravity: systemGravity)
         }
+        
+        if self.children.count > concurrentlyMappedChildLimit {
+            childNodes = self.children.concurrentMap(childMapper)
+        } else {
+            childNodes = self.children.map(childMapper)
+        }
+        
+        let newNode = TreeNode<ViewLayout>(value: viewLayout)
+        newNode.add(children: childNodes)
+        
         return newNode
     }
 }

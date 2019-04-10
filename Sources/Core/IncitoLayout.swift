@@ -30,6 +30,8 @@ import Foundation
  - for each child, recursively calculate the position using actual size and dimensions calculated in the previous passes.
  */
 
+let concurrentlyMappedChildLimit: Int = 7 // if there are more than this many children in a node, recurse the children in concurrently
+
 extension TreeNode where T == ViewProperties {
     
     func layout(
@@ -196,5 +198,37 @@ struct ResolvedLayoutProperties: Equatable {
     /// Returns the absolute margins, and if those arent set, the relative, and if not those, then 0.
     var combinedMargins: Edges<Double> {
         return self.absoluteMargins.zipWith(self.relativeMargins) { $0 ?? $1 ?? 0 }
+    }
+}
+
+fileprivate final class ThreadSafe<A> {
+    private var _value: A
+    private let queue = DispatchQueue(label: "ThreadSafe")
+    init(_ value: A) {
+        self._value = value
+    }
+    
+    var value: A {
+        return queue.sync { _value }
+    }
+    
+    func atomically(_ transform: (inout A) -> ()) {
+        queue.sync {
+            transform(&self._value)
+        }
+    }
+}
+
+extension Array {
+    func concurrentMap<B>(_ transform: @escaping (Element) -> B) -> [B] {
+        let result = ThreadSafe(Array<B?>(repeating: nil, count: count))
+        DispatchQueue.concurrentPerform(iterations: count) { idx in
+            let element = self[idx]
+            let transformed = transform(element)
+            result.atomically {
+                $0[idx] = transformed
+            }
+        }
+        return result.value.map { $0! }
     }
 }
