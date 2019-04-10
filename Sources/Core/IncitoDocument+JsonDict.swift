@@ -36,7 +36,7 @@ extension IncitoDocument where ViewTreeNode == ViewProperties {
         case fontAssets = "font_assets"
     }
     
-    init(jsonData: Data) throws {
+    public init(jsonData: Data) throws {
         let jsonObj = try JSONSerialization.jsonObject(with: jsonData, options: [])
         guard let rootDict = jsonObj as? [String: Any] else {
             throw IncitoDecoderError.invalidJSON
@@ -44,7 +44,7 @@ extension IncitoDocument where ViewTreeNode == ViewProperties {
         try self.init(jsonDict: rootDict)
     }
     
-    init(jsonDict: [String: Any]) throws {
+    public init(jsonDict: [String: Any]) throws {
         
         guard
             let id: String = jsonDict.getValueAs(JSONKeys.id),
