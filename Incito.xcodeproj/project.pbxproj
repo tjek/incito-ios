@@ -41,7 +41,6 @@
 		AE582A7D21FF1736009F4D8A /* RoundedShadowedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6021FF1736009F4D8A /* RoundedShadowedView.swift */; };
 		AE582A7E21FF1736009F4D8A /* IncitoDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6221FF1736009F4D8A /* IncitoDocument.swift */; };
 		AE582A7F21FF1736009F4D8A /* IncitoLayout+Sizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6321FF1736009F4D8A /* IncitoLayout+Sizing.swift */; };
-		AE582A8021FF1736009F4D8A /* IncitoDocument+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6421FF1736009F4D8A /* IncitoDocument+Decodable.swift */; };
 		AE582A8121FF1736009F4D8A /* IncitoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6521FF1736009F4D8A /* IncitoLayout.swift */; };
 		AE582A8221FF1736009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6621FF1736009F4D8A /* IncitoLayout+Dimensioning.swift */; };
 		AE582A8321FF1736009F4D8A /* IncitoLayout+Positioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6721FF1736009F4D8A /* IncitoLayout+Positioning.swift */; };
@@ -196,7 +195,6 @@
 		AE582A6021FF1736009F4D8A /* RoundedShadowedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedShadowedView.swift; sourceTree = "<group>"; };
 		AE582A6221FF1736009F4D8A /* IncitoDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncitoDocument.swift; sourceTree = "<group>"; };
 		AE582A6321FF1736009F4D8A /* IncitoLayout+Sizing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Sizing.swift"; sourceTree = "<group>"; };
-		AE582A6421FF1736009F4D8A /* IncitoDocument+Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncitoDocument+Decodable.swift"; sourceTree = "<group>"; };
 		AE582A6521FF1736009F4D8A /* IncitoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncitoLayout.swift; sourceTree = "<group>"; };
 		AE582A6621FF1736009F4D8A /* IncitoLayout+Dimensioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Dimensioning.swift"; sourceTree = "<group>"; };
 		AE582A6721FF1736009F4D8A /* IncitoLayout+Positioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IncitoLayout+Positioning.swift"; sourceTree = "<group>"; };
@@ -354,7 +352,6 @@
 			children = (
 				AE582A6221FF1736009F4D8A /* IncitoDocument.swift */,
 				AE0BBFAA225BE527007821DD /* IncitoDocument+JsonDict.swift */,
-				AE582A6421FF1736009F4D8A /* IncitoDocument+Decodable.swift */,
 				AE582A6521FF1736009F4D8A /* IncitoLayout.swift */,
 				AE582A6321FF1736009F4D8A /* IncitoLayout+Sizing.swift */,
 				AE582A6621FF1736009F4D8A /* IncitoLayout+Dimensioning.swift */,
@@ -633,7 +630,6 @@
 				AE582A6D21FF1736009F4D8A /* GenericGeometry.swift in Sources */,
 				AE246F43221B525B00662E9B /* IncitoEnvironment.swift in Sources */,
 				AE582A7F21FF1736009F4D8A /* IncitoLayout+Sizing.swift in Sources */,
-				AE582A8021FF1736009F4D8A /* IncitoDocument+Decodable.swift in Sources */,
 				AE582A7A21FF1736009F4D8A /* UIView+AnchorPoint.swift in Sources */,
 				AE0BBFAB225BE527007821DD /* IncitoDocument+JsonDict.swift in Sources */,
 				AE582A6B21FF1736009F4D8A /* String+PreventWidows.swift in Sources */,

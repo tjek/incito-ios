@@ -780,3 +780,95 @@ extension FlexBasis where Value == Unit {
         }
     }
 }
+
+extension Color {
+    
+    public init?(string: String) {
+        let cleanedStrVal = string.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if cleanedStrVal == "transparent" {
+            self = Color(r: 0, g: 0, b: 0, a: 0)
+            return
+        }
+        
+        if let color = cleanedStrVal.starts(with: "rgb") ? Color.scanRGBColorStr(cleanedStrVal) : Color.scanHexColorStr(cleanedStrVal) {
+            self = color
+            return
+        }
+        
+        return nil
+    }
+    
+    private static func scanRGBColorStr(_ strVal: String) -> Color? {
+        let components: [Double?] = strVal
+            .lowercased()
+            .replacingOccurrences(of: "rgba(", with: "")
+            .replacingOccurrences(of: "rgb(", with: "")
+            .replacingOccurrences(of: ")", with: "")
+            .components(separatedBy: ",")
+            .map {
+                var strVal: String = $0
+                
+                var scaleFactor = 255.0
+                if strVal.contains("%") {
+                    strVal = strVal.replacingOccurrences(of: "%", with: "")
+                    scaleFactor = 100.0
+                }
+                
+                strVal = strVal.trimmingCharacters(in: .whitespacesAndNewlines)
+                
+                guard let val = Double(strVal) else {
+                    return nil
+                }
+                return val / scaleFactor
+        }
+        
+        guard components.count >= 3, components[0] != nil, components[1] != nil, components[2] != nil else {
+            return nil
+        }
+        
+        var color = Color(r: 0, g: 0, b: 0, a: 1.0)
+        
+        color.r = (components[0] ?? 0)
+        color.g = (components[1] ?? 0)
+        color.b = (components[2] ?? 0)
+        
+        // rgba values come in with `a` as a 0-1 value
+        // therefore, the code above will have scaled it by /255.
+        // so here we are *255 to get it back to 0-1 scale.
+        if components.count >= 4 {
+            color.a = (components[3] ?? 255.0) * 255
+        }
+        
+        return color
+    }
+    
+    private static func scanHexColorStr(_ strVal: String) -> Color? {
+        let cleanedStr = strVal
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "#", with: "")
+        
+        var rgb: UInt32 = 0
+        let length = cleanedStr.count
+        
+        let scanner = Scanner(string: cleanedStr)
+        guard scanner.scanHexInt32(&rgb) else { return nil }
+        guard scanner.isAtEnd else { return nil }
+        
+        var color = Color(r: 0, g: 0, b: 0, a: 1.0)
+        
+        if length == 6 {
+            color.r = Double((rgb & 0xFF0000) >> 16) / 255.0
+            color.g = Double((rgb & 0x00FF00) >> 8) / 255.0
+            color.b = Double(rgb & 0x0000FF) / 255.0
+        } else if length == 8 {
+            color.r = Double((rgb & 0xFF000000) >> 24) / 255.0
+            color.g = Double((rgb & 0x00FF0000) >> 16) / 255.0
+            color.b = Double((rgb & 0x0000FF00) >> 8) / 255.0
+            color.a = Double(rgb & 0x000000FF) / 255.0
+        } else {
+            return nil
+        }
+        return color
+    }
+}
