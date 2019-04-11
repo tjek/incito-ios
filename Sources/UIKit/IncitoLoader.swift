@@ -35,8 +35,10 @@ public func IncitoDocumentLoader(
     
     return fontLoader
         .loadAndRegisterFontAssets(document.fontAssets)
+//        .measure(print: " 🔠 Fonts loaded")
         .flatMap({
             buildRenderableDocument(document: document, width: width, loadedAssets: $0.assets)
+//                .measure(print: " 📐 Layouts calculated")
         })
 }
 
