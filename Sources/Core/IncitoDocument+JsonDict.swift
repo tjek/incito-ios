@@ -30,7 +30,7 @@ enum IncitoDecoderError: Error {
 
 extension IncitoDocument where ViewTreeNode == ViewProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case id, version, theme, locale, meta
         case rootView = "root_view"
         case fontAssets = "font_assets"
@@ -74,7 +74,7 @@ extension IncitoDocument where ViewTreeNode == ViewProperties {
 
 extension Theme {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case bgColor = "background_color"
     }
     
@@ -87,7 +87,7 @@ extension Theme {
 
 extension TextViewDefaultProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case textColor            = "text_color"
         case lineHeightMultiplier = "line_spacing_multiplier"
         case fontFamily           = "font_family"
@@ -107,7 +107,7 @@ extension TextViewDefaultProperties {
 
 extension FontAsset {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case src, weight, style
     }
     
@@ -173,7 +173,7 @@ extension JSONValue {
 
 extension TreeNode where T == ViewProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case childViews = "child_views"
     }
     
@@ -188,11 +188,9 @@ extension TreeNode where T == ViewProperties {
     }
 }
 
-
-
 extension ViewProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case id = "id"
     }
     
@@ -209,7 +207,7 @@ extension ViewProperties {
 
 extension ViewType {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case viewName = "view_name"
     }
     
@@ -241,7 +239,7 @@ extension ViewType {
 
 extension FlexLayoutProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case direction            = "layout_flex_direction"
         case itemAlignment        = "layout_flex_align_items"
         case contentJustification = "layout_flex_justify_content"
@@ -268,7 +266,7 @@ extension FlexLayoutProperties {
 
 extension TextViewProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case text
         case allCaps        = "text_all_caps"
         case fontFamily     = "font_family"
@@ -333,7 +331,7 @@ extension TextViewProperties {
 
 extension TextViewProperties.Span {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case name, start, end
     }
     
@@ -376,7 +374,7 @@ extension Shadow {
 
 extension ImageViewProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case source = "src"
         case caption = "label"
     }
@@ -393,7 +391,7 @@ extension ImageViewProperties {
 
 extension VideoEmbedViewProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case source = "src"
         case videoWidth = "video_width"
         case videoHeight = "video_height"
@@ -415,7 +413,7 @@ extension VideoEmbedViewProperties {
 
 extension VideoViewProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case source = "src"
         case autoplay
         case loop
@@ -446,7 +444,7 @@ extension VideoViewProperties {
 
 extension StyleProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case role, meta, link, title
         case featureLabels = "feature_labels"
         case backgroundColor = "background_color"
@@ -456,26 +454,7 @@ extension StyleProperties {
         case cornerRadiusTopRight = "corner_top_right_radius"
         case cornerRadiusBottomLeft = "corner_bottom_left_radius"
         case cornerRadiusBottomRight = "corner_bottom_right_radius"
-//
-//        case strokeWidth = "stroke_width"
-//        case strokeWidthTop = "stroke_top_width"
-//        case strokeWidthRight = "stroke_right_width"
-//        case strokeWidthLeft = "stroke_left_width"
-//        case strokeWidthBottom = "stroke_bottom_width"
-//
-//        case strokeColor = "stroke_color"
-//        case strokeColorTop = "stroke_top_color"
-//        case strokeColorRight = "stroke_right_color"
-//        case strokeColorLeft = "stroke_left_color"
-//        case strokeColorBottom = "stroke_bottom_color"
-//
-//        case strokeStyle = "stroke_style"
-//
-//        case backgroundImage = "background_image"
-//        case backgroundImageTileMode = "background_tile_mode"
-//        case backgroundImagePosition = "background_image_position"
-//        case backgroundImageScaleType = "background_image_scale_type"
-//
+        
         case shadowRadius = "shadow_radius"
         case shadowOffsetX = "shadow_dx"
         case shadowOffsetY = "shadow_dy"
@@ -531,7 +510,7 @@ extension StyleProperties {
 
 extension Stroke {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case strokeWidth = "stroke_width"
         case strokeWidthTop = "stroke_top_width"
         case strokeWidthRight = "stroke_right_width"
@@ -581,7 +560,7 @@ extension Stroke {
 }
 
 extension BackgroundImage {
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case source = "background_image"
         case tileMode = "background_tile_mode"
         case position = "background_image_position"
@@ -613,7 +592,7 @@ extension BackgroundImage {
 
 extension LayoutProperties {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case height     = "layout_height"
         case width      = "layout_width"
         case minHeight  = "min_height"
@@ -703,7 +682,7 @@ extension LayoutProperties {
 
 extension Transform where Value == Unit {
     
-    enum JSONKeys: String {
+    enum JSONKeys: String, CodingKey {
         case scale      = "transform_scale"
         case translateX = "transform_translate_x"
         case translateY = "transform_translate_y"
