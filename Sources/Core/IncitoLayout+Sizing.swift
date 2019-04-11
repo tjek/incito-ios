@@ -94,10 +94,20 @@ extension TreeNode where T == (properties: ViewProperties, dimensions: ViewDimen
             transform: self.value.properties.layout.transform.absolute(viewSize: actualSize)
         )
         
-        let newNode = TreeNode<ViewLayout>(value: viewLayout)
-        for child in self.children {
-            newNode.add(child: child.sizingPass(parentSize: actualSize))
+        let childNodes: [TreeNode<ViewLayout>]
+        
+        func childMapper(child: TreeNode<(properties: ViewProperties, dimensions: ViewDimensions)>) -> TreeNode<ViewLayout> {
+            return child.sizingPass(parentSize: actualSize)
         }
+        
+        if self.children.count > concurrentlyMappedChildLimit {
+            childNodes = self.children.concurrentMap(childMapper)
+        } else {
+            childNodes = self.children.map(childMapper)
+        }
+        
+        let newNode = TreeNode<ViewLayout>(value: viewLayout)
+        newNode.add(children: childNodes)
         
         return newNode
     }
