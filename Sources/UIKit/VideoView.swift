@@ -27,7 +27,16 @@ class VideoView: UIView {
         self.videoProperties = videoProperties
         super.init(frame: frame)
         
-        try? AVAudioSession.sharedInstance().setCategory(.ambient)
+        let audioSession = AVAudioSession.sharedInstance()
+        
+        if #available(iOS 10.0, *) {
+            try? audioSession.setCategory(.ambient, mode: .default)
+        } else {
+            let selector = NSSelectorFromString("setCategory:error:")
+            if audioSession.responds(to: selector) {
+                audioSession.perform(selector, with: AVAudioSession.Category.ambient)
+            }
+        }
 
         spinner.frame = {
             var frame = spinner.frame

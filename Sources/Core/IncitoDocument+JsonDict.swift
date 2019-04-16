@@ -57,14 +57,23 @@ extension IncitoDocument where ViewTreeNode == ViewProperties {
         self.id = .init(rawValue: id)
         self.version = version
         self.locale = jsonDict.getValueAs(JSONKeys.locale)
-        self.meta = (jsonDict.getValue(JSONKeys.meta, as: [String: Any?].self) ?? [:]).compactMapValues(JSONValue.init)
+        
+        var meta: [String: JSONValue] = [:]
+        (jsonDict.getValue(JSONKeys.meta, as: [String: Any?].self) ?? [:])
+            .forEach({
+                meta[$0.key] = JSONValue($0.value)
+            })
+        self.meta = meta
+        
         self.theme = jsonDict.getValue(JSONKeys.theme, as: [String: Any].self)
             .map(Theme.init(jsonDict:))
         
-        self.fontAssets = jsonDict.getValue(JSONKeys.fontAssets, as: [String: [String: Any]].self)
-            .map({
-                $0.compactMapValues(FontAsset.init(jsonDict:))
-            }) ?? [:]
+        var fontAssets: [String: FontAsset] = [:]
+        (jsonDict.getValue(JSONKeys.fontAssets, as: [String: [String: Any]].self) ?? [:])
+            .forEach({
+                fontAssets[$0.key] = FontAsset(jsonDict: $0.value)
+            })
+        self.fontAssets = fontAssets
         
         self.rootView = try TreeNode<ViewProperties>(jsonDict: rootViewDict)
     }
@@ -150,7 +159,11 @@ extension TextStyle {
 extension JSONValue {
     init?(_ any: Any?) {
         if let dict = any as? [String: Any?] {
-            self = .object(dict.compactMapValues(JSONValue.init))
+            var values: [String: JSONValue] = [:]
+            dict.forEach({
+                values[$0.key] = JSONValue($0.value)
+            })
+            self = .object(values)
         } else if let array = any as? [Any?] {
             self = .array(array.compactMap(JSONValue.init))
         } else if let string = any as? String {
@@ -469,7 +482,14 @@ extension StyleProperties {
         let defaults = StyleProperties.empty
         
         self.role = jsonDict.getValueAs(JSONKeys.role) ?? defaults.role
-        self.meta = (jsonDict.getValue(JSONKeys.meta, as: [String: Any?].self) ?? [:]).compactMapValues(JSONValue.init)
+        
+        var meta: [String: JSONValue] = [:]
+        (jsonDict.getValue(JSONKeys.meta, as: [String: Any?].self) ?? [:])
+            .forEach({
+                meta[$0.key] = JSONValue($0.value)
+            })
+        self.meta = meta
+        
         self.featureLabels = jsonDict.getValueAs(JSONKeys.featureLabels) ?? defaults.featureLabels
         
         let baseCornerRadius = jsonDict.getValueFlatMap(JSONKeys.cornerRadius, Unit.init) ?? .pts(0)
