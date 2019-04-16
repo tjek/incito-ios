@@ -19,7 +19,7 @@ class VideoEmbedView: UIView {
         
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        
+        config.preferences.javaScriptCanOpenWindowsAutomatically = true
         self.webView = WKWebView(frame: frame,
                                  configuration: config)
         webView.scrollView.isScrollEnabled = false
