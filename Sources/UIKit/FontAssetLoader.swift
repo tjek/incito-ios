@@ -8,6 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import Foundation
+import Future
 
 enum FontLoadingError: Error {
     case invalidData // unable to convert data into a Font

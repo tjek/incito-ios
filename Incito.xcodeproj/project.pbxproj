@@ -8,16 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		AE09D6B0221EBB1200C58E40 /* VideoEmbedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE09D6AF221EBB1200C58E40 /* VideoEmbedView.swift */; };
+		AE0BBFAB225BE527007821DD /* IncitoDocument+JsonDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0BBFAA225BE527007821DD /* IncitoDocument+JsonDict.swift */; };
+		AE0BF377226F0895007A231B /* Future.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0BF369226F088B007A231B /* Future.framework */; };
+		AE0BF37A226F08AF007A231B /* Future.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE0BF369226F088B007A231B /* Future.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE1B506522577DD200A680AB /* GenericGeometry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1B505E22577DBD00A680AB /* GenericGeometry.framework */; };
 		AE1B506822577DF000A680AB /* GenericGeometry.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE1B505E22577DBD00A680AB /* GenericGeometry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		AE0BBFAB225BE527007821DD /* IncitoDocument+JsonDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0BBFAA225BE527007821DD /* IncitoDocument+JsonDict.swift */; };
 		AE1C68012223E18C001D19C9 /* HTMLImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB846FF221FEA5E00685F45 /* HTMLImageRenderer.swift */; };
 		AE246F43221B525B00662E9B /* IncitoEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE246F42221B525B00662E9B /* IncitoEnvironment.swift */; };
 		AE246F65221C061800662E9B /* Cache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE246F58221C05F400662E9B /* Cache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE246F66221C063C00662E9B /* Cache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE246F58221C05F400662E9B /* Cache.framework */; };
 		AE246F68221C436800662E9B /* IncitoDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE246F67221C436700662E9B /* IncitoDataStore.swift */; };
 		AE467C642239166000F95D62 /* Incito+TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE467C632239166000F95D62 /* Incito+TextView.swift */; };
-		AE4BF82222048DEF0048671D /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4BF82122048DEF0048671D /* Future.swift */; };
 		AE582A2521FF118A009F4D8A /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A2221FF118A009F4D8A /* DecodableTests.swift */; };
 		AE582A2D21FF1266009F4D8A /* Incito.h in Headers */ = {isa = PBXBuildFile; fileRef = AE582A2B21FF1252009F4D8A /* Incito.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AE582A2E21FF131D009F4D8A /* Incito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5829D821FF1000009F4D8A /* Incito.framework */; };
@@ -72,6 +73,69 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		AE0BF360226F088B007A231B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CF4AA6334CC33D910289C1FBBE694222;
+			remoteInfo = FutureTests_iOS;
+		};
+		AE0BF362226F088B007A231B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6A5DF8493A9C9CC3810049AF77CFE228;
+			remoteInfo = FutureTests_macOS;
+		};
+		AE0BF364226F088B007A231B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 41348563C46E4EAFB7616C27012ED241;
+			remoteInfo = FutureTests_tvOS;
+		};
+		AE0BF366226F088B007A231B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1D8C9DBC8643655983272B2EC9C59C26;
+			remoteInfo = FutureTests_watchOS;
+		};
+		AE0BF368226F088B007A231B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7997B1791C0E84016C20DB8132636F8C;
+			remoteInfo = Future_iOS;
+		};
+		AE0BF36A226F088B007A231B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5DB1109224ACCBEF7C36B15F2E541CBA;
+			remoteInfo = Future_macOS;
+		};
+		AE0BF36C226F088B007A231B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A2F3CACCF6BDAB0C33DC31BB590062FF;
+			remoteInfo = Future_tvOS;
+		};
+		AE0BF36E226F088B007A231B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1527A6CC3DD96F8D87B3DEC3B9951CFA;
+			remoteInfo = Future_watchOS;
+		};
+		AE0BF378226F08A4007A231B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F369621451E58A0F439993691A2C5AD7;
+			remoteInfo = Future_iOS;
+		};
 		AE1B505522577DBD00A680AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
@@ -214,6 +278,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				AE0BF37A226F08AF007A231B /* Future.framework in Embed Frameworks */,
 				AE1B506822577DF000A680AB /* GenericGeometry.framework in Embed Frameworks */,
 				AE246F65221C061800662E9B /* Cache.framework in Embed Frameworks */,
 				AE582AB221FF2EF9009F4D8A /* FLAnimatedImage.framework in Embed Frameworks */,
@@ -225,13 +290,13 @@
 
 /* Begin PBXFileReference section */
 		AE09D6AF221EBB1200C58E40 /* VideoEmbedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEmbedView.swift; sourceTree = "<group>"; };
-		AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GenericGeometry.xcodeproj; path = "External/swift-generic-geometry/GenericGeometry.xcodeproj"; sourceTree = "<group>"; };
 		AE0BBFAA225BE527007821DD /* IncitoDocument+JsonDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoDocument+JsonDict.swift"; sourceTree = "<group>"; };
+		AE0BF350226F088B007A231B /* Future.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Future.xcodeproj; path = "External/swift-future/Future.xcodeproj"; sourceTree = "<group>"; };
+		AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GenericGeometry.xcodeproj; path = "External/swift-generic-geometry/GenericGeometry.xcodeproj"; sourceTree = "<group>"; };
 		AE246F42221B525B00662E9B /* IncitoEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoEnvironment.swift; sourceTree = "<group>"; };
 		AE246F4E221C05F400662E9B /* Cache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cache.xcodeproj; path = External/Cache/Cache.xcodeproj; sourceTree = "<group>"; };
 		AE246F67221C436700662E9B /* IncitoDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDataStore.swift; sourceTree = "<group>"; };
 		AE467C632239166000F95D62 /* Incito+TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Incito+TextView.swift"; sourceTree = "<group>"; };
-		AE4BF82122048DEF0048671D /* Future.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		AE5829D821FF1000009F4D8A /* Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE582A2221FF118A009F4D8A /* DecodableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
 		AE582A2321FF118A009F4D8A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -305,6 +370,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE0BF377226F0895007A231B /* Future.framework in Frameworks */,
 				AE1B506522577DD200A680AB /* GenericGeometry.framework in Frameworks */,
 				AE246F66221C063C00662E9B /* Cache.framework in Frameworks */,
 				AE582AAB21FF2EAA009F4D8A /* FLAnimatedImage.framework in Frameworks */,
@@ -322,6 +388,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE0BF351226F088B007A231B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE0BF361226F088B007A231B /* FutureTests.xctest */,
+				AE0BF363226F088B007A231B /* FutureTests.xctest */,
+				AE0BF365226F088B007A231B /* FutureTests.xctest */,
+				AE0BF367226F088B007A231B /* FutureTests.xctest */,
+				AE0BF369226F088B007A231B /* Future.framework */,
+				AE0BF36B226F088B007A231B /* Future.framework */,
+				AE0BF36D226F088B007A231B /* Future.framework */,
+				AE0BF36F226F088B007A231B /* Future.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		AE1B504622577DBD00A680AB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -383,7 +464,6 @@
 				AE582A5221FF1735009F4D8A /* GenericIdentifier.swift */,
 				AE582AB421FF2FCD009F4D8A /* Measure.swift */,
 				AE8450D222019D270000A8D8 /* Bundle+Incito.swift */,
-				AE4BF82122048DEF0048671D /* Future.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -439,6 +519,7 @@
 		AE582A8921FF2E24009F4D8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE0BF350226F088B007A231B /* Future.xcodeproj */,
 				AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */,
 				AE246F4E221C05F400662E9B /* Cache.xcodeproj */,
 				AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */,
@@ -527,6 +608,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				AE0BF379226F08A4007A231B /* PBXTargetDependency */,
 				AE1B506722577DDD00A680AB /* PBXTargetDependency */,
 				AE246F64221C060D00662E9B /* PBXTargetDependency */,
 				AE582AAE21FF2EC2009F4D8A /* PBXTargetDependency */,
@@ -605,6 +687,10 @@
 					ProjectRef = AE582AA521FF2E6E009F4D8A /* FLAnimatedImage.xcodeproj */;
 				},
 				{
+					ProductGroup = AE0BF351226F088B007A231B /* Products */;
+					ProjectRef = AE0BF350226F088B007A231B /* Future.xcodeproj */;
+				},
+				{
 					ProductGroup = AE1B504622577DBD00A680AB /* Products */;
 					ProjectRef = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
 				},
@@ -618,6 +704,62 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		AE0BF361226F088B007A231B /* FutureTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FutureTests.xctest;
+			remoteRef = AE0BF360226F088B007A231B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE0BF363226F088B007A231B /* FutureTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FutureTests.xctest;
+			remoteRef = AE0BF362226F088B007A231B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE0BF365226F088B007A231B /* FutureTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FutureTests.xctest;
+			remoteRef = AE0BF364226F088B007A231B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE0BF367226F088B007A231B /* FutureTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FutureTests.xctest;
+			remoteRef = AE0BF366226F088B007A231B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE0BF369226F088B007A231B /* Future.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Future.framework;
+			remoteRef = AE0BF368226F088B007A231B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE0BF36B226F088B007A231B /* Future.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Future.framework;
+			remoteRef = AE0BF36A226F088B007A231B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE0BF36D226F088B007A231B /* Future.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Future.framework;
+			remoteRef = AE0BF36C226F088B007A231B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE0BF36F226F088B007A231B /* Future.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Future.framework;
+			remoteRef = AE0BF36E226F088B007A231B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		AE1B505622577DBD00A680AB /* GenericGeometryTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -763,7 +905,6 @@
 				AE582B1021FF4EA8009F4D8A /* IncitoLoader.swift in Sources */,
 				AE8450C82200F8530000A8D8 /* CopyableLabel.swift in Sources */,
 				AE98C8A122416C0900B4BD7A /* IncitoEnvironment+UIKit.swift in Sources */,
-				AE4BF82222048DEF0048671D /* Future.swift in Sources */,
 				AE582A7621FF1736009F4D8A /* IncitoViewController.swift in Sources */,
 				AE246F43221B525B00662E9B /* IncitoEnvironment.swift in Sources */,
 				AE582A7F21FF1736009F4D8A /* IncitoLayout+Sizing.swift in Sources */,
@@ -814,6 +955,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		AE0BF379226F08A4007A231B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Future_iOS;
+			targetProxy = AE0BF378226F08A4007A231B /* PBXContainerItemProxy */;
+		};
 		AE1B506722577DDD00A680AB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = GenericGeometry_iOS;

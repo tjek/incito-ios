@@ -9,6 +9,7 @@
 
 import UIKit
 import GenericGeometry
+import Future
 
 func loadImageView(request: ImageViewLoadRequest) {
     // how long to wait before first asking the request if we are still visible, and then doing the request.

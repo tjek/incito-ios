@@ -9,6 +9,7 @@
 
 import UIKit
 import GenericGeometry
+import Future
 
 public typealias IncitoLoader = FutureResult<RenderableIncitoDocument>
 
@@ -112,19 +113,5 @@ func buildRenderableDocument(
             fontAssets: document.fontAssets
         )
         completion(.success(renderableDocument))
-    }
-}
-
-func decodeJSON<B: Decodable>(data: Data) -> FutureResult<B> {
-    return FutureResult<B> { completion in
-        completion(Result {
-            try JSONDecoder().decode(B.self, from: data)
-        })
-    }
-}
-
-extension Decodable {
-    public static func decode(from data: Data) -> FutureResult<Self> {
-        return decodeJSON(data: data)
     }
 }
