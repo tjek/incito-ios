@@ -124,8 +124,8 @@ public struct LayoutProperties {
 
 public struct TextViewProperties {
     
-    struct Span: Decodable {
-        enum SpanType: String, Decodable {
+    struct Span {
+        enum SpanType: String {
             case superscript
         }
         
@@ -134,7 +134,7 @@ public struct TextViewProperties {
         var end: Int
     }
     
-    enum TextAlignment: String, Decodable {
+    enum TextAlignment: String {
         case left
         case right
         case center
@@ -156,7 +156,7 @@ public struct TextViewProperties {
 }
 
 public struct FlexLayoutProperties {
-    enum ItemAlignment: String, Decodable {
+    enum ItemAlignment: String {
         case stretch
         case center
         case flexStart  = "flex-start"
@@ -164,7 +164,7 @@ public struct FlexLayoutProperties {
         case baseline
     }
     
-    enum ContentJustification: String, Decodable {
+    enum ContentJustification: String {
         case flexStart      = "flex-start"
         case flexEnd        = "flex-end"
         case center         = "center"
@@ -172,7 +172,7 @@ public struct FlexLayoutProperties {
         case spaceAround    = "space-around"
     }
     
-    enum Direction: String, Decodable {
+    enum Direction: String {
         case row
         case column
     }
@@ -182,14 +182,9 @@ public struct FlexLayoutProperties {
     var contentJustification: ContentJustification = .flexStart
 }
 
-public struct ImageViewProperties: Decodable {
+public struct ImageViewProperties {
     var source: URL
-    var caption: String? // TODO: apply to imageviews
-    
-    enum CodingKeys: String, CodingKey {
-        case source = "src"
-        case caption = "label"
-    }
+    var caption: String? = nil// TODO: apply to imageviews
 }
 
 public struct VideoViewProperties {
@@ -263,7 +258,7 @@ public struct Shadow {
 }
 
 public struct Stroke {
-    public enum Style: String, Decodable {
+    public enum Style: String {
         case solid
         case dotted
         case dashed
@@ -308,7 +303,7 @@ extension Transform where Value: Numeric {
     }
 }
 
-enum HorizontalGravity: String, Decodable {
+enum HorizontalGravity: String, RawRepresentable {
     case left   = "left_horizontal"
     case center = "center_horizontal"
     case right  = "right_horizontal"
@@ -320,20 +315,20 @@ public struct Accessibility {
 }
 
 public struct BackgroundImage {
-    public enum ScaleType: String, Decodable {
+    public enum ScaleType: String {
         case none // original size
         case centerCrop = "center_crop" // fill
         case centerInside = "center_inside" // fit
     }
     
-    public enum TileMode: String, Decodable {
+    public enum TileMode: String {
         case none
         case repeatX = "repeat_x"
         case repeatY = "repeat_y"
         case repeatXY = "repeat"
     }
     
-    public enum Position: String, Decodable {
+    public enum Position: String {
         case leftTop = "left_top"
         case leftCenter = "left_center"
         case leftBottom = "left_bottom"

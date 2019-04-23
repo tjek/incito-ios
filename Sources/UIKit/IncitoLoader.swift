@@ -23,7 +23,7 @@ public func IncitoJSONFileLoader(
     // - convert into a RenderableIncitoDocument, using the size
     // - make sure this all happens asyncronously
     return openFile(filename: filename, bundle: bundle)
-        .flatMapResult(IncitoPropertiesDocument.decode(from:))
+        .flatMapResult(decodeIncitoDocument)
         .flatMapResult({ IncitoDocumentLoader(document: $0, width: width) })
 }
 
@@ -36,7 +36,11 @@ public func IncitoDocumentLoader(
     
     return fontLoader
         .loadAndRegisterFontAssets(document.fontAssets)
-        .flatMap({ buildRenderableDocument(document: document, width: width, loadedAssets: $0.assets) })
+//        .measure(print: " 🔠 Fonts loaded")
+        .flatMap({
+            buildRenderableDocument(document: document, width: width, loadedAssets: $0.assets)
+//                .measure(print: " 📐 Layouts calculated")
+        })
 }
 
 enum IncitoLoaderError: Error {
@@ -53,6 +57,12 @@ func openFile(filename: String, bundle: Bundle = .main) -> FutureResult<Data> {
             return try Data(contentsOf: fileURL)
         })
     }
+}
+
+func decodeIncitoDocument(jsonData: Data) -> FutureResult<IncitoPropertiesDocument> {
+    return Future(work: {
+        Result.init(catching: { try IncitoPropertiesDocument(jsonData: jsonData) })
+    })
 }
 
 func buildRenderableDocument(
