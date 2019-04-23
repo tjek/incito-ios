@@ -2,4 +2,4 @@
 github "Flipboard/FLAnimatedImage" ~> 4.10.0
 github "hyperoslo/Cache" ~> 5.2.0
 github "shopgun/swift-generic-geometry" ~> 0.2
-github "shopgun/swift-future" ~> 0.1
+github "shopgun/swift-future" ~> 0.2

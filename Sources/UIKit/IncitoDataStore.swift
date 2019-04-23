@@ -69,35 +69,15 @@ enum IncitoError: Error {
 extension URLSession {
     
     fileprivate func imageRequest(url: URL) -> FutureResult<IncitoDataStore.ImageStorageType> {
-        return Future { completion in
-            let urlReq = URLRequest(url: url, timeoutInterval: 10)
-            let task = self.dataTask(with: urlReq) { data, response, error in
-                
-                guard let imageData = data else {
-                    completion(.failure(error ?? IncitoError.unknownImageRequestError))
-                    return
-                }
-                
-                completion(.success(.init(data: imageData, mimeType: response?.mimeType)))
-            }
-            task.resume()
-        }
+        let urlReq = URLRequest(url: url, timeoutInterval: 10)
+        return self.dataTaskFutureResult(with: urlReq)
+            .mapResult({ .init(data: $0.data, mimeType: $0.response.mimeType) })
     }
     
     fileprivate func fontRequest(url: URL) -> FutureResult<IncitoDataStore.FontStorageType> {
-        return Future { completion in
-            let urlReq = URLRequest(url: url, timeoutInterval: 10)
-            let task = self.dataTask(with: urlReq) { data, response, error in
-                
-                guard let fontData = data else {
-                    completion(.failure(error ?? IncitoError.unknownFontRequestError))
-                    return
-                }
-                
-                completion(.success(.init(data: fontData)))
-            }
-            task.resume()
-        }
+        let urlReq = URLRequest(url: url, timeoutInterval: 10)
+        return self.dataTaskFutureResult(with: urlReq)
+            .mapResult({ .init(data: $0.data) })
     }
 }
 
