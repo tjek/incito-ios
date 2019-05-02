@@ -8,11 +8,15 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import UIKit
+import GenericGeometry
+import Future
 
 func loadImageView(request: ImageViewLoadRequest) {
     // how long to wait before first asking the request if we are still visible, and then doing the request.
     let debounceDelay: TimeInterval = 0.2
     
+    // first, wait a bit and then check if image is still visible.
+    // if not then pass nil through
     Future<(URL, Size<Double>)?>(run: { cb in
         DispatchQueue.main.asyncAfter(deadline: .now() + debounceDelay) {
             guard request.stillVisibleCheck() else {
@@ -22,19 +26,32 @@ func loadImageView(request: ImageViewLoadRequest) {
             cb((request.url, Size<Double>(cgSize: request.containerSize)))
         }
     })
-        .flatMap(IncitoEnvironment.current.imageLoader.imageData(forURL:containerSize:))
-        .map({ (url: request.url, data: $0.data, mimeType: $0.mimeType, request.containerSize, request.transform) })
-        .flatMap(buildImageView(sourceURL:imageData:mimeType:containerSize:transform:))
+        // if not not nil, load the image data
+        .flatMapOptional(
+            IncitoEnvironment.current.imageLoader
+                .imageData(forURL:containerSize:)
+        )
+        // if not nil, expand the info in the tuple
+        .mapOptional({
+            (url: request.url, data: $0.data, mimeType: $0.mimeType, request.containerSize, request.transform)
+        })
+        // if not nil, build the image view
+        .flatMapOptional(
+            buildImageView(sourceURL:imageData:mimeType:containerSize:transform:)
+        )
+        // finally run the future
         .run(request.completion)
 }
 
 extension ImageLoaderProtocol {
-    func imageData(forURL url: URL, containerSize: Size<Double>) -> Future<(data: Data, mimeType: String?)?> {
-        return Future { cb in
-            self.imageData(forURL: url, containerSize: containerSize) {
-                cb($0.value)
+    func imageData(forURL url: URL, containerSize: Size<Double>)
+        -> Future<(data: Data, mimeType: String?)?> {
+            
+            return Future { cb in
+                self.imageData(forURL: url, containerSize: containerSize, completion: {
+                    cb($0.getSuccess())
+                })
             }
-        }
     }
 }
 

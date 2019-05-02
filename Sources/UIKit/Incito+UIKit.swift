@@ -8,6 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import UIKit
+import GenericGeometry
 
 #if os(iOS)
 typealias Font = UIFont

@@ -8,6 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import Foundation
+import Future
 
 enum FontLoadingError: Error {
     case invalidData // unable to convert data into a Font
@@ -61,7 +62,7 @@ extension FontAssetLoader {
                         switch $0 {
                         case let .success(loadedAsset):
                             loadedAssets += [loadedAsset]
-                        case let .error(error):
+                        case let .failure(error):
                             errors += [error]
                         }
                         group.leave()
@@ -73,7 +74,8 @@ extension FontAssetLoader {
         }
     }
 
-    func loadAndRegisterFontAsset(_ asset: FontAsset, assetName: String) -> Future<Result<LoadedFontAsset>> {
+    func loadAndRegisterFontAsset(_ asset: FontAsset, assetName: String) -> FutureResult<LoadedFontAsset> {
+        
         return Future { completion in
             
             // get all the supported source files
@@ -110,7 +112,7 @@ extension FontAssetLoader {
                             lastError = error
                         }
                         
-                    case let .error(error):
+                    case let .failure(error):
                         lastError = error
                     }
                 }
@@ -123,7 +125,7 @@ extension FontAssetLoader {
             }
             
             // we made it to the end without loading any of the sources. Error!
-            completion(.error(lastError ?? FontLoadingError.unknownError))
+            completion(.failure(lastError ?? FontLoadingError.unknownError))
         }
     }
 }

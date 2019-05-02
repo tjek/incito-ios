@@ -8,19 +8,20 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import Foundation
+import GenericGeometry
 
 /**
  If you wish to use your own image data cache/loader, implement this protocol and assign it to the IncitoEnvironment.
  */
 public protocol ImageLoaderProtocol {
-    func imageData(forURL url: URL, containerSize: Size<Double>, completion: @escaping (Result<(data: Data, mimeType: String?)>) -> Void)
+    func imageData(forURL url: URL, containerSize: Size<Double>, completion: @escaping (Result<(data: Data, mimeType: String?), Error>) -> Void)
 }
 
 /**
  If you wish to use your own font data cache/loader, implement this protocol and assign it to the IncitoEnvironment.
  */
 public protocol FontLoaderProtocol {
-    func fontData(forURL url: URL, completion: @escaping (Result<Data>) -> Void)
+    func fontData(forURL url: URL, completion: @escaping (Result<Data, Error>) -> Void)
 }
 
 public struct IncitoEnvironment {

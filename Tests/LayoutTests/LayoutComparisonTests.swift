@@ -53,7 +53,7 @@ class LayoutComparisonTests: XCTestCase {
         let bundle = Bundle(for: LayoutComparisonTests.self)
         
         let dimensionsLoader = openFile(filename: dimensionsFilename, bundle: bundle)
-            .flatMapResult(TestLayoutDimensions.decode(from:))
+            .flatMapResult(TestLayoutDimensions.decodeFutureJSON(from:))
             .mapResult { $0.treeify() }
         let incitoLoader = IncitoJSONFileLoader(filename: filename, bundle: bundle, width: width)
             .mapResult({ (renderableDoc: RenderableIncitoDocument) -> TreeNode<(String?, TestLayoutRect, RenderableView)> in
@@ -71,10 +71,10 @@ class LayoutComparisonTests: XCTestCase {
         let expect = self.expectation(description: "IncitoLoaded")
         
         incitoLoader
-            .zip(dimensionsLoader)
+            .zippedResult(dimensionsLoader)
             .run {
                 switch $0 {
-                case let .error(error):
+                case let .failure(error):
                     XCTFail("Unable to render Incito \(error)")
                 case let .success((incitoRectTree, dimensionsTree)):
                     

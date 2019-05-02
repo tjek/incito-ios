@@ -8,8 +8,10 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import UIKit
+import GenericGeometry
+import Future
 
-public typealias IncitoLoader = Future<Result<RenderableIncitoDocument>>
+public typealias IncitoLoader = FutureResult<RenderableIncitoDocument>
 
 public func IncitoJSONFileLoader(
     filename: String,
@@ -46,8 +48,8 @@ enum IncitoLoaderError: Error {
     case unavailableFile(filename: String)
 }
 
-func openFile(filename: String, bundle: Bundle = .main) -> Future<Result<Data>> {
-    return Future<Result<Data>> { completion in
+func openFile(filename: String, bundle: Bundle = .main) -> FutureResult<Data> {
+    return FutureResult<Data> { completion in
         completion(Result {
             guard let fileURL = bundle.url(forResource: filename, withExtension: nil) else {
                 throw IncitoLoaderError.unavailableFile(filename: filename)
@@ -58,7 +60,7 @@ func openFile(filename: String, bundle: Bundle = .main) -> Future<Result<Data>> 
     }
 }
 
-func decodeIncitoDocument(jsonData: Data) -> Future<Result<IncitoPropertiesDocument>> {
+func decodeIncitoDocument(jsonData: Data) -> FutureResult<IncitoPropertiesDocument> {
     return Future(work: {
         Result.init(catching: { try IncitoPropertiesDocument(jsonData: jsonData) })
     })
@@ -68,7 +70,7 @@ func buildRenderableDocument(
     document: IncitoPropertiesDocument,
     width: Double,
     loadedAssets: [LoadedFontAsset]
-    ) -> Future<Result<RenderableIncitoDocument>> {
+    ) -> Future<Result<RenderableIncitoDocument, Error>> {
     return Future { completion in
         let fontProvider = loadedAssets.font(forFamily:size:style:)
         
@@ -111,20 +113,5 @@ func buildRenderableDocument(
             fontAssets: document.fontAssets
         )
         completion(.success(renderableDocument))
-    }
-}
-
-
-func decodeJSON<B: Decodable>(data: Data) -> Future<Result<B>> {
-    return Future<Result<B>> { completion in
-        completion(Result {
-            try JSONDecoder().decode(B.self, from: data)
-        })
-    }
-}
-
-extension Decodable {
-    public static func decode(from data: Data) -> Future<Result<Self>> {
-        return decodeJSON(data: data)
     }
 }

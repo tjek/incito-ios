@@ -8,6 +8,7 @@
 //  Copyright (c) 2019 ShopGun. All rights reserved.
 
 import Foundation
+import GenericGeometry
 
 extension Dictionary {
     func getValueMap<K: RawRepresentable, T>(_ key: K, _ transform: (Value) -> T) -> T? where K.RawValue == Key {

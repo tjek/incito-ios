@@ -8,6 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import UIKit
+import GenericGeometry
 
 /**
  A UIView subclass that allows for shadows and rounded corners. If there is a shadow all of the contents of the view, and the rounding of the corners, will be applied to a `contents` subview. When adding subviews to this view, you must use the `childContainer` property, which either refers to self or the contents, depening on if there is a shadow or not.

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE1B506A2257801000A680AB /* GenericGeometry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1B50692257801000A680AB /* GenericGeometry.framework */; };
+		AE1B506B2257801000A680AB /* GenericGeometry.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE1B50692257801000A680AB /* GenericGeometry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE246F3E221AB8F800662E9B /* incito-irma-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE246F3C221AB8F700662E9B /* incito-irma-375.json */; };
 		AE467C5F2237B87000F95D62 /* incito-texttest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE467C5E2237B87000F95D62 /* incito-texttest-375.json */; };
 		AE4BF75A220448E60048671D /* incito-kvickly-feb2019-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE4BF759220448E60048671D /* incito-kvickly-feb2019-375.json */; };
@@ -53,6 +55,7 @@
 			files = (
 				AE582A4821FF1675009F4D8A /* Incito.framework in Embed Frameworks */,
 				AEE097C422302F4200A14ED7 /* FLAnimatedImage.framework in Embed Frameworks */,
+				AE1B506B2257801000A680AB /* GenericGeometry.framework in Embed Frameworks */,
 				AEE097C122302F4200A14ED7 /* Cache.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -61,6 +64,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AE1B50692257801000A680AB /* GenericGeometry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GenericGeometry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE246F3C221AB8F700662E9B /* incito-irma-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-irma-375.json"; sourceTree = "<group>"; };
 		AE467C5E2237B87000F95D62 /* incito-texttest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-texttest-375.json"; sourceTree = "<group>"; };
 		AE4BF759220448E60048671D /* incito-kvickly-feb2019-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-kvickly-feb2019-375.json"; sourceTree = "<group>"; };
@@ -105,6 +109,7 @@
 			files = (
 				AE582A4721FF1675009F4D8A /* Incito.framework in Frameworks */,
 				AEE097C322302F4200A14ED7 /* FLAnimatedImage.framework in Frameworks */,
+				AE1B506A2257801000A680AB /* GenericGeometry.framework in Frameworks */,
 				AEE097C022302F4200A14ED7 /* Cache.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,6 +120,7 @@
 		AE582A0321FF10DC009F4D8A = {
 			isa = PBXGroup;
 			children = (
+				AE1B50692257801000A680AB /* GenericGeometry.framework */,
 				AEE097C222302F4200A14ED7 /* FLAnimatedImage.framework */,
 				AEE097BF22302F4200A14ED7 /* Cache.framework */,
 				AE582AC321FF3126009F4D8A /* Scratchpad.playground */,
@@ -218,6 +224,7 @@
 				TargetAttributes = {
 					AE582A0B21FF10DC009F4D8A = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -437,7 +444,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.Incito-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -455,7 +462,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.Incito-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -126,7 +126,7 @@ class DemoViewController: IncitoLoaderViewController {
             switch result {
             case .success:
                 print("   ✅ in \(round((end - start) * 1000) / 1000)s")
-            case .error(let error):
+            case .failure(let error):
                 print("   ❌ in \(round((end - start) * 1000) / 1000)s: \(error)")
             }
             print("-----------------")

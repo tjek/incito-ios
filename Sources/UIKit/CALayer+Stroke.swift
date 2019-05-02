@@ -8,6 +8,7 @@
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
 import UIKit
+import GenericGeometry
 
 extension CALayer {
     /// Given some Stroke properties, and corner radii, will add sublayers to the reciever that draw the strokes. If stroke & cornerRadii are uniform, will resort to using simple borderWidth/color on the current layer. Note that cornerRadius is not actually applied to the layer - that must be done elsewhere.

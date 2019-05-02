@@ -7,6 +7,8 @@
 //
 //  Copyright (c) 2018 ShopGun. All rights reserved.
 
+import GenericGeometry
+
 public typealias FontAssetName = String
 public typealias FontFamily = [FontAssetName]
 

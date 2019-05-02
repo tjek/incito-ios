@@ -156,7 +156,7 @@ open class IncitoLoaderViewController: UIViewController {
      */
     public func load(
         _ loader: IncitoLoader,
-        completion: ((Result<IncitoViewController>) -> Void)? = nil) {
+        completion: ((Result<IncitoViewController, Error>) -> Void)? = nil) {
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -177,9 +177,10 @@ open class IncitoLoaderViewController: UIViewController {
                         guard self.reloadId == currReloadId else { return }
                         
                         switch renderableDocResult {
-                        case let .error(err):
+                        case let .failure(err):
                             self.state = .error(err)
-                            completion?(.error(err))
+                            completion?(.failure(err))
+                            
                         case let .success(renderableDocument):
                             
                             let incitoVC = IncitoViewController()
