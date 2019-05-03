@@ -21,6 +21,6 @@ Pod::Spec.new do |s|
     s.resources = ["Sources/**/Resources/**/*.strings"]
     
     s.dependency "FLAnimatedImage", "~> 1.0"
-    s.dependency "ShopGun-GenericGeometry", "~> 0.2"
-    s.dependency "ShopGun-Future", "~> 0.2"
+    s.dependency "ShopGun-GenericGeometry", "~> 0.3"
+    s.dependency "ShopGun-Future", "~> 0.3"
 end
