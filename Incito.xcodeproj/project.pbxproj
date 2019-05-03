@@ -26,7 +26,7 @@
 		AE582A2E21FF131D009F4D8A /* Incito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5829D821FF1000009F4D8A /* Incito.framework */; };
 		AE582A6A21FF1736009F4D8A /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4C21FF1735009F4D8A /* JSONValue.swift */; };
 		AE582A6B21FF1736009F4D8A /* String+PreventWidows.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */; };
-		AE582A6C21FF1736009F4D8A /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4E21FF1735009F4D8A /* Result.swift */; };
+		AE582A6C21FF1736009F4D8A /* Result+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4E21FF1735009F4D8A /* Result+Utils.swift */; };
 		AE582A6E21FF1736009F4D8A /* DecodingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5021FF1735009F4D8A /* DecodingHelpers.swift */; };
 		AE582A6F21FF1736009F4D8A /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5121FF1735009F4D8A /* TreeNode.swift */; };
 		AE582A7021FF1736009F4D8A /* GenericIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5221FF1735009F4D8A /* GenericIdentifier.swift */; };
@@ -259,7 +259,7 @@
 		AE582A2C21FF1252009F4D8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE582A4C21FF1735009F4D8A /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+PreventWidows.swift"; sourceTree = "<group>"; };
-		AE582A4E21FF1735009F4D8A /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		AE582A4E21FF1735009F4D8A /* Result+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Result+Utils.swift"; sourceTree = "<group>"; };
 		AE582A5021FF1735009F4D8A /* DecodingHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodingHelpers.swift; sourceTree = "<group>"; };
 		AE582A5121FF1735009F4D8A /* TreeNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
 		AE582A5221FF1735009F4D8A /* GenericIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericIdentifier.swift; sourceTree = "<group>"; };
@@ -410,7 +410,7 @@
 			children = (
 				AE582A4C21FF1735009F4D8A /* JSONValue.swift */,
 				AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */,
-				AE582A4E21FF1735009F4D8A /* Result.swift */,
+				AE582A4E21FF1735009F4D8A /* Result+Utils.swift */,
 				AE582A5021FF1735009F4D8A /* DecodingHelpers.swift */,
 				AE582A5121FF1735009F4D8A /* TreeNode.swift */,
 				AE582A5221FF1735009F4D8A /* GenericIdentifier.swift */,
@@ -805,7 +805,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE582A6E21FF1736009F4D8A /* DecodingHelpers.swift in Sources */,
-				AE582A6C21FF1736009F4D8A /* Result.swift in Sources */,
+				AE582A6C21FF1736009F4D8A /* Result+Utils.swift in Sources */,
 				AE582A8221FF1736009F4D8A /* IncitoLayout+Dimensioning.swift in Sources */,
 				AE582A7721FF1736009F4D8A /* IncitoTypes+UIKit.swift in Sources */,
 				AE582B1021FF4EA8009F4D8A /* IncitoLoader.swift in Sources */,
