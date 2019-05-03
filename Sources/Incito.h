@@ -14,3 +14,5 @@ FOUNDATION_EXPORT double Incito_iOSVersionNumber;
 
 //! Project version string for Incito_iOS.
 FOUNDATION_EXPORT const unsigned char Incito_iOSVersionString[];
+
+#import <Incito/NSKeyedUnarchiverWrapper.h>

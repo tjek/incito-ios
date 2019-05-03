@@ -17,11 +17,10 @@ Pod::Spec.new do |s|
 
     s.source       = { :git => "https://github.com/shopgun/incito-ios.git", :tag => "v#{s.version}" }
     
-    s.source_files = "Sources/**/*.swift"
+    s.source_files = "Sources/**/*.{swift,h,m}"
     s.resources = ["Sources/**/Resources/**/*.strings"]
     
     s.dependency "FLAnimatedImage", "~> 1.0"
-    s.dependency "Cache", "~> 5.2"
     s.dependency "ShopGun-GenericGeometry", "~> 0.2"
     s.dependency "ShopGun-Future", "~> 0.2"
 end

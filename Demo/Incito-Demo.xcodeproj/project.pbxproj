@@ -40,8 +40,6 @@
 		AE582AF821FF3198009F4D8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE582A1821FF10DD009F4D8A /* LaunchScreen.storyboard */; };
 		AEB2716D223BAB1A00D0D8E0 /* incito-elgiganten-feb19-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AEB2716C223BAB1A00D0D8E0 /* incito-elgiganten-feb19-375.json */; };
 		AED47CE52240FE0100F625FD /* elgiganten-mar19-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AED47CE42240FE0100F625FD /* elgiganten-mar19-375.json */; };
-		AEE097C022302F4200A14ED7 /* Cache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE097BF22302F4200A14ED7 /* Cache.framework */; };
-		AEE097C122302F4200A14ED7 /* Cache.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AEE097BF22302F4200A14ED7 /* Cache.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AEE097C322302F4200A14ED7 /* FLAnimatedImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE097C222302F4200A14ED7 /* FLAnimatedImage.framework */; };
 		AEE097C422302F4200A14ED7 /* FLAnimatedImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AEE097C222302F4200A14ED7 /* FLAnimatedImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -56,7 +54,6 @@
 				AE582A4821FF1675009F4D8A /* Incito.framework in Embed Frameworks */,
 				AEE097C422302F4200A14ED7 /* FLAnimatedImage.framework in Embed Frameworks */,
 				AE1B506B2257801000A680AB /* GenericGeometry.framework in Embed Frameworks */,
-				AEE097C122302F4200A14ED7 /* Cache.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -98,7 +95,6 @@
 		AE582AD421FF3126009F4D8A /* simple-incito-absolute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "simple-incito-absolute.json"; sourceTree = "<group>"; };
 		AEB2716C223BAB1A00D0D8E0 /* incito-elgiganten-feb19-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-elgiganten-feb19-375.json"; sourceTree = "<group>"; };
 		AED47CE42240FE0100F625FD /* elgiganten-mar19-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "elgiganten-mar19-375.json"; sourceTree = "<group>"; };
-		AEE097BF22302F4200A14ED7 /* Cache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Cache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEE097C222302F4200A14ED7 /* FLAnimatedImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FLAnimatedImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -110,7 +106,6 @@
 				AE582A4721FF1675009F4D8A /* Incito.framework in Frameworks */,
 				AEE097C322302F4200A14ED7 /* FLAnimatedImage.framework in Frameworks */,
 				AE1B506A2257801000A680AB /* GenericGeometry.framework in Frameworks */,
-				AEE097C022302F4200A14ED7 /* Cache.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +117,6 @@
 			children = (
 				AE1B50692257801000A680AB /* GenericGeometry.framework */,
 				AEE097C222302F4200A14ED7 /* FLAnimatedImage.framework */,
-				AEE097BF22302F4200A14ED7 /* Cache.framework */,
 				AE582AC321FF3126009F4D8A /* Scratchpad.playground */,
 				AE582A0E21FF10DC009F4D8A /* Incito-Demo */,
 				AE582A0D21FF10DC009F4D8A /* Products */,
