@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name            = "Incito"
-    s.version         = "0.5"
+    s.version         = "0.6"
     s.summary         = "Incito viewer for iOS."
     s.description     = <<-DESC
                          A library for loading and viewing Incito-format documents.
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
     s.social_media_url = "http://twitter.com/ShopGun"
 
     s.platform         = :ios, "9.3"
-    s.swift_version    = "5.0"
+    s.swift_version    = "5.0.1"
     s.pod_target_xcconfig = { 'SWIFT_VERSION' => '5.0' }
 
     s.source       = { :git => "https://github.com/shopgun/incito-ios.git", :tag => "v#{s.version}" }
