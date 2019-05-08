@@ -1,4 +1,4 @@
 
-github "Flipboard/FLAnimatedImage" ~> 4.10.0
+github "Flipboard/FLAnimatedImage" ~> 1.0
 github "shopgun/swift-generic-geometry" ~> 0.3
 github "shopgun/swift-future" ~> 0.3
