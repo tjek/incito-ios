@@ -28,6 +28,11 @@ public func IncitoJSONFileLoader(
         .flatMapResult({ IncitoDocumentLoader(document: $0, width: width) })
 }
 
+/**
+ Creates an IncitoLoader based on a properties document and width into which it will be placed.
+ 
+ Under the hood it will, on a background queue, load and register the fonts from the document, and then build the renderable document by calculating the layout properties for the document. Finally it completes on the main queue.
+ */
 public func IncitoDocumentLoader(
     document: IncitoPropertiesDocument,
     width: Double
@@ -42,6 +47,7 @@ public func IncitoDocumentLoader(
             buildRenderableDocument(document: document, width: width, loadedAssets: $0.assets)
 //                .measure(print: " 📐 Layouts calculated")
         })
+        .async(on: .global(), completesOn: .main)
 }
 
 enum IncitoLoaderError: Error {
