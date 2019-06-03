@@ -10,9 +10,7 @@
 		AE09D6B0221EBB1200C58E40 /* VideoEmbedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE09D6AF221EBB1200C58E40 /* VideoEmbedView.swift */; };
 		AE0BBFAB225BE527007821DD /* IncitoDocument+JsonDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0BBFAA225BE527007821DD /* IncitoDocument+JsonDict.swift */; };
 		AE0BF377226F0895007A231B /* Future.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0BF369226F088B007A231B /* Future.framework */; };
-		AE0BF37A226F08AF007A231B /* Future.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE0BF369226F088B007A231B /* Future.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE1B506522577DD200A680AB /* GenericGeometry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1B505E22577DBD00A680AB /* GenericGeometry.framework */; };
-		AE1B506822577DF000A680AB /* GenericGeometry.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE1B505E22577DBD00A680AB /* GenericGeometry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE1C68012223E18C001D19C9 /* HTMLImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB846FF221FEA5E00685F45 /* HTMLImageRenderer.swift */; };
 		AE246F43221B525B00662E9B /* IncitoEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE246F42221B525B00662E9B /* IncitoEnvironment.swift */; };
 		AE246F68221C436800662E9B /* IncitoDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE246F67221C436700662E9B /* IncitoDataStore.swift */; };
@@ -51,7 +49,6 @@
 		AE582A8421FF1736009F4D8A /* FontAssetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6821FF1736009F4D8A /* FontAssetLoader.swift */; };
 		AE582A8521FF1736009F4D8A /* IncitoTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A6921FF1736009F4D8A /* IncitoTypes.swift */; };
 		AE582AAB21FF2EAA009F4D8A /* FLAnimatedImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AAA21FF2E6E009F4D8A /* FLAnimatedImage.framework */; };
-		AE582AB221FF2EF9009F4D8A /* FLAnimatedImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE582AAA21FF2E6E009F4D8A /* FLAnimatedImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE582AB521FF2FCD009F4D8A /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582AB421FF2FCD009F4D8A /* Measure.swift */; };
 		AE582B1021FF4EA8009F4D8A /* IncitoLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */; };
 		AE6094EF2209B26600952B8E /* incito-blocktest-375.dimensions.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094EC2209B26000952B8E /* incito-blocktest-375.dimensions.json */; };
@@ -223,22 +220,6 @@
 			remoteInfo = FLAnimatedImage;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		AE582AB121FF2EDF009F4D8A /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				AE0BF37A226F08AF007A231B /* Future.framework in Embed Frameworks */,
-				AE1B506822577DF000A680AB /* GenericGeometry.framework in Embed Frameworks */,
-				AE582AB221FF2EF9009F4D8A /* FLAnimatedImage.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		AE09D6AF221EBB1200C58E40 /* VideoEmbedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEmbedView.swift; sourceTree = "<group>"; };
@@ -556,7 +537,6 @@
 				AE5829D521FF1000009F4D8A /* Frameworks */,
 				AE5829D421FF1000009F4D8A /* Sources */,
 				AE5829D621FF1000009F4D8A /* Resources */,
-				AE582AB121FF2EDF009F4D8A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
