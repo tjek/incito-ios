@@ -112,11 +112,13 @@ extension UIFont {
             // where `000000002301a318` is the hex version of `Date().timeIntervalSinceReferenceDate` in secs
             // This means that fonts registered within the same second are given the same name, and problems ensue.
             
-            // Check if we have previously registered a font, and it's name is the same
+            // Check if we have previously registered a font, and it's name is the same as the last registered font,
+            // AND its name starts with `font0`.
             // in which case we have hit the bug described above :/
             // so the horrible solution is to just sleep for the difference until a new second has passed
             if let (lastName, lastTimestamp) = lastRegisteredFont,
-                lastName == fontName {
+                lastName == fontName,
+                fontName.hasPrefix("font0") {
                 // find the time difference between now and the next second.
                 let timestampDiff = min(TimeInterval(floor(lastTimestamp) + 1) - timestamp + 0.001, 1)
                 

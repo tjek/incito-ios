@@ -14,6 +14,7 @@ class DemoViewController: IncitoLoaderViewController {
     
     var selectedIndex: Int = 999
     let availableIncitos: [(json: String, refImg: String?)] = [
+        ("ica-aug19-375.json", nil),
         ("incito-irma-375.json", nil),
         ("incito-kvickly-feb2019-375.json", nil),
         ("elgiganten-mar19-375.json", nil),
