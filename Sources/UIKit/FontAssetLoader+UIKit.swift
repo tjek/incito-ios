@@ -164,10 +164,6 @@ extension FontAssetLoader {
             var supportedTypes: [FontAsset.SourceType] = []
             
             // .woff_ only supported >= iOS 10
-            // Unfortunately .woff_ has some weird unexpected buggy behaviour.
-            // In some fonts `.postScriptName` is the same for multiple weights.
-            // This means that only 1 of the weights is available with that name.
-            // Maybe at some future point try to figure a solution, but for now just skip.
             if #available(iOS 10.0, *) {
                 supportedTypes += [
                     .woff2, // ✅ 23.2kb / -
