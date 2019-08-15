@@ -209,11 +209,12 @@ extension IncitoDataStore: FontLoaderProtocol {
     public func fontData(forURL url: URL, completion: @escaping (Swift.Result<Data, Error>) -> Void) {
         self.queue.async { [unowned self] in
             self.fetchFontFromCache(forKey: url.absoluteString)
-                .flatMapResultError({ _ in URLSession.shared.fontRequest(url: url)
-                    .mapResult({ [unowned self] (font: FontStorageType) in
-                        self.saveFontToCache(fontData: font, forKey: url.absoluteString)
-                        return font
-                    })
+                .flatMapResultError({ _ in
+                    URLSession.shared.fontRequest(url: url)
+                        .mapResult({ [unowned self] (font: FontStorageType) in
+                            self.saveFontToCache(fontData: font, forKey: url.absoluteString)
+                            return font
+                        })
                 })
                 .mapResult({ $0.data as Data })
                 .run(completion)

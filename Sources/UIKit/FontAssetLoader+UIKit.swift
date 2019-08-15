@@ -80,30 +80,78 @@ extension Collection where Element == LoadedFontAsset {
     }
 }
 
+private let uiFontRegistrationQueue = DispatchQueue(label: "UIFontRegistrationQueue")
+private var lastRegisteredFont: (name: String, timestamp: TimeInterval)?
+
 extension UIFont {
+    
     /// Returns the name of the registered font, or nil if there is a problem.
     static func register(data: Data) throws -> String {
-        
-        guard let dataProvider = CGDataProvider(data: data as CFData),
-            let cgFont = CGFont(dataProvider) else {
-                throw(FontLoadingError.invalidData)
-        }
-        
-        guard let fontName = cgFont.postScriptName else {
-            throw(FontLoadingError.postscriptNameUnavailable)
-        }
-        
-        // try to register the font. if it fails _but_ the font is still available (eg. it was already registered), then success!
-        var error: Unmanaged<CFError>?
-        defer {
-            error?.release()
-        }
-        if CTFontManagerRegisterGraphicsFont(cgFont, &error) == false,
-            UIFont(name: String(fontName), size: 0) == nil {
+        return try uiFontRegistrationQueue.sync {
             
-            throw(FontLoadingError.registrationFailed)
+            func makeFont(data: Data) throws -> (font: CGFont, postscriptName: String) {
+                guard let dataProvider = CGDataProvider(data: data as CFData),
+                    let cgFont = CGFont(dataProvider) else {
+                        throw(FontLoadingError.invalidData)
+                }
+                
+                guard let fontName = cgFont.postScriptName else {
+                    throw(FontLoadingError.postscriptNameUnavailable)
+                }
+                
+                return (cgFont, String(fontName))
+            }
+            
+            let timestamp = Date().timeIntervalSinceReferenceDate
+            
+            // make the font and get the postscript name
+            var (cgFont, fontName) = try makeFont(data: data)
+            
+            // NOTE: The name provided here for fonts that lack a postscript name
+            // is along the lines of `font000000002301a318`
+            // where `000000002301a318` is the hex version of `Date().timeIntervalSinceReferenceDate` in secs
+            // This means that fonts registered within the same second are given the same name, and problems ensue.
+            
+            // Check if we have previously registered a font, and it's name is the same as the last registered font,
+            // AND its name starts with `font0`.
+            // in which case we have hit the bug described above :/
+            // so the horrible solution is to just sleep for the difference until a new second has passed
+            if let (lastName, lastTimestamp) = lastRegisteredFont,
+                lastName == fontName,
+                fontName.hasPrefix("font0") {
+                // find the time difference between now and the next second.
+                let timestampDiff = min(TimeInterval(floor(lastTimestamp) + 1) - timestamp + 0.001, 1)
+                
+                // wait for that difference
+                let grp = DispatchGroup()
+                grp.enter()
+                _ = grp.wait(timeout: .now() + timestampDiff)
+
+                // try to re-make the font
+                (cgFont, fontName) = try makeFont(data: data)
+
+                // waiting didnt seem to work - this font has the same name, so eject!
+                if fontName == lastName {
+                    debugPrint("❌ Font name conflict: '\(fontName)'")
+                    throw FontLoadingError.duplicatePostscriptName
+                }
+            }
+            
+            // try to register the font. if it fails _but_ the font is still available (eg. it was already registered), then success!
+            var error: Unmanaged<CFError>?
+            defer {
+                error?.release()
+            }
+            if CTFontManagerRegisterGraphicsFont(cgFont, &error) == false,
+                UIFont(name: fontName, size: 0) == nil {
+                
+                throw(FontLoadingError.registrationFailed)
+            }
+            
+            lastRegisteredFont = (fontName, timestamp)
+            
+            return String(fontName)
         }
-        return String(fontName)
     }
 }
 
@@ -116,16 +164,12 @@ extension FontAssetLoader {
             var supportedTypes: [FontAsset.SourceType] = []
             
             // .woff_ only supported >= iOS 10
-            // Unfortunately .woff_ has some weird unexpected buggy behaviour.
-            // In some fonts `.postScriptName` is the same for multiple weights.
-            // This means that only 1 of the weights is available with that name.
-            // Maybe at some future point try to figure a solution, but for now just skip.
-            //                if #available(iOS 10.0, *) {
-            //                    supportedTypes += [
-            //                        .woff2, // ✅ 23.2kb / -
-            //                        .woff, // ✅ 29.4kb / 30.9kb
-            //                    ]
-            //                }
+            if #available(iOS 10.0, *) {
+                supportedTypes += [
+                    .woff2, // ✅ 23.2kb / -
+                    .woff, // ✅ 29.4kb / 30.9kb
+                ]
+            }
             
             // .otf & .ttf are default types, but larger than .woff
             supportedTypes += [

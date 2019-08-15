@@ -13,6 +13,7 @@ import Future
 enum FontLoadingError: Error {
     case invalidData // unable to convert data into a Font
     case registrationFailed
+    case duplicatePostscriptName
     case postscriptNameUnavailable
     case unknownError
 }

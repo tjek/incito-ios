@@ -8,6 +8,86 @@
         "gravity": "center_horizontal",
         "padding": 3,
         "child_views": [
+            
+            
+            {
+                "view_name": "TextView",
+                "text_size": 14,
+                "text_color": "#000e52",
+                "text": "The vorpal BLADE went p snicker snack !",
+                "layout_margin": 1,
+                "spans": [
+                    {
+                        "start": 30,
+                        "end": 35,
+                        "name": "superscript"
+                    }
+                ],
+                "line_spacing_multiplier": 1,
+                "font_family": [
+                    "ica-bold"
+                ],
+                "background_color": "#6dc4f2"
+            },
+            {
+                "view_name": "TextView",
+                "text_size": 34,
+                "text_color": "#000e52",
+                "text": "The vorpal BLADE went snicker snack !",
+                "layout_margin": 1,
+                "spans": [
+                    {
+                        "start": 30,
+                        "end": 35,
+                        "name": "superscript"
+                    }
+                ],
+                "line_spacing_multiplier": 1.4,
+                "font_family": [
+                    "ica-regular"
+                ],
+                "background_color": "#6dc4f2"
+            },
+            
+            {
+                "view_name": "TextView",
+                "text_size": 14,
+                "text_color": "#000e52",
+                "text": "The vorpal BLADE went p snicker snack !",
+                "layout_margin": 1,
+                "spans": [
+                    {
+                        "start": 30,
+                        "end": 35,
+                        "name": "superscript"
+                    }
+                ],
+                "line_spacing_multiplier": 1,
+                "font_family": [
+                    "incito-open-sans-condensed-bold"
+                ],
+                "background_color": "#6dc4f2"
+            },
+            {
+                "view_name": "TextView",
+                "text_size": 34,
+                "text_color": "#000e52",
+                "text": "The vorpal BLADE went snicker snack !",
+                "layout_margin": 1,
+                "spans": [
+                    {
+                        "start": 30,
+                        "end": 35,
+                        "name": "superscript"
+                    }
+                ],
+                "line_spacing_multiplier": 1.4,
+                "font_family": [
+                    "incito-open-sans-condensed-bold"
+                ],
+                "background_color": "#6dc4f2"
+            },
+            
             {
                 "view_name": "TextView",
                 "text_size": 14,
@@ -71,7 +151,7 @@
                 "view_name": "TextView",
                 "text_size": 42,
                 "text_color": "#000e52",
-                "text": "The vorpal BLADE went snicker snack ! The vorpal BLADE went snicker snack !",
+                "text": "The vorpal BLADE went snicker snack ! The vorpal BLADE went snickep",
                 "layout_margin": 1,
                 "spans": [
                     {
@@ -191,6 +271,53 @@
                 [
                     "embedded-opentype",
                     "https://d3qnoxvhi29qvt.cloudfront.net/fonts/cph-signs-regular.eot"
+                ]
+            ]
+        },
+        "ica-regular": {
+            "weight": "normal",
+            "style": "normal",
+            "src": [
+                [
+                    "woff",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/ICATextWebRegular.woff"
+                ],
+                [
+                    "truetype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/ICATextWebRegular.ttf"
+                ]
+            ]
+        },
+        "ica-bold": {
+            "weight": "normal",
+            "style": "normal",
+            "src": [
+                [
+                    "woff",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/ICATextWebBold.woff"
+                ],
+                [
+                    "truetype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/ICATextWebBold.ttf"
+                ]
+            ]
+        },
+        
+        "incito-open-sans-condensed-bold": {
+            "weight": "normal",
+            "style": "normal",
+            "src": [
+                [
+                    "woff",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/OpenSans-CondBold-webfont.woff"
+                ],
+                [
+                    "truetype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/OpenSans-CondBold-webfont.ttf"
+                ],
+                [
+                    "embedded-opentype",
+                    "https://d3qnoxvhi29qvt.cloudfront.net/fonts/OpenSans-CondBold-webfont.eot"
                 ]
             ]
         }

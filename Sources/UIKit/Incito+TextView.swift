@@ -18,6 +18,8 @@ import GenericGeometry
 class AdjustedBaselineStringView: UIView, NSLayoutManagerDelegate {
     let desiredLineHeight: CGFloat
     let fontLineHeight: CGFloat
+    let fontLeading: CGFloat
+    let fontDescender: CGFloat
     
     private let textStorage: NSTextStorage
     private let layoutManager: NSLayoutManager
@@ -32,9 +34,11 @@ class AdjustedBaselineStringView: UIView, NSLayoutManagerDelegate {
         }
     }
     
-    init(attributedString: NSAttributedString, desiredLineHeight: CGFloat, fontLineHeight: CGFloat) {
+    init(attributedString: NSAttributedString, desiredLineHeight: CGFloat, fontLineHeight: CGFloat, fontLeading: CGFloat, fontDescender: CGFloat, maxLineCount: Int) {
         self.desiredLineHeight = desiredLineHeight
         self.fontLineHeight = fontLineHeight
+        self.fontLeading = fontLeading
+        self.fontDescender = fontDescender
         
         self.layoutManager = NSLayoutManager()
         self.textStorage = NSTextStorage(attributedString: attributedString)
@@ -42,6 +46,7 @@ class AdjustedBaselineStringView: UIView, NSLayoutManagerDelegate {
         self.textContainer.lineFragmentPadding = 0
         self.layoutManager.addTextContainer(self.textContainer)
         self.textStorage.addLayoutManager(self.layoutManager)
+        self.textContainer.maximumNumberOfLines = maxLineCount
         
         super.init(frame: .zero)
         
@@ -82,24 +87,51 @@ class AdjustedBaselineStringView: UIView, NSLayoutManagerDelegate {
         var changed: Bool = false
         
         var rect = lineFragmentRect.pointee
-        if abs(rect.size.height.distance(to: desiredLineHeight)) > 0.0001 {
-            rect.size.height = desiredLineHeight
+        var usedRect = lineFragmentUsedRect.pointee
+        
+        // how many desired lines can we fit into this container
+        let maxLineCount = floor(textContainer.size.height / desiredLineHeight)
+
+        // how much space we have to use for this and all the remaining lines
+        let remainingSpace = textContainer.size.height - rect.origin.y
+        
+        let newHeight: CGFloat
+        
+        // if more than 1 line of content, then adjust the fragment's size
+        if maxLineCount > 1 {
             
-            var usedRect = lineFragmentUsedRect.pointee
-            usedRect.size.height = max(desiredLineHeight, usedRect.size.height) // keep emoji sizes
+            // This is the height that the layout system wants to give to a line of text.
+            let systemFragmentHeight = desiredLineHeight + fontLeading
             
-            lineFragmentRect.pointee = rect
-            lineFragmentUsedRect.pointee = usedRect
-            changed = true
+            // find an average height for all the lines that aren't the last line
+            // This is because the last line _HAS_ to be the height the system decides
+            // When it tries to fit the last line in the container it will just not draw the last line if there isnt enough room for it to be positioned.
+            let averageNonBottomLineHeight = (textContainer.size.height - systemFragmentHeight) / (maxLineCount - 1)
+            
+            // adjust the height of the fragment
+            newHeight = min(averageNonBottomLineHeight, remainingSpace)
+        } else {
+            newHeight = min(desiredLineHeight, remainingSpace)
         }
         
-        // how much the baseline needs to be offset to position the text in the center of the line.
-        let baselineNudge: CGFloat = -((desiredLineHeight / 2) - (fontLineHeight / 2))
-        if abs(baselineNudge) > 0.0001 {
-            baselineOffset.pointee = baselineOffset.pointee + baselineNudge
-            changed = true
-        }
+        changed = rect.size.height != newHeight ? true : changed
         
+        rect.size.height = newHeight
+        usedRect.size.height = rect.size.height
+        
+        lineFragmentRect.pointee = rect
+        lineFragmentUsedRect.pointee = usedRect
+        
+        // how much the baseline needs to be offset to position the text in the center of the line fragment.
+        // when `baselineOffset` is 0, the baseline of the text is aligned to the top (origin) of the line
+        // so move the baseline to the middle of the fragment
+        // then move down by half the lineHeight, and also by the descender
+        let newBaselineOffset = (rect.midY - rect.origin.y) + (fontLineHeight / 2) + fontDescender
+
+        changed = baselineOffset.pointee != newBaselineOffset ? true : changed
+        
+        baselineOffset.pointee = newBaselineOffset
+
         return changed
     }
 }
@@ -172,7 +204,10 @@ extension UIView {
         let label = AdjustedBaselineStringView(
             attributedString: attributedString,
             desiredLineHeight: font.pointSize * CGFloat(textProperties.lineHeightMultiplier ?? textDefaults.lineHeightMultiplier),
-            fontLineHeight: font.lineHeight
+            fontLineHeight: font.lineHeight,
+            fontLeading: font.leading,
+            fontDescender: font.descender,
+            maxLineCount: textProperties.maxLines
         )
         
         label.backgroundColor = .clear
@@ -225,6 +260,16 @@ extension TextViewProperties {
         let alignment = (self.textAlignment ?? .left).nsTextAlignment
         
         var string = self.text
+        
+        // strip newlines down to the max-line count
+        // Note, this doesnt take into account soft-linebreaks when calculating the height of the line.
+        if self.maxLines > 0 {
+            string = string
+                .split(separator: "\n")
+                .prefix(self.maxLines)
+                .joined(separator: "\n")
+        }
+        
         if self.allCaps {
             string = string.uppercased()
         }
