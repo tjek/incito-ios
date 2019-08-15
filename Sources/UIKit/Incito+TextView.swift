@@ -34,7 +34,7 @@ class AdjustedBaselineStringView: UIView, NSLayoutManagerDelegate {
         }
     }
     
-    init(attributedString: NSAttributedString, desiredLineHeight: CGFloat, fontLineHeight: CGFloat, fontLeading: CGFloat, fontDescender: CGFloat) {
+    init(attributedString: NSAttributedString, desiredLineHeight: CGFloat, fontLineHeight: CGFloat, fontLeading: CGFloat, fontDescender: CGFloat, maxLineCount: Int) {
         self.desiredLineHeight = desiredLineHeight
         self.fontLineHeight = fontLineHeight
         self.fontLeading = fontLeading
@@ -46,6 +46,7 @@ class AdjustedBaselineStringView: UIView, NSLayoutManagerDelegate {
         self.textContainer.lineFragmentPadding = 0
         self.layoutManager.addTextContainer(self.textContainer)
         self.textStorage.addLayoutManager(self.layoutManager)
+        self.textContainer.maximumNumberOfLines = maxLineCount
         
         super.init(frame: .zero)
         
@@ -205,7 +206,8 @@ extension UIView {
             desiredLineHeight: font.pointSize * CGFloat(textProperties.lineHeightMultiplier ?? textDefaults.lineHeightMultiplier),
             fontLineHeight: font.lineHeight,
             fontLeading: font.leading,
-            fontDescender: font.descender
+            fontDescender: font.descender,
+            maxLineCount: textProperties.maxLines
         )
         
         label.backgroundColor = .clear
@@ -258,6 +260,16 @@ extension TextViewProperties {
         let alignment = (self.textAlignment ?? .left).nsTextAlignment
         
         var string = self.text
+        
+        // strip newlines down to the max-line count
+        // Note, this doesnt take into account soft-linebreaks when calculating the height of the line.
+        if self.maxLines > 0 {
+            string = string
+                .split(separator: "\n")
+                .prefix(self.maxLines)
+                .joined(separator: "\n")
+        }
+        
         if self.allCaps {
             string = string.uppercased()
         }
