@@ -92,6 +92,9 @@ class AdjustedBaselineStringView: UIView, NSLayoutManagerDelegate {
         // how many desired lines can we fit into this container
         let maxLineCount = floor(textContainer.size.height / desiredLineHeight)
 
+        // which line we are looking at now (1...maxLineCount)
+        let lineNumber = round(rect.maxY / desiredLineHeight)
+        
         // how much space we have to use for this and all the remaining lines
         let remainingSpace = textContainer.size.height - rect.origin.y
         
@@ -125,9 +128,9 @@ class AdjustedBaselineStringView: UIView, NSLayoutManagerDelegate {
         // how much the baseline needs to be offset to position the text in the center of the line fragment.
         // when `baselineOffset` is 0, the baseline of the text is aligned to the top (origin) of the line
         // so move the baseline to the middle of the fragment
-        // then move down by half the lineHeight, and also by the descender
-        let newBaselineOffset = (rect.midY - rect.origin.y) + (fontLineHeight / 2) + fontDescender
-
+        // then move down by half the font's lineHeight, and also by the descender
+        let newBaselineOffset: CGFloat = ((desiredLineHeight * lineNumber)  - (rect.origin.y + (desiredLineHeight / 2))) + (fontLineHeight / 2) + fontDescender
+        
         changed = baselineOffset.pointee != newBaselineOffset ? true : changed
         
         baselineOffset.pointee = newBaselineOffset
@@ -287,11 +290,13 @@ extension TextViewProperties {
          
          To convert from iOS lineHeight to a CSS line-height of 1, we need the scaleFactor. When multiplied with the text properties' lineHeightMultiplier, we get a multiplier that give the same lineHeight as in CSS.
          */
-        let lineHeightScaleFactor = (font.pointSize / font.lineHeight) // to go from css normal -> 1
-
+        let desiredLineHeight = font.pointSize * lineHeightMultiplier
+        
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = alignment
-        paragraphStyle.lineHeightMultiple = lineHeightMultiplier * lineHeightScaleFactor
+
+        paragraphStyle.minimumLineHeight = desiredLineHeight
+        paragraphStyle.maximumLineHeight = desiredLineHeight
 
         if self.maxLines == 1 {
             paragraphStyle.lineBreakMode = truncateSingleLines ? .byTruncatingTail : .byClipping
