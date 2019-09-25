@@ -15,6 +15,7 @@ enum FontLoadingError: Error {
     case registrationFailed
     case duplicatePostscriptName
     case postscriptNameUnavailable
+    case invalidPostscriptName
     case unknownError
 }
 

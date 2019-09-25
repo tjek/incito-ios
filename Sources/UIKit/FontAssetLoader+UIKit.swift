@@ -95,11 +95,16 @@ extension UIFont {
                         throw(FontLoadingError.invalidData)
                 }
                 
-                guard let fontName = cgFont.postScriptName else {
+                guard let fontName = cgFont.postScriptName.map({ String($0) }) else {
                     throw(FontLoadingError.postscriptNameUnavailable)
                 }
                 
-                return (cgFont, String(fontName))
+                // user fonts must not have a "." prefix - that is system-only
+                if fontName.hasPrefix(".") {
+                    throw(FontLoadingError.invalidPostscriptName)
+                }
+                
+                return (cgFont, fontName)
             }
             
             let timestamp = Date().timeIntervalSinceReferenceDate
