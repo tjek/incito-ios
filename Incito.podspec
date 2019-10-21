@@ -22,5 +22,5 @@ Pod::Spec.new do |s|
     
     s.dependency "FLAnimatedImage", "~> 1.0"
     s.dependency "ShopGun-GenericGeometry", "~> 0.3"
-    s.dependency "ShopGun-Future", "~> 0.3"
+    s.dependency "ShopGun-Future", "~> 0.4"
 end
