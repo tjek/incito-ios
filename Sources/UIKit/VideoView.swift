@@ -23,9 +23,14 @@ class VideoView: UIView {
     var stateObserver: NSKeyValueObservation?
     var timeControlObserver: NSKeyValueObservation?
 
+    var enterBackgroundNotifToken: NSObjectProtocol?
+    var becomeActiveNotifToken: NSObjectProtocol?
+    
     init(frame: CGRect, videoProperties: VideoViewProperties) {
         self.videoProperties = videoProperties
         super.init(frame: frame)
+        
+        print("🌈 CREATING \(Unmanaged.passUnretained(self).toOpaque()) \(videoProperties.source.lastPathComponent)")
         
         let audioSession = AVAudioSession.sharedInstance()
         
@@ -55,13 +60,40 @@ class VideoView: UIView {
                 self?.playerContentLoaded()
             }
         }
+        
+        enterBackgroundNotifToken = NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [unowned self] _ in
+            self.playerController?.player = nil
+            
+            if #available(iOS 10.0, *) {
+                print("🌈 didEnterBackground \(Unmanaged.passUnretained(self).toOpaque()) \(self.videoProperties.source.lastPathComponent)", self.player?.timeControlStatus.rawValue)
+            }
+        }
+        
+        becomeActiveNotifToken = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [unowned self] _ in
+//            self?.playerController?.player = nil
+            self.playerController?.player = self.player
+            if #available(iOS 10.0, *) {
+                print("🌈 didBecomeActive \(Unmanaged.passUnretained(self).toOpaque()) \(self.videoProperties.source.lastPathComponent)", self.player?.timeControlStatus.rawValue)
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    deinit {
+        if let token = becomeActiveNotifToken {
+            NotificationCenter.default.removeObserver(token)
+        }
+        if let token = enterBackgroundNotifToken {
+            NotificationCenter.default.removeObserver(token)
+        }
+        print("🌈 DEINIT \(Unmanaged.passUnretained(self).toOpaque()) \(self.videoProperties.source.lastPathComponent)")
+    }
     func playerContentLoaded() {
+        print("🌈 playerContentLoaded \(Unmanaged.passUnretained(self).toOpaque()) \(self.videoProperties.source.lastPathComponent)", self.player?.currentItem?.status.rawValue)
+
         playerController = AVPlayerViewController()
         playerController?.player = player
         playerController?.view.frame = self.bounds
@@ -93,6 +125,8 @@ class VideoView: UIView {
             self.playerController?.view.layer.opacity = 0.6
             timeControlObserver = player?.observe(\.timeControlStatus) { [weak self] (player, _) in
                 DispatchQueue.main.async { [weak self] in
+                    
+                    print("🌈 timeControlStatus changed \(player.timeControlStatus)", player.timeControlStatus.rawValue)
                     if player.timeControlStatus == .playing {
                         
                         self?.spinner.stopAnimating()

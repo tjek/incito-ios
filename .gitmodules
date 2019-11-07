@@ -1,6 +1,3 @@
-[submodule "External/FLAnimatedImage"]
-	path = External/FLAnimatedImage
-	url = https://github.com/Flipboard/FLAnimatedImage.git
 [submodule "External/swift-generic-geometry"]
 	path = External/swift-generic-geometry
 	url = https://github.com/shopgun/swift-generic-geometry.git
