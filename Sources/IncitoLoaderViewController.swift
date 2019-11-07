@@ -172,20 +172,20 @@ open class IncitoLoaderViewController: UIViewController {
                 
                 loader
                     .async(on: self.loaderQueue, completesOn: .main)
-                    .run({ [weak self] renderableDocResult in
+                    .run({ [weak self] incitoDocResult in
                         guard let self = self else { return }
                         guard self.reloadId == currReloadId else { return }
                         
-                        switch renderableDocResult {
+                        switch incitoDocResult {
                         case let .failure(err):
                             self.state = .error(err)
                             completion?(.failure(err))
                             
-                        case let .success(renderableDocument):
+                        case let .success(incitoDocument):
                             
                             let incitoVC = IncitoViewController()
                             incitoVC.delegate = self.delegate
-                            incitoVC.update(renderableDocument: renderableDocument)
+                            incitoVC.update(incitoDocument: incitoDocument)
                             
                             self.state = .success(incitoVC)
                             
