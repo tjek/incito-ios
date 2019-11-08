@@ -14,7 +14,6 @@
 		AE2478A423730CC600DDE9B7 /* IncitoLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */; };
 		AE2478A62373171000DDE9B7 /* CopyableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450C72200F8530000A8D8 /* CopyableLabel.swift */; };
 		AE2478A72373172E00DDE9B7 /* String+PreventWidows.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */; };
-		AE2478A8237319F500DDE9B7 /* incito-webview.html in Resources */ = {isa = PBXBuildFile; fileRef = AE2478A5237313A900DDE9B7 /* incito-webview.html */; };
 		AE2478AB23734F3F00DDE9B7 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4C21FF1735009F4D8A /* JSONValue.swift */; };
 		AE2478AC2373567E00DDE9B7 /* UIColor+WebString.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5821FF1736009F4D8A /* UIColor+WebString.swift */; };
 		AE582A2521FF118A009F4D8A /* ColorUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A2221FF118A009F4D8A /* ColorUtilsTests.swift */; };
@@ -23,6 +22,7 @@
 		AE69DA3323755C9C00A5A360 /* IncitoDocument+Decoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE69DA3223755C9C00A5A360 /* IncitoDocument+Decoding.swift */; };
 		AE69DA4523756CC000A5A360 /* IncitoLoader+JSONFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE69DA4423756CC000A5A360 /* IncitoLoader+JSONFile.swift */; };
 		AE69DA79237577B800A5A360 /* IncitoDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE69DA78237577B800A5A360 /* IncitoDocument.swift */; };
+		AE69DAA42375B39400A5A360 /* index-1.0.0.html in Resources */ = {isa = PBXBuildFile; fileRef = AE69DAA22375B38F00A5A360 /* index-1.0.0.html */; };
 		AE8450CF22019C680000A8D8 /* Incito.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE8450D122019C680000A8D8 /* Incito.strings */; };
 		AE8450D322019D270000A8D8 /* Bundle+Incito.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450D222019D270000A8D8 /* Bundle+Incito.swift */; };
 		AE8450D52201A0960000A8D8 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450D42201A0960000A8D8 /* Resources.swift */; };
@@ -39,7 +39,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AE2478A5237313A900DDE9B7 /* incito-webview.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "incito-webview.html"; sourceTree = "<group>"; };
 		AE5829D821FF1000009F4D8A /* Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE582A2221FF118A009F4D8A /* ColorUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorUtilsTests.swift; sourceTree = "<group>"; };
 		AE582A2321FF118A009F4D8A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -56,6 +55,8 @@
 		AE69DA3223755C9C00A5A360 /* IncitoDocument+Decoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoDocument+Decoding.swift"; sourceTree = "<group>"; };
 		AE69DA4423756CC000A5A360 /* IncitoLoader+JSONFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLoader+JSONFile.swift"; sourceTree = "<group>"; };
 		AE69DA78237577B800A5A360 /* IncitoDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDocument.swift; sourceTree = "<group>"; };
+		AE69DAA22375B38F00A5A360 /* index-1.0.0.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "index-1.0.0.html"; sourceTree = "<group>"; };
+		AE69DAA32375B38F00A5A360 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AE8450C72200F8530000A8D8 /* CopyableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyableLabel.swift; sourceTree = "<group>"; };
 		AE8450D022019C680000A8D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Incito.strings; sourceTree = "<group>"; };
 		AE8450D222019D270000A8D8 /* Bundle+Incito.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Incito.swift"; sourceTree = "<group>"; };
@@ -109,7 +110,6 @@
 				AE582A2B21FF1252009F4D8A /* Incito.h */,
 				AE582A5F21FF1736009F4D8A /* IncitoLoaderViewController.swift */,
 				AE582A5921FF1736009F4D8A /* IncitoViewController.swift */,
-				AE2478A5237313A900DDE9B7 /* incito-webview.html */,
 				AE69DA4023755CF500A5A360 /* LoaderViews */,
 				AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */,
 				AE69DA4423756CC000A5A360 /* IncitoLoader+JSONFile.swift */,
@@ -117,6 +117,7 @@
 				AE69DA3223755C9C00A5A360 /* IncitoDocument+Decoding.swift */,
 				AE582A4C21FF1735009F4D8A /* JSONValue.swift */,
 				AE582A5821FF1736009F4D8A /* UIColor+WebString.swift */,
+				AE69DAA12375B38F00A5A360 /* IncitoWebview */,
 				AE8450C922019BFE0000A8D8 /* Resources */,
 			);
 			path = Sources;
@@ -158,6 +159,15 @@
 				AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */,
 			);
 			path = LoaderViews;
+			sourceTree = "<group>";
+		};
+		AE69DAA12375B38F00A5A360 /* IncitoWebview */ = {
+			isa = PBXGroup;
+			children = (
+				AE69DAA22375B38F00A5A360 /* index-1.0.0.html */,
+				AE69DAA32375B38F00A5A360 /* README.md */,
+			);
+			path = IncitoWebview;
 			sourceTree = "<group>";
 		};
 		AE8450C922019BFE0000A8D8 /* Resources */ = {
@@ -274,8 +284,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE2478A8237319F500DDE9B7 /* incito-webview.html in Resources */,
 				AE8450CF22019C680000A8D8 /* Incito.strings in Resources */,
+				AE69DAA42375B39400A5A360 /* index-1.0.0.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

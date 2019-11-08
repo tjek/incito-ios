@@ -18,5 +18,5 @@ Pod::Spec.new do |s|
     s.source       = { :git => "https://github.com/shopgun/incito-ios.git", :tag => "v#{s.version}" }
     
     s.source_files = "Sources/**/*.{swift,h,m}"
-    s.resources = ["Sources/**/Resources/**/*.strings"]
+    s.resources = ["Sources/**/Resources/**/*.strings", "Sources/**/*.html"]
 end
