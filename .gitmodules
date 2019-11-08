@@ -1,6 +1,0 @@
-[submodule "External/swift-generic-geometry"]
-	path = External/swift-generic-geometry
-	url = https://github.com/shopgun/swift-generic-geometry.git
-[submodule "External/swift-future"]
-	path = External/swift-future
-	url = https://lozhuf@github.com/shopgun/swift-future.git

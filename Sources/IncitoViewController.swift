@@ -58,7 +58,7 @@ public extension IncitoViewControllerDelegate {
     
     /// Default to opening the url when tapping a link.
     func incitoDidTapLink(_ url: URL, in viewController: IncitoViewController) {
-        UIApplication.shared.openURL(url)
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }
 

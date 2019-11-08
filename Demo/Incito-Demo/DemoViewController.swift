@@ -111,11 +111,8 @@ class DemoViewController: IncitoLoaderViewController {
         
         self.searchResultsController.offers = []
         
-        let size = self.view.frame.size
-        
         let loader = IncitoJSONFileLoader(
-            filename: filename,
-            width: Double(min(size.width, size.height))
+            filename: filename
         )
         
         let start = Date.timeIntervalSinceReferenceDate
