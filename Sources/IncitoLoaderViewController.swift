@@ -172,7 +172,7 @@ open class IncitoLoaderViewController: UIViewController {
                 
                 loader
                     .async(on: self.loaderQueue, completesOn: .main)
-                    .run({ [weak self] incitoDocResult in
+                    .load({ [weak self] incitoDocResult in
                         guard let self = self else { return }
                         guard self.reloadId == currReloadId else { return }
                         

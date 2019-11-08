@@ -98,6 +98,35 @@ extension JSONValue: Codable {
     }
 }
 
+extension JSONValue {
+    /**
+     Try to create a JSONValue from an optional Any type.
+     */
+    public init?(_ any: Any?) {
+        if let dict = any as? [String: Any?] {
+            var values: [String: JSONValue] = [:]
+            dict.forEach({
+                values[$0.key] = JSONValue($0.value)
+            })
+            self = .object(values)
+        } else if let array = any as? [Any?] {
+            self = .array(array.compactMap(JSONValue.init))
+        } else if let string = any as? String {
+            self = .string(string)
+        } else if let bool = any as? Bool {
+            self = .bool(bool)
+        } else if let int = any as? Int {
+            self = .int(int)
+        } else if let number = any as? Float {
+            self = .number(number)
+        } else if any == nil {
+            self = .null
+        } else {
+            return nil
+        }
+    }
+}
+
 extension JSONValue: CustomDebugStringConvertible {
     
     public var debugDescription: String {

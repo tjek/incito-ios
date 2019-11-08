@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AE1B506A2257801000A680AB /* GenericGeometry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1B50692257801000A680AB /* GenericGeometry.framework */; };
-		AE1B506B2257801000A680AB /* GenericGeometry.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE1B50692257801000A680AB /* GenericGeometry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE246F3E221AB8F800662E9B /* incito-irma-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE246F3C221AB8F700662E9B /* incito-irma-375.json */; };
 		AE2478AA237320FA00DDE9B7 /* elgiganten-nov19-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE2478A9237320FA00DDE9B7 /* elgiganten-nov19-375.json */; };
 		AE2B74DE230176AA00672807 /* ica-aug19-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE2B74DD230176AA00672807 /* ica-aug19-375.json */; };
@@ -52,7 +50,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				AE582A4821FF1675009F4D8A /* Incito.framework in Embed Frameworks */,
-				AE1B506B2257801000A680AB /* GenericGeometry.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -60,7 +57,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AE1B50692257801000A680AB /* GenericGeometry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GenericGeometry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE246F3C221AB8F700662E9B /* incito-irma-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-irma-375.json"; sourceTree = "<group>"; };
 		AE2478A9237320FA00DDE9B7 /* elgiganten-nov19-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "elgiganten-nov19-375.json"; sourceTree = "<group>"; };
 		AE2B74DD230176AA00672807 /* ica-aug19-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "ica-aug19-375.json"; sourceTree = "<group>"; };
@@ -104,7 +100,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE582A4721FF1675009F4D8A /* Incito.framework in Frameworks */,
-				AE1B506A2257801000A680AB /* GenericGeometry.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,7 +109,6 @@
 		AE582A0321FF10DC009F4D8A = {
 			isa = PBXGroup;
 			children = (
-				AE1B50692257801000A680AB /* GenericGeometry.framework */,
 				AE582AC321FF3126009F4D8A /* Scratchpad.playground */,
 				AE582A0E21FF10DC009F4D8A /* Incito-Demo */,
 				AE582A0D21FF10DC009F4D8A /* Products */,
@@ -434,6 +428,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MN86AVA6GX;
 				INFOPLIST_FILE = "Incito-Demo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -452,6 +447,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MN86AVA6GX;
 				INFOPLIST_FILE = "Incito-Demo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

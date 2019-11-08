@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AE0BF377226F0895007A231B /* Future.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0BF369226F088B007A231B /* Future.framework */; };
-		AE1B506522577DD200A680AB /* GenericGeometry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1B505E22577DBD00A680AB /* GenericGeometry.framework */; };
 		AE2478A023730C7300DDE9B7 /* IncitoLoaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5F21FF1736009F4D8A /* IncitoLoaderViewController.swift */; };
 		AE2478A123730C7D00DDE9B7 /* IncitoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5921FF1736009F4D8A /* IncitoViewController.swift */; };
 		AE2478A223730C8E00DDE9B7 /* DefaultLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */; };
@@ -19,136 +17,17 @@
 		AE2478A8237319F500DDE9B7 /* incito-webview.html in Resources */ = {isa = PBXBuildFile; fileRef = AE2478A5237313A900DDE9B7 /* incito-webview.html */; };
 		AE2478AB23734F3F00DDE9B7 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4C21FF1735009F4D8A /* JSONValue.swift */; };
 		AE2478AC2373567E00DDE9B7 /* UIColor+WebString.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5821FF1736009F4D8A /* UIColor+WebString.swift */; };
-		AE582A2521FF118A009F4D8A /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A2221FF118A009F4D8A /* DecodableTests.swift */; };
+		AE582A2521FF118A009F4D8A /* ColorUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A2221FF118A009F4D8A /* ColorUtilsTests.swift */; };
 		AE582A2D21FF1266009F4D8A /* Incito.h in Headers */ = {isa = PBXBuildFile; fileRef = AE582A2B21FF1252009F4D8A /* Incito.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AE582A2E21FF131D009F4D8A /* Incito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5829D821FF1000009F4D8A /* Incito.framework */; };
-		AE6094EF2209B26600952B8E /* incito-blocktest-375.dimensions.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094EC2209B26000952B8E /* incito-blocktest-375.dimensions.json */; };
-		AE6094F02209B26600952B8E /* incito-blocktest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094EB2209B26000952B8E /* incito-blocktest-375.json */; };
-		AE6094F22209B3E700952B8E /* LayoutComparisonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6094F12209B3E700952B8E /* LayoutComparisonTests.swift */; };
-		AE6094F52209F4DF00952B8E /* incito-transformtest-350.dimensions.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094F42209F4DF00952B8E /* incito-transformtest-350.dimensions.json */; };
-		AE6094F62209F53600952B8E /* incito-transformtest-350.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094F32209F4A300952B8E /* incito-transformtest-350.json */; };
-		AE6094F8220AD8A400952B8E /* incito-flextest-375.dimensions.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094F7220AD8A400952B8E /* incito-flextest-375.dimensions.json */; };
-		AE6094FA220AD8B000952B8E /* incito-flextest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE6094F9220AD8B000952B8E /* incito-flextest-375.json */; };
-		AE820AE222131A620090E3D1 /* incito-stroketest-375.json in Resources */ = {isa = PBXBuildFile; fileRef = AE820AE022131A620090E3D1 /* incito-stroketest-375.json */; };
-		AE820AE322131A620090E3D1 /* incito-stroketest-375.dimensions.json in Resources */ = {isa = PBXBuildFile; fileRef = AE820AE122131A620090E3D1 /* incito-stroketest-375.dimensions.json */; };
+		AE69DA3323755C9C00A5A360 /* IncitoDocument+Decoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE69DA3223755C9C00A5A360 /* IncitoDocument+Decoding.swift */; };
+		AE69DA4523756CC000A5A360 /* IncitoLoader+JSONFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE69DA4423756CC000A5A360 /* IncitoLoader+JSONFile.swift */; };
 		AE8450CF22019C680000A8D8 /* Incito.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE8450D122019C680000A8D8 /* Incito.strings */; };
 		AE8450D322019D270000A8D8 /* Bundle+Incito.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450D222019D270000A8D8 /* Bundle+Incito.swift */; };
 		AE8450D52201A0960000A8D8 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8450D42201A0960000A8D8 /* Resources.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		AE0BF360226F088B007A231B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CF4AA6334CC33D910289C1FBBE694222;
-			remoteInfo = FutureTests_iOS;
-		};
-		AE0BF362226F088B007A231B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6A5DF8493A9C9CC3810049AF77CFE228;
-			remoteInfo = FutureTests_macOS;
-		};
-		AE0BF366226F088B007A231B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1D8C9DBC8643655983272B2EC9C59C26;
-			remoteInfo = FutureTests_watchOS;
-		};
-		AE0BF368226F088B007A231B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7997B1791C0E84016C20DB8132636F8C;
-			remoteInfo = Future_iOS;
-		};
-		AE0BF36A226F088B007A231B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5DB1109224ACCBEF7C36B15F2E541CBA;
-			remoteInfo = Future_macOS;
-		};
-		AE0BF36E226F088B007A231B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1527A6CC3DD96F8D87B3DEC3B9951CFA;
-			remoteInfo = Future_watchOS;
-		};
-		AE0BF378226F08A4007A231B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE0BF350226F088B007A231B /* Future.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F369621451E58A0F439993691A2C5AD7;
-			remoteInfo = Future_iOS;
-		};
-		AE1B505522577DBD00A680AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83D5BC539E5D97A6C5493CCC4B83A770;
-			remoteInfo = GenericGeometryTests_iOS;
-		};
-		AE1B505722577DBD00A680AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7DC0B99EB90A379FF7BC0ED6949D4B80;
-			remoteInfo = GenericGeometryTests_macOS;
-		};
-		AE1B505922577DBD00A680AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 71994A596123B2BAFC9B9344F4F0DA58;
-			remoteInfo = GenericGeometryTests_tvOS;
-		};
-		AE1B505B22577DBD00A680AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1A35F2A9F37745FD6C4E0F8AAB5DEB0F;
-			remoteInfo = GenericGeometryTests_watchOS;
-		};
-		AE1B505D22577DBD00A680AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E0B3DD3814B9D55502658650A8AD72FA;
-			remoteInfo = GenericGeometry_iOS;
-		};
-		AE1B505F22577DBD00A680AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0574736A7BDD48A183027205679CD043;
-			remoteInfo = GenericGeometry_macOS;
-		};
-		AE1B506122577DBD00A680AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BD01A777B6FCA2985F9FE856C5B098A6;
-			remoteInfo = GenericGeometry_tvOS;
-		};
-		AE1B506322577DBD00A680AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 403CD082D6085E3FBE8FBEED452CE9A4;
-			remoteInfo = GenericGeometry_watchOS;
-		};
-		AE1B506622577DDD00A680AB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 52B7348DBD836F7E07A6ADD83784134C;
-			remoteInfo = GenericGeometry_iOS;
-		};
 		AE582A2821FF11B1009F4D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AE675804219C2591006BEA9C /* Project object */;
@@ -161,8 +40,6 @@
 /* Begin PBXFileReference section */
 		AE09D6AF221EBB1200C58E40 /* VideoEmbedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEmbedView.swift; sourceTree = "<group>"; };
 		AE0BBFAA225BE527007821DD /* IncitoDocument+JsonDict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoDocument+JsonDict.swift"; sourceTree = "<group>"; };
-		AE0BF350226F088B007A231B /* Future.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Future.xcodeproj; path = "External/swift-future/Future.xcodeproj"; sourceTree = "<group>"; };
-		AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GenericGeometry.xcodeproj; path = "External/swift-generic-geometry/GenericGeometry.xcodeproj"; sourceTree = "<group>"; };
 		AE246F42221B525B00662E9B /* IncitoEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoEnvironment.swift; sourceTree = "<group>"; };
 		AE246F67221C436700662E9B /* IncitoDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoDataStore.swift; sourceTree = "<group>"; };
 		AE2478A5237313A900DDE9B7 /* incito-webview.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "incito-webview.html"; sourceTree = "<group>"; };
@@ -172,7 +49,7 @@
 		AE4F73FB227B099D00E8AC5D /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		AE4F73FC227B099D00E8AC5D /* CacheObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheObject.swift; sourceTree = "<group>"; };
 		AE5829D821FF1000009F4D8A /* Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE582A2221FF118A009F4D8A /* DecodableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
+		AE582A2221FF118A009F4D8A /* ColorUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorUtilsTests.swift; sourceTree = "<group>"; };
 		AE582A2321FF118A009F4D8A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE582A2B21FF1252009F4D8A /* Incito.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Incito.h; sourceTree = "<group>"; };
 		AE582A2C21FF1252009F4D8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -204,19 +81,11 @@
 		AE582A6921FF1736009F4D8A /* IncitoTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncitoTypes.swift; sourceTree = "<group>"; };
 		AE582AB421FF2FCD009F4D8A /* Measure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		AE582B0421FF37A9009F4D8A /* Incito.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Incito.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		AE582B0521FF37A9009F4D8A /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncitoLoader.swift; sourceTree = "<group>"; };
-		AE6094EB2209B26000952B8E /* incito-blocktest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-blocktest-375.json"; sourceTree = "<group>"; };
-		AE6094EC2209B26000952B8E /* incito-blocktest-375.dimensions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-blocktest-375.dimensions.json"; sourceTree = "<group>"; };
-		AE6094F12209B3E700952B8E /* LayoutComparisonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutComparisonTests.swift; sourceTree = "<group>"; };
-		AE6094F32209F4A300952B8E /* incito-transformtest-350.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "incito-transformtest-350.json"; sourceTree = "<group>"; };
-		AE6094F42209F4DF00952B8E /* incito-transformtest-350.dimensions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-transformtest-350.dimensions.json"; sourceTree = "<group>"; };
-		AE6094F7220AD8A400952B8E /* incito-flextest-375.dimensions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-flextest-375.dimensions.json"; sourceTree = "<group>"; };
-		AE6094F9220AD8B000952B8E /* incito-flextest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-flextest-375.json"; sourceTree = "<group>"; };
 		AE675820219C2593006BEA9C /* IncitoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IncitoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE69DA3223755C9C00A5A360 /* IncitoDocument+Decoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoDocument+Decoding.swift"; sourceTree = "<group>"; };
+		AE69DA4423756CC000A5A360 /* IncitoLoader+JSONFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IncitoLoader+JSONFile.swift"; sourceTree = "<group>"; };
 		AE820AD722130AC40090E3D1 /* CALayer+Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Stroke.swift"; sourceTree = "<group>"; };
-		AE820AE022131A620090E3D1 /* incito-stroketest-375.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-stroketest-375.json"; sourceTree = "<group>"; };
-		AE820AE122131A620090E3D1 /* incito-stroketest-375.dimensions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "incito-stroketest-375.dimensions.json"; sourceTree = "<group>"; };
 		AE8450C72200F8530000A8D8 /* CopyableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyableLabel.swift; sourceTree = "<group>"; };
 		AE8450D022019C680000A8D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Incito.strings; sourceTree = "<group>"; };
 		AE8450D222019D270000A8D8 /* Bundle+Incito.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Incito.swift"; sourceTree = "<group>"; };
@@ -243,8 +112,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE0BF377226F0895007A231B /* Future.framework in Frameworks */,
-				AE1B506522577DD200A680AB /* GenericGeometry.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,34 +126,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AE0BF351226F088B007A231B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				AE0BF361226F088B007A231B /* FutureTests.xctest */,
-				AE0BF363226F088B007A231B /* FutureTests.xctest */,
-				AE0BF367226F088B007A231B /* FutureTests.xctest */,
-				AE0BF369226F088B007A231B /* Future.framework */,
-				AE0BF36B226F088B007A231B /* Future.framework */,
-				AE0BF36F226F088B007A231B /* Future.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		AE1B504622577DBD00A680AB /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				AE1B505622577DBD00A680AB /* GenericGeometryTests.xctest */,
-				AE1B505822577DBD00A680AB /* GenericGeometryTests.xctest */,
-				AE1B505A22577DBD00A680AB /* GenericGeometryTests.xctest */,
-				AE1B505C22577DBD00A680AB /* GenericGeometryTests.xctest */,
-				AE1B505E22577DBD00A680AB /* GenericGeometry.framework */,
-				AE1B506022577DBD00A680AB /* GenericGeometry.framework */,
-				AE1B506222577DBD00A680AB /* GenericGeometry.framework */,
-				AE1B506422577DBD00A680AB /* GenericGeometry.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		AE4F73F8227B098900E8AC5D /* Cache */ = {
 			isa = PBXGroup;
 			children = (
@@ -301,8 +140,7 @@
 		AE582A2121FF118A009F4D8A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				AE582A2221FF118A009F4D8A /* DecodableTests.swift */,
-				AE6094E32209B23500952B8E /* LayoutTests */,
+				AE582A2221FF118A009F4D8A /* ColorUtilsTests.swift */,
 				AE582A2321FF118A009F4D8A /* Info.plist */,
 			);
 			path = Tests;
@@ -316,13 +154,13 @@
 				AE582A5F21FF1736009F4D8A /* IncitoLoaderViewController.swift */,
 				AE582A5921FF1736009F4D8A /* IncitoViewController.swift */,
 				AE2478A5237313A900DDE9B7 /* incito-webview.html */,
-				AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */,
-				AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */,
+				AE69DA4023755CF500A5A360 /* LoaderViews */,
 				AE582B0F21FF4EA8009F4D8A /* IncitoLoader.swift */,
-				AE8450C72200F8530000A8D8 /* CopyableLabel.swift */,
-				AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */,
+				AE69DA4423756CC000A5A360 /* IncitoLoader+JSONFile.swift */,
+				AE69DA3223755C9C00A5A360 /* IncitoDocument+Decoding.swift */,
 				AE582A4C21FF1735009F4D8A /* JSONValue.swift */,
 				AE582A5821FF1736009F4D8A /* UIColor+WebString.swift */,
+				AE8450C922019BFE0000A8D8 /* Resources */,
 				AE582A6121FF1736009F4D8A /* Core */,
 				AE582A5321FF1736009F4D8A /* UIKit */,
 				AE582A4B21FF1735009F4D8A /* Utils */,
@@ -338,7 +176,6 @@
 				AE582A5121FF1735009F4D8A /* TreeNode.swift */,
 				AE582A5221FF1735009F4D8A /* GenericIdentifier.swift */,
 				AE582AB421FF2FCD009F4D8A /* Measure.swift */,
-				AE8450D222019D270000A8D8 /* Bundle+Incito.swift */,
 				AE4F73F8227B098900E8AC5D /* Cache */,
 			);
 			path = Utils;
@@ -365,7 +202,6 @@
 				AEE097C522303B6500A14ED7 /* VideoView.swift */,
 				AEB846FF221FEA5E00685F45 /* HTMLImageRenderer.swift */,
 				AE820AD722130AC40090E3D1 /* CALayer+Stroke.swift */,
-				AE8450C922019BFE0000A8D8 /* Resources */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -388,33 +224,14 @@
 		AE582A8921FF2E24009F4D8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AE0BF350226F088B007A231B /* Future.xcodeproj */,
-				AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		AE6094E32209B23500952B8E /* LayoutTests */ = {
-			isa = PBXGroup;
-			children = (
-				AE6094F12209B3E700952B8E /* LayoutComparisonTests.swift */,
-				AE6094F42209F4DF00952B8E /* incito-transformtest-350.dimensions.json */,
-				AE6094F32209F4A300952B8E /* incito-transformtest-350.json */,
-				AE6094EC2209B26000952B8E /* incito-blocktest-375.dimensions.json */,
-				AE6094EB2209B26000952B8E /* incito-blocktest-375.json */,
-				AE6094F7220AD8A400952B8E /* incito-flextest-375.dimensions.json */,
-				AE6094F9220AD8B000952B8E /* incito-flextest-375.json */,
-				AE820AE122131A620090E3D1 /* incito-stroketest-375.dimensions.json */,
-				AE820AE022131A620090E3D1 /* incito-stroketest-375.json */,
-			);
-			path = LayoutTests;
 			sourceTree = "<group>";
 		};
 		AE675803219C2591006BEA9C = {
 			isa = PBXGroup;
 			children = (
 				AE582B0421FF37A9009F4D8A /* Incito.podspec */,
-				AE582B0521FF37A9009F4D8A /* Cartfile */,
 				AE582A2A21FF1252009F4D8A /* Sources */,
 				AE582A2121FF118A009F4D8A /* Tests */,
 				AE67580D219C2592006BEA9C /* Products */,
@@ -431,9 +248,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		AE69DA4023755CF500A5A360 /* LoaderViews */ = {
+			isa = PBXGroup;
+			children = (
+				AECF0E9122007C5900E7A64A /* DefaultLoadingViewController.swift */,
+				AECF0E8F2200795B00E7A64A /* DefaultErrorViewController.swift */,
+				AE8450C72200F8530000A8D8 /* CopyableLabel.swift */,
+				AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */,
+			);
+			path = LoaderViews;
+			sourceTree = "<group>";
+		};
 		AE8450C922019BFE0000A8D8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				AE8450D222019D270000A8D8 /* Bundle+Incito.swift */,
 				AE8450D122019C680000A8D8 /* Incito.strings */,
 				AE8450D42201A0960000A8D8 /* Resources.swift */,
 			);
@@ -466,8 +295,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				AE0BF379226F08A4007A231B /* PBXTargetDependency */,
-				AE1B506722577DDD00A680AB /* PBXTargetDependency */,
 			);
 			name = "Incito-iOS";
 			productName = "Incito-iOS";
@@ -533,16 +360,6 @@
 			mainGroup = AE675803219C2591006BEA9C;
 			productRefGroup = AE67580D219C2592006BEA9C /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = AE0BF351226F088B007A231B /* Products */;
-					ProjectRef = AE0BF350226F088B007A231B /* Future.xcodeproj */;
-				},
-				{
-					ProductGroup = AE1B504622577DBD00A680AB /* Products */;
-					ProjectRef = AE1B504522577DBD00A680AB /* GenericGeometry.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				AE5829D721FF1000009F4D8A /* Incito-iOS */,
@@ -550,107 +367,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		AE0BF361226F088B007A231B /* FutureTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = FutureTests.xctest;
-			remoteRef = AE0BF360226F088B007A231B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE0BF363226F088B007A231B /* FutureTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = FutureTests.xctest;
-			remoteRef = AE0BF362226F088B007A231B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE0BF367226F088B007A231B /* FutureTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = FutureTests.xctest;
-			remoteRef = AE0BF366226F088B007A231B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE0BF369226F088B007A231B /* Future.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Future.framework;
-			remoteRef = AE0BF368226F088B007A231B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE0BF36B226F088B007A231B /* Future.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Future.framework;
-			remoteRef = AE0BF36A226F088B007A231B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE0BF36F226F088B007A231B /* Future.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Future.framework;
-			remoteRef = AE0BF36E226F088B007A231B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE1B505622577DBD00A680AB /* GenericGeometryTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GenericGeometryTests.xctest;
-			remoteRef = AE1B505522577DBD00A680AB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE1B505822577DBD00A680AB /* GenericGeometryTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GenericGeometryTests.xctest;
-			remoteRef = AE1B505722577DBD00A680AB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE1B505A22577DBD00A680AB /* GenericGeometryTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GenericGeometryTests.xctest;
-			remoteRef = AE1B505922577DBD00A680AB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE1B505C22577DBD00A680AB /* GenericGeometryTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GenericGeometryTests.xctest;
-			remoteRef = AE1B505B22577DBD00A680AB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE1B505E22577DBD00A680AB /* GenericGeometry.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GenericGeometry.framework;
-			remoteRef = AE1B505D22577DBD00A680AB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE1B506022577DBD00A680AB /* GenericGeometry.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GenericGeometry.framework;
-			remoteRef = AE1B505F22577DBD00A680AB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE1B506222577DBD00A680AB /* GenericGeometry.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GenericGeometry.framework;
-			remoteRef = AE1B506122577DBD00A680AB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AE1B506422577DBD00A680AB /* GenericGeometry.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GenericGeometry.framework;
-			remoteRef = AE1B506322577DBD00A680AB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AE5829D621FF1000009F4D8A /* Resources */ = {
@@ -666,14 +382,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE6094F62209F53600952B8E /* incito-transformtest-350.json in Resources */,
-				AE6094F8220AD8A400952B8E /* incito-flextest-375.dimensions.json in Resources */,
-				AE820AE222131A620090E3D1 /* incito-stroketest-375.json in Resources */,
-				AE820AE322131A620090E3D1 /* incito-stroketest-375.dimensions.json in Resources */,
-				AE6094FA220AD8B000952B8E /* incito-flextest-375.json in Resources */,
-				AE6094EF2209B26600952B8E /* incito-blocktest-375.dimensions.json in Resources */,
-				AE6094F52209F4DF00952B8E /* incito-transformtest-350.dimensions.json in Resources */,
-				AE6094F02209B26600952B8E /* incito-blocktest-375.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,11 +393,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE2478A423730CC600DDE9B7 /* IncitoLoader.swift in Sources */,
+				AE69DA3323755C9C00A5A360 /* IncitoDocument+Decoding.swift in Sources */,
 				AE2478A72373172E00DDE9B7 /* String+PreventWidows.swift in Sources */,
 				AE8450D52201A0960000A8D8 /* Resources.swift in Sources */,
 				AE2478A023730C7300DDE9B7 /* IncitoLoaderViewController.swift in Sources */,
 				AE2478A123730C7D00DDE9B7 /* IncitoViewController.swift in Sources */,
 				AE2478AC2373567E00DDE9B7 /* UIColor+WebString.swift in Sources */,
+				AE69DA4523756CC000A5A360 /* IncitoLoader+JSONFile.swift in Sources */,
 				AE8450D322019D270000A8D8 /* Bundle+Incito.swift in Sources */,
 				AE2478A62373171000DDE9B7 /* CopyableLabel.swift in Sources */,
 				AE2478A323730CA900DDE9B7 /* DefaultErrorViewController.swift in Sources */,
@@ -702,24 +412,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE6094F22209B3E700952B8E /* LayoutComparisonTests.swift in Sources */,
-				AE582A2521FF118A009F4D8A /* DecodableTests.swift in Sources */,
+				AE582A2521FF118A009F4D8A /* ColorUtilsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AE0BF379226F08A4007A231B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Future_iOS;
-			targetProxy = AE0BF378226F08A4007A231B /* PBXContainerItemProxy */;
-		};
-		AE1B506722577DDD00A680AB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = GenericGeometry_iOS;
-			targetProxy = AE1B506622577DDD00A680AB /* PBXContainerItemProxy */;
-		};
 		AE582A2921FF11B1009F4D8A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = AE5829D721FF1000009F4D8A /* Incito-iOS */;
@@ -769,6 +468,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Incito;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -801,6 +501,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Incito;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -864,7 +565,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -920,7 +621,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
