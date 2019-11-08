@@ -99,11 +99,14 @@ public class IncitoViewController: UIViewController {
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
-        // fallback webview file
-        let htmlFileURL = Bundle.incito.url(forResource: "index-1.0.0.html", withExtension: nil)!
+        IncitoViewController.loadWebViewHTML { [weak self] in
+            guard let htmlStr = $0 else {
+                #warning("need loading failed callback")
+                return
+            }
+            self?.webView.loadHTMLString(htmlStr, baseURL: nil)
+        }
         
-        webView.loadFileURL(htmlFileURL, allowingReadAccessTo: htmlFileURL.deletingLastPathComponent())
-    
         // observe changes to the contentOffset, and trigger a re-render if needed.
         // we do this, rather than acting as delegate, as the users of the library may want to be the scrollview's delegate.
         scrollViewScrollObserver = scrollView.observe(\.contentOffset, options: [.old, .new]) { [weak self] (_, change) in
@@ -142,6 +145,32 @@ public class IncitoViewController: UIViewController {
         
         if self.isViewLoaded && !webView.isLoading {
             loadIncito()
+        }
+    }
+    
+    // MARK: - Private funcs
+    
+    fileprivate static let localHTMLFileName = "index-1.0.0.html"
+    fileprivate static let remoteHTMLFileURL = URL(string: "https://incito-webview.shopgun.com/index-1.0.0.html")!
+    
+    /**
+     Try to load the raw HTML string for the incito webview.
+     First tries to load from the CDN, and if that fails, loads from the local file, and IF that fails we are in trouble.
+     Done on a background queue. Completes on the main queue.
+     */
+    fileprivate static func loadWebViewHTML(completion: @escaping (String?) -> Void) {
+        DispatchQueue.global().async {
+            var fallbackHtmlStr: String? {
+                guard let localURL = Bundle.incito.url(forResource: localHTMLFileName, withExtension: nil) else {
+                    return nil
+                }
+                return try? String(contentsOf: localURL)
+            }
+            
+            let htmlStr: String? = (try? String(contentsOf: remoteHTMLFileURL)) ?? fallbackHtmlStr
+            DispatchQueue.main.async {
+                completion(htmlStr)
+            }
         }
     }
     
