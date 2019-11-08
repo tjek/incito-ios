@@ -179,12 +179,14 @@ class DemoViewController: IncitoLoaderViewController {
         let point = longPress.location(in: incitoVC.view)
         
         // An example of how to get the offer that was tapped.
-        self.incitoViewController?.getFirstElement(at: point, where: { $0.isOffer }) {
-            guard let firstOffer = $0 else { return }
-            
-            print("👉 [Offer long-press] '\(firstOffer.tjekMeta["title"]?.stringValue ?? "")': '\(firstOffer.tjekMeta["description"]?.stringValue ?? "")'")
-            
-            self.incitoViewController?.scrollToElement(withId: firstOffer.id, position: .top, animated: true)
+        if #available(iOS 11.0, *) {
+            self.incitoViewController?.getFirstElement(at: point, where: { $0.isOffer }) {
+                guard let firstOffer = $0 else { return }
+                
+                print("👉 [Offer long-press] '\(firstOffer.tjekMeta["title"]?.stringValue ?? "")': '\(firstOffer.tjekMeta["description"]?.stringValue ?? "")'")
+                
+                self.incitoViewController?.scrollToElement(withId: firstOffer.id, position: .top, animated: true)
+            }
         }
     }
 }
@@ -230,11 +232,13 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
     
     func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController) {
         // An example of how to get the offer that was tapped.
-        viewController.getFirstElement(at: point, where: { $0.isOffer }) {
-            guard let firstOffer = $0 else { return }
-            print("👉 [Offer] '\(firstOffer.tjekMeta["title"]?.stringValue ?? "")': '\(firstOffer.tjekMeta["description"]?.stringValue ?? "")'")
-            
-            viewController.scrollToElement(withId: firstOffer.id, position: .top, animated: true)
+        if #available(iOS 11.0, *) {
+            viewController.getFirstElement(at: point, where: { $0.isOffer }) {
+                guard let firstOffer = $0 else { return }
+                print("👉 [Offer] '\(firstOffer.tjekMeta["title"]?.stringValue ?? "")': '\(firstOffer.tjekMeta["description"]?.stringValue ?? "")'")
+                
+                viewController.scrollToElement(withId: firstOffer.id, position: .top, animated: true)
+            }
         }
     }
 }

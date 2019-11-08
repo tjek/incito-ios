@@ -94,8 +94,9 @@ public class IncitoViewController: UIViewController {
     fileprivate lazy var webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        let webView = WKWebView(frame: .zero, configuration: config)
         
+        let webView = WKWebView(frame: .zero, configuration: config)
+        webView.isOpaque = false
         webView.navigationDelegate = self
         webView.uiDelegate = self
         return webView
@@ -162,31 +163,22 @@ public class IncitoViewController: UIViewController {
         if self.isViewLoaded && !webView.isLoading {
             loadIncito()
         }
-
-//        guard Thread.isMainThread else {
-//            fatalError("update(renderableDocument:) must be called on the main queue.")
-//        }
-//
-//        self.renderableDocument = renderableDocument
-//
-//        self.delegate?.incitoDocumentLoaded(in: self)
-//
-//        if self.isViewLoaded {
-//            self.initializeRootView(parentSize: self.view.frame.size)
-//        }
     }
     
     fileprivate func loadIncito() {
         guard let incitoDoc = incitoDocument else { return }
         
+        view.backgroundColor = incitoDoc.backgroundColor ?? .white
+        
         webView.evaluateJavaScript("window.init(\(incitoDoc.json))") { [weak self] (_, error) in
             guard let self = self else { return }
-            
-            if error == nil {
-                self.delegate?.incitoDocumentLoaded(in: self)
-            } else {
+
+            if let error = error {
                 #warning("delegate error")
-//                self.delegate?.incitoDocumentLoaded(in: self)
+                print("❌ Failed to load!", error)
+                return
+            } else {
+                self.delegate?.incitoDocumentLoaded(in: self)
             }
         }
     }
@@ -215,309 +207,32 @@ extension IncitoViewController: WKNavigationDelegate, WKUIDelegate {
         return nil
     }
 }
-    
-    
-//    fileprivate let scrollView = UIScrollView()
-//    fileprivate var rootView: UIView?
-//    fileprivate var renderableDocument: RenderableIncitoDocument? = nil
-//    fileprivate var scrollViewScrollObserver: NSKeyValueObservation?
-//    fileprivate var lastRenderedWindow: CGRect = .null
-//    fileprivate let renderWindowInsets = UIEdgeInsets(top: -200, left: 0, bottom: -400, right: 0)
-//
-
-//    public override func viewDidLoad() {
-//        super.viewDidLoad()
-//
-//        // configure the scrollView
-//        view.addSubview(scrollView)
-//        if #available(iOS 11.0, *) {
-//            scrollView.contentInsetAdjustmentBehavior = .always
-//        }
-//
-//        scrollView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-//            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-//            ])
-//
-//        initializeRootView(parentSize: self.view.frame.size)
-//
-//        // observe changes to the contentOffset, and trigger a re-render if needed.
-//        // we do this, rather than acting as delegate, as the users of the library may want to be the scrollview's delegate.
-//        scrollViewScrollObserver = scrollView.observe(\.contentOffset, options: [.old, .new]) { [weak self] (_, change) in
-//            guard let self = self, change.oldValue != change.newValue else { return }
-//
-//            self.renderVisibleViews()
-//
-//            self.delegate?.incitoDidScroll(progress: self.scrollProgress, in: self)
-//        }
-//    }
-//    deinit {
-//        scrollViewScrollObserver = nil
-//    }
-//
-//    public override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        renderVisibleViews()
-//    }
-//
-//    public override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//
-//        // in < iOS 11.0 contentInset must be updated manually
-//        if #available(iOS 11.0, *) { } else {
-//            if self.automaticallyAdjustsScrollViewInsets {
-//                scrollView.contentInset = UIEdgeInsets(top: self.topLayoutGuide.length,
-//                                                       left: 0.0,
-//                                                       bottom: self.bottomLayoutGuide.length,
-//                                                       right: 0.0)
-//                scrollView.scrollIndicatorInsets = scrollView.contentInset
-//            }
-//        }
-//    }
-//
-//    /// Must be called on main queue
-//    public func update(renderableDocument: RenderableIncitoDocument) {
-//        guard Thread.isMainThread else {
-//            fatalError("update(renderableDocument:) must be called on the main queue.")
-//        }
-//
-//        self.renderableDocument = renderableDocument
-//
-//        self.delegate?.incitoDocumentLoaded(in: self)
-//
-//        if self.isViewLoaded {
-//            self.initializeRootView(parentSize: self.view.frame.size)
-//        }
-//        self._DEBUG_printLayout()
-//    }
-//
-//    // MARK: - Initialization
-//
-//    /// Must be performed on main queue
-//    private func initializeRootView(parentSize: CGSize) {
-//
-//        scrollView.backgroundColor = renderableDocument?.theme?.bgColor?.uiColor ?? .white
-//
-//        guard let rootRenderableView = renderableDocument?.rootView.value else {
-//            self.rootView?.removeFromSuperview()
-//            self.rootView = nil
-//            return
-//        }
-//
-//        let rootSize = rootRenderableView.layout.size.cgSize
-//
-//        let wrapper = UIView()
-//
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapRootView))
-//        wrapper.addGestureRecognizer(tap)
-//
-//        rootView = wrapper
-//        scrollView.insertSubview(wrapper, at: 0)
-//
-//        wrapper.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            wrapper.topAnchor.constraint(equalTo: scrollView.topAnchor),
-//            wrapper.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-//            wrapper.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-//
-//            wrapper.heightAnchor.constraint(equalToConstant: rootSize.height),
-//            wrapper.widthAnchor.constraint(equalToConstant: rootSize.width)
-//            ])
-//
-//        renderVisibleViews()
-//    }
-//
-//
-//
-//    @objc
-//    private func didTapRootView(_ tap: UITapGestureRecognizer) {
-//
-//        let delegate = self.delegate ?? DefaultDelegate()
-//        let point = tap.location(in: self.view)
-//
-//        if let firstLinkable = self.firstView(at: point, where: { $1.style.link != nil }),
-//            let link = firstLinkable.properties.style.link {
-//            delegate.incitoDidTapLink(link, at: point, in: self)
-//        } else {
-//            delegate.incitoDidReceiveTap(at: point, in: self)
-//        }
-//    }
-//
-//    // MARK: - Rendering
-//
-//    fileprivate func renderVisibleViews(forced: Bool = false) {
-//
-//        guard let rootView = self.rootView else { return }
-//        guard let renderableRootNode = self.renderableDocument?.rootView else { return }
-//
-//        let scrollRenderWindow: CGRect
-//        if debug.showRenderWindows {
-//            let height = scrollView.bounds.size.height
-//            scrollRenderWindow = scrollView.bounds
-//                .inset(by: UIEdgeInsets(top: height * 0.1, left: 0, bottom: height * 0.15, right: 0))
-//        } else {
-//            scrollRenderWindow = scrollView.bounds
-//                .inset(by: renderWindowInsets)
-//        }
-//
-//        // in RootView coord space
-//        let renderWindow = scrollView.convert(scrollRenderWindow, to: rootView)
-//
-//        _DEBUG_updateWindowViews(in: lastRenderedWindow)
-//
-//        // dont re-render if no significant change in render window, unless forced
-//        guard forced
-//            || lastRenderedWindow.isNull
-//            || lastRenderedWindow.size != renderWindow.size
-//            || abs(lastRenderedWindow.origin.y - renderWindow.origin.y) > 50
-//            else {
-//            return
-//        }
-//
-//        self.lastRenderedWindow = renderWindow
-//
-//        let visibleWindow = scrollView.convert(scrollView.bounds, to: rootView)
-//
-//        if let renderedRootView = renderableRootNode.renderVisibleNodes(
-//            renderableRootViewWindow: renderWindow,
-//            visibleRootViewWindow: visibleWindow,
-//            didRender: { [weak self] renderableView, view in
-//                guard let self = self else { return }
-//                self.delegate?.incitoViewDidRender(
-//                    view: view,
-//                    with: renderableView.layout.viewProperties,
-//                    in: self
-//                )
-//            },
-//            didUnrender: { [weak self] renderableView, view in
-//                guard let self = self else { return }
-//                self.delegate?.incitoViewDidUnrender(
-//                    view: view,
-//                    with: renderableView.layout.viewProperties,
-//                    in: self
-//                )
-//        }) {
-//            rootView.addSubview(renderedRootView)
-//        }
-//
-//        _DEBUG_updateOutlineViews(rootView: rootView, renderableRootNode: renderableRootNode)
-//    }
-//
-//    // MARK: - Debug
-//
-//    public struct Debug {
-//        public var showOutlines: Bool = false
-//        public var showRenderWindows: Bool = false
-//        public var printLayout: Bool = false
-//        public var printLayoutDetails: Bool = false
-//    }
-//    public var debug: Debug = Debug() {
-//        didSet {
-//            self.renderVisibleViews(forced: true)
-//        }
-//    }
-//
-//    private var debugWindowViews = (top: UIView(), bottom: UIView())
-//    private var debugOutlineViews: [UIView] = []
-//
-//    private func _DEBUG_printLayout() {
-//        guard self.debug.printLayout,
-//            let renderableDocument = self.renderableDocument else { return }
-//
-//        let debugTree: TreeNode<String> = renderableDocument.rootView.mapValues { renderableView, _, idx in
-//            let layout = renderableView.layout
-//            let name = layout.viewProperties.name ?? ""
-//            let position = layout.position
-//            let size = layout.size
-//
-//            var res = "\(idx)) \(name): [\(position)\(size)]"
-//            if self.debug.printLayoutDetails {
-//                res += "\n\t dimensions: \(layout.dimensions)\n"
-//            }
-//
-//            return res
-//        }
-//
-//        print("\(debugTree)")
-//    }
-//
-//    private func _DEBUG_updateOutlineViews(rootView: UIView, renderableRootNode: TreeNode<RenderableView>) {
-//
-//        debugOutlineViews.forEach { $0.removeFromSuperview() }
-//        if (self.debug.showOutlines) {
-//            // shows a visibility-box around the the view
-//            renderableRootNode.forEachNode { (node, _, _, _) in
-//                let debugView = UIView()
-//                debugView.layer.borderColor = UIColor.red.withAlphaComponent(0.5).cgColor
-//                debugView.layer.borderWidth = 1
-//                debugView.isUserInteractionEnabled = false
-//                rootView.addSubview(debugView)
-//                debugView.frame = node.value.absoluteRect
-//
-//                debugOutlineViews.append(debugView)
-//            }
-//        }
-//    }
-//
-//    private func _DEBUG_updateWindowViews(in rootViewVisibleWindow: CGRect) {
-//        guard debug.showRenderWindows else { return }
-//
-//        let overlayColor = UIColor.black.withAlphaComponent(0.2)
-//
-//        view.addSubview(debugWindowViews.top)
-//        view.addSubview(debugWindowViews.bottom)
-//        debugWindowViews.top.backgroundColor = overlayColor
-//        debugWindowViews.top.isUserInteractionEnabled = false
-//        debugWindowViews.bottom.backgroundColor = overlayColor
-//        debugWindowViews.bottom.isUserInteractionEnabled = false
-//
-//        let debugViewVisibleWindow = rootView!.convert(rootViewVisibleWindow, to: view)
-//
-//        debugWindowViews.top.frame = CGRect(
-//            x: 0, y: 0,
-//            width: debugViewVisibleWindow.size.width,
-//            height: debugViewVisibleWindow.origin.y
-//        )
-//
-//        debugWindowViews.bottom.frame = CGRect(
-//            x: 0, y: debugViewVisibleWindow.maxY,
-//            width: debugViewVisibleWindow.size.width,
-//            height: view.frame.size.height - debugViewVisibleWindow.maxY
-//        )
-//    }
-//}
 
 // MARK: - Accessors
 
 extension IncitoViewController {
-
+    
     /**
      Returns an array of the elements at the specified point.
      `point` must be in the `IncitoViewController`'s root `view` coordinate space.
      `completion` is called on the main queue.
      */
+    @available(iOS 11.0, *)
     public func getElements(at point: CGPoint, completion: @escaping ([IncitoDocument.Element]) -> Void) {
         
+        #warning("Support pinch-zoom offset")
         let inset: UIEdgeInsets
-        if #available(iOS 11.0, *) {
+//        if #available(iOS 11.0, *) {
             inset = self.scrollView.adjustedContentInset
-        } else {
-            inset = self.scrollView.contentInset
-        }
+//        } else {
+//            inset = self.scrollView.contentInset
+//        }
         
         var pointInWebView = self.view.convert(point, to: self.webView)
         pointInWebView.x -= inset.left
         pointInWebView.y -= inset.top
         
-        let elementsAtJS = """
-        [...document.elementsFromPoint(\(pointInWebView.x), \(pointInWebView.y))]
-            .map(el => el.getAttribute('data-id'))
-            .filter(el => el != null)
-        """
+        let elementsAtJS = "getElementIdsAtPoint(\(pointInWebView.x), \(pointInWebView.y))"
         
         webView.evaluateJavaScript(elementsAtJS) { [weak self] (res, err) in
             guard let self = self else { return }
@@ -533,6 +248,7 @@ extension IncitoViewController {
         }
     }
     
+    @available(iOS 11.0, *)
     public func getFirstElement(at point: CGPoint, where predicate: @escaping (IncitoDocument.Element) -> Bool, completion: @escaping (IncitoDocument.Element?) -> Void) {
         self.getElements(at: point) {
             completion($0.first(where: predicate))
@@ -545,7 +261,7 @@ extension IncitoViewController {
      */
     public func getBoundsOfElement(withId elementId: String, completion: @escaping (CGRect?) -> Void) {
         
-        let boundsOfElJS = "boundsOfElementWithId('\(elementId)')"
+        let boundsOfElJS = "absoluteBoundsOfElementWithId('\(elementId)')"
         
         webView.evaluateJavaScript(boundsOfElJS) { [weak self] (res, err) in
             guard let self = self else { return }
