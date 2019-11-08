@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Incito</title>
+    <style type="text/css">
+        /* Disable webview copy & force-press */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+        }
+    </style>
     <style>
         body {
             margin: 0;
@@ -25,28 +32,16 @@
             var incito = new Incito(document.getElementById('container'), {
                 incito: data
             });
-
-            if ('JSInterface' in window) {
-
-                document.addEventListener("click", function (e) {
-                    var id = findViewId(e.target);
-                    window.JSInterface.viewClicked(id);
-                }, false);
-
-                window.addEventListener('scroll', function () {
-                    var progress = (window.innerHeight + window.pageYOffset) / document.body.scrollHeight;
-                    window.JSInterface.progress(progress, window.pageYOffset);
-                });
-            }
+            
             incito.start();
-
-            if ('JSInterface' in window) {
-                window.JSInterface.initDone();
-            }
         };
 
-        function boundsOfElementWithId (elId) {
-            var element = document.querySelector("[data-id='"+elId+"']");
+        <!-- Function allowing access to the absolute bounds of an element defined by the element Id -->
+        function absoluteBoundsOfElementWithId(elId) {
+            return absoluteBoundsOfElement(document.querySelector("[data-id='"+elId+"']"));
+        }
+
+        function absoluteBoundsOfElement(element) {
             var bounds = element.getBoundingClientRect();
 
             var top = 0, left = 0;
@@ -64,22 +59,12 @@
             };
         }
 
-        <!-- function called by java code onLongClick -->
-        window.longclick = function (x, y) {
-            var obj = document.elementFromPoint(x, y);
-            var id = findViewId(obj);
-            if ('JSInterface' in window) {
-                window.JSInterface.longClick(id);
-            }
-        };
-
-        <!-- internal function to retrieve the viewId for the java code -->
-        function findViewId (obj) {
-            for (var target = obj; target && target != this; target = target.parentNode) {
-                if (target.webkitMatchesSelector('.incito__view[data-role="offer"]')) {
-                    return target.getAttribute('data-id');
-                }
-            }
+        <!-- Returns array of (non-null) id strings for all the elements at the specified point -->
+        <!-- NOTE: this only works in iOS 11 and above -->
+        function getElementIdsAtPoint(x, y) {
+            return [...document.elementsFromPoint(x, y)]
+                .map(el => el.getAttribute('data-id'))
+                .filter(el => el != null)
         }
 
     </script>
