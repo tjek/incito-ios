@@ -22,7 +22,7 @@ extension IncitoDocument {
         case rootView = "root_view"
     }
     
-    init(jsonData: Data) throws {
+    public init(jsonData: Data) throws {
         
         guard let jsonStr = String(data: jsonData, encoding: .utf8) else {
             throw DecodingError.invalidJSON
@@ -33,6 +33,11 @@ extension IncitoDocument {
             throw DecodingError.invalidJSON
         }
         
+        try self.init(jsonDict: jsonDict, jsonStr: jsonStr)
+    }
+    
+    
+    public init(jsonDict: [String: Any], jsonStr: String) throws {
         self.json = jsonStr
         
         self.id = try jsonDict.getValueAs(JSONKeys.id, throwing: DecodingError.missingId)
@@ -64,7 +69,7 @@ extension IncitoDocument.Element {
     
     init?(jsonDict: [String: Any]) {
         // if there is no id, then fall back to the
-        guard let id: String = jsonDict.getValueAs(JSONKeys.id) else {
+        guard let id: Identifier = jsonDict.getValueAs(JSONKeys.id) else {
             return nil
         }
         

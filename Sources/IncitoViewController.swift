@@ -10,28 +10,6 @@
 import UIKit
 import WebKit
 
-public struct IncitoDocument: Identifiable {
-    
-    public struct Element {
-        public var id: String
-        public var role: String?
-        public var meta: [String: JSONValue] = [:]
-        public var featureLabels: [String] = []
-        public var link: URL?
-        public var title: String?
-//        public var accessibility: String?
-    }
-    
-    public var id: String
-    public var version: String
-    public var backgroundColor: UIColor? = nil
-    public var meta: [String: JSONValue] = [:]
-    public var locale: String?
-    public var elements: [Element] = []
-    
-    public var json: String
-}
-
 public protocol IncitoViewControllerDelegate: class {
     
     /// Called whenever a document is updated.
@@ -58,7 +36,11 @@ public extension IncitoViewControllerDelegate {
     
     /// Default to opening the url when tapping a link.
     func incitoDidTapLink(_ url: URL, in viewController: IncitoViewController) {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
     }
 }
 
@@ -141,23 +123,20 @@ public class IncitoViewController: UIViewController {
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        #warning("is this still needed?")
         // in < iOS 11.0 contentInset must be updated manually
-//        if #available(iOS 11.0, *) { } else {
-//            if self.automaticallyAdjustsScrollViewInsets {
-//                scrollView.contentInset = UIEdgeInsets(top: self.topLayoutGuide.length,
-//                                                       left: 0.0,
-//                                                       bottom: self.bottomLayoutGuide.length,
-//                                                       right: 0.0)
-//                scrollView.scrollIndicatorInsets = scrollView.contentInset
-//            }
-//        }
+        if #available(iOS 11.0, *) { } else {
+            if self.automaticallyAdjustsScrollViewInsets {
+                scrollView.contentInset = UIEdgeInsets(top: self.topLayoutGuide.length,
+                                                       left: 0.0,
+                                                       bottom: self.bottomLayoutGuide.length,
+                                                       right: 0.0)
+                scrollView.scrollIndicatorInsets = scrollView.contentInset
+            }
+        }
     }
     
     /// Must be called on main queue
     public func update(incitoDocument: IncitoDocument){
-        #warning("do this in the init?")
-        
         self.incitoDocument = incitoDocument
         
         if self.isViewLoaded && !webView.isLoading {
@@ -217,16 +196,15 @@ extension IncitoViewController {
      `point` must be in the `IncitoViewController`'s root `view` coordinate space.
      `completion` is called on the main queue.
      */
-    @available(iOS 11.0, *)
     public func getElements(at point: CGPoint, completion: @escaping ([IncitoDocument.Element]) -> Void) {
         
         #warning("Support pinch-zoom offset")
         let inset: UIEdgeInsets
-//        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, *) {
             inset = self.scrollView.adjustedContentInset
-//        } else {
-//            inset = self.scrollView.contentInset
-//        }
+        } else {
+            inset = self.scrollView.contentInset
+        }
         
         var pointInWebView = self.view.convert(point, to: self.webView)
         pointInWebView.x -= inset.left
@@ -248,7 +226,6 @@ extension IncitoViewController {
         }
     }
     
-    @available(iOS 11.0, *)
     public func getFirstElement(at point: CGPoint, where predicate: @escaping (IncitoDocument.Element) -> Bool, completion: @escaping (IncitoDocument.Element?) -> Void) {
         self.getElements(at: point) {
             completion($0.first(where: predicate))
@@ -259,7 +236,7 @@ extension IncitoViewController {
      Returns the bounds of element with the specified id, in the coordinate space of the root `view`.
      `completion` is called on the main queue.
      */
-    public func getBoundsOfElement(withId elementId: String, completion: @escaping (CGRect?) -> Void) {
+    public func getBoundsOfElement(withId elementId: IncitoDocument.Element.Identifier, completion: @escaping (CGRect?) -> Void) {
         
         let boundsOfElJS = "absoluteBoundsOfElementWithId('\(elementId)')"
         
@@ -321,7 +298,7 @@ extension IncitoViewController {
      - parameter animated: If true the scrolling to the element will be animated.
      */
     public func scrollToElement(
-        withId elementId: String,
+        withId elementId: IncitoDocument.Element.Identifier,
         position: ScrollPosition = .top,
         useContentInsets: Bool = true,
         extraOffset: CGFloat = 0,
