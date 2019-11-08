@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     s.author           = "ShopGun"
     s.social_media_url = "http://twitter.com/ShopGun"
 
-    s.platform         = :ios, "11.0"
+    s.platform         = :ios, "9.3"
     s.swift_version    = "5.0.1"
     s.pod_target_xcconfig = { 'SWIFT_VERSION' => '5.0' }
 

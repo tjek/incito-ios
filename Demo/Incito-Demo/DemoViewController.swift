@@ -176,14 +176,12 @@ class DemoViewController: IncitoLoaderViewController {
         let point = longPress.location(in: incitoVC.view)
         
         // An example of how to get the offer that was tapped.
-        if #available(iOS 11.0, *) {
-            self.incitoViewController?.getFirstElement(at: point, where: { $0.isOffer }) {
-                guard let firstOffer = $0 else { return }
-                
-                print("👉 [Offer long-press] '\(firstOffer.tjekMeta["title"]?.stringValue ?? "")': '\(firstOffer.tjekMeta["description"]?.stringValue ?? "")'")
-                
-                self.incitoViewController?.scrollToElement(withId: firstOffer.id, position: .top, animated: true)
-            }
+        self.incitoViewController?.getFirstElement(at: point, where: { $0.isOffer }) {
+            guard let firstOffer = $0 else { return }
+            
+            print("👉 [Offer long-press] '\(firstOffer.tjekMeta["title"]?.stringValue ?? "")': '\(firstOffer.tjekMeta["description"]?.stringValue ?? "")'")
+            
+            self.incitoViewController?.scrollToElement(withId: firstOffer.id, position: .top, animated: true)
         }
     }
 }
@@ -229,13 +227,11 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
     
     func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController) {
         // An example of how to get the offer that was tapped.
-        if #available(iOS 11.0, *) {
-            viewController.getFirstElement(at: point, where: { $0.isOffer }) {
-                guard let firstOffer = $0 else { return }
-                print("👉 [Offer] '\(firstOffer.tjekMeta["title"]?.stringValue ?? "")': '\(firstOffer.tjekMeta["description"]?.stringValue ?? "")'")
-                
-                viewController.scrollToElement(withId: firstOffer.id, position: .top, animated: true)
-            }
+        viewController.getFirstElement(at: point, where: { $0.isOffer }) {
+            guard let firstOffer = $0 else { return }
+            print("👉 [Offer] '\(firstOffer.tjekMeta["title"]?.stringValue ?? "")': '\(firstOffer.tjekMeta["description"]?.stringValue ?? "")'")
+            
+            viewController.scrollToElement(withId: firstOffer.id, position: .top, animated: true)
         }
     }
 }
@@ -314,8 +310,7 @@ class OfferPreviewViewController: UIViewController {
 
 class SearchResultsViewController: UITableViewController {
     
-    #warning("Dedicated element id?")
-    typealias OfferProperties = (title: String, desc: String?, id: String)
+    typealias OfferProperties = (title: String, desc: String?, id: IncitoDocument.Element.Identifier)
     
     var didSelectOffer: ((OfferProperties) -> Void)?
     

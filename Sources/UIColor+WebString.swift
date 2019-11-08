@@ -19,7 +19,7 @@ extension UIColor {
      - `rgba(0.5, 0.6, 0.7, 0.8)` or `rgba(50%, 60%, 0.7, 80%)`
      - `#FFAABB` or `#FFAABBCC`
      */
-    convenience init?(webString: String) {
+    public convenience init?(webString: String) {
         let cleanedStrVal = webString.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         
         if cleanedStrVal == "transparent" {
