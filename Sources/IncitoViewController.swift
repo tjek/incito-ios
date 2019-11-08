@@ -99,7 +99,8 @@ public class IncitoViewController: UIViewController {
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
         
-        let htmlFileURL = Bundle.incito.url(forResource: "incito-webview.html", withExtension: nil)!
+        // fallback webview file
+        let htmlFileURL = Bundle.incito.url(forResource: "index-1.0.0.html", withExtension: nil)!
         
         webView.loadFileURL(htmlFileURL, allowingReadAccessTo: htmlFileURL.deletingLastPathComponent())
     
