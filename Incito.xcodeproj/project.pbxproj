@@ -17,7 +17,6 @@
 		AE2478AB23734F3F00DDE9B7 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A4C21FF1735009F4D8A /* JSONValue.swift */; };
 		AE2478AC2373567E00DDE9B7 /* UIColor+WebString.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A5821FF1736009F4D8A /* UIColor+WebString.swift */; };
 		AE582A2521FF118A009F4D8A /* ColorUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE582A2221FF118A009F4D8A /* ColorUtilsTests.swift */; };
-		AE582A2D21FF1266009F4D8A /* Incito.h in Headers */ = {isa = PBXBuildFile; fileRef = AE582A2B21FF1252009F4D8A /* Incito.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AE582A2E21FF131D009F4D8A /* Incito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5829D821FF1000009F4D8A /* Incito.framework */; };
 		AE69DA3323755C9C00A5A360 /* IncitoDocument+Decoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE69DA3223755C9C00A5A360 /* IncitoDocument+Decoding.swift */; };
 		AE69DA4523756CC000A5A360 /* IncitoLoader+JSONFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE69DA4423756CC000A5A360 /* IncitoLoader+JSONFile.swift */; };
@@ -42,7 +41,6 @@
 		AE5829D821FF1000009F4D8A /* Incito.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Incito.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE582A2221FF118A009F4D8A /* ColorUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorUtilsTests.swift; sourceTree = "<group>"; };
 		AE582A2321FF118A009F4D8A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AE582A2B21FF1252009F4D8A /* Incito.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Incito.h; sourceTree = "<group>"; };
 		AE582A2C21FF1252009F4D8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE582A4C21FF1735009F4D8A /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		AE582A4D21FF1735009F4D8A /* String+PreventWidows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+PreventWidows.swift"; sourceTree = "<group>"; };
@@ -107,7 +105,6 @@
 			isa = PBXGroup;
 			children = (
 				AE582A2C21FF1252009F4D8A /* Info.plist */,
-				AE582A2B21FF1252009F4D8A /* Incito.h */,
 				AE582A5F21FF1736009F4D8A /* IncitoLoaderViewController.swift */,
 				AE582A5921FF1736009F4D8A /* IncitoViewController.swift */,
 				AE69DA4023755CF500A5A360 /* LoaderViews */,
@@ -187,7 +184,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE582A2D21FF1266009F4D8A /* Incito.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

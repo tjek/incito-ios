@@ -1,12 +1,14 @@
 //
-//  IncitoDocument+Decoding.swift
-//  Incito-iOS
+//  ┌────┬─┐         ┌─────┐
+//  │  ──┤ └─┬───┬───┤  ┌──┼─┬─┬───┐
+//  ├──  │ ╷ │ · │ · │  ╵  │ ╵ │ ╷ │
+//  └────┴─┴─┴───┤ ┌─┴─────┴───┴─┴─┘
+//               └─┘
 //
-//  Created by Laurie Hufford on 08/11/2019.
-//  Copyright © 2019 ShopGun. All rights reserved.
-//
+//  Copyright (c) 2019 ShopGun. All rights reserved.
 
 import Foundation
+import UIKit
 
 extension IncitoDocument {
 

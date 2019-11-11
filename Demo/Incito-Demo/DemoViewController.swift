@@ -47,9 +47,6 @@ class DemoViewController: IncitoLoaderViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        #warning("just clear out legacy cache")
-//        IncitoDataStore.shared.clearCache()
-        
         self.delegate = self
         self.navigationController?.navigationBar.tintColor = .orange
         view.backgroundColor = .white
@@ -114,7 +111,7 @@ class DemoViewController: IncitoLoaderViewController {
             
             // add an example custom gesture recognizer to the incito's view
             let longPress = UILongPressGestureRecognizer(target: self, action: #selector(DemoViewController.didLongPress))
-            vc.view.addGestureRecognizer(longPress)
+            vc.addGesture(longPress)
         }
     }
     
@@ -129,7 +126,7 @@ class DemoViewController: IncitoLoaderViewController {
         self.incitoViewController?.getFirstElement(at: point, where: { $0.isOffer }) {
             guard let firstOffer = $0 else { return }
             
-            print("👉 [Offer long-press] '\(firstOffer.tjekMeta["title"]?.stringValue ?? "")': '\(firstOffer.tjekMeta["description"]?.stringValue ?? "")'")
+            print("⏱👉 [Offer long-press] '\(firstOffer.tjekMeta["title"]?.stringValue ?? "")': '\(firstOffer.tjekMeta["description"]?.stringValue ?? "")'")
             
             self.incitoViewController?.scrollToElement(withId: firstOffer.id, position: .top, animated: true)
         }
