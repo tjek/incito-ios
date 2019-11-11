@@ -13,40 +13,36 @@ import Incito
 class DemoViewController: IncitoLoaderViewController {
     
     var selectedIndex: Int = 999
-    let availableIncitos: [(json: String, refImg: String?)] = [
-        ("elgiganten-nov19-375.json", nil),
-        ("ica-aug19-375.json", nil),
-        ("incito-irma-375.json", nil),
-        ("incito-kvickly-feb2019-375.json", nil),
-        ("elgiganten-mar19-375.json", nil),
-        ("incito-elgiganten-feb19-375.json", nil),
-        ("incito-superbrugsen-mar18-375.json", nil),
-        ("incito-videotest-375.json", nil),
-        ("incito-elgiganten-375.json", nil),
-        ("incito-elgiganten-legacy-375.json", nil),
-        ("incito-superbrugsen-375.json", nil),
-        ("incito-fakta-375.json", "fakta-incito-375-reference"),
-        ("incito-elgiganten-small-375.json", nil),
-        ("incito-fakta-small-375.json", "fakta-incito-375-reference"),
-        ("incito-superbrugsen-small-375.json", nil),
+    let availableIncitos: [String] = [
+        "elgiganten-nov19-375.json",
+        "ica-aug19-375.json",
+        "incito-irma-375.json",
+        "incito-kvickly-feb2019-375.json",
+        "elgiganten-mar19-375.json",
+        "incito-elgiganten-feb19-375.json",
+        "incito-superbrugsen-mar18-375.json",
+        "incito-videotest-375.json",
+        "incito-elgiganten-375.json",
+        "incito-elgiganten-legacy-375.json",
+        "incito-superbrugsen-375.json",
+        "incito-fakta-375.json",
+        "incito-elgiganten-small-375.json",
+        "incito-fakta-small-375.json",
+        "incito-superbrugsen-small-375.json",
+        "incito-blocktest-375.json",
+        "incito-transformtest-375.json",
+        "incito-flextest-375.json",
+        "incito-imagetest-375.json",
+        "incito-texttest-375.json",
         
-        ("incito-blocktest-375.json", nil),
-        ("incito-transformtest-375.json", nil),
-        ("incito-flextest-375.json", nil),
-        ("incito-imagetest-375.json", nil),
-        ("incito-texttest-375.json", nil),
         
-        
-        //        ("incito-superbrugsen-mar18-768.json", nil),
-        //        ("incito-elgiganten-768.json", nil),
+        //"incito-superbrugsen-mar18-768.json",
+        //"incito-elgiganten-768.json",
         //"incito-fakta-1200.json",
         //"incito-superbrugsen-1200.json",
     ]
     
     let searchResultsController = SearchResultsViewController()
-    
-    var refImageView = UIImageView()
-    var refImageButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,11 +58,7 @@ class DemoViewController: IncitoLoaderViewController {
             UIBarButtonItem.init(barButtonSystemItem: .fastForward, target: self, action: #selector(loadNextIncito))
         ]
         
-        refImageButton = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(toggleReferenceImage))
-        
         loadNextIncito()
-        
-        self.registerForPreviewing(with: self, sourceView: view)
         
         if #available(iOS 11.0, *) {
             let searchController = UISearchController(searchResultsController: self.searchResultsController)
@@ -89,25 +81,17 @@ class DemoViewController: IncitoLoaderViewController {
             selectedIndex = 0
         }
         
-        let incitoInfo = availableIncitos[selectedIndex]
+        let incitoFilename = availableIncitos[selectedIndex]
         
-        var image: UIImage? = nil
-        if let imgName = incitoInfo.refImg {
-            image = UIImage(named: imgName)
-        }
-        
-        loadIncito(named: availableIncitos[selectedIndex].json, refImage: image)
+        loadIncito(named: incitoFilename)
     }
     
-    func loadIncito(named filename: String, refImage: UIImage?) {
+    func loadIncito(named filename: String) {
         
         print("\n-----------------")
         print("🌈 Loading '\(filename)'…")
         
         self.title = filename
-        self.refImageView.removeFromSuperview()
-        self.refImageView.image = nil
-        self.refImageButton.isEnabled = false
         
         self.searchResultsController.offers = []
         
@@ -131,40 +115,6 @@ class DemoViewController: IncitoLoaderViewController {
             // add an example custom gesture recognizer to the incito's view
             let longPress = UILongPressGestureRecognizer(target: self, action: #selector(DemoViewController.didLongPress))
             vc.view.addGestureRecognizer(longPress)
-            
-            if let refImage = refImage {
-                self.refImageView.image = refImage
-                self.refImageView.translatesAutoresizingMaskIntoConstraints = false
-                
-                vc.configureScrollView { (scrollView) in
-                    // add the refImageView
-                    scrollView.addSubview(self.refImageView)
-                    
-                    NSLayoutConstraint.activate([
-                        self.refImageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-                        self.refImageView.topAnchor.constraint(equalTo: scrollView.topAnchor)
-                        ])
-                }
-                
-                self.refImageView.alpha = 0
-                self.refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
-                self.refImageButton.isEnabled = true
-            }
-        }
-    }
-    
-    @objc
-    func toggleReferenceImage() {
-        switch refImageView.alpha {
-        case 0:
-            refImageView.alpha = 0.5
-            refImageButton.tintColor = UIColor.orange.withAlphaComponent(1)
-        case 0.5:
-            refImageView.alpha = 1
-            refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.3)
-        default:
-            refImageView.alpha = 0
-            refImageButton.tintColor = UIColor.orange.withAlphaComponent(0.75)
         }
     }
     
@@ -233,76 +183,6 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
             
             viewController.scrollToElement(withId: firstOffer.id, position: .top, animated: true)
         }
-    }
-}
-
-// MARK: - Previewing
-
-extension DemoViewController: UIViewControllerPreviewingDelegate {
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        
-        guard let incito = incitoViewController else { return nil }
-        
-        let incitoVCLocation = previewingContext.sourceView.convert(location, to: incito.view)
-        #warning("implement snapshotting")
-        return nil
-//        // get first offer view
-//        let firstView = incito.firstView(at: incitoVCLocation) { $1.isOffer }
-//
-//        guard let view = firstView?.0 else { return nil }
-//
-//        previewingContext.sourceRect = view.convert(view.bounds, to: previewingContext.sourceView)
-//
-//        // TODO: use the previewingContext.sourceView to include bgColor.
-//
-//        let vc = OfferPreviewViewController()
-//        let screenImage = view.asImage()
-//        let imageView = UIImageView(image: screenImage)
-//        vc.addSnapshot(imageView)
-        
-//        return vc
-    }
-    
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        //        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
-    }
-}
-
-extension UIView {
-    
-    // Using a function since `var image` might conflict with an existing variable
-    // (like on `UIImageView`)
-    func asImage() -> UIImage {
-        if #available(iOS 10.0, *) {
-            let renderer = UIGraphicsImageRenderer(bounds: bounds)
-            return renderer.image { rendererContext in
-                layer.render(in: rendererContext.cgContext)
-            }
-        } else {
-            UIGraphicsBeginImageContext(self.frame.size)
-            self.layer.render(in:UIGraphicsGetCurrentContext()!)
-            let image = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            return UIImage(cgImage: image!.cgImage!)
-        }
-    }
-}
-
-class OfferPreviewViewController: UIViewController {
-    func addSnapshot(_ snapshot: UIView) {
-        view.backgroundColor = .white
-        view.addSubview(snapshot)
-        
-        self.preferredContentSize = snapshot.frame.size
-    }
-    
-    override var previewActionItems: [UIPreviewActionItem] {
-        let listsAction = UIPreviewAction(title: "Add to List", style: .default) { previewAction, viewController in
-            print("Added to list!")
-        }
-        return [
-            listsAction
-        ]
     }
 }
 
