@@ -200,9 +200,9 @@ import SafariServices
 
 extension DemoViewController: IncitoLoaderViewControllerDelegate {
     
-    func incitoDocumentLoaded(in viewController: IncitoViewController) {
+    func incitoDocumentLoaded(document: IncitoDocument, in viewController: IncitoViewController) {
         
-        self.searchResultsController.offers = viewController.incitoDocument?.elements
+        self.searchResultsController.offers = document.elements
             .compactMap({
                 guard $0.isOffer else { return nil }
                 guard let title = $0.title ?? $0.tjekMeta["title"]?.stringValue else {
@@ -213,7 +213,7 @@ extension DemoViewController: IncitoLoaderViewControllerDelegate {
                     desc: $0.tjekMeta["description"]?.stringValue,
                     id: $0.id
                 )
-            }) ?? []
+            })
     }
     
     func incitoDidTapLink(_ url: URL, in viewController: IncitoViewController) {
