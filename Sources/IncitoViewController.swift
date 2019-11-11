@@ -101,9 +101,21 @@ public class IncitoViewController: UIViewController {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
 
-        // init JS interface
         let contentController = WKUserContentController()
+        
+        // add event listeners
         contentController.add(self, name: "incitoFinishedRendering")
+        
+        // turn off user-magnification
+        let disableMagnification: WKUserScript = {
+            let source: String = "var meta = document.createElement('meta');" +
+                "meta.name = 'viewport';" +
+                "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
+                "var head = document.getElementsByTagName('head')[0];" + "head.appendChild(meta);"
+            return WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        }()
+        contentController.addUserScript(disableMagnification)
+        
         config.userContentController = contentController
 
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -183,6 +195,7 @@ public class IncitoViewController: UIViewController {
     
     // MARK: - Private funcs
     
+    fileprivate static let useRemoteHTML: Bool = true
     fileprivate static let localHTMLFileName = "index-1.0.0.html"
     fileprivate static let remoteHTMLFileURL = URL(string: "https://incito-webview.shopgun.com/index-1.0.0.html")!
     
@@ -200,7 +213,7 @@ public class IncitoViewController: UIViewController {
                 return try? String(contentsOf: localURL)
             }
             
-            let htmlStr: String? = (try? String(contentsOf: remoteHTMLFileURL)) ?? fallbackHtmlStr
+            let htmlStr: String? = useRemoteHTML ? (try? String(contentsOf: remoteHTMLFileURL)) ?? fallbackHtmlStr : fallbackHtmlStr
             DispatchQueue.main.async {
                 completion(htmlStr)
             }
@@ -272,7 +285,6 @@ extension IncitoViewController {
      */
     public func getElements(at point: CGPoint, completion: @escaping ([IncitoDocument.Element]) -> Void) {
         
-        #warning("Support pinch-zoom offset")
         let inset: UIEdgeInsets
         if #available(iOS 11.0, *) {
             inset = self.scrollView.adjustedContentInset
