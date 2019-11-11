@@ -82,6 +82,8 @@ public class IncitoViewController: UIViewController {
     
     public let incitoDocument: IncitoDocument
 
+    public fileprivate(set) var tapGesture: UITapGestureRecognizer!
+    
     // MARK: Private vars
     
     fileprivate class DefaultDelegate: IncitoViewControllerDelegate { }
@@ -140,6 +142,11 @@ public class IncitoViewController: UIViewController {
             }
             self?.webView.loadHTMLString(htmlStr, baseURL: nil)
         }
+        
+        // remove the old cache from previous cache lib, if it exists
+        if let legacyCacheFolderURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent("com.shopgun.incito.cache.v1") {
+            try? FileManager.default.removeItem(at: legacyCacheFolderURL)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -169,9 +176,9 @@ public class IncitoViewController: UIViewController {
             self.delegate?.incitoDidScroll(progress: self.scrollProgress, in: self)
         }
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapWebView))
-        tap.delegate = self
-        webView.addGestureRecognizer(tap)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        self.tapGesture = tap
+        self.addGesture(tap)
     }
     
     deinit {
@@ -191,6 +198,17 @@ public class IncitoViewController: UIViewController {
                 scrollView.scrollIndicatorInsets = scrollView.contentInset
             }
         }
+    }
+    
+    /**
+     Add a gesture recognizer to the incito view.
+     
+     Note: this assigns the `delegate` of the gesture.
+     We do this because the underlying renderer needs to be able to accept gestures simultaneously.
+     */
+    public func addGesture(_ gesture: UIGestureRecognizer) {
+        gesture.delegate = self
+        self.view.addGestureRecognizer(gesture)
     }
     
     // MARK: - Private funcs
@@ -233,7 +251,7 @@ public class IncitoViewController: UIViewController {
         }
     }
     
-    @objc fileprivate func didTapWebView(_ tap: UITapGestureRecognizer) {
+    @objc fileprivate func didTapView(_ tap: UITapGestureRecognizer) {
         let location = tap.location(in: self.view)
         delegate?.incitoDidReceiveTap(at: location, in: self)
     }
@@ -241,7 +259,19 @@ public class IncitoViewController: UIViewController {
 
 extension IncitoViewController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-      return true
+        // only accept simultaneous gestures if they are on the webview
+        // walk up the otherGesture's view hierarchy to see if any of it's parents are a WKWebView. Eject if we hit the root view of this VC.
+        var view = otherGestureRecognizer.view
+        while view != nil {
+            if view is WKWebView {
+                return true
+            } else if view == self.view {
+                return false
+            }
+            view = view?.superview
+        }
+
+        return false
     }
 }
 

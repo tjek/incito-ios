@@ -1,12 +1,14 @@
 //
-//  IncitoDocument.swift
-//  Incito-iOS
+//  ┌────┬─┐         ┌─────┐
+//  │  ──┤ └─┬───┬───┤  ┌──┼─┬─┬───┐
+//  ├──  │ ╷ │ · │ · │  ╵  │ ╵ │ ╷ │
+//  └────┴─┴─┴───┤ ┌─┴─────┴───┴─┴─┘
+//               └─┘
 //
-//  Created by Laurie Hufford on 08/11/2019.
-//  Copyright © 2019 ShopGun. All rights reserved.
-//
+//  Copyright (c) 2019 ShopGun. All rights reserved.
 
 import Foundation
+import UIKit
 
 public struct IncitoEnvironment {
     /// A list of all the incito schema versions supported by this library.
