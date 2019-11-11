@@ -212,7 +212,6 @@ public class IncitoViewController: UIViewController {
             guard let self = self else { return }
 
             if let error = error {
-                #warning("Do we want to completely fail on JS exception? Or limp onwards, hoping it's just a small issue?")
                 self.loadCompletion(error)
             } else {
                 self.loadCompletion(nil)
