@@ -12,8 +12,11 @@ import WebKit
 
 public protocol IncitoViewControllerDelegate: class {
     
-    /// Called whenever a document is updated.
-    func incitoDocumentLoaded(in viewController: IncitoViewController)
+    /// Called once the a document is successfully loaded.
+    func incitoDocumentLoaded(document: IncitoDocument, in viewController: IncitoViewController)
+    
+    /// Called when all the view elements have finished being positioned on screen.
+    func incitoFinishedRendering(in viewController: IncitoViewController)
     
     /// Called whenever the user scrolls the incito (or the incito is scrolled programatically).
     func incitoDidScroll(progress: Double, in viewController: IncitoViewController)
@@ -28,7 +31,9 @@ public protocol IncitoViewControllerDelegate: class {
 /// Default delegate method implementations
 public extension IncitoViewControllerDelegate {
     
-    func incitoDocumentLoaded(in viewController: IncitoViewController) { }
+    func incitoDocumentLoaded(document: IncitoDocument, in viewController: IncitoViewController) { }
+    
+    func incitoFinishedRendering(in viewController: IncitoViewController) { }
     
     func incitoDidScroll(progress: Double, in viewController: IncitoViewController) { }
     
@@ -49,6 +54,23 @@ public extension IncitoViewControllerDelegate {
  */
 public class IncitoViewController: UIViewController {
     
+    enum LoadError: Error {
+        case unableToLoadHTMLString
+    }
+    
+    public static func load(document: (IncitoDocument), delegate: IncitoViewControllerDelegate? = nil, completion: @escaping (Result<IncitoViewController, Error>) -> Void) {
+        var vc: IncitoViewController? = nil
+        vc = IncitoViewController(document: document) {
+            if let err = $0 {
+                completion(.failure(err))
+            } else {
+                completion(.success(vc!))
+            }
+            vc = nil
+        }
+        vc?.delegate = delegate
+    }
+    
     // MARK: Public vars
     
     public weak var delegate: IncitoViewControllerDelegate?
@@ -58,14 +80,16 @@ public class IncitoViewController: UIViewController {
         return scrollView.percentageProgress
     }
     
-    public private(set) var incitoDocument: IncitoDocument?
-    
+    public let incitoDocument: IncitoDocument
+
     // MARK: Private vars
     
     fileprivate class DefaultDelegate: IncitoViewControllerDelegate { }
     fileprivate var delegateOrDefault: IncitoViewControllerDelegate {
         return self.delegate ?? DefaultDelegate()
     }
+    
+    fileprivate let loadCompletion: (Error?) -> Void
     
     fileprivate var scrollView: UIScrollView {
         return webView.scrollView
@@ -76,7 +100,12 @@ public class IncitoViewController: UIViewController {
     fileprivate lazy var webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        
+
+        // init JS interface
+        let contentController = WKUserContentController()
+        contentController.add(self, name: "incitoFinishedRendering")
+        config.userContentController = contentController
+
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.isOpaque = false
         webView.navigationDelegate = self
@@ -86,8 +115,29 @@ public class IncitoViewController: UIViewController {
     
     // MARK: Public funcs
     
+    public init(document: IncitoDocument, completion: @escaping (Error?) -> Void) {
+        self.incitoDocument = document
+        self.loadCompletion = completion
+        
+        super.init(nibName: nil, bundle: nil)
+                
+        IncitoViewController.loadWebViewHTML { [weak self] in
+            guard let htmlStr = $0 else {
+                self?.loadCompletion(LoadError.unableToLoadHTMLString)
+                return
+            }
+            self?.webView.loadHTMLString(htmlStr, baseURL: nil)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = incitoDocument.backgroundColor ?? .white
         
         // Add the WebView to the root
         view.addSubview(webView)
@@ -98,14 +148,6 @@ public class IncitoViewController: UIViewController {
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
-        IncitoViewController.loadWebViewHTML { [weak self] in
-            guard let htmlStr = $0 else {
-                #warning("need loading failed callback")
-                return
-            }
-            self?.webView.loadHTMLString(htmlStr, baseURL: nil)
-        }
         
         // observe changes to the contentOffset, and trigger a re-render if needed.
         // we do this, rather than acting as delegate, as the users of the library may want to be the scrollview's delegate.
@@ -139,15 +181,6 @@ public class IncitoViewController: UIViewController {
         }
     }
     
-    /// Must be called on main queue
-    public func update(incitoDocument: IncitoDocument){
-        self.incitoDocument = incitoDocument
-        
-        if self.isViewLoaded && !webView.isLoading {
-            loadIncito()
-        }
-    }
-    
     // MARK: - Private funcs
     
     fileprivate static let localHTMLFileName = "index-1.0.0.html"
@@ -175,19 +208,15 @@ public class IncitoViewController: UIViewController {
     }
     
     fileprivate func loadIncito() {
-        guard let incitoDoc = incitoDocument else { return }
-        
-        view.backgroundColor = incitoDoc.backgroundColor ?? .white
-        
-        webView.evaluateJavaScript("window.init(\(incitoDoc.json))") { [weak self] (_, error) in
+        webView.evaluateJavaScript("window.init(\(incitoDocument.json))") { [weak self] (_, error) in
             guard let self = self else { return }
 
             if let error = error {
-                #warning("delegate error")
-                print("❌ Failed to load!", error)
-                return
+                #warning("Do we want to completely fail on JS exception? Or limp onwards, hoping it's just a small issue?")
+                self.loadCompletion(error)
             } else {
-                self.delegate?.incitoDocumentLoaded(in: self)
+                self.loadCompletion(nil)
+                self.delegate?.incitoDocumentLoaded(document: self.incitoDocument, in: self)
             }
         }
     }
@@ -209,6 +238,10 @@ extension IncitoViewController: WKNavigationDelegate, WKUIDelegate {
         loadIncito()
     }
     
+    public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        loadCompletion(error)
+    }
+    
     public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if let url = navigationAction.request.url {
             delegateOrDefault.incitoDidTapLink(url, in: self)
@@ -216,6 +249,18 @@ extension IncitoViewController: WKNavigationDelegate, WKUIDelegate {
         return nil
     }
 }
+
+extension IncitoViewController: WKScriptMessageHandler {
+    
+    /// Catch events from javascript, and convert them into delegate messages.
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == "incitoFinishedRendering" {
+            self.delegate?.incitoFinishedRendering(in: self)
+        }
+    }
+}
+
+
 
 // MARK: - Accessors
 
@@ -247,7 +292,7 @@ extension IncitoViewController {
             
             let matchedElements: [IncitoDocument.Element] = (res as? [String])
                 .flatMap({ matchedIds in
-                    self.incitoDocument?.elements.filter({
+                    self.incitoDocument.elements.filter({
                         matchedIds.contains($0.id)
                     })
                 }) ?? []

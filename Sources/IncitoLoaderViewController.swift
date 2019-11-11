@@ -182,14 +182,19 @@ open class IncitoLoaderViewController: UIViewController {
                             completion?(.failure(err))
                             
                         case let .success(incitoDocument):
-                            
-                            let incitoVC = IncitoViewController()
-                            incitoVC.delegate = self.delegate
-                            incitoVC.update(incitoDocument: incitoDocument)
-                            
-                            self.state = .success(incitoVC)
-                            
-                            completion?(.success(incitoVC))
+                            IncitoViewController.load(document: incitoDocument, delegate: self.delegate) { [weak self] vcRes in
+                                guard let self = self else { return }
+                                guard self.reloadId == currReloadId else { return }
+
+                                switch vcRes {
+                                case let .failure(err):
+                                    self.state = .error(err)
+                                    completion?(.failure(err))
+                                case let .success(incitoVC):
+                                    self.state = .success(incitoVC)
+                                    completion?(.success(incitoVC))
+                                }
+                            }
                         }
                     })
             }
