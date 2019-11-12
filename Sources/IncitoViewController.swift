@@ -85,7 +85,15 @@ public class IncitoViewController: UIViewController {
 
     public fileprivate(set) var tapGesture: UITapGestureRecognizer!
     
+    /**
+     When loading an incito, should we first try to use the incito renderer hosted at a remote cdn, before using the locally hosted renderer.
+     */
+    public static var useRemoteRendererHTML: Bool = true
+    
     // MARK: Private vars
+    
+    fileprivate static let localHTMLFileName = "index-1.0.0.html"
+    fileprivate static let remoteHTMLFileURL = URL(string: "https://incito-webview.shopgun.com/index-1.0.0.html")!
     
     fileprivate class DefaultDelegate: IncitoViewControllerDelegate { }
     fileprivate var delegateOrDefault: IncitoViewControllerDelegate {
@@ -214,10 +222,6 @@ public class IncitoViewController: UIViewController {
     
     // MARK: - Private funcs
     
-    fileprivate static let useRemoteHTML: Bool = true
-    fileprivate static let localHTMLFileName = "index-1.0.0.html"
-    fileprivate static let remoteHTMLFileURL = URL(string: "https://incito-webview.shopgun.com/index-1.0.0.html")!
-    
     /**
      Try to load the raw HTML string for the incito webview.
      First tries to load from the CDN, and if that fails, loads from the local file, and IF that fails we are in trouble.
@@ -232,7 +236,7 @@ public class IncitoViewController: UIViewController {
                 return try? String(contentsOf: localURL)
             }
             
-            let htmlStr: String? = useRemoteHTML ? (try? String(contentsOf: remoteHTMLFileURL)) ?? fallbackHtmlStr : fallbackHtmlStr
+            let htmlStr: String? = useRemoteRendererHTML ? (try? String(contentsOf: remoteHTMLFileURL)) ?? fallbackHtmlStr : fallbackHtmlStr
             DispatchQueue.main.async {
                 completion(htmlStr)
             }
@@ -300,7 +304,7 @@ extension IncitoViewController: WKScriptMessageHandler {
         if message.name == "incitoFinishedRendering" {
             
             // if we get a height back, assign that to the contentSize to make sure it is accurate before the delegate method gets called.
-            if let height = message.body as? CGFloat {
+            if let height = message.body as? CGFloat, height > 0 {
                 self.scrollView.contentSize.height = height
             }
             
