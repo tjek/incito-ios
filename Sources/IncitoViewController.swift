@@ -76,6 +76,7 @@ public class IncitoViewController: UIViewController {
     public weak var delegate: IncitoViewControllerDelegate?
 
     /// 0-1 percentage of the screen that we are currently scrolled to. Can be <0 or >1 when over-scrolling.
+    /// Note: this value will not be accurate until `incitoFinishedRendering` delegate method is called.
     public var scrollProgress: Double {
         return scrollView.percentageProgress
     }
@@ -297,7 +298,17 @@ extension IncitoViewController: WKScriptMessageHandler {
     /// Catch events from javascript, and convert them into delegate messages.
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "incitoFinishedRendering" {
-            self.delegate?.incitoFinishedRendering(in: self)
+            
+            // if we get a height back, assign that to the contentSize to make sure it is accurate before the delegate method gets called.
+            if let height = message.body as? CGFloat {
+                self.scrollView.contentSize.height = height
+            }
+            
+            // dispatch on main to make sure that the contentSize change is registered
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.delegate?.incitoFinishedRendering(in: self)
+            }
         }
     }
 }
