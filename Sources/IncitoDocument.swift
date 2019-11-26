@@ -15,7 +15,7 @@ public struct IncitoEnvironment {
     public static let supportedVersions: [String] = ["1.0.0"]
 }
 
-public struct IncitoDocument: Identifiable {
+public struct IncitoDocument {
 
     public struct Element {
         public typealias Identifier = String

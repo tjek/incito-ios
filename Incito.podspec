@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name            = "Incito"
-    s.version         = "1.0"
+    s.version         = "1.0.1"
     s.summary         = "Incito viewer for iOS."
     s.description     = <<-DESC
                          A library for loading and viewing Incito-format documents.
