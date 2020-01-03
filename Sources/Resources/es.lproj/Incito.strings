@@ -1,8 +1,0 @@
-// Default Error Title
-"Unable to Load" = "Error al cargar";
-
-// Default Error Message
-"Sorry, there was a problem. Please try again." = "Se produjo un problema. Vuelve a intentarlo.";
-
-// Error Retry Button
-"Try Again" = "Reintentar";
