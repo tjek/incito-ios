@@ -167,6 +167,8 @@ public class IncitoViewController: UIViewController {
         
         view.backgroundColor = incitoDocument.backgroundColor ?? .white
         
+        self.webView.scrollView.delegate = self
+        
         // Add the WebView to the root
         view.addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -391,6 +393,18 @@ extension IncitoViewController {
 }
 
 // MARK: - Scrolling
+
+extension IncitoViewController: UIScrollViewDelegate {
+    
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        tapGesture.isEnabled = false
+    }
+    
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        tapGesture.isEnabled = true
+    }
+    
+}
 
 extension IncitoViewController {
 
