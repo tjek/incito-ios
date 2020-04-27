@@ -24,6 +24,9 @@ public protocol IncitoViewControllerDelegate: class {
     /// Called when the user taps a location within the incito. The point is in the coordinate space of the `viewController`'s `view`. This will not be called if the tap is on a link.
     func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController)
     
+    /// Called when the user long presses a location within the incito. The point is in the coordinate space of the `viewController`'s `view`. This will not be called if the tap is on a link.
+    func incitoDidReceiveLongPress(at point: CGPoint, in viewController: IncitoViewController)
+    
     /// Called when the user taps a link. The general `incitoDidReceiveTap` delegate method is not called if a link was tapped. If you do not implement this delegate method, the default behaviour is to simply open the url in Safari.
     func incitoDidTapLink(_ url: URL, in viewController: IncitoViewController)
 }
@@ -38,6 +41,8 @@ public extension IncitoViewControllerDelegate {
     func incitoDidScroll(progress: Double, in viewController: IncitoViewController) { }
     
     func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController) { }
+    
+    func incitoDidReceiveLongPress(at point: CGPoint, in viewController: IncitoViewController) { }
     
     /// Default to opening the url when tapping a link.
     func incitoDidTapLink(_ url: URL, in viewController: IncitoViewController) {
@@ -84,7 +89,7 @@ public class IncitoViewController: UIViewController {
     public let incitoDocument: IncitoDocument
 
     public fileprivate(set) var tapGesture: UITapGestureRecognizer!
-    public var longPressGesture: UILongPressGestureRecognizer!
+    public fileprivate(set) var longPressGesture: UILongPressGestureRecognizer!
     
     /**
      When loading an incito, should we first try to use the incito renderer hosted at a remote cdn, before using the locally hosted renderer.
@@ -191,6 +196,10 @@ public class IncitoViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapView))
         self.tapGesture = tap
         self.addGesture(tap)
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressView))
+        self.longPressGesture = longPress
+        self.addGesture(longPress)
     }
     
     deinit {
@@ -262,6 +271,12 @@ public class IncitoViewController: UIViewController {
     @objc fileprivate func didTapView(_ tap: UITapGestureRecognizer) {
         let location = tap.location(in: self.view)
         delegate?.incitoDidReceiveTap(at: location, in: self)
+    }
+    
+    @objc fileprivate func didLongPressView(_ tap: UITapGestureRecognizer) {
+        let location = tap.location(in: self.view)
+        longPressGesture.state = .began
+        delegate?.incitoDidReceiveLongPress(at: location, in: self)
     }
 }
 
