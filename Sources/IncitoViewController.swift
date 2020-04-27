@@ -84,6 +84,7 @@ public class IncitoViewController: UIViewController {
     public let incitoDocument: IncitoDocument
 
     public fileprivate(set) var tapGesture: UITapGestureRecognizer!
+    public var longPressGesture: UILongPressGestureRecognizer!
     
     /**
      When loading an incito, should we first try to use the incito renderer hosted at a remote cdn, before using the locally hosted renderer.
@@ -398,10 +399,12 @@ extension IncitoViewController: UIScrollViewDelegate {
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         tapGesture.isEnabled = false
+        longPressGesture.isEnabled = false
     }
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         tapGesture.isEnabled = true
+        longPressGesture.isEnabled = true
     }
     
 }
