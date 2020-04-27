@@ -275,7 +275,7 @@ public class IncitoViewController: UIViewController {
     
     @objc fileprivate func didLongPressView(_ tap: UITapGestureRecognizer) {
         let location = tap.location(in: self.view)
-        longPressGesture.state = .began
+        guard longPressGesture.state == .began else { return }
         delegate?.incitoDidReceiveLongPress(at: location, in: self)
     }
 }
