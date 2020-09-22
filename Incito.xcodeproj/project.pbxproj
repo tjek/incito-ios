@@ -362,7 +362,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Incito;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -396,7 +396,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shopgun.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Incito;
 				PROVISIONING_PROFILE_SPECIFIER = "";
