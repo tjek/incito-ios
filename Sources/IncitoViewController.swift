@@ -21,6 +21,9 @@ public protocol IncitoViewControllerDelegate: class {
     /// Called whenever the user scrolls the incito (or the incito is scrolled programatically).
     func incitoDidScroll(progress: Double, in viewController: IncitoViewController)
     
+    /// Called whenever the user ends dragging the incito
+    func incitoWillEndDragging(withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>, in viewController: IncitoViewController)
+    
     /// Called when the user taps a location within the incito. The point is in the coordinate space of the `viewController`'s `view`. This will not be called if the tap is on a link.
     func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController)
     
@@ -39,6 +42,8 @@ public extension IncitoViewControllerDelegate {
     func incitoFinishedRendering(in viewController: IncitoViewController) { }
     
     func incitoDidScroll(progress: Double, in viewController: IncitoViewController) { }
+    
+    func incitoWillEndDragging(withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>, in viewController: IncitoViewController) { }
     
     func incitoDidReceiveTap(at point: CGPoint, in viewController: IncitoViewController) { }
     
@@ -420,6 +425,7 @@ extension IncitoViewController: UIScrollViewDelegate {
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         tapGesture.isEnabled = true
         longPressGesture.isEnabled = true
+        self.delegate?.incitoWillEndDragging(withVelocity: velocity, targetContentOffset: targetContentOffset, in: self)
     }
     
 }
