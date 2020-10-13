@@ -193,7 +193,7 @@ public class IncitoViewController: UIViewController {
         // observe changes to the contentOffset, and trigger a re-render if needed.
         // we do this, rather than acting as delegate, as the users of the library may want to be the scrollview's delegate.
         scrollViewScrollObserver = scrollView.observe(\.contentOffset, options: [.old, .new]) { [weak self] (_, change) in
-            guard let self = self, change.oldValue != change.newValue else { return }
+            guard let self = self, change.oldValue != change.newValue, self.scrollView.contentSize.height > 0 else { return }
             
             self.delegate?.incitoDidScroll(progress: self.scrollProgress, in: self)
         }
