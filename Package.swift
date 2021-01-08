@@ -3,20 +3,27 @@ import PackageDescription
 
 let package = Package(
     name: "Incito",
+    defaultLocalization: "en",
     platforms: [
-        .iOS(.v11),
+        .iOS(.v9),
     ],
     products: [
         .library(
             name: "Incito",
-            targets: ["Incito"]),
-    ],
-    dependencies: [
+            targets: ["Incito"]
+        ),
     ],
     targets: [
         .target(
             name: "Incito",
             dependencies: [],
-            path: "Sources"),
+            resources: [
+                .process("Resources/IncitoWebview")
+            ]
+        ),
+        .testTarget(
+            name: "IncitoTests",
+            dependencies: ["Incito"]
+        )
     ]
 )

@@ -1,3 +1,3 @@
-[submodule "Sources/Incito/IncitoWebview"]
-	path = Sources/Incito/IncitoWebview
+[submodule "Sources/Incito/Resources/IncitoWebview"]
+	path = Sources/Incito/Resources/IncitoWebview
 	url = https://github.com/shopgun/incito-webview.git
