@@ -86,6 +86,11 @@ public class IncitoViewController: UIViewController {
         return scrollView.percentageProgress
     }
     
+    /// Value representing how many px has the incito been scrolled from the top.
+    public var scrollPosition: CGFloat {
+        return scrollView.contentOffset.y
+    }
+    
     public let incitoDocument: IncitoDocument
 
     public fileprivate(set) var tapGesture: UITapGestureRecognizer!
@@ -542,6 +547,17 @@ extension IncitoViewController {
         let contentOffset = self.scrollView.contentOffset(forPercentageProgress: progress)
 
         self.scrollView.setContentOffset(contentOffset, animated: animated)
+    }
+    
+    /**
+     Scrolls the incito to the specified offset.
+     - parameter position: A value defining how many px to scroll the incito.
+     - parameter animated: If true the scrolling to position will be animated.
+     */
+    public func scrollToPosition(_ position: CGFloat, animated: Bool) {
+        let scrollPosition = CGPoint(x: 0, y: position)
+        
+        self.scrollView.setContentOffset(scrollPosition, animated: animated)
     }
 }
 
