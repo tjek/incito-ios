@@ -128,16 +128,6 @@ public class IncitoViewController: UIViewController {
         // add event listeners
         contentController.add(self, name: "incitoFinishedRendering")
         
-        // turn off user-magnification
-        let disableMagnification: WKUserScript = {
-            let source: String = "var meta = document.createElement('meta');" +
-                "meta.name = 'viewport';" +
-                "meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';" +
-                "var head = document.getElementsByTagName('head')[0];" + "head.appendChild(meta);"
-            return WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-        }()
-        contentController.addUserScript(disableMagnification)
-        
         config.userContentController = contentController
 
         let webView = WKWebView(frame: .zero, configuration: config)
