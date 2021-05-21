@@ -315,17 +315,13 @@ extension IncitoViewController: WKScriptMessageHandler {
     /// Catch events from javascript, and convert them into delegate messages.
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == "incitoFinishedRendering" {
-            
+
             // if we get a height back, assign that to the contentSize to make sure it is accurate before the delegate method gets called.
             if let height = message.body as? CGFloat, height > 0 {
                 self.scrollView.contentSize.height = height
             }
             
-            // dispatch on main to make sure that the contentSize change is registered
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.delegate?.incitoFinishedRendering(in: self)
-            }
+            self.delegate?.incitoFinishedRendering(in: self)
         }
     }
 }
