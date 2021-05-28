@@ -86,9 +86,17 @@ public class IncitoViewController: UIViewController {
         return scrollView.percentageProgress
     }
     
-    /// Value representing how many px has the incito been scrolled from the top.
+    /// Value representing how many px has the incito been scrolled from the top (including the contentInset.top).
     public var scrollPosition: CGFloat {
-        return scrollView.contentOffset.y
+        
+        let adjustedInset: UIEdgeInsets
+        if #available(iOS 11.0, *) {
+            adjustedInset = scrollView.adjustedContentInset
+        } else {
+            adjustedInset = scrollView.contentInset
+        }
+        
+        return scrollView.contentOffset.y + adjustedInset.top
     }
     
     public let incitoDocument: IncitoDocument
@@ -536,14 +544,22 @@ extension IncitoViewController {
     }
     
     /**
-     Scrolls the incito to the specified offset.
+     Scrolls the incito to the specified position. This updates the scrollview's content offset, but first removing the contentInset.top from this position value.
      - parameter position: A value defining how many px to scroll the incito.
      - parameter animated: If true the scrolling to position will be animated.
      */
     public func scrollToPosition(_ position: CGFloat, animated: Bool) {
-        let scrollPosition = CGPoint(x: 0, y: position)
+        let adjustedInset: UIEdgeInsets
+        if #available(iOS 11.0, *) {
+            adjustedInset = scrollView.adjustedContentInset
+        } else {
+            adjustedInset = scrollView.contentInset
+        }
         
-        self.scrollView.setContentOffset(scrollPosition, animated: animated)
+        var contentOffset = self.scrollView.contentOffset
+        contentOffset.y = position - adjustedInset.top
+        
+        self.scrollView.setContentOffset(contentOffset, animated: animated)
     }
 }
 
