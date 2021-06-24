@@ -201,6 +201,7 @@ public class IncitoViewController: UIViewController {
         self.addGesture(tap)
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressView))
+        longPress.minimumPressDuration = 0.75
         self.longPressGesture = longPress
         self.addGesture(longPress)
     }
