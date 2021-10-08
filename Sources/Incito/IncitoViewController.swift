@@ -5,7 +5,7 @@
 import UIKit
 import WebKit
 
-public protocol IncitoViewControllerDelegate: class {
+public protocol IncitoViewControllerDelegate: AnyObject {
     
     /// Called once the a document is successfully loaded.
     func incitoDocumentLoaded(document: IncitoDocument, in viewController: IncitoViewController)
