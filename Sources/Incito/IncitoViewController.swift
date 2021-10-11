@@ -133,8 +133,8 @@ public class IncitoViewController: UIViewController {
 
         let contentController = WKUserContentController()
         
-        // add event listeners
-        contentController.add(self, name: "incitoFinishedRendering")
+        // add (weakifying) event listeners
+        contentController.add(WeakScriptMessageHandler(delegate: self), name: "incitoFinishedRendering")
         
         config.userContentController = contentController
 
@@ -208,6 +208,9 @@ public class IncitoViewController: UIViewController {
     
     deinit {
         scrollViewScrollObserver = nil
+        
+        webView.stopLoading()
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "incitoFinishedRendering")
     }
     
     public override func viewDidLayoutSubviews() {
@@ -598,5 +601,19 @@ extension UIScrollView {
         let offsetY = topOffset - adjustedInset.top
         
         return CGPoint(x: 0, y: offsetY)
+    }
+}
+
+/// https://stackoverflow.com/a/26383032/318834
+fileprivate class WeakScriptMessageHandler : NSObject, WKScriptMessageHandler {
+    weak var delegate: WKScriptMessageHandler?
+    
+    init(delegate: WKScriptMessageHandler) {
+        self.delegate = delegate
+        super.init()
+    }
+    
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        self.delegate?.userContentController(userContentController, didReceive: message)
     }
 }
