@@ -285,6 +285,12 @@ public class IncitoViewController: UIViewController {
         guard longPressGesture.state == .began else { return }
         delegate?.incitoDidReceiveLongPress(at: location, in: self)
     }
+    
+    /// A utility that lets you pause all the videos currently playing in the incito.
+    public func pauseAllVideos() {
+        let script = "var vids = document.getElementsByTagName('video'); for( var i = 0; i < vids.length; i++ ){vids.item(i).pause()}"
+        self.webView.evaluateJavaScript(script, completionHandler:nil)
+    }
 }
 
 extension IncitoViewController: UIGestureRecognizerDelegate {
