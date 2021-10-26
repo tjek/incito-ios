@@ -18,6 +18,7 @@ jobs:
     - name: Initialize Xcode Project
       run: swift package generate-xcodeproj
     - name: Build
-      run: xcodebuild build -sdk iphoneos -scheme 'Incito-Package'
-    - name: Run tests
-      run: xcodebuild test -destination 'name=iPhone 11' -scheme 'Incito-Package'
+      run: swift build -v -Xswiftc "-sdk" -Xswiftc "`xcrun --sdk iphonesimulator --show-sdk-path`" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios13.0-simulator"
+# Removed, until there is a fix to xcodebuild failing to correctly build packages with resources.
+#     - name: Run tests
+#       run: xcodebuild test -destination 'name=iPhone 11' -scheme 'Incito-Package'
