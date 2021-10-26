@@ -208,9 +208,6 @@ public class IncitoViewController: UIViewController {
     
     deinit {
         scrollViewScrollObserver = nil
-        
-        webView.stopLoading()
-        webView.configuration.userContentController.removeScriptMessageHandler(forName: "incitoFinishedRendering")
     }
     
     public override func viewDidLayoutSubviews() {
