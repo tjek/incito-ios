@@ -10,6 +10,10 @@ private class IncitoReferenceClass { }
 extension Bundle {
     @objc
     public static var incito: Bundle {
+        #if SWIFT_PACKAGE
+        return Bundle.module
+        #else
         return Bundle(for: IncitoReferenceClass.self)
+        #endif
     }
 }
