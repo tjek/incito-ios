@@ -16,14 +16,13 @@ let package = Package(
     targets: [
         .target(
             name: "Incito",
-            dependencies: [],
             resources: [
-                .process("Resources/IncitoWebview")
+                .process("Resources")
             ]
         ),
         .testTarget(
             name: "IncitoTests",
-            dependencies: ["Incito"]
+            dependencies: [.target(name: "Incito")]
         )
     ]
 )
