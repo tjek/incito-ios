@@ -122,6 +122,7 @@ public class IncitoViewController: UIViewController {
     fileprivate let loadCompletion: (Error?) -> Void
     
     fileprivate var scrollView: UIScrollView {
+        webView.scrollView.showsHorizontalScrollIndicator = false
         return webView.scrollView
     }
     
