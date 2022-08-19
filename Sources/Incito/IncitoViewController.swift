@@ -142,6 +142,7 @@ public class IncitoViewController: UIViewController {
         webView.isOpaque = false
         webView.navigationDelegate = self
         webView.uiDelegate = self
+        webView.becomeFirstResponder()
         return webView
     }()
     
