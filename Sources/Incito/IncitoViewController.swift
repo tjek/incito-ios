@@ -142,6 +142,8 @@ public class IncitoViewController: UIViewController {
         webView.isOpaque = false
         webView.navigationDelegate = self
         webView.uiDelegate = self
+        webView.becomeFirstResponder()
+        webView.scrollView.showsHorizontalScrollIndicator = false
         return webView
     }()
     
