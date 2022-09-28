@@ -199,13 +199,11 @@ public class IncitoViewController: UIViewController {
         }
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapView))
-        tap.cancelsTouchesInView = false
         self.tapGesture = tap
         self.addGesture(tap)
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressView))
         longPress.minimumPressDuration = 0.75
-        longPress.cancelsTouchesInView = false
         self.longPressGesture = longPress
         self.addGesture(longPress)
     }
@@ -298,6 +296,12 @@ extension IncitoViewController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         // only accept simultaneous gestures if they are on the webview
         // walk up the otherGesture's view hierarchy to see if any of it's parents are a WKWebView. Eject if we hit the root view of this VC.
+        
+        // To prevent triggering taps while scrolling, we check for types of simultanious geatures
+        if otherGestureRecognizer.isKind(of: UIPanGestureRecognizer.self) && (gestureRecognizer.isKind(of: UITapGestureRecognizer.self) || gestureRecognizer.isKind(of: UILongPressGestureRecognizer.self)) {
+            return false
+        }
+        
         var view = otherGestureRecognizer.view
         while view != nil {
             if view is WKWebView {
