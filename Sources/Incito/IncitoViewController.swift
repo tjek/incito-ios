@@ -399,14 +399,14 @@ extension IncitoViewController: WKScriptMessageHandler {
             self.delegate?.incitoFinishedRendering(in: self)
             
         case "incitoSectionVisible":
-            if let params = (message.body as? [[String: Any]])?.first,
+            if let params = message.body as? [String: Any],
                let sectionId = params["sectionId"] as? String,
                let sectionPosition = params["sectionPosition"] as? Int {
                 sectionDidAppear(id: sectionId, position: sectionPosition)
             }
             
         case "incitoSectionHidden":
-            if let params = (message.body as? [[String: Any]])?.first,
+            if let params = message.body as? [String: Any],
                let sectionId = params["sectionId"] as? String,
                let sectionPosition = params["sectionPosition"] as? Int {
                 sectionDidDisappear(id: sectionId, position: sectionPosition)
