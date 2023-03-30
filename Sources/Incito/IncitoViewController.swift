@@ -390,7 +390,6 @@ extension IncitoViewController: WKScriptMessageHandler {
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         switch message.name {
         case "incitoFinishedRendering":
-            
             // if we get a height back, assign that to the contentSize to make sure it is accurate before the delegate method gets called.
             if let height = message.body as? CGFloat, height > 0 {
                 self.scrollView.contentSize.height = height
@@ -399,16 +398,18 @@ extension IncitoViewController: WKScriptMessageHandler {
             self.delegate?.incitoFinishedRendering(in: self)
             
         case "incitoSectionVisible":
-            if let params = message.body as? [String: Any],
-               let sectionId = params["sectionId"] as? String,
-               let sectionPosition = params["sectionPosition"] as? Int {
+            if let params = message.body as? [Any],
+               params.count >= 2,
+               let sectionId = params[0] as? String,
+               let sectionPosition = params[1] as? Int {
                 sectionDidAppear(id: sectionId, position: sectionPosition)
             }
             
         case "incitoSectionHidden":
-            if let params = message.body as? [String: Any],
-               let sectionId = params["sectionId"] as? String,
-               let sectionPosition = params["sectionPosition"] as? Int {
+            if let params = message.body as? [Any],
+               params.count >= 2,
+               let sectionId = params[0] as? String,
+               let sectionPosition = params[1] as? Int {
                 sectionDidDisappear(id: sectionId, position: sectionPosition)
             }
             
