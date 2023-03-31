@@ -54,6 +54,23 @@ public extension IncitoViewControllerDelegate {
     }
 }
 
+public struct UniqueSectionId: Identifiable, Hashable {
+    public var sectionId: String
+    public var sectionPosition: Int
+    
+    public var id: String { sectionId + "-\(sectionPosition)" }
+}
+
+public struct IncitoSectionViewedEvent: Equatable, Identifiable {
+    public var id: UniqueSectionId
+    public var appeared: Date
+    public var disappeared: Date
+    
+    public var duration: TimeInterval {
+        disappeared.timeIntervalSince(appeared)
+    }
+}
+
 /**
  A view controller for rendering an incito.
  */
@@ -62,6 +79,9 @@ public class IncitoViewController: UIViewController {
     enum LoadError: Error {
         case unableToLoadHTMLString
     }
+    
+    private var visibleSectionStartDates: [UniqueSectionId: Date] = [:]
+    public var sectionViewedEventHandler: (IncitoSectionViewedEvent) -> Void = { _ in }
     
     public static func load(document: (IncitoDocument), delegate: IncitoViewControllerDelegate? = nil, completion: @escaping (Result<IncitoViewController, Error>) -> Void) {
         var vc: IncitoViewController? = nil
@@ -134,7 +154,10 @@ public class IncitoViewController: UIViewController {
         let contentController = WKUserContentController()
         
         // add (weakifying) event listeners
-        contentController.add(WeakScriptMessageHandler(delegate: self), name: "incitoFinishedRendering")
+        let messageHandler = WeakScriptMessageHandler(delegate: self)
+        contentController.add(messageHandler, name: "incitoFinishedRendering")
+        contentController.add(messageHandler, name: "incitoSectionVisible")
+        contentController.add(messageHandler, name: "incitoSectionHidden")
         
         config.userContentController = contentController
 
@@ -209,7 +232,11 @@ public class IncitoViewController: UIViewController {
     }
     
     deinit {
-        scrollViewScrollObserver = nil
+        for section in self.visibleSectionStartDates.keys {
+            self.sectionDidDisappear(id: section.sectionId, position: section.sectionPosition)
+        }
+        
+        self.scrollViewScrollObserver = nil
     }
     
     public override func viewDidLayoutSubviews() {
@@ -290,6 +317,30 @@ public class IncitoViewController: UIViewController {
         let script = "var vids = document.getElementsByTagName('video'); for( var i = 0; i < vids.length; i++ ){vids.item(i).pause()}"
         self.webView.evaluateJavaScript(script, completionHandler:nil)
     }
+    
+    fileprivate func sectionDidAppear(id: String, position: Int) {
+        let sectionId = UniqueSectionId(sectionId: id, sectionPosition: position)
+        
+        if visibleSectionStartDates[sectionId] == nil {
+            visibleSectionStartDates[sectionId] = Date()
+        }
+    }
+    
+    fileprivate func sectionDidDisappear(id: String, position: Int) {
+        let sectionId = UniqueSectionId(sectionId: id, sectionPosition: position)
+        
+        if let startDate = visibleSectionStartDates[sectionId] {
+            visibleSectionStartDates[sectionId] = nil
+            
+            let event = IncitoSectionViewedEvent(
+                id: sectionId,
+                appeared: startDate,
+                disappeared: Date()
+            )
+            
+            sectionViewedEventHandler(event)
+        }
+    }
 }
 
 extension IncitoViewController: UIGestureRecognizerDelegate {
@@ -337,14 +388,33 @@ extension IncitoViewController: WKScriptMessageHandler {
     
     /// Catch events from javascript, and convert them into delegate messages.
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == "incitoFinishedRendering" {
-
+        switch message.name {
+        case "incitoFinishedRendering":
             // if we get a height back, assign that to the contentSize to make sure it is accurate before the delegate method gets called.
             if let height = message.body as? CGFloat, height > 0 {
                 self.scrollView.contentSize.height = height
             }
             
             self.delegate?.incitoFinishedRendering(in: self)
+            
+        case "incitoSectionVisible":
+            if let params = message.body as? [Any],
+               params.count >= 2,
+               let sectionId = params[0] as? String,
+               let sectionPosition = params[1] as? Int {
+                sectionDidAppear(id: sectionId, position: sectionPosition)
+            }
+            
+        case "incitoSectionHidden":
+            if let params = message.body as? [Any],
+               params.count >= 2,
+               let sectionId = params[0] as? String,
+               let sectionPosition = params[1] as? Int {
+                sectionDidDisappear(id: sectionId, position: sectionPosition)
+            }
+            
+        default:
+            break
         }
     }
 }
