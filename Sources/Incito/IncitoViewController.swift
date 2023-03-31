@@ -235,8 +235,6 @@ public class IncitoViewController: UIViewController {
         for section in self.visibleSectionStartDates.keys {
             self.sectionDidDisappear(id: section.sectionId, position: section.sectionPosition)
         }
-        
-        self.scrollViewScrollObserver = nil
     }
     
     public override func viewDidLayoutSubviews() {
