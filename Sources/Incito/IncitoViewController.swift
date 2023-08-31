@@ -464,6 +464,37 @@ extension IncitoViewController {
     }
     
     /**
+     Returns an array of the offer element ids at the specified point.
+     `point` must be in the `IncitoViewController`'s root `view` coordinate space.
+     `completion` is called on the main queue.
+     */
+    public func getOfferElementIds(at point: CGPoint, completion: @escaping ([String]) -> Void) {
+        
+        let inset: UIEdgeInsets
+        if #available(iOS 11.0, *) {
+            inset = self.scrollView.adjustedContentInset
+        } else {
+            inset = self.scrollView.contentInset
+        }
+        
+        var pointInWebView = self.view.convert(point, to: self.webView)
+        pointInWebView.x -= inset.left
+        pointInWebView.y -= inset.top
+        
+        let elementsAtJS = "getOfferElementIdsAtPoint(\(pointInWebView.x), \(pointInWebView.y))"
+        
+        webView.evaluateJavaScript(elementsAtJS) { (res, err) in
+            completion((res as? [String]) ?? [])
+        }
+    }
+    
+    public func getFirstOfferElementId(at point: CGPoint, completion: @escaping (String?) -> Void) {
+        self.getOfferElementIds(at: point) {
+            completion($0.first)
+        }
+    }
+    
+    /**
      Returns the bounds of element with the specified id, in the coordinate space of the root `view`.
      `completion` is called on the main queue.
      */
