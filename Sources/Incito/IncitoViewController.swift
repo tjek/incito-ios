@@ -106,6 +106,9 @@ public class IncitoViewController: UIViewController {
         return scrollView.percentageProgress
     }
     
+    /// Value representing the count of elements with role 'section'
+    public var totalSectionCount: Int?
+    
     /// Value representing how many px has the incito been scrolled from the top (including the contentInset.top).
     public var scrollPosition: CGFloat {
         
@@ -297,6 +300,8 @@ public class IncitoViewController: UIViewController {
                 self.delegate?.incitoDocumentLoaded(document: self.incitoDocument, in: self)
             }
         }
+        
+        self.totalSectionCount = self.incitoDocument.elements.filter({ $0.role == "section" }).count
     }
     
     @objc fileprivate func didTapView(_ tap: UITapGestureRecognizer) {
