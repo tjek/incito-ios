@@ -16,6 +16,9 @@ public protocol IncitoViewControllerDelegate: AnyObject {
     /// Called whenever the user scrolls the incito (or the incito is scrolled programatically).
     func incitoDidScroll(progress: Double, in viewController: IncitoViewController)
     
+    /// Called whenever new section becomes visible
+    func incitoSectionDidAppear(section: Int, in viewController: IncitoViewController)
+    
     /// Called whenever the user ends dragging the incito
     func incitoWillEndDragging(withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>, in viewController: IncitoViewController)
     
@@ -37,6 +40,8 @@ public extension IncitoViewControllerDelegate {
     func incitoFinishedRendering(in viewController: IncitoViewController) { }
     
     func incitoDidScroll(progress: Double, in viewController: IncitoViewController) { }
+    
+    func incitoSectionDidAppear(section: Int, in viewController: IncitoViewController) { }
     
     func incitoWillEndDragging(withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>, in viewController: IncitoViewController) { }
     
@@ -323,6 +328,8 @@ public class IncitoViewController: UIViewController {
     
     fileprivate func sectionDidAppear(id: String, position: Int) {
         let sectionId = UniqueSectionId(sectionId: id, sectionPosition: position)
+        
+        delegate?.incitoSectionDidAppear(section: position, in: self)
         
         if visibleSectionStartDates[sectionId] == nil {
             visibleSectionStartDates[sectionId] = Date()
